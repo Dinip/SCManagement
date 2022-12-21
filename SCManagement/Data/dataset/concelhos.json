@@ -1,0 +1,1234 @@
+[
+  {
+    "nome": "Águeda",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Albergaria-a-Velha",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Anadia",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Arouca",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Aveiro",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Castelo de Paiva",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Espinho",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Estarreja",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Santa Maria da Feira",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Ílhavo",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Mealhada",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Murtosa",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Oliveira de Azeméis",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Oliveira do Bairro",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Ovar",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "São João da Madeira",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Sever do Vouga",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Vagos",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Vale de Cambra",
+    "distrito": "Aveiro"
+  },
+  {
+    "nome": "Aljustrel",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Almodôvar",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Alvito",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Barrancos",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Beja",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Castro Verde",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Cuba",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Ferreira do Alentejo",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Mértola",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Moura",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Odemira",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Ourique",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Serpa",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Vidigueira",
+    "distrito": "Beja"
+  },
+  {
+    "nome": "Amares",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Barcelos",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Braga",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Cabeceiras de Basto",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Celorico de Basto",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Esposende",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Fafe",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Guimarães",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Póvoa de Lanhoso",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Terras de Bouro",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Vieira do Minho",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Vila Nova de Famalicão",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Vila Verde",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Vizela",
+    "distrito": "Braga"
+  },
+  {
+    "nome": "Alfândega da Fé",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Bragança",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Carrazeda de Ansiães",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Freixo de Espada à Cinta",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Macedo de Cavaleiros",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Miranda do Douro",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Mirandela",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Mogadouro",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Torre de Moncorvo",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Vila Flor",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Vimioso",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Vinhais",
+    "distrito": "Bragança"
+  },
+  {
+    "nome": "Belmonte",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Castelo Branco",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Covilhã",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Fundão",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Idanha-a-Nova",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Oleiros",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Penamacor",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Proença-a-Nova",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Sertã",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Vila de Rei",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Vila Velha de Ródão",
+    "distrito": "Castelo Branco"
+  },
+  {
+    "nome": "Arganil",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Cantanhede",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Coimbra",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Condeixa-a-Nova",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Figueira da Foz",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Góis",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Lousã",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Mira",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Miranda do Corvo",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Montemor-o-Velho",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Oliveira do Hospital",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Pampilhosa da Serra",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Penacova",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Penela",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Soure",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Tábua",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Vila Nova de Poiares",
+    "distrito": "Coimbra"
+  },
+  {
+    "nome": "Alandroal",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Arraiolos",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Borba",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Estremoz",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Évora",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Montemor-o-Novo",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Mora",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Mourão",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Portel",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Redondo",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Reguengos de Monsaraz",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Vendas Novas",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Viana do Alentejo",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Vila Viçosa",
+    "distrito": "Évora"
+  },
+  {
+    "nome": "Albufeira",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Alcoutim",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Aljezur",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Castro Marim",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Faro",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Lagoa",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Lagos",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Loulé",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Monchique",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Olhão",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Portimão",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "São Brás de Alportel",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Silves",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Tavira",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Vila do Bispo",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Vila Real de Santo António",
+    "distrito": "Faro"
+  },
+  {
+    "nome": "Aguiar da Beira",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Almeida",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Celorico da Beira",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Figueira de Castelo Rodrigo",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Fornos de Algodres",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Gouveia",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Guarda",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Manteigas",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Mêda",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Pinhel",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Sabugal",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Seia",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Trancoso",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Vila Nova de Foz Côa",
+    "distrito": "Guarda"
+  },
+  {
+    "nome": "Alcobaça",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Alvaiázere",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Ansião",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Batalha",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Bombarral",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Caldas da Rainha",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Castanheira de Pêra",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Figueiró dos Vinhos",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Leiria",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Marinha Grande",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Nazaré",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Óbidos",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Pedrógão Grande",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Peniche",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Pombal",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Porto de Mós",
+    "distrito": "Leiria"
+  },
+  {
+    "nome": "Alenquer",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Arruda dos Vinhos",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Azambuja",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Cadaval",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Cascais",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Lisboa",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Loures",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Lourinhã",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Mafra",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Oeiras",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Sintra",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Sobral de Monte Agraço",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Torres Vedras",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Vila Franca de Xira",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Amadora",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Odivelas",
+    "distrito": "Lisboa"
+  },
+  {
+    "nome": "Alter do Chão",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Arronches",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Avis",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Campo Maior",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Castelo de Vide",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Crato",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Elvas",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Fronteira",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Gavião",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Marvão",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Monforte",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Nisa",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Ponte de Sor",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Portalegre",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Sousel",
+    "distrito": "Portalegre"
+  },
+  {
+    "nome": "Amarante",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Baião",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Felgueiras",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Gondomar",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Lousada",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Maia",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Marco de Canaveses",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Matosinhos",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Paços de Ferreira",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Paredes",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Penafiel",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Porto",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Póvoa de Varzim",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Santo Tirso",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Valongo",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Vila do Conde",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Vila Nova de Gaia",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Trofa",
+    "distrito": "Porto"
+  },
+  {
+    "nome": "Abrantes",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Alcanena",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Almeirim",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Alpiarça",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Benavente",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Cartaxo",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Chamusca",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Constância",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Coruche",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Entroncamento",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Ferreira do Zêzere",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Golegã",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Mação",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Rio Maior",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Salvaterra de Magos",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Santarém",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Sardoal",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Tomar",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Torres Novas",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Vila Nova da Barquinha",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Ourém",
+    "distrito": "Santarém"
+  },
+  {
+    "nome": "Alcácer do Sal",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Alcochete",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Almada",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Barreiro",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Grândola",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Moita",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Montijo",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Palmela",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Santiago do Cacém",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Seixal",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Sesimbra",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Setúbal",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Sines",
+    "distrito": "Setúbal"
+  },
+  {
+    "nome": "Arcos de Valdevez",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Caminha",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Melgaço",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Monção",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Paredes de Coura",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Ponte da Barca",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Ponte de Lima",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Valença",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Viana do Castelo",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Vila Nova de Cerveira",
+    "distrito": "Viana do Castelo"
+  },
+  {
+    "nome": "Alijó",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Boticas",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Chaves",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Mesão Frio",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Mondim de Basto",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Montalegre",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Murça",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Peso da Régua",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Ribeira de Pena",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Sabrosa",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Santa Marta de Penaguião",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Valpaços",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Vila Pouca de Aguiar",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Vila Real",
+    "distrito": "Vila Real"
+  },
+  {
+    "nome": "Armamar",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Carregal do Sal",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Castro Daire",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Cinfães",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Lamego",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Mangualde",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Moimenta da Beira",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Mortágua",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Nelas",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Oliveira de Frades",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Penalva do Castelo",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Penedono",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Resende",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Santa Comba Dão",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "São João da Pesqueira",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "São Pedro do Sul",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Sátão",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Sernancelhe",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Tabuaço",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Tarouca",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Tondela",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Vila Nova de Paiva",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Viseu",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Vouzela",
+    "distrito": "Viseu"
+  },
+  {
+    "nome": "Calheta",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Câmara de Lobos",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Funchal",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Machico",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Ponta do Sol",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Porto Moniz",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Ribeira Brava",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Santa Cruz",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Santana",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "São Vicente",
+    "distrito": "Ilha da Madeira"
+  },
+  {
+    "nome": "Porto Santo",
+    "distrito": "Ilha de Porto Santo"
+  },
+  {
+    "nome": "Vila do Porto",
+    "distrito": "Ilha de Santa Maria"
+  },
+  {
+    "nome": "Lagoa",
+    "distrito": "Ilha de São Miguel"
+  },
+  {
+    "nome": "Nordeste",
+    "distrito": "Ilha de São Miguel"
+  },
+  {
+    "nome": "Ponta Delgada",
+    "distrito": "Ilha de São Miguel"
+  },
+  {
+    "nome": "Povoação",
+    "distrito": "Ilha de São Miguel"
+  },
+  {
+    "nome": "Ribeira Grande",
+    "distrito": "Ilha de São Miguel"
+  },
+  {
+    "nome": "Vila Franca do Campo",
+    "distrito": "Ilha de São Miguel"
+  },
+  {
+    "nome": "Angra do Heroísmo",
+    "distrito": "Ilha Terceira"
+  },
+  {
+    "nome": "Vila da Praia da Vitória",
+    "distrito": "Ilha Terceira"
+  },
+  {
+    "nome": "Santa Cruz da Graciosa",
+    "distrito": "Ilha Graciosa"
+  },
+  {
+    "nome": "Calheta",
+    "distrito": "Ilha de São Jorge"
+  },
+  {
+    "nome": "Velas",
+    "distrito": "Ilha de São Jorge"
+  },
+  {
+    "nome": "Lajes do Pico",
+    "distrito": "Ilha do Pico"
+  },
+  {
+    "nome": "Madalena",
+    "distrito": "Ilha do Pico"
+  },
+  {
+    "nome": "São Roque do Pico",
+    "distrito": "Ilha do Pico"
+  },
+  {
+    "nome": "Horta",
+    "distrito": "Ilha do Faial"
+  },
+  {
+    "nome": "Lajes das Flores",
+    "distrito": "Ilha das Flores"
+  },
+  {
+    "nome": "Santa Cruz das Flores",
+    "distrito": "Ilha das Flores"
+  },
+  {
+    "nome": "Corvo",
+    "distrito": "Ilha do Corvo"
+  }
+]
