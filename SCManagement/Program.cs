@@ -17,20 +17,20 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
 builder.Services.AddIdentity<User, IdentityRole>(options =>
 {
     options.SignIn.RequireConfirmedAccount = true;
-    options.User.RequireUniqueEmail = true;
-}).AddEntityFrameworkStores<ApplicationDbContext>();
+})
+  .AddEntityFrameworkStores<ApplicationDbContext>()
+  .AddDefaultTokenProviders();
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllersWithViews();
 
 //add email service, in development it uses the local smtp server from mail catcher
 //in production it will use mailgun with the api key stored in the vault
-builder.Services.Configure<AuthMessageSenderOptions>(options => options.MailgunKey = builder.Configuration["MailgunKey"]);
-builder.Services.AddTransient<IEmailSender, EmailSenderMailcatcher>();
+builder.Services.Configure<AuthMessageSenderOptions>(options => options.AuthKey = builder.Configuration["MailtrapKey"]);
+builder.Services.AddTransient<IEmailSender, EmailSenderMailtrap>();
 //builder.Services.AddTransient<IEmailSender, EmailSenderMailgun>();
 
 var app = builder.Build();

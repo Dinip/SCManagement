@@ -6,10 +6,10 @@ using Microsoft.Extensions.Options;
 
 namespace Auth.Services {
 
-    public class EmailSenderMailcatcher : IEmailSender {
+    public class EmailSenderMailtrap : IEmailSender {
         private readonly ILogger _logger;
 
-        public EmailSenderMailcatcher(IOptions<AuthMessageSenderOptions> optionsAccessor, ILogger<EmailSenderMailcatcher> logger)
+        public EmailSenderMailtrap(IOptions<AuthMessageSenderOptions> optionsAccessor, ILogger<EmailSenderMailtrap> logger)
         {
             Options = optionsAccessor.Value;
             _logger = logger;
@@ -19,12 +19,18 @@ namespace Auth.Services {
 
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            await Execute(subject, message, toEmail);
+            if (string.IsNullOrEmpty(Options.AuthKey))
+            {
+                throw new Exception("Null AuthKey");
+            }
+            await Execute(Options.AuthKey, subject, message, toEmail);
         }
 
-        public async Task Execute(string subject, string message, string toEmail)
+        public async Task Execute(string key, string subject, string message, string toEmail)
         {
-            var sender = new MailKitSender(new SmtpClientOptions { Server = "localhost", Port = 1025 });
+            string user = key.Split(":")[0];
+            string password = key.Split(":")[1];
+            var sender = new MailKitSender(new SmtpClientOptions { Server = "smtp.mailtrap.io", Port = 2525, RequiresAuthentication = true, User = user, Password = password });
 
             var email = Email
             .From("noreply@scmanagement.me", "SCManagement")
