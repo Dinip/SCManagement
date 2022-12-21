@@ -1,6 +1,6 @@
 ﻿namespace Auth.Services {
     public class AuthMessageSenderOptions {
 
-        public string? MailgunKey { get; set; } 
+        public string? AuthKey { get; set; } 
     }
 }

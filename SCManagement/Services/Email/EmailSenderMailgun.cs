@@ -20,11 +20,11 @@ namespace Auth.Services {
 
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
-            if (string.IsNullOrEmpty(Options.MailgunKey))
+            if (string.IsNullOrEmpty(Options.AuthKey))
             {
-                throw new Exception("Null MailgunKey");
+                throw new Exception("Null AuthKey");
             }
-            await Execute(Options.MailgunKey, subject, message, toEmail);
+            await Execute(Options.AuthKey, subject, message, toEmail);
         }
 
         public async Task Execute(string key, string subject, string message, string toEmail)
