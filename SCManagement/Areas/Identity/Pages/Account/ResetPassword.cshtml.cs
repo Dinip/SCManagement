@@ -72,7 +72,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
 
         }
 
-        public IActionResult OnGet(string code = null)
+        public IActionResult OnGet(string code = null, string email = "")
         {
             if (code == null)
             {
@@ -82,7 +82,8 @@ namespace SCManagement.Areas.Identity.Pages.Account
             {
                 Input = new InputModel
                 {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
+                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code)),
+                    Email = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(email))
                 };
                 return Page();
             }

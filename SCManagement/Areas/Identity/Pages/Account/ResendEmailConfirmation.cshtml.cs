@@ -22,11 +22,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<SharedResource> _htmlLocalizer;
 
-        public ResendEmailConfirmationModel(UserManager<User> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<User> userManager, IEmailSender emailSender, IStringLocalizer<SharedResource> htmlLocalizer)
         {
             _userManager = userManager;
             _emailSender = emailSender;
+            _htmlLocalizer = htmlLocalizer;
         }
 
         /// <summary>
@@ -77,10 +79,14 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 pageHandler: null,
                 values: new { userId = userId, code = code },
                 protocol: Request.Scheme);
+
+            // Get the string from the resources file and replace the CALLBACK_URL with the generated link
+            var htmlMessage = _htmlLocalizer["ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+
             await _emailSender.SendEmailAsync(
                 Input.Email,
                 "Confirm your email",
-                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                htmlMessage);
 
             ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
             return Page();

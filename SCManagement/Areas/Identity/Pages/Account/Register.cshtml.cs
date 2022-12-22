@@ -30,13 +30,15 @@ namespace SCManagement.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<SharedResource> _htmlLocalizer;
 
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<SharedResource> htmlLocalizer)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +46,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _htmlLocalizer = htmlLocalizer;
         }
 
         /// <summary>
@@ -147,8 +150,10 @@ namespace SCManagement.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    // Get the string from the resources file and replace the CALLBACK_URL with the generated link
+                    var htmlMessage = _htmlLocalizer["ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", htmlMessage);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
