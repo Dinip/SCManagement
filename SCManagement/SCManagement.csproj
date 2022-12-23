@@ -42,11 +42,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EditorConfigFiles Remove="E:\Clouds\OneDrive - Instituto Politécnico de Setúbal\LEI\PV\SCManagement\SCManagement\.editorconfig" />
+    <None Include=".editorconfig" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="E:\Clouds\OneDrive - Instituto Politécnico de Setúbal\LEI\PV\SCManagement\SCManagement\.editorconfig" />
+    <Folder Include="wwwroot\img\" />
   </ItemGroup>
 
 </Project>
