@@ -24,11 +24,11 @@ namespace SCManagement.Areas.Identity.Pages.Account
         private readonly IEmailSender _emailSender;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
-        public ResendEmailConfirmationModel(UserManager<User> userManager, IEmailSender emailSender, IStringLocalizer<SharedResource> htmlLocalizer)
+        public ResendEmailConfirmationModel(UserManager<User> userManager, IEmailSender emailSender, IStringLocalizer<SharedResource> stringLocalizer)
         {
             _userManager = userManager;
             _emailSender = emailSender;
-            _stringLocalizer = htmlLocalizer;
+            _stringLocalizer = stringLocalizer;
         }
 
         /// <summary>
@@ -67,13 +67,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
             var user = await _userManager.FindByEmailAsync(Input.Email);
             if (user == null)
             {
-                ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+                ModelState.AddModelError(string.Empty, _stringLocalizer["StatusMessage_VerificationEmail"]);
                 return Page();
             }
 
             if (user.EmailConfirmed == true)
             {
-                ModelState.AddModelError(string.Empty, "The account with this email is already verified!");
+                ModelState.AddModelError(string.Empty, _stringLocalizer["StatusMessage_VerificationEmail"]);
                 return Page();
             }
 
@@ -89,12 +89,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
             // Get the string from the resources file and replace the CALLBACK_URL with the generated link
             var htmlMessage = _stringLocalizer["Email_ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
 
+
             await _emailSender.SendEmailAsync(
                 Input.Email,
-                "Confirm your email",
+                _stringLocalizer["Subject_ConfirmAccount"].Value,
                 htmlMessage);
 
-            ModelState.AddModelError(string.Empty, "Verification email sent. Please check your email.");
+            ModelState.AddModelError(string.Empty, _stringLocalizer["StatusMessage_VerificationEmail"]);
             return Page();
         }
     }

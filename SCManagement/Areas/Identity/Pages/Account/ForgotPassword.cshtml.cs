@@ -25,13 +25,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
-        private readonly IStringLocalizer<SharedResource> _htmlLocalizer;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
-        public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender, IStringLocalizer<SharedResource> htmlLocalizer)
+        public ForgotPasswordModel(UserManager<User> userManager, IEmailSender emailSender, IStringLocalizer<SharedResource> stringLocalizer)
         {
             _userManager = userManager;
             _emailSender = emailSender;
-            _htmlLocalizer = htmlLocalizer;
+            _stringLocalizer = stringLocalizer;
         }
 
         /// <summary>
@@ -80,11 +80,11 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 protocol: Request.Scheme);
 
                 // Get the string from the resources file and replace the CALLBACK_URL with the generated link
-                var htmlMessage = _htmlLocalizer["Email_ForgotPassword"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+                var htmlMessage = _stringLocalizer["Email_ForgotPassword"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,
-                    "Reset Password",
+                    _stringLocalizer["Subject_ResetPassword"].Value,
                     htmlMessage);
 
                 return RedirectToPage("./ForgotPasswordConfirmation");

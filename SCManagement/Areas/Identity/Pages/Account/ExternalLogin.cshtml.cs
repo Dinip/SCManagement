@@ -30,7 +30,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
-        private readonly IStringLocalizer<SharedResource> _htmlLocalizer;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
         public ExternalLoginModel(
             SignInManager<User> signInManager,
@@ -38,7 +38,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             IUserStore<User> userStore,
             ILogger<ExternalLoginModel> logger,
             IEmailSender emailSender,
-            IStringLocalizer<SharedResource> htmlLocalizer)
+            IStringLocalizer<SharedResource> stringLocalizer)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -46,7 +46,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
-            _htmlLocalizer = htmlLocalizer;
+            _stringLocalizer = stringLocalizer;
         }
 
         /// <summary>
@@ -208,9 +208,9 @@ namespace SCManagement.Areas.Identity.Pages.Account
                             protocol: Request.Scheme);
 
                         // Get the string from the resources file and replace the CALLBACK_URL with the generated link
-                        var htmlMessage = _htmlLocalizer["Email_ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+                        var htmlMessage = _stringLocalizer["Email_ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
 
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", htmlMessage);
+                        await _emailSender.SendEmailAsync(Input.Email, _stringLocalizer["Subject_ConfirmAccount"].Value, htmlMessage);
 
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
