@@ -15,7 +15,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SCManagement</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/register_and_login.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SCManagement.styles.css" asp-append-version="true" />
 </head>
 <body>
@@ -40,7 +40,7 @@
                 <div class="card-body py-5 px-md-5">
                     <!-- Back to Master Page -->
                     <div class="position-absolute top-0 start-0 ps-2 pt-2">
-                        <a class="nav-link fw-bold text-black fs-4 fw-bold" asp-page="/">@StringLocalizer["Back"]</a>
+                        <a class="nav-link fw-bold text-black fs-4 fw-bold" asp-action="Index">@StringLocalizer["Back"]</a>
                     </div>
                     <div class="row d-flex mt-5 justify-content-center">
                         <div class="col-lg-6 col-12">
@@ -52,13 +52,13 @@
                                 <div class="row">
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
-                                            <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control"  placeholder=@StringLocalizer["First Name"]/>
+                                            <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control" placeholder=@StringLocalizer["First Name"] />
                                             <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                                         </div>
                                     </div>
                                     <div class="col-md-6 mb-4">
                                         <div class="form-outline">
-                                            <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" placeholder=@StringLocalizer["Last Name"]/>
+                                            <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" placeholder=@StringLocalizer["Last Name"] />
                                             <span asp-validation-for="Input.LastName" class="text-danger"></span>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                 </div>
 
                                 <!-- Submit button -->
-                                <button id="registerSubmit" type="submit" class="btn btn-primary btn-block mb-4">
+                                <button id="registerSubmit" type="submit" class="btn btn-primary btn-block mb-4 signup">
                                     @StringLocalizer["Sign up"]
                                 </button>
                             </form>
@@ -96,8 +96,9 @@
                                 <p>
                                     @foreach (var provider in Model.ExternalLogins)
                                     {
-                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                        <button type="submit" class="btn fa-brands fa-@provider.Name.ToLower()" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
                                     }
+
                                 </p>
                             </div>
                         </form>
@@ -107,7 +108,7 @@
         </div>
     </section>
     <!-- Section: Design Block -->
-
+    <script src="https://kit.fontawesome.com/8b1729a957.js" crossorigin="anonymous"></script>
 </body>
 </html>
 
