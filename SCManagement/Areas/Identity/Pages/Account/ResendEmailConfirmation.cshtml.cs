@@ -22,13 +22,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
     {
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _emailSender;
-        private readonly IStringLocalizer<SharedResource> _htmlLocalizer;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
         public ResendEmailConfirmationModel(UserManager<User> userManager, IEmailSender emailSender, IStringLocalizer<SharedResource> htmlLocalizer)
         {
             _userManager = userManager;
             _emailSender = emailSender;
-            _htmlLocalizer = htmlLocalizer;
+            _stringLocalizer = htmlLocalizer;
         }
 
         /// <summary>
@@ -48,8 +48,8 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Error_Required")]
+            [EmailAddress(ErrorMessage = "Error_Email")]
             public string Email { get; set; }
         }
 
@@ -71,6 +71,12 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 return Page();
             }
 
+            if (user.EmailConfirmed == true)
+            {
+                ModelState.AddModelError(string.Empty, "The account with this email is already verified!");
+                return Page();
+            }
+
             var userId = await _userManager.GetUserIdAsync(user);
             var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -81,7 +87,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 protocol: Request.Scheme);
 
             // Get the string from the resources file and replace the CALLBACK_URL with the generated link
-            var htmlMessage = _htmlLocalizer["ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+            var htmlMessage = _stringLocalizer["Email_ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
 
             await _emailSender.SendEmailAsync(
                 Input.Email,

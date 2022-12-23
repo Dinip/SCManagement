@@ -65,16 +65,16 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Error_Required")]
+            [EmailAddress(ErrorMessage = "Error_Email")]
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [DataType(DataType.Password)]
+            [Required(ErrorMessage = "Error_Required")]
+            [DataType(DataType.Password, ErrorMessage = "Error_Password")]
             public string Password { get; set; }
 
             /// <summary>

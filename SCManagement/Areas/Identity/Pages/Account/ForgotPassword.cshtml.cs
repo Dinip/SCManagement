@@ -51,8 +51,8 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Error_Required")]
+            [EmailAddress(ErrorMessage = "Error_Email")]
             public string Email { get; set; }
         }
 
@@ -80,7 +80,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 protocol: Request.Scheme);
 
                 // Get the string from the resources file and replace the CALLBACK_URL with the generated link
-                var htmlMessage = _htmlLocalizer["ForgotPassword"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+                var htmlMessage = _htmlLocalizer["Email_ForgotPassword"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
 
                 await _emailSender.SendEmailAsync(
                     Input.Email,

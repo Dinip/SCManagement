@@ -30,13 +30,13 @@ namespace Auth.Services {
         public async Task Execute(string key, string subject, string message, string toEmail)
         {
             var sender = new MailgunSender(
-              "dinispimpao.pt",
+              "scmanagement.me",
               key,
               MailGunRegion.EU
             );
 
             var email = Email
-            .From("scmanagement@dinispimpao.pt", "SCManagement")
+            .From("noreply@scmanagement.me", "SCManagement")
             .To(toEmail)
             .Subject(subject)
             .Body(message, true);

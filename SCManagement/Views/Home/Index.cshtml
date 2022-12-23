@@ -1,11 +1,11 @@
-﻿@inject SCManagement.Services.SharedResourceService shared
-@inject IHtmlLocalizer<SharedResource> htmlLocalizer
+﻿@inject IHtmlLocalizer<SharedResource> HtmlLocalizer
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = @StringLocalizer["Home Page"];
 }
 
 <div class="text-center">
-    <h1 class="display-4">@shared.Get("Welcome")</h1>
-    <p>@htmlLocalizer["Learn"]</p>
+    <h1 class="display-4">@StringLocalizer["Welcome"]</h1>
+    <p>@HtmlLocalizer["Learn"]</p>
 </div>

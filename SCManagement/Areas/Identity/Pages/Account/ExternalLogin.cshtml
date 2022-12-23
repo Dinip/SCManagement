@@ -19,6 +19,10 @@
         <form asp-page-handler="Confirmation" asp-route-returnUrl="@Model.ReturnUrl" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
+                <input asp-for="Input.FirstName" type="hidden" />
+                <input asp-for="Input.LastName" type="hidden" />
+                <input asp-for="Input.ProfilePicture" type="hidden" />
+                <input asp-for="Input.Language" type="hidden" />
                 <input asp-for="Input.Email" class="form-control" autocomplete="email" />
                 <label asp-for="Input.Email" class="form-label"></label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>

@@ -30,13 +30,15 @@ namespace SCManagement.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly IEmailSender _emailSender;
         private readonly ILogger<ExternalLoginModel> _logger;
+        private readonly IStringLocalizer<SharedResource> _htmlLocalizer;
 
         public ExternalLoginModel(
             SignInManager<User> signInManager,
             UserManager<User> userManager,
             IUserStore<User> userStore,
             ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<SharedResource> htmlLocalizer)
         {
             _signInManager = signInManager;
             _userManager = userManager;
@@ -44,6 +46,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             _emailStore = GetEmailStore();
             _logger = logger;
             _emailSender = emailSender;
+            _htmlLocalizer = htmlLocalizer;
         }
 
         /// <summary>
@@ -82,11 +85,15 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Error_Required")]
+            [EmailAddress(ErrorMessage = "Error_Email")]
             public string Email { get; set; }
+            public string FirstName { get; set; }
+            public string LastName { get; set; }
+            public string ProfilePicture { get; set; }
+            public string Language { get; set; } = "en-US";
         }
-        
+
         public IActionResult OnGet() => RedirectToPage("./Login");
 
         public IActionResult OnPost(string provider, string returnUrl = null)
@@ -128,12 +135,34 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 // If the user does not have an account, then ask the user to create an account.
                 ReturnUrl = returnUrl;
                 ProviderDisplayName = info.ProviderDisplayName;
+
+                Input = new InputModel();
+
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
                 {
-                    Input = new InputModel
-                    {
-                        Email = info.Principal.FindFirstValue(ClaimTypes.Email)
-                    };
+                    Input.Email = info.Principal.FindFirstValue(ClaimTypes.Email);
+                }
+
+                //TODO: needs to accept pictures from other services
+                if (info.Principal.HasClaim(c => c.Type == "urn:google:picture"))
+                {
+                    Input.ProfilePicture = info.Principal.FindFirstValue("urn:google:picture");
+                }
+
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.GivenName))
+                {
+                    Input.FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
+                }
+
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Surname))
+                {
+                    Input.LastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
+                }
+
+                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Locality))
+                {
+                    bool isPTLang = info.Principal.FindFirstValue(ClaimTypes.Locality).Contains("pt");
+                    Input.Language = isPTLang ? "pt-PT" : "en-US";
                 }
                 return Page();
             }
@@ -156,6 +185,10 @@ namespace SCManagement.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.ProfilePicture = Input.ProfilePicture;
+                user.Language = Input.Language;
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)
@@ -174,8 +207,10 @@ namespace SCManagement.Areas.Identity.Pages.Account
                             values: new { area = "Identity", userId = userId, code = code },
                             protocol: Request.Scheme);
 
-                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                        // Get the string from the resources file and replace the CALLBACK_URL with the generated link
+                        var htmlMessage = _htmlLocalizer["Email_ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+
+                        await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", htmlMessage);
 
                         // If account confirmation is required, we need to show the link if we don't have a real email sender
                         if (_userManager.Options.SignIn.RequireConfirmedAccount)
