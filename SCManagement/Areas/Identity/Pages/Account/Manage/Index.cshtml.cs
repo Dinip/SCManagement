@@ -135,7 +135,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
-                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["First Name"];
+                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["First Name"]}";
                     return RedirectToPage();
                 }
             }
@@ -147,7 +147,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
-                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["Last Name"];
+                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Last Name"]}";
                     return RedirectToPage();
                 }
             }
@@ -159,7 +159,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
-                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["Phone number"];
+                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Phone number"]}";
                     return RedirectToPage();
                 }
             }
@@ -171,7 +171,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 var result = await _userManager.UpdateAsync(user);
                 if (!result.Succeeded)
                 {
-                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["Date Of Birth"];
+                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Date Of Birth"]}";
                     return RedirectToPage();
                 }
             }

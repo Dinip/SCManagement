@@ -272,7 +272,7 @@
     <value>Phone number</value>
   </data>
   <data name="StatusMessage_ErrorUpdate" xml:space="preserve">
-    <value>Unexpected error when trying to update </value>
+    <value>Unexpected error when trying to update</value>
   </data>
   <data name="StatusMessage_ProfileUpdate" xml:space="preserve">
     <value>Your profile has been updated</value>

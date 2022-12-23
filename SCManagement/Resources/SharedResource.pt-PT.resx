@@ -273,7 +273,7 @@
     <value>Número de telemóvel</value>
   </data>
   <data name="StatusMessage_ErrorUpdate" xml:space="preserve">
-    <value>Erro inesperado quando se tenta alterar o campo {0}</value>
+    <value>Erro inesperado quando se tenta alterar o campo</value>
   </data>
   <data name="StatusMessage_ProfileUpdate" xml:space="preserve">
     <value>O teu prefil foi atualizado</value>
