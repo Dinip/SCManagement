@@ -1,5 +1,4 @@
-﻿
-@page
+﻿@page
 @model LoginModel
 @{
     ViewData["Title"] = "Register";
@@ -23,6 +22,7 @@
         <!-- Background image -->
         <div class="p-5 bg-image" style="
         background-image: url('/img/baseball_stadium.jpg');
+        background-position:center;
         height: 300px;
         "></div>
         <!-- Background image -->
@@ -46,20 +46,20 @@
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
                             <!-- 2 column grid layout with text inputs for the first and last names -->
                             <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="form-outline">
-                                        <!-- Email input -->
-                                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
-                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
-                                    </div>
+
+                                <div class="form-outline">
+                                    <!-- Email input -->
+                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
                                 </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="form-outline">
-                                        <!-- Password input -->
-                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password"/>
-                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                    </div>
+
+
+                                <div class="form-outline">
+                                    <!-- Password input -->
+                                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
                                 </div>
+
                             </div>
 
                             <div>
@@ -70,7 +70,7 @@
                                     </label>
                                 </div>
                             </div>
-                            
+
 
                             <div>
                                 <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
@@ -90,11 +90,11 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-6 col-md-offset-2">
                 <section>
                     <h3>Or sign in with:</h3>
-                    
+
                     @{
                         if ((Model.ExternalLogins?.Count ?? 0) == 0)
                         {
@@ -123,7 +123,7 @@
                     }
                 </section>
             </div>
-            
+
         </div>
     </section>
     <!-- Section: Design Block -->

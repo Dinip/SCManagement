@@ -1,9 +1,13 @@
 ﻿@page
+@using SCManagement
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
     Layout = null;
 }
+
+@inject IHtmlLocalizer<SharedResource> HtmlLocalizer
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <!DOCTYPE html>
 <html lang="en">
@@ -29,17 +33,17 @@
         <div class="card mx-4 mx-md-5 shadow-5-strong" style="
         margin-top: -100px;
         background: hsla(0, 0%, 85%, 0.3);
+        background-position:center;
         backdrop-filter: blur(30px);
         ">
             <div class="card-body py-5 px-md-5">
-
+                <!-- Back to Master Page -->
+                <div class="position-absolute top-0 start-0 ps-2 pt-2">
+                    <a class="nav-link fw-bold text-dark fs-4 fw-bold" asp-page="/">Back</a>
+                </div>
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-8">
-                        <!-- Back to Master Page -->
-                        <div class="pt-0 ps-0 m-5 pt-sm-1 ps-sm-1 pt-lg-3 ps-lg-4">
-                            <a class="nav-link text-white text-co btn btn-primary btn-sm text-dark fs-5 fw-bold" asp-page="/">Back</a>
-                        </div>
-                        <h2 class="fw-bold mb-5">Sign up</h2>
+                        <h2 class="fw-bold mb-5 mt-3">Sign up</h2>
                         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                             <!-- 2 column grid layout with text inputs for the first and last names -->
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
