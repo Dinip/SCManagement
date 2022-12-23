@@ -6,7 +6,6 @@
     Layout = null;
 }
 
-@inject IHtmlLocalizer<SharedResource> HtmlLocalizer
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 <!DOCTYPE html>
@@ -26,78 +25,81 @@
         <!-- Background image -->
         <div class="p-5 bg-image" style="
         background-image: url('/img/baseball_stadium.jpg');
+        background-position:center;
         height: 300px;
         "></div>
         <!-- Background image -->
-
-        <div class="card mx-4 mx-md-5 shadow-5-strong" style="
+        <div class="container">
+            <div class="card mx-4 mx-md-5 shadow-5-strong" style="
         margin-top: -100px;
         background: hsla(0, 0%, 85%, 0.3);
         background-position:center;
         backdrop-filter: blur(30px);
+        border-radius:20px;
         ">
-            <div class="card-body py-5 px-md-5">
-                <!-- Back to Master Page -->
-                <div class="position-absolute top-0 start-0 ps-2 pt-2">
-                    <a class="nav-link fw-bold text-dark fs-4 fw-bold" asp-page="/">Back</a>
-                </div>
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <h2 class="fw-bold mb-5 mt-3">Sign up</h2>
-                        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-                            <!-- 2 column grid layout with text inputs for the first and last names -->
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
-                            <!-- 2 column grid layout with text inputs for the first and last names -->
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="form-outline">
-                                        <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control" placeholder="First name" />
-                                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                <div class="card-body py-5 px-md-5">
+                    <!-- Back to Master Page -->
+                    <div class="position-absolute top-0 start-0 ps-2 pt-2">
+                        <a class="nav-link fw-bold text-black fs-4 fw-bold" asp-page="/">@StringLocalizer["Back"]</a>
+                    </div>
+                    <div class="row d-flex mt-5 justify-content-center">
+                        <div class="col-lg-6 col-12">
+                            <h2 class="fw-bold mb-5 mt-3">@StringLocalizer["Sign up"]</h2>
+                            <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control"  placeholder=@StringLocalizer["First Name"]/>
+                                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <div class="form-outline">
+                                            <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" placeholder=@StringLocalizer["Last Name"]/>
+                                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="form-outline">
-                                        <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" placeholder="Last name" />
-                                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                                    </div>
+
+                                <!-- Email input -->
+                                <div class="mb-4 form-outline">
+                                    <input asp-for="Input.Email" type="email" id="form3Example3" class="form-control" placeholder="Email" />
+                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
                                 </div>
-                            </div>
 
-                            <!-- Email input -->
-                            <div class="mb-4 form-outline">
-                                <input asp-for="Input.Email" type="email" id="form3Example3" class="form-control" placeholder="Email address" />
-                                <span asp-validation-for="Input.Email" class="text-danger"></span>
-                            </div>
-
-                            <!-- Password input -->
-                            <div class="mb-4 form-outline">
-                                <input asp-for="Input.Password" type="password" id="form3Example4" class="form-control" placeholder="Password" />
-                                <span asp-validation-for="Input.Password" class="text-danger"></span>
-                            </div>
-
-                            <!-- Confirm Password input -->
-                            <div class="mb-4 form-outline">
-                                <input asp-for="Input.ConfirmPassword" type="password" id="form3Example4" class="form-control" placeholder="Confirm Password" />
-                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                            </div>
-
-                            <!-- Submit button -->
-                            <button id="registerSubmit" type="submit" class="btn btn-primary btn-block mb-4">
-                                Sign up
-                            </button>
-
-                            <!-- Register whit other platforms-->
-                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                <div>
-                                    <p>
-                                        @foreach (var provider in Model.ExternalLogins)
-                                        {
-                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                        }
-                                    </p>
+                                <!-- Password input -->
+                                <div class="mb-4 form-outline">
+                                    <input asp-for="Input.Password" type="password" id="form3Example4" class="form-control" placeholder=@StringLocalizer["Password"] />
+                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
                                 </div>
+
+                                <!-- Confirm Password input -->
+                                <div class="mb-4 form-outline">
+                                    <input asp-for="Input.ConfirmPassword" type="password" id="form3Example4" class="form-control" placeholder=@StringLocalizer["Confirm password"] />
+                                    <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                                </div>
+
+                                <!-- Submit button -->
+                                <button id="registerSubmit" type="submit" class="btn btn-primary btn-block mb-4">
+                                    @StringLocalizer["Sign up"]
+                                </button>
                             </form>
 
+                        </div>
+                        <!-- Register whit other platforms-->
+                        <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                            <div class="mt-3">
+                                <p>@StringLocalizer["Or sign up with"]</p>
+                                <p>
+                                    @foreach (var provider in Model.ExternalLogins)
+                                    {
+                                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                    }
+                                </p>
+                            </div>
                         </form>
                     </div>
                 </div>
