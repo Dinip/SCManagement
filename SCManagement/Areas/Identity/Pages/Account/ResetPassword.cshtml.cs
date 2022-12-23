@@ -41,38 +41,38 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Error_Required")]
+            [EmailAddress(ErrorMessage = "Error_Email")]
             public string Email { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(100, ErrorMessage = "Error_Legth", MinimumLength = 6)]
+            [DataType(DataType.Password, ErrorMessage = "Error_Password")]
             public string Password { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [DataType(DataType.Password)]
+            [DataType(DataType.Password, ErrorMessage = "Error_Password")]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Error_PasswordDontMatch")]
             public string ConfirmPassword { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
+            [Required(ErrorMessage = "Error_Required")]
             public string Code { get; set; }
 
         }
 
-        public IActionResult OnGet(string code = null)
+        public IActionResult OnGet(string code = null, string email = "")
         {
             if (code == null)
             {
@@ -82,7 +82,8 @@ namespace SCManagement.Areas.Identity.Pages.Account
             {
                 Input = new InputModel
                 {
-                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code))
+                    Code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code)),
+                    Email = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(email))
                 };
                 return Page();
             }

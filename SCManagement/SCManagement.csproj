@@ -16,6 +16,10 @@
     <PackageReference Include="Azure.Identity" Version="1.8.0" />
     <PackageReference Include="FluentEmail.Mailgun" Version="3.0.2" />
     <PackageReference Include="FluentEmail.MailKit" Version="3.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="6.0.12" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="6.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.10" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.12" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="6.0.12" />
@@ -26,6 +30,23 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\SharedResource.en-US.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\SharedResource.pt-PT.resx">
+      <Generator></Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Remove="E:\Clouds\OneDrive - Instituto Politécnico de Setúbal\LEI\PV\SCManagement\SCManagement\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="E:\Clouds\OneDrive - Instituto Politécnico de Setúbal\LEI\PV\SCManagement\SCManagement\.editorconfig" />
   </ItemGroup>
 
 </Project>

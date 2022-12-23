@@ -30,13 +30,15 @@ namespace SCManagement.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<User> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly IStringLocalizer<SharedResource> _htmlLocalizer;
 
         public RegisterModel(
             UserManager<User> userManager,
             IUserStore<User> userStore,
             SignInManager<User> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            IStringLocalizer<SharedResource> htmlLocalizer)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -44,6 +46,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _htmlLocalizer = htmlLocalizer;
         }
 
         /// <summary>
@@ -72,11 +75,11 @@ namespace SCManagement.Areas.Identity.Pages.Account
         public class InputModel
         {
 
-            [Required]
+            [Required(ErrorMessage = "Error_Required")]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
 
-            [Required]
+            [Required(ErrorMessage = "Error_Required")]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
 
@@ -84,8 +87,8 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [EmailAddress]
+            [Required(ErrorMessage = "Error_Required")]
+            [EmailAddress(ErrorMessage = "Error_Email")]
             [Display(Name = "Email")]
             public string Email { get; set; }
 
@@ -93,9 +96,9 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
-            [DataType(DataType.Password)]
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(100, ErrorMessage = "Error_Legth", MinimumLength = 6)]
+            [DataType(DataType.Password, ErrorMessage = "Error_Password")]
             [Display(Name = "Password")]
             public string Password { get; set; }
 
@@ -103,9 +106,9 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
-            [DataType(DataType.Password)]
+            [DataType(DataType.Password, ErrorMessage = "Error_Password")]
             [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Compare("Password", ErrorMessage = "Error_PasswordDontMatch")]
             public string ConfirmPassword { get; set; }
         }
 
@@ -147,8 +150,10 @@ namespace SCManagement.Areas.Identity.Pages.Account
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    // Get the string from the resources file and replace the CALLBACK_URL with the generated link
+                    var htmlMessage = _htmlLocalizer["Email_ConfirmAccount"].Value.Replace("CALLBACK_URL", HtmlEncoder.Default.Encode(callbackUrl));
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email", htmlMessage);
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

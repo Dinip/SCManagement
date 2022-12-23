@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!--
+    Microsoft ResX Schema
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format
+    that is mostly human readable. The generation and parsing of the
+    various data types are done through the TypeConverter classes
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a
+    type or mimetype. Type corresponds to a .NET class that support
+    text/value conversion through the TypeConverter architecture.
+    Classes that don't support this are serialized and stored with the
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the
+    ResXResourceReader how to depersist the object. This is currently not
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format
+    that the ResXResourceWriter will generate, however the reader can
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace"/>
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string"/>
+              <xsd:attribute name="type" type="xsd:string"/>
+              <xsd:attribute name="mimetype" type="xsd:string"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string"/>
+              <xsd:attribute name="name" type="xsd:string"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1"/>
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3"/>
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4"/>
+              <xsd:attribute ref="xml:space"/>
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1"/>
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required"/>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Email_ConfirmAccount" xml:space="preserve">
+    <value>&lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;    &lt;title&gt;Confirm account template&lt;/title&gt;    &lt;meta name="description" content="Reset Password Email Template."&gt;    &lt;style type="text/css"&gt;        a:hover {text-decoration: underline !important;}    &lt;/style&gt;&lt;/head&gt;&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;    &lt;!--100% body table--&gt;    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;        &lt;tr&gt;            &lt;td&gt;                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"                    align="center" cellpadding="0" cellspacing="0"&gt;                    &lt;tr&gt;                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td style="text-align:center;"&gt;                          &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;                            &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo" alt="logo"&gt;                          &lt;/a&gt;                        &lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td&gt;                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;                                &lt;tr&gt;                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;                                &lt;/tr&gt;                                &lt;tr&gt;                                    &lt;td style="padding:0 35px;"&gt;                                        &lt;h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;Please confirm your account&lt;/h1&gt;                                        &lt;span                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Tap the button below to confirm your account.                                           If you didn't create an account with this email, you can safely delete this email.&lt;/p&gt;                                        &lt;a href="CALLBACK_URL"                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;confirm account&lt;/a&gt;                                    &lt;/td&gt;                                &lt;/tr&gt;                                &lt;tr&gt;                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;                                &lt;/tr&gt;                            &lt;/table&gt;                        &lt;/td&gt;                    &lt;tr&gt;                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                                    &lt;/table&gt;            &lt;/td&gt;        &lt;/tr&gt;    &lt;/table&gt;    &lt;!--/100% body table--&gt;&lt;/body&gt;&lt;/html&gt;</value>
+    <comment/>
+  </data>
+  <data name="CreateAccount" xml:space="preserve">
+    <value>Create a new account.</value>
+    <comment/>
+  </data>
+  <data name="Error_Email" xml:space="preserve">
+    <value>The {0} field is not a valid e-mail address.</value>
+    <comment/>
+  </data>
+  <data name="Error_Legth" xml:space="preserve">
+    <value>The {0} must be at least {2} and at max {1} characters long.</value>
+    <comment/>
+  </data>
+  <data name="Error_PasswordDontMatch" xml:space="preserve">
+    <value>The password and confirmation password do not match.</value>
+    <comment/>
+  </data>
+  <data name="Error_Required" xml:space="preserve">
+    <value>The {0} field is required.</value>
+    <comment/>
+  </data>
+  <data name="First Name" xml:space="preserve">
+    <value>First Name</value>
+    <comment/>
+  </data>
+  <data name="Email_ForgotPassword" xml:space="preserve">
+    <value>&lt;!doctype html&gt;&lt;html lang="en-US"&gt;&lt;head&gt;    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;    &lt;title&gt;Reset Password Email Template&lt;/title&gt;    &lt;meta name="description" content="Reset Password Email Template."&gt;    &lt;style type="text/css"&gt;        a:hover {text-decoration: underline !important;}    &lt;/style&gt;&lt;/head&gt;&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;    &lt;!--100% body table--&gt;    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;        &lt;tr&gt;            &lt;td&gt;                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"                    align="center" cellpadding="0" cellspacing="0"&gt;                    &lt;tr&gt;                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td style="text-align:center;"&gt;                          &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;                            &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo" alt="logo"&gt;                          &lt;/a&gt;                        &lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td&gt;                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;                                &lt;tr&gt;                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;                                &lt;/tr&gt;                                &lt;tr&gt;                                    &lt;td style="padding:0 35px;"&gt;                                        &lt;h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;You have                                            requested to reset your password&lt;/h1&gt;                                        &lt;span                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;                                            We cannot simply send you your old password. A unique link to reset your                                            password has been generated for you. To reset your password, click the                                            following link and follow the instructions.                                        &lt;/p&gt;                                        &lt;a href="CALLBACK_URL"                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Reset                                            Password&lt;/a&gt;                                    &lt;/td&gt;                                &lt;/tr&gt;                                &lt;tr&gt;                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;                                &lt;/tr&gt;                            &lt;/table&gt;                        &lt;/td&gt;                    &lt;tr&gt;                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                                    &lt;/table&gt;            &lt;/td&gt;        &lt;/tr&gt;    &lt;/table&gt;    &lt;!--/100% body table--&gt;&lt;/body&gt;&lt;/html&gt;</value>
+    <comment/>
+  </data>
+  <data name="Learn" xml:space="preserve">
+    <value>Learn about &lt;a href="https://docs.microsoft.com/aspnet/core"&gt;building Web apps with ASP.NET Core</value>
+    <comment/>
+  </data>
+  <data name="Welcome" xml:space="preserve">
+    <value>Welcome</value>
+    <comment/>
+  </data>
+  <data name="Last Name" xml:space="preserve">
+    <value>Last Name</value>
+    <comment/>
+  </data>
+  <data name="Profile Picture" xml:space="preserve">
+    <value>Profile Picture</value>
+    <comment/>
+  </data>
+  <data name="Date Of Birth" xml:space="preserve">
+    <value>Date Of Birth</value>
+    <comment/>
+  </data>
+  <data name="Language" xml:space="preserve">
+    <value>Language</value>
+    <comment/>
+  </data>
+  <data name="Theme" xml:space="preserve">
+    <value>Theme</value>
+    <comment/>
+  </data>
+  <data name="Remember me?" xml:space="preserve">
+    <value>Remember me?</value>
+    <comment/>
+  </data>
+</root>

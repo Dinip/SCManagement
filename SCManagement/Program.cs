@@ -1,37 +1,9 @@
-using Auth.Services;
-using Azure.Identity;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using SCManagement;
-using SCManagement.Data;
-using SCManagement.Models;
+using SCManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
-
-//to use azure key vault for secrets instead of local secrets.json or appsettings.json
-//disabled in development
-//builder.Configuration.AddAzureKeyVault(new Uri(builder.Configuration["KeyVaultUri"]), new DefaultAzureCredential());
-
-// Add services to the container.
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
-builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-builder.Services.AddIdentity<User, IdentityRole>(options =>
-{
-    options.SignIn.RequireConfirmedAccount = true;
-})
-  .AddEntityFrameworkStores<ApplicationDbContext>()
-  .AddDefaultTokenProviders();
-
-builder.Services.AddRazorPages();
-builder.Services.AddControllersWithViews();
-
-//add email service, in development it uses the local smtp server from mail catcher
-//in production it will use mailgun with the api key stored in the vault
-builder.Services.Configure<AuthMessageSenderOptions>(options => options.AuthKey = builder.Configuration["MailtrapKey"]);
-builder.Services.AddTransient<IEmailSender, EmailSenderMailtrap>();
-//builder.Services.AddTransient<IEmailSender, EmailSenderMailgun>();
+RegisterServices.Register(builder.Configuration, builder.Services);
 
 var app = builder.Build();
 
@@ -51,6 +23,14 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+using (var ser = app.Services.CreateScope())
+{
+    var services = ser.ServiceProvider;
+
+    var localizationOptions = services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
+    app.UseRequestLocalization(localizationOptions);
+}
 
 app.UseAuthentication();
 app.UseAuthorization();
