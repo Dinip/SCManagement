@@ -24,6 +24,7 @@ namespace SCManagement.Services
             {
                 options.SignIn.RequireConfirmedAccount = true;
             })
+              .AddDefaultUI()
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
 
