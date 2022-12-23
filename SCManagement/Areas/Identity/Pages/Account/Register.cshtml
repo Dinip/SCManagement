@@ -2,75 +2,79 @@
 @model RegisterModel
 @{
     ViewData["Title"] = "Register";
+    Layout = null;
 }
 
-<h1>@ViewData["Title"]</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - SCManagement</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/SCManagement.styles.css" asp-append-version="true" />
+</head>
+<body>
 
-<section class="text-center text-lg-start">
-    <style>
-        .cascading-right {
-            margin-right: -50px;
-        }
+    <!-- Section: Design Block -->
+    <section class="text-center">
+        <!-- Background image -->
+        <div class="p-5 bg-image" style="
+        background-image: url('/img/baseball_stadium.jpg');
+        height: 300px;
+        "></div>
+        <!-- Background image -->
 
-    </style>
+        <div class="card mx-4 mx-md-5 shadow-5-strong" style="
+        margin-top: -100px;
+        background: hsla(0, 0%, 85%, 0.3);
+        backdrop-filter: blur(30px);
+        ">
+            <div class="card-body py-5 px-md-5">
 
-    <div class="container py-4">
-        <div class="row g-0 align-items-center">
-            <div class="col-lg-6 mb-5 mb-lg-0">
-                <div class="card cascading-right" style="
-            background: hsla(0, 0%, 100%, 0.55);
-            backdrop-filter: blur(30px);
-            ">
-                    <div class="card-body p-5 shadow-5 text-center">
-                        <h2 class="fw-bold mb-5">Sign up now</h2>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <!-- Back to Master Page -->
+                        <div class="pt-0 ps-0 m-5 pt-sm-1 ps-sm-1 pt-lg-3 ps-lg-4">
+                            <a class="nav-link text-white text-co btn btn-primary btn-sm text-dark fs-5 fw-bold" asp-page="/">Back</a>
+                        </div>
+                        <h2 class="fw-bold mb-5">Sign up</h2>
                         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
                             <!-- 2 column grid layout with text inputs for the first and last names -->
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validações -->
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
+                            <!-- 2 column grid layout with text inputs for the first and last names -->
                             <div class="row">
                                 <div class="col-md-6 mb-4">
                                     <div class="form-outline">
-                                        <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control" />
-                                        <label asp-for="Input.FirstName" class="form-label" for="form3Example1">First name</label>
+                                        <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control" placeholder="First name" />
                                         <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
                                     <div class="form-outline">
-                                        <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" />
-                                        <label asp-for="Input.LastName" class="form-label" for="form3Example2">Last name</label>
+                                        <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" placeholder="Last name" />
                                         <span asp-validation-for="Input.LastName" class="text-danger"></span>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- Email input -->
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.Email" type="email" id="form3Example3" class="form-control" />
-                                <label asp-for="Input.Email" class="form-label" for="form3Example3">Email address</label>
+                            <div class="mb-4 form-outline">
+                                <input asp-for="Input.Email" type="email" id="form3Example3" class="form-control" placeholder="Email address" />
                                 <span asp-validation-for="Input.Email" class="text-danger"></span>
                             </div>
 
                             <!-- Password input -->
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.Password" type="password" id="form3Example4" class="form-control" />
-                                <label asp-for="Input.Password" class="form-label" for="form3Example4">Password</label>
+                            <div class="mb-4 form-outline">
+                                <input asp-for="Input.Password" type="password" id="form3Example4" class="form-control" placeholder="Password" />
                                 <span asp-validation-for="Input.Password" class="text-danger"></span>
                             </div>
-                            
-                            <!-- Confirm Password input -->
-                            <div class="form-outline mb-4">
-                                <input asp-for="Input.ConfirmPassword" type="password" id="form3Example4" class="form-control" />
-                                <label asp-for="Input.ConfirmPassword" class="form-label" for="form3Example4">Confirm Password</label>
-                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-                            </div>
 
-                            
-                            <!-- Checkbox -->
-                            <div class="form-check d-flex justify-content-center mb-4">
-                                <input class="form-check-input me-2" type="checkbox" value="" id="form2Example33" checked />
-                                <label class="form-check-label" for="form2Example33">
-                                    Subscribe to our newsletter
-                                </label>
+                            <!-- Confirm Password input -->
+                            <div class="mb-4 form-outline">
+                                <input asp-for="Input.ConfirmPassword" type="password" id="form3Example4" class="form-control" placeholder="Confirm Password" />
+                                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                             </div>
 
                             <!-- Submit button -->
@@ -78,40 +82,28 @@
                                 Sign up
                             </button>
 
-                            <!-- Register buttons -->
-                            <div class="text-center">
-                                <p>or sign up with:</p>
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-facebook-f"></i>
-                                </button>
+                            <!-- Register whit other platforms-->
+                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                                <div>
+                                    <p>
+                                        @foreach (var provider in Model.ExternalLogins)
+                                        {
+                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                        }
+                                    </p>
+                                </div>
+                            </form>
 
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-google"></i>
-                                </button>
-
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-twitter"></i>
-                                </button>
-
-                                <button type="button" class="btn btn-link btn-floating mx-1">
-                                    <i class="fab fa-github"></i>
-                                </button>
-                            </div>
                         </form>
                     </div>
                 </div>
             </div>
-
-            <div class="col-lg-6 mb-5 mb-lg-0">
-                <img src="https://mdbootstrap.com/img/new/ecommerce/vertical/004.jpg" class="w-100 rounded-4 shadow-4"
-                     alt="" />
-            </div>
         </div>
-    </div>
+    </section>
+    <!-- Section: Design Block -->
 
-</section>
-
-
+</body>
+</html>
 
 
 @section Scripts {
