@@ -1,9 +1,11 @@
 ﻿@page
+@using SCManagement
 @model LoginModel
 @{
     ViewData["Title"] = "Register";
     Layout = null;
 }
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,104 +28,84 @@
         height: 300px;
         "></div>
         <!-- Background image -->
-
-        <div class="card mx-4 mx-md-5 shadow-5-strong" style="
+        <div class="container">
+            <div class="card mx-4 mx-md-5 shadow-5-strong" style="
         margin-top: -100px;
         background: hsla(0, 0%, 85%, 0.3);
         backdrop-filter: blur(30px);
+        border-radius:20px;
         ">
-            <div class="card-body py-5 px-md-5">
-
-                <div class="row d-flex justify-content-center">
-                    <div class="col-lg-8">
-                        <!-- Back to Master Page -->
-                        <div class="pt-0 ps-0 m-5 pt-sm-1 ps-sm-1 pt-lg-3 ps-lg-4">
-                            <a class="nav-link text-white text-co btn btn-primary btn-sm text-dark fs-5 fw-bold" asp-page="/">Back</a>
-                        </div>
-                        <h2 class="fw-bold mb-5">Sign in</h2>
-                        <form id="account" method="post">
-                            <!-- 2 column grid layout with text inputs for the first and last names -->
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
-                            <!-- 2 column grid layout with text inputs for the first and last names -->
-                            <div class="row">
-
-                                <div class="form-outline">
-                                    <!-- Email input -->
-                                    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
-                                    <span asp-validation-for="Input.Email" class="text-danger"></span>
-                                </div>
-
-
-                                <div class="form-outline">
-                                    <!-- Password input -->
-                                    <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="Password" />
-                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
-                                </div>
-
-                            </div>
-
-                            <div>
-                                <div class="checkbox">
-                                    <label asp-for="Input.RememberMe" class="form-label">
-                                        <input class="form-check-input" asp-for="Input.RememberMe" />
-                                        @Html.DisplayNameFor(m => m.Input.RememberMe)
-                                    </label>
-                                </div>
-                            </div>
-
-
-                            <div>
-                                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
-                            </div>
-                            <div>
-                                <p>
-                                    <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
-                                </p>
-                                <p>
-                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">Register as a new user</a>
-                                </p>
-                                <p>
-                                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">Resend email confirmation</a>
-                                </p>
-                            </div>
-                        </form>
+                <div class="card-body py-5 px-md-5">
+                    <!-- Back to Master Page -->
+                    <div class="position-absolute top-0 start-0 ps-2 pt-2">
+                        <a class="nav-link fw-bold text-black fs-4 fw-bold" asp-page="/">@StringLocalizer["Back"]</a>
                     </div>
-                </div>
-            </div>
+                    <div class="row d-flex mt-5 justify-content-center">
+                        <div class="col-lg-6 col-12">
+                            <h2 class="fw-bold mt-3 mb-5">@StringLocalizer["Sign in"]</h2>
+                            <form id="account" method="post">
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div class="row">
+                                    <!-- Email input -->
+                                    <div class="form-outline mt-3">
+                                        <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="Email" />
+                                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                                    </div>
+                                    <!-- Password input -->
+                                    <div class="form-outline mt-3">
+                                        <input asp-for="Input.Password" class="form-control" autocomplete="current-password" aria-required="true" placeholder=@StringLocalizer["Password"] />
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
 
-            <div class="col-md-6 col-md-offset-2">
-                <section>
-                    <h3>Or sign in with:</h3>
+                                </div>
 
-                    @{
-                        if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                        {
-                            <div>
-                                <p>
-                                    There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">
-                                        article
-                                        about setting up this ASP.NET application to support logging in via external services
-                                    </a>.
-                                </p>
-                            </div>
-                        }
-                        else
-                        {
-                            <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                                <div>
-                                    <p>
-                                        @foreach (var provider in Model.ExternalLogins)
-                                        {
-                                            <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                        }
-                                    </p>
+                                <div class="mt-3 position-sticky" style="text-align:left!important;">
+                                    <div class="checkbox">
+                                        <label asp-for="Input.RememberMe" class="form-label">
+                                            <input class="form-check-input" asp-for="Input.RememberMe" />
+                                            @StringLocalizer["Remember me"]
+                                        </label>
+                                    </div>
+                                </div>
+
+
+                                <div class="mt-5">
+                                    <button id="login-submit" type="submit" class="btn btn-lg btn-primary">@StringLocalizer["Log in"]</button>
+                                </div>
+                                <div class="mt-4" style="text-align:left!important;">
+
+                                    <a id="forgot-password" asp-page="./ForgotPassword">@StringLocalizer["Forgot your password"]?</a> <br />
+
+                                    <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl">@StringLocalizer["Register as a new user"]</a> <br />
+
+                                    <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">@StringLocalizer["Resend email confirmation"]</a>
+
                                 </div>
                             </form>
-                        }
-                    }
-                </section>
-            </div>
+                        </div>
+                    </div>
+                </div>
 
+
+                <section class="mt-1">
+                    <p>@StringLocalizer["Or sign in with"]</p>
+
+                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
+                        <div>
+                            <p>
+                                @foreach (var provider in Model.ExternalLogins)
+                                {
+                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                                }
+                            </p>
+                        </div>
+                    </form>
+
+                </section>
+
+            </div>
         </div>
     </section>
     <!-- Section: Design Block -->
@@ -134,3 +116,4 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
