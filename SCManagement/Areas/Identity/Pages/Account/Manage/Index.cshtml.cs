@@ -6,6 +6,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,13 +18,16 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
         public IndexModel(
             UserManager<User> userManager,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IStringLocalizer<SharedResource> stringLocalizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _stringLocalizer = stringLocalizer;
         }
 
         /// <summary>
@@ -56,9 +60,30 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
+            
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(100, ErrorMessage = "Error_Legth", MinimumLength = 2)]
+            [Display(Name = "First Name")]
+            public string FirstName { get; set; }
+            
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(100, ErrorMessage = "Error_Legth", MinimumLength = 2)]
+            [Display(Name = "Last Name")]
+            public string LastName {get; set;}
+            
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            [Display(Name = "Date Of Birth")]
+            [DataType(DataType.Date)]
+            public DateTime? DateOfBirth { get; set; }
+
+            //[Display(Name = "Profile Picture")]
+            //public string? ProfilePicture { get; set; }
+            
+            //public int? AddressId { get; set; }
+            //public Address? Address { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -67,10 +92,13 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
 
             Username = userName;
-
+            
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                PhoneNumber = phoneNumber,
+                DateOfBirth = user.DateOfBirth,
             };
         }
 
@@ -100,20 +128,58 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
-            if (Input.PhoneNumber != phoneNumber)
+            //Checks if the user first name is diferent from the user first name saved, and if so trie to update 
+            if (user.FirstName != Input.FirstName)
             {
-                var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, Input.PhoneNumber);
-                if (!setPhoneResult.Succeeded)
+                user.FirstName = Input.FirstName;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
                 {
-                    StatusMessage = "Unexpected error when trying to set phone number.";
+                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["First Name"];
+                    return RedirectToPage();
+                }
+            }
+
+            //Checks if the user last name is diferent from the user last name saved, and if so trie to update 
+            if (user.LastName != Input.LastName)
+            {
+                user.LastName = Input.LastName;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["Last Name"];
+                    return RedirectToPage();
+                }
+            }
+
+            //Checks if the user phone number is diferent from the user phone number saved, and if so trie to update 
+            if (user.PhoneNumber != Input.PhoneNumber)
+            {
+                user.PhoneNumber = Input.PhoneNumber;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["Phone number"];
+                    return RedirectToPage();
+                }
+            }
+
+            //Checks if the user date of birth is diferent from the user date of birth saved, and if so trie to update 
+            if (user.DateOfBirth != Input.DateOfBirth)
+            {
+                user.DateOfBirth = Input.DateOfBirth;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = _stringLocalizer["StatusMessage_ErrorUpdate"] + " " + _stringLocalizer["Date Of Birth"];
                     return RedirectToPage();
                 }
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Your profile has been updated";
+            StatusMessage = _stringLocalizer["StatusMessage_ProfileUpdate"];
             return RedirectToPage();
         }
+        
     }
 }

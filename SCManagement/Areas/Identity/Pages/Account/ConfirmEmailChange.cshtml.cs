@@ -18,11 +18,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
-        public ConfirmEmailChangeModel(UserManager<User> userManager, SignInManager<User> signInManager)
+        public ConfirmEmailChangeModel(UserManager<User> userManager, SignInManager<User> signInManager, IStringLocalizer<SharedResource> htmlLocalizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _stringLocalizer = htmlLocalizer;
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             }
 
             var user = await _userManager.FindByIdAsync(userId);
-            if (user == null)
+            if (user == null )
             {
                 return NotFound($"Unable to load user with ID '{userId}'.");
             }
@@ -49,7 +51,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             var result = await _userManager.ChangeEmailAsync(user, email, code);
             if (!result.Succeeded)
             {
-                StatusMessage = "Error changing email.";
+                StatusMessage = _stringLocalizer["StatusMessage_ErrorChangingEmail"];
                 return Page();
             }
 
@@ -58,12 +60,12 @@ namespace SCManagement.Areas.Identity.Pages.Account
             var setUserNameResult = await _userManager.SetUserNameAsync(user, email);
             if (!setUserNameResult.Succeeded)
             {
-                StatusMessage = "Error changing user name.";
+                StatusMessage = _stringLocalizer["StatusMessage_ErrorChangingName"];
                 return Page();
             }
 
             await _signInManager.RefreshSignInAsync(user);
-            StatusMessage = "Thank you for confirming your email change.";
+            StatusMessage = _stringLocalizer["StatusMessage_ConfirmEmailChange"];
             return Page();
         }
     }

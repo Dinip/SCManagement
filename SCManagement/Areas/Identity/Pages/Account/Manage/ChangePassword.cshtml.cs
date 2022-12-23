@@ -18,15 +18,18 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<ChangePasswordModel> _logger;
+        private readonly IStringLocalizer<SharedResource> _stringlocalizer;
 
         public ChangePasswordModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ILogger<ChangePasswordModel> logger)
+            ILogger<ChangePasswordModel> logger,
+            IStringLocalizer<SharedResource> stringlocalizer)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _stringlocalizer = stringlocalizer;
         }
 
         /// <summary>
@@ -119,8 +122,10 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             }
 
             await _signInManager.RefreshSignInAsync(user);
+
             _logger.LogInformation("User changed their password successfully.");
-            StatusMessage = "Your password has been changed.";
+
+            StatusMessage = _stringlocalizer["StatusMessage_PasswordChanged"];
 
             return RedirectToPage();
         }

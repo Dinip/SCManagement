@@ -18,10 +18,12 @@ namespace SCManagement.Areas.Identity.Pages.Account
     public class ConfirmEmailModel : PageModel
     {
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
-        public ConfirmEmailModel(UserManager<User> userManager)
+        public ConfirmEmailModel(UserManager<User> userManager, IStringLocalizer<SharedResource> stringLocalizer)
         {
             _userManager = userManager;
+            _stringLocalizer = stringLocalizer;
         }
 
         /// <summary>
@@ -45,7 +47,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
 
             code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
             var result = await _userManager.ConfirmEmailAsync(user, code);
-            StatusMessage = result.Succeeded ? "Thank you for confirming your email." : "Error confirming your email.";
+            StatusMessage = result.Succeeded ? _stringLocalizer["StatusMessage_ConfirmAccount"] : _stringLocalizer["StatusMessage_ErrorConfirmingAccount"];
             return Page();
         }
     }
