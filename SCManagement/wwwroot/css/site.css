@@ -1,11 +1,20 @@
 html {
-  font-size: 14px;
+  font-size: 16px;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+@media (max-width: 768px) {
+    html {
+        font-size: 14px;
+    }
+
+    .container-fluid {
+        padding:0px;
+    }
+
+    #card {
+        border-radius: 0px !important;
+        border: 0px !important;
+    }
 }
 
 html {
@@ -15,4 +24,157 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+
+.navbar-brand {
+    height: 60px;
+}
+
+.navbar-right {
+    margin-right: 10px;
+}
+
+.dropdown-menu {
+    margin-top: 26px;
+    left: -100px;
+    width: 220px;
+}
+
+
+.fa-user {
+    margin-top: 17%;
+    margin-left: 20px;
+    background: none;
+    border: none;
+}
+
+
+.border-top {
+    border-top: 1px solid #e5e5e5;
+}
+
+.border-bottom {
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.box-shadow {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    white-space: nowrap;
+    line-height: 60px;
+}
+
+.register {
+    border-radius: 10px;
+    color: #00639A;
+    padding: 5px 25px 5px 25px;
+    background-color: white;
+    border-color: #00639A;
+}
+
+.signin {
+    border-radius: 10px;
+    margin-left: 20px;
+    padding: 5px 25px 5px 25px;
+    background-color: #00639A;
+    border-color: #00639A;
+}
+
+.signin:hover {
+    color: #00639A;
+    background-color: white !important;
+    border-color: #00639A;
+}
+
+.register:hover {
+    background-color: #00639A;
+    border-color: #00639A;
+    color: white;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 24px;
+}
+
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+/* The slider */
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 15px;
+        width: 15px;
+        left: 4px;
+        bottom: 4px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+input:checked + .slider {
+    background-color: #00639A;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(22px);
+    -ms-transform: translateX(22px);
+    transform: translateX(22px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+    .slider.round:before {
+        border-radius: 50%;
+    }
+
+
+#card {
+    background: #D9D9D9;
+    backdrop-filter: blur(30px);
+    margin-top: 60px;
+    max-height: 850px;
+    padding-bottom: 17%;
+    border-radius: 20px;
+}
+
+.container-fluid{
+    min-width: 100% !important;
 }
