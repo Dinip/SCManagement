@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using SCManagement.Models.Validations;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
@@ -26,6 +27,7 @@ namespace SCManagement.Models
 
         [PersonalData]
         [Display(Name = "Date Of Birth")]
+        [DateOfBirth(MinAge = 6, MaxAge = 100, ErrorMessage = "Error_DateOfBirth")]
         public DateTime? DateOfBirth { get; set; }
 
         public int? AddressId { get; set; }

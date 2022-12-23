@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using SCManagement.Models;
+using SCManagement.Models.Validations;
 
 namespace SCManagement.Areas.Identity.Pages.Account.Manage
 {
@@ -77,6 +78,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
 
             [Display(Name = "Date Of Birth")]
             [DataType(DataType.Date)]
+            [DateOfBirth(MinAge = 6, MaxAge = 100, ErrorMessage = "Error_DateOfBirth")]
             public DateTime? DateOfBirth { get; set; }
 
             //[Display(Name = "Profile Picture")]

@@ -277,4 +277,7 @@
   <data name="StatusMessage_ProfileUpdate" xml:space="preserve">
     <value>Your profile has been updated</value>
   </data>
+  <data name="Error_DateOfBirth" xml:space="preserve">
+    <value>You must have between {0} and {1} years</value>
+  </data>
 </root>
