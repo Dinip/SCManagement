@@ -15,6 +15,11 @@ html {
         border-radius: 0px !important;
         border: 0px !important;
     }
+
+    .card-body {
+        margin-bottom: 0px !important;
+        margin-top: 30px !important;
+    }
 }
 
 html {
@@ -35,12 +40,11 @@ body {
     margin-right: 10px;
 }
 
-.dropdown-menu {
+#Dropdown {
     margin-top: 26px;
     left: -100px;
     width: 220px;
 }
-
 
 .fa-user {
     margin-top: 17%;
@@ -170,11 +174,19 @@ input:checked + .slider:before {
     background: #D9D9D9;
     backdrop-filter: blur(30px);
     margin-top: 60px;
-    max-height: 850px;
-    padding-bottom: 17%;
+    max-height: 900px;
     border-radius: 20px;
 }
 
 .container-fluid{
     min-width: 100% !important;
+}
+
+.dropdown-menu-full {
+    width: 100% !important;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    text-align: center;
+    margin-top: -($spacer * .25 * 3);
 }
