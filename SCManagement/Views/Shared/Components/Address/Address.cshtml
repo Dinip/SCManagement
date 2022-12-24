@@ -1,59 +1,58 @@
 ﻿@model SCManagement.Models.Address
 
+
 <body>
     <div class="row">
         <div class="col-md-4">
-            <form asp-controller="AddressController" >
+            <form asp-controller="AddressTController" >
                 <div class="form-group">
-                    <label asp-for="County.District.Country" class="control-label"></label>
-                    <select asp-for="County.District.Country" class="form-control" asp-items="ViewBag.Countries"  required></select>
+                    <label  class="control-label">Country </label>
+                    <select id="Country" class="form-control" asp-items="ViewBag.Countries" required></select>
                 </div>
-                <div class="form-group" onchange="updateDiv()">
+                <div class="form-group">
                     <label asp-for="County.District" class="control-label"></label>
-                    <select asp-for="County.District" class="form-control" id="select1" onchange ="getOption()" asp-items="ViewBag.Districts"></select>
+                    <select id="District" asp-for="County.District" class="form-control" asp-items="ViewBag.Districts"></select>
                 </div>
                 <div class="form-group" >
                     <label asp-for="County" class="control-label"></label>
-                    <select asp-for="County" class="form-control" id="toUpdate" asp-items="ViewBag.Counties"></select>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <select id="County" asp-for="County" class="form-control" asp-items="ViewBag.Counties"></select>
                 </div>
             </form>
         </div>
     </div>
 </body>
 
-<script>
-    function getOption() {
-            var select = document.getElementById("select1");
-            var value = select.options[select.selectedIndex].value;
-            $.ajax({
-                url: '/Address/GetCounties',
-                type: 'POST',
-                data: { id: value }
-        }) 
-    }
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
     
-    function updateDiv() {
-            var select = document.getElementById("toUpdate");
-            //remove items of the select list
-            for (var i = select.options.length - 1; i >= 0; i--) {
-                select.remove(i);
-            }
-            var viewB = ViewBag.Counties
-            //for each item in the ViewBag.Counties add to the select list
-                for (var i = 0; i < viewB.length; i++) {
-                var opt = document.createElement('option');
-                opt.value = viewB[i].Value;
-                opt.innerHTML = viewB[i].Text;
-                select.appendChild(opt);
-            }
+    $(document).ready(function () {
+        //Dropdownlist Selectedchange event
+        $("#District").change(function () {
+            $("#County").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetCounties","AddressT")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#District").val() },
+                success: function (states) {
+                    // states contains the JSON formatted list
+                    // of states passed from the controller
 
-       
+                    $("#County").append('<option value="' + "0" + '">' + "Select county" + '</option>');
+                    debugger;
+                    $.each(states, function (i, state) {
+                        $("#County").append('<option value="' + state.county + '">' + state.name + '</option>');
+                        // here we are adding option for States
+                    });
 
-
-    }
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return false;
+        })
+    });
 </script>
 
 

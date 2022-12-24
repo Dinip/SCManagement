@@ -11,37 +11,51 @@ using SCManagement.Services.Location;
 
 namespace SCManagement.Controllers
 {
-    public class AddressController : Controller
+    public class AddressTController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly ILocationService _locationService;
 
-        public AddressController(ApplicationDbContext context, ILocationService locationService)
+        public AddressTController( ILocationService locationService)
         {
-            _context = context;
             _locationService = locationService;
         }
 
+
+        //[HttpPost]
+        //public async Task<Address> Create()
+        //{
+        //    var countries = await _locationService.GetCountries();
+        //    var districts = await _locationService.GetDistricts(1);
+        //    var counties = await _locationService.GetCounties(1);
+
+        //  var address = new Address
+        //  {
+        //    Countries = countries,
+        //    Districts = districts,
+        //    Counties = counties
+        //  };
+        //  return View(addressView);
+        //}
+
         [HttpPost]
-        public async Task<IActionResult> GetCountries()
+        public async Task<IEnumerable<Country>> GetCountries()
         {
-            ViewBag.Countries = new SelectList(await _locationService.GetCountries(), "Id", "Name");
-            return ViewComponent("Address");
+            return await _locationService.GetCountries();
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetDistricts(int id)
+        public async Task<IEnumerable<District>> GetDistricts(int id)
         {
-            ViewBag.Districts = new SelectList(await _locationService.GetDistricts(id), "Id", "Name");
-            return ViewComponent("Address");
+            return await _locationService.GetDistricts(id);
         }
 
         [HttpPost]
-        public async Task<IActionResult> GetCounties(int id)
+        public async Task<IEnumerable<County>> GetCounties(int id)
         {
-            ViewBag.Counties = new SelectList(await _locationService.GetCounties(id), "Id", "Name");
-            return ViewComponent("Address");
+            return await _locationService.GetCounties(id);
         }
+
+        
 
     }
 }
