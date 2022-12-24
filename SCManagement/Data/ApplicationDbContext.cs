@@ -11,6 +11,11 @@ namespace SCManagement.Data {
         {
         }
 
+        public DbSet<Country> Countries { get; set; }
+        public DbSet<District> Districts { get; set; }
+        public DbSet<County> Counties { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -52,6 +57,10 @@ namespace SCManagement.Data {
             //add list of counties to db
             builder.Entity<County>().HasData(counties);
         }
+
+
+        public DbSet<SCManagement.Models.Address> Address { get; set; }
+        
     }
 }
 

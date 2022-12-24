@@ -1,0 +1,61 @@
+﻿@model SCManagement.Models.Address
+
+<body>
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-controller="AddressController" >
+                <div class="form-group">
+                    <label asp-for="County.District.Country" class="control-label"></label>
+                    <select asp-for="County.District.Country" class="form-control" asp-items="ViewBag.Countries"  required></select>
+                </div>
+                <div class="form-group" onchange="updateDiv()">
+                    <label asp-for="County.District" class="control-label"></label>
+                    <select asp-for="County.District" class="form-control" id="select1" onchange ="getOption()" asp-items="ViewBag.Districts"></select>
+                </div>
+                <div class="form-group" >
+                    <label asp-for="County" class="control-label"></label>
+                    <select asp-for="County" class="form-control" id="toUpdate" asp-items="ViewBag.Counties"></select>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+<script>
+    function getOption() {
+            var select = document.getElementById("select1");
+            var value = select.options[select.selectedIndex].value;
+            $.ajax({
+                url: '/Address/GetCounties',
+                type: 'POST',
+                data: { id: value }
+        }) 
+    }
+    
+    function updateDiv() {
+            var select = document.getElementById("toUpdate");
+            //remove items of the select list
+            for (var i = select.options.length - 1; i >= 0; i--) {
+                select.remove(i);
+            }
+            var viewB = ViewBag.Counties
+            //for each item in the ViewBag.Counties add to the select list
+                for (var i = 0; i < viewB.length; i++) {
+                var opt = document.createElement('option');
+                opt.value = viewB[i].Value;
+                opt.innerHTML = viewB[i].Text;
+                select.appendChild(opt);
+            }
+
+       
+
+
+    }
+</script>
+
+
+
+               
