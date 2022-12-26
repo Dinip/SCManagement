@@ -1,17 +1,17 @@
-﻿@model SCManagement.Models.Address
+﻿@model SCManagement.Models.AddressComponent
 
 
 <body>
     <div class="row">
         <div class="col-md-4">
-            <form asp-controller="AddressTController" >
+            <form asp-controller="AddressTController" asp-action="Address">
                 <div class="form-group">
-                    <label  class="control-label">Country </label>
-                    <select id="Country" class="form-control" asp-items="ViewBag.Countries" required></select>
+                    <label asp-for="Country" class="control-label">Country </label>
+                    <select id="Country" asp-for="Country" class="form-control" asp-items="ViewBag.Countries" required></select>
                 </div>
                 <div class="form-group">
                     <label asp-for="County.District" class="control-label"></label>
-                    <select id="District" asp-for="County.District" class="form-control" asp-items="ViewBag.Districts"></select>
+                    <select id="District" asp-for="District" class="form-control" asp-items="ViewBag.Districts"></select>
                 </div>
                 <div class="form-group" >
                     <label asp-for="County" class="control-label"></label>

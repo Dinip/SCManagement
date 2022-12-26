@@ -11,7 +11,17 @@ namespace SCManagement.Services.Location
         {
             _context = context;
         }
-        
+
+        public async Task<AddressComponent> Address(AddressComponent addressComponent)
+        {
+            return new AddressComponent
+            { 
+                County = addressComponent.County,
+                District = addressComponent.District,
+                Country = addressComponent.Country
+            };
+        }
+
         public async Task<IEnumerable<Country>> GetCountries()
         {
             return await _context.Countries.Include(c => c.Districts).ToListAsync();

@@ -13,7 +13,7 @@ namespace SCManagement.ViewComponents
         {
             _locationService = locationService;
         }
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(AddressComponent? addressComponent)
         {
             var countries = await _locationService.GetCountries();
             ViewBag.Countries = new SelectList(countries, "Id", "Name");
@@ -23,7 +23,11 @@ namespace SCManagement.ViewComponents
             
             ViewBag.Counties = new SelectList(await _locationService.GetCounties(district.First().Id), "Id", "Name");
 
-            return View("Address");
+            if (addressComponent == null)
+            {
+                return View("Address");
+            }
+                return View("Address", addressComponent);
         }
     }
 }

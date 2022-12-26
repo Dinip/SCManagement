@@ -20,22 +20,11 @@ namespace SCManagement.Controllers
             _locationService = locationService;
         }
 
-
-        //[HttpPost]
-        //public async Task<Address> Create()
-        //{
-        //    var countries = await _locationService.GetCountries();
-        //    var districts = await _locationService.GetDistricts(1);
-        //    var counties = await _locationService.GetCounties(1);
-
-        //  var address = new Address
-        //  {
-        //    Countries = countries,
-        //    Districts = districts,
-        //    Counties = counties
-        //  };
-        //  return View(addressView);
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Address(AddressComponent addressComponent)
+        {
+            return View(await _locationService.Address(addressComponent));
+        }
 
         [HttpPost]
         public async Task<IEnumerable<Country>> GetCountries()
@@ -54,8 +43,6 @@ namespace SCManagement.Controllers
         {
             return await _locationService.GetCounties(id);
         }
-
-        
 
     }
 }

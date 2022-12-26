@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -48,7 +49,6 @@ namespace SCManagement.Controllers
         // GET: Addresses/Create
         public IActionResult Create()
         {
-            ViewData["CountyId"] = new SelectList(_context.Counties, "Id", "Id");
             return View();
         }
 
@@ -57,10 +57,14 @@ namespace SCManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Street,Number,ZipCode,CountyId")] Address address)
+        public async Task<IActionResult> Create([Bind("Id,Street,Number,ZipCode")] Address address, AddressComponent addressComponent)
         {
             if (ModelState.IsValid)
             {
+                //address.CountyId = await _context.Counties.Where(c => c.Name.Equals(addressComponent.County)).Select(c => c.Id).FirstOrDefaultAsync();
+                //address.County.DistrictId = await _context.Districts.Where(c => c.Name.Equals(addressComponent.District)).Select(c => c.Id).FirstOrDefaultAsync() ;
+                //address.County.District.CountryId = await _context.Countries.Where(c => c.Name.Equals(addressComponent.Country)).Select(c => c.Id).FirstOrDefaultAsync();
+
                 _context.Add(address);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
