@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SCManagement.Models;
 using System.Text;
+using SCManagement.Services.AzureStorageService.Models;
 
 namespace SCManagement.Data {
     public class ApplicationDbContext : IdentityDbContext<User> {
@@ -52,6 +53,8 @@ namespace SCManagement.Data {
             //add list of counties to db
             builder.Entity<County>().HasData(counties);
         }
+
+        public DbSet<SCManagement.Services.AzureStorageService.Models.BlobDto> BlobDto { get; set; }
     }
 }
 

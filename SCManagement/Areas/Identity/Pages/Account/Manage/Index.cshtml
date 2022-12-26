@@ -9,8 +9,30 @@
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
+        <form id="profile-form" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div>
+                <img id="profilePicture"
+                     src="@Model.ProfilePictureUrl"
+                     class="rounded-circle"
+                     width="128px"
+                     height="128px"
+                     onclick="document.getElementById('selectedFile').click()"
+                     style="cursor:pointer; object-fit: cover" />
+                <button id="btnRemoveImage"
+                        type="button"
+                        class="btn btn-danger @Model.ShowRemoveButton()"
+                        onclick="removePhoto()">
+                    Remove Photo
+                </button>
+            </div>
+
+            <div>
+                <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/png, image/jpeg"
+                       onchange="handleUpload(this)" />
+                <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
+            </div>
+
             <div class="form-floating">
                 <input asp-for="Input.FirstName" class="form-control" />
                 <label asp-for="Input.FirstName" class="form-label"></label>
@@ -26,7 +48,7 @@
                 <label asp-for="Input.PhoneNumber" class="form-label"></label>
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-                <div class="form-floating">
+            <div class="form-floating">
                 <input asp-for="Input.DateOfBirth" class="form-control" />
                 <label asp-for="Input.DateOfBirth" class="form-label"></label>
                 <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
@@ -38,4 +60,16 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        function removePhoto() {
+            document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
+            document.getElementById("removeImage").value = true
+            document.getElementById("selectedFile").value = ""
+            document.getElementById("btnRemoveImage").classList.add("d-none")
+        }
+        function handleUpload(event){
+            document.getElementById('profilePicture').src=window.URL.createObjectURL(event.files[0])
+            document.getElementById("btnRemoveImage").classList.remove("d-none")
+        }
+    </script>
 }

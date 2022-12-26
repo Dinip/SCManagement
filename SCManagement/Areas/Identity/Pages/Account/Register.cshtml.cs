@@ -97,7 +97,7 @@ namespace SCManagement.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required(ErrorMessage = "Error_Required")]
-            [StringLength(100, ErrorMessage = "Error_Legth", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Error_Length", MinimumLength = 6)]
             [DataType(DataType.Password, ErrorMessage = "Error_Password")]
             [Display(Name = "Password")]
             public string Password { get; set; }

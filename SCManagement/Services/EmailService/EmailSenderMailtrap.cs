@@ -4,9 +4,10 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 
 
-namespace Auth.Services {
-
-    public class EmailSenderMailtrap : IEmailSender {
+namespace SCManagement.Services.EmailService
+{
+    public class EmailSenderMailtrap : IEmailSender
+    {
         private readonly ILogger _logger;
 
         public EmailSenderMailtrap(IOptions<AuthMessageSenderOptions> optionsAccessor, ILogger<EmailSenderMailtrap> logger)
