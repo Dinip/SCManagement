@@ -1,0 +1,65 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
+
+</head>
+<body id="body">
+    
+    <div class="container-fluid">
+        <h1 class="row text-to-dark">User Profile</h1>
+        <div class="row">
+            <div id="card" class="col card">
+                <div class="card-body p-5 text-center" style="margin-top:150px; margin-bottom:30%;">
+                    <img src="" alt="Profile Image" style="max-height:200px;"/>
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <h3 class="text-to-dark">@User.Identity?.Name!</h3>
+                    <p class="text-to-dark">@User.Identity?.AuthenticationType!</p>
+                </div>
+            </div>
+            <div id="card1" class="col card">
+                <div class="card-body p-5 text-center" style="margin-top:150px; margin-bottom:30%;">
+                    <div class="row">
+                        <p class="col text-to-dark">Full Name</p>
+                        <p class="col text-to-dark">@User.Identity?.Name!</p>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                    <div class="row">
+                        <p class="col text-to-dark">Email</p>
+                        <p class="col text-to-dark">@User.Identity?.Name!</p>
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <p class="text-to-dark">Phone</p>
+                            <p class="text-to-dark">NUMERO</p>
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </div>
+                        <div class="col">
+                            <p class="text-to-dark">Birthday</p>
+                            <p class="text-to-dark">NUMERO</p>
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <strong class="col text-to-dark">Password</strong>
+                        <a class="col" asp-page="/Account/Manage/ChangePassword">Change Password</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+         <form class="row form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+            <button type="submit" style="color:black;" class="btn btn-link">Logout</button>
+         </form>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>
