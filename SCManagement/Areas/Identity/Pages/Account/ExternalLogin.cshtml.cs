@@ -90,7 +90,6 @@ namespace SCManagement.Areas.Identity.Pages.Account
             public string Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
-            public string ProfilePicture { get; set; }
             public string Language { get; set; } = "en-US";
         }
 
@@ -143,12 +142,6 @@ namespace SCManagement.Areas.Identity.Pages.Account
                     Input.Email = info.Principal.FindFirstValue(ClaimTypes.Email);
                 }
 
-                //TODO: needs to accept pictures from other services
-                if (info.Principal.HasClaim(c => c.Type == "urn:google:picture"))
-                {
-                    Input.ProfilePicture = info.Principal.FindFirstValue("urn:google:picture");
-                }
-
                 if (info.Principal.HasClaim(c => c.Type == ClaimTypes.GivenName))
                 {
                     Input.FirstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
@@ -187,7 +180,6 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.ProfilePicture = Input.ProfilePicture;
                 user.Language = Input.Language;
 
                 var result = await _userManager.CreateAsync(user);

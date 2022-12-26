@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SCManagement.Data;
 
@@ -11,9 +12,10 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221226131533_UserProfilePictureBlob")]
+    partial class UserProfilePictureBlob
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -180,7 +182,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountyId");
 
-                    b.ToTable("Address", (string)null);
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Country", b =>
@@ -197,7 +199,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country", (string)null);
+                    b.ToTable("Country");
 
                     b.HasData(
                         new
@@ -226,7 +228,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("County", (string)null);
+                    b.ToTable("County");
 
                     b.HasData(
                         new
@@ -2098,7 +2100,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("District", (string)null);
+                    b.ToTable("District");
 
                     b.HasData(
                         new
@@ -2396,7 +2398,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlobDto", (string)null);
+                    b.ToTable("BlobDto");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

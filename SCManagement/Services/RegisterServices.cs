@@ -1,10 +1,11 @@
-﻿using Auth.Services;
+﻿using SCManagement.Services.EmailService;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Identity;
 using SCManagement.Data;
 using SCManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
+using SCManagement.Services.AzureStorageService;
 
 namespace SCManagement.Services
 {
@@ -20,6 +21,7 @@ namespace SCManagement.Services
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
             services.AddIdentity<User, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = true;
@@ -28,6 +30,7 @@ namespace SCManagement.Services
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
 
+            #region add support for localization
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -48,21 +51,30 @@ namespace SCManagement.Services
                     new CookieRequestCultureProvider()
                 };
             });
+            services.AddSingleton<SharedResourceService>();
+            #endregion
 
-            Console.WriteLine(configuration.GetValue<string>("GoogleId"));
+            #region register google authentication
+            string GoogleId = configuration["GoogleId"];
+            string GoogleSecret = configuration["GoogleSecret"];
 
-            if (configuration["GoogleId"] != null && configuration["GoogleSecret"] != null)
+            if (string.IsNullOrEmpty(GoogleId) && string.IsNullOrEmpty(GoogleSecret))
             {
                 services.AddAuthentication().AddGoogle(options =>
                 {
                     options.ClientId = configuration["GoogleId"];
                     options.ClientSecret = configuration["GoogleSecret"];
-                    options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
+                    //options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
                     options.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
                 });
             }
-            
-            if (configuration["MicrosoftId"] != null && configuration["MicrosoftSecret"] != null)
+            #endregion
+
+            #region register microsoft authentication
+            string MicrosoftId = configuration["MicrosoftId"];
+            string MicrosoftSecret = configuration["MicrosoftSecret"];
+
+            if (string.IsNullOrEmpty(MicrosoftId) && string.IsNullOrEmpty(MicrosoftSecret))
             {
                 services.AddAuthentication().AddMicrosoftAccount(options =>
                 {
@@ -70,8 +82,7 @@ namespace SCManagement.Services
                     options.ClientSecret = configuration["MicrosoftSecret"];
                 });
             }
-
-            services.AddSingleton<SharedResourceService>();
+            #endregion
 
             services.AddRazorPages();
             services.AddMvc().AddViewLocalization().AddDataAnnotationsLocalization(options =>
@@ -83,11 +94,15 @@ namespace SCManagement.Services
             });
             services.AddControllersWithViews();
 
+            #region email service
             //add email service, in development it uses the local smtp server from mail catcher
             //in production it will use mailgun with the api key stored in the vault
             services.Configure<AuthMessageSenderOptions>(options => options.AuthKey = configuration["MailtrapKey"]);
             services.AddTransient<IEmailSender, EmailSenderMailtrap>();
             //services.AddTransient<IEmailSender, EmailSenderMailgun>();
+            #endregion
+
+            services.AddTransient<IAzureStorage, AzureStorage>();
         }
     }
 }

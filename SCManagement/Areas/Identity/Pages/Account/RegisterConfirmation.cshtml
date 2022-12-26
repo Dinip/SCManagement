@@ -1,10 +1,11 @@
 ﻿@page
+@using SCManagement
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = @StringLocalizer["Register confirmation"];
 }
 
-<h1>@ViewData["Title"]</h1>
 @{
     if (@Model.DisplayConfirmAccountLink)
     {
@@ -15,9 +16,36 @@
     }
     else
     {
-<p>
-        Please check your email to confirm your account.
-</p>
+        <!-- Section: Design Block -->
+        <section class="text-center">
+            <!-- Background image -->
+            <div class="p-5 bg-image" style="
+            background-image: url('/img/baseball_stadium.jpg');
+            background-position:center;
+            height: 300px;
+            "></div>
+            <!-- Background image -->
+            <div class="container">
+                <div class="card mx-4 mx-md-5 shadow-5-strong" style="
+            margin-top: -100px;
+            background: hsla(0, 0%, 85%, 0.3);
+            backdrop-filter: blur(30px);
+            border-radius:20px;
+            ">
+                    <div class="card-body py-5 px-md-5">
+                        <div class="row d-flex mt-5 justify-content-center">
+                            <div class="col-lg-6 col-12">
+                                <h2 class="fw-bold mt-3 mb-4">@ViewData["Title"]</h2>
+                                <p> @StringLocalizer["StatusMessage_VerificationEmail"]</p>
+                                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">@StringLocalizer["Resend email confirmation"]</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
     }
 }
 

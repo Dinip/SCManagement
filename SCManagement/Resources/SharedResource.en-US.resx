@@ -126,7 +126,7 @@
   <data name="Error_Email" xml:space="preserve">
     <value>The {0} field is not a valid e-mail address.</value>
   </data>
-  <data name="Error_Legth" xml:space="preserve">
+  <data name="Error_Length" xml:space="preserve">
     <value>The {0} must be at least {2} and at max {1} characters long.</value>
   </data>
   <data name="Error_PasswordDontMatch" xml:space="preserve">
@@ -162,8 +162,8 @@
   <data name="Theme" xml:space="preserve">
     <value>Theme</value>
   </data>
-  <data name="Remember me?" xml:space="preserve">
-    <value>Remember me?</value>
+  <data name="Remember me" xml:space="preserve">
+    <value>Remember me</value>
   </data>
   <data name="StatusMessage_ConfirmAccount" xml:space="preserve">
     <value>Thank you for confirming your account.</value>
@@ -279,5 +279,59 @@
   </data>
   <data name="Error_DateOfBirth" xml:space="preserve">
     <value>You must have between {0} and {1} years</value>
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Back</value>
+  </data>
+  <data name="Click here to log in" xml:space="preserve">
+    <value>Click here to log in</value>
+  </data>
+  <data name="Confirm Email" xml:space="preserve">
+    <value>Confirm Email</value>
+  </data>
+  <data name="Continue" xml:space="preserve">
+    <value>Continue</value>
+  </data>
+  <data name="Enter your email" xml:space="preserve">
+    <value>Enter your email</value>
+  </data>
+  <data name="Forgot password confirmation" xml:space="preserve">
+    <value>Forgot password confirmation</value>
+  </data>
+  <data name="Forgot your password" xml:space="preserve">
+    <value>Forgot your password</value>
+  </data>
+  <data name="Log in" xml:space="preserve">
+    <value>Log in</value>
+  </data>
+  <data name="Or sign in with" xml:space="preserve">
+    <value>Or sign in with</value>
+  </data>
+  <data name="Or sign up with" xml:space="preserve">
+    <value>Or sign up with</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="Register confirmation" xml:space="preserve">
+    <value>Register confirmation</value>
+  </data>
+  <data name="Resend email confirmation" xml:space="preserve">
+    <value>Resend email confirmation</value>
+  </data>
+  <data name="Reset Password Confirmation" xml:space="preserve">
+    <value>Reset Password Confirmation</value>
+  </data>
+  <data name="Sign in" xml:space="preserve">
+    <value>Sign in</value>
+  </data>
+  <data name="Sign up" xml:space="preserve">
+    <value>Sign up</value>
+  </data>
+  <data name="Your password has been reset" xml:space="preserve">
+    <value>Your password has been reset</value>
+  </data>
+  <data name="Resend" xml:space="preserve">
+    <value>Resend</value>
   </data>
 </root>
