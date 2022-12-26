@@ -6,41 +6,61 @@
 <ul class="navbar-nav navbar-right">
 @if (SignInManager.IsSignedIn(User))
 {
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
     <li>
-        <a type="button" class="btn btn-primary register" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li>
-        <a type="button" class="btn btn-primary signin" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
-    </li>
-    <li>
-        <div class="dropdown">
-            <button class="btn fa-solid fa-user fa-2xl shadow-none" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
-            <ul class="dropdown-menu" style="margin-top: 26px; left: -100px; width: 220px;" id="Dropdown">
+        <div class="dropdown d-none d-md-block">
+            <button class="btn fa-solid fa-user fa-2xl shadow-none text-to-dark mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+            <ul class="dropdown-menu" style="margin-top: 26px; left: -100px; width: 220px;" id="Dropdown1">
+                <li class="dropdown-item" style="padding: 5px;">
+                    <a class="nav-link text-to-dark" style="color:black;" asp-area ="Identity" asp-page="/Account/Profile">@User.Identity?.Name!</a>
+                </li>
+                <li class="dropdown-item" style="padding: 5px;">
+                    <a class="nav-link text-to-dark" href="#">Conta corrente</a>
+                </li>
                 <li style="padding: 5px;">
-                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg"></i>
-                    <label id="logoTexts">DarkMode</label>
+                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg  text-to-dark"></i>
+                    <label class="text-to-dark">DarkMode</label>
                     <label class="switch" style="margin-left: 10px;">
                         <input type="checkbox" onchange="myFunction()" id="darkToggle">
                         <span class="slider round"></span>
                     </label>
                 </li>
                 <li class="dropdown-item" style="padding: 5px;">
-                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas"></i>
-                    <label id="logoTexts1">Language</label>
+                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas text-to-dark"></i>
+                    <label class="text-to-dark">Language</label>
+                </li>
+                <li class="dropdown-item" style="padding: 5px;">
+                    <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" style="color:black;" class="nav-link btn btn-link text-to-dark">Logout</button>
+                    </form>
                 </li>
             </ul>
         </div>
     </li>
+}
+else
+{
+    <a type="button" class="btn btn-primary register ms-2" id="navbarSupportedContent1" asp-area="Identity" asp-page="/Account/Register">Register</a>
+    
+    <a type="button" class="btn btn-primary signin ms-2 ms-md-3 mt-2 mt-md-0" id="navbarSupportedContent1" asp-area="Identity" asp-page="/Account/Login">Sign In</a>
+    <li>
+            <div class="dropdown d-none d-md-block">
+            <button class="btn fa-solid fa-user fa-2xl shadow-none text-to-dark mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+            <ul class="dropdown-menu" style="margin-top: 26px; left: -100px; width: 220px;" id="Dropdown1">
+                <li style="padding: 5px;">
+                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg  text-to-dark"></i>
+                    <label class="text-to-dark">DarkMode</label>
+                    <label class="switch" style="margin-left: 10px;">
+                            <input type="checkbox" onchange="myFunction()" id="darkToggle">
+                        <span class="slider round"></span>
+                    </label>
+                </li>
+                <li class="dropdown-item" style="padding: 5px;">
+                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas text-to-dark"></i>
+                    <label class="text-to-dark">Language</label>
+                </li>
+            </ul>
+        </div>
+    </li>
+    
 }
 </ul>
