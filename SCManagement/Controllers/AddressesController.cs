@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
+using SCManagement.Services.Location;
 
 namespace SCManagement.Controllers
 {
@@ -47,8 +48,10 @@ namespace SCManagement.Controllers
         }
 
         // GET: Addresses/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            ViewBag.Counties = new SelectList(await _context.Counties.ToListAsync(), "Id", "Name");
+            
             return View();
         }
 
