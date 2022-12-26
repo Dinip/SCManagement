@@ -1,0 +1,13 @@
+.signup {
+    border-radius: 10px;
+    margin-left: 20px;
+    padding: 5px 25px 5px 25px;
+    background-color: #00639A;
+    border-color: #00639A;
+}
+
+.signup:hover {
+    color: #00639A;
+    background-color: white !important;
+    border-color: #00639A;
+}
