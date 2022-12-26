@@ -1,11 +1,10 @@
 ﻿@page
 @using SCManagement
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @model RegisterConfirmationModel
 @{
-    ViewData["Title"] = "Register confirmation";
+    ViewData["Title"] = @StringLocalizer["Register confirmation"];
 }
-
-@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     if (@Model.DisplayConfirmAccountLink)
@@ -37,7 +36,8 @@
                         <div class="row d-flex mt-5 justify-content-center">
                             <div class="col-lg-6 col-12">
                                 <h2 class="fw-bold mt-3 mb-4">@ViewData["Title"]</h2>
-                                <p> Please check your email</p>
+                                <p> @StringLocalizer["StatusMessage_VerificationEmail"]</p>
+                                <a id="resend-confirmation" asp-page="./ResendEmailConfirmation">@StringLocalizer["Resend email confirmation"]</a>
                             </div>
                         </div>
                     </div>
