@@ -180,7 +180,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountyId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("SCManagement.Models.Country", b =>
@@ -197,7 +197,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries");
+                    b.ToTable("Countries", (string)null);
 
                     b.HasData(
                         new
@@ -226,7 +226,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("Counties");
+                    b.ToTable("Counties", (string)null);
 
                     b.HasData(
                         new
@@ -2098,7 +2098,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Districts");
+                    b.ToTable("Districts", (string)null);
 
                     b.HasData(
                         new

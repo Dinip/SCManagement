@@ -1,4 +1,4 @@
-﻿@model AddressComponent
+﻿@model Address
 
 <div class="form-group">
     <label  class="control-label">Country </label>
@@ -9,8 +9,8 @@
     <select id="District"  class="form-control" asp-items="ViewBag.Districts"></select>
 </div>
 <div class="form-group">
-    <label asp-for="County" class="control-label"></label>
-    <select id="County" asp-for="County" class="form-control" asp-items="ViewBag.Counties"></select>
+    <label asp-for="CountyId" class="control-label"></label>
+    <select id="County" asp-for="CountyId" class="form-control" asp-items="ViewBag.Counties"></select>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

@@ -28,34 +28,8 @@
                 <input asp-for="ZipCode" class="form-control"  />
                 <span asp-validation-for="ZipCode" class="text-danger"></span>
             </div>
-            
-            <div class="container">
 
-                <div class="row">
-                    <div class="col-xs-12">
-                        <div class="box">
-                            <!-- /.box-header -->
-                            <div class="box-body">
-                                <form>
-                                    <div class="form-group row">
-                                        <label for="" class="col-sm-2 form-control-label">County</label>
-                                        <div class="col-sm-10">
-                                            <select class="form-control selectpicker" id="county" data-live-search="true" asp-items="ViewBag.Counties">
-                                            </select>
-
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <!-- /.box-body -->
-                        </div>
-                        <!-- /.box -->
-                    </div>
-                    <!-- /.col -->
-                </div>
-                <!-- /.row -->
-            </div>
-            <!-- /.container -->
+            @await Component.InvokeAsync("Address")
             
 
             <div class="form-group">
@@ -76,12 +50,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/js/bootstrap-select.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.10.0/css/bootstrap-select.min.css" rel="stylesheet" />
 
-<script>
-    
-    $(function () {
-        $('.selectpicker').selectpicker();
-    });
-</script>
 
 
 @section Scripts {

@@ -7,7 +7,7 @@
         public string? Number { get; set; }
         public string? ZipCode { get; set; }
         public int CountyId { get; set; }
-        public County County { get; set; }
+        public County? County { get; set; }
 
     }
 }

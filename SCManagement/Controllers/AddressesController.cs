@@ -60,7 +60,7 @@ namespace SCManagement.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Street,Number,ZipCode,County")] Address address)
+        public async Task<IActionResult> Create([Bind("Id,Street,Number,ZipCode,CountyId")] Address address)
         {
             if (ModelState.IsValid)
             {
@@ -72,7 +72,6 @@ namespace SCManagement.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CountyId"] = new SelectList(_context.Counties, "Id", "Id", address.CountyId);
             return View(address);
         }
 
