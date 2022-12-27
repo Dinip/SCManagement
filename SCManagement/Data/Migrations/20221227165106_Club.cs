@@ -40,6 +40,19 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Modalities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Modalities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RolesClub",
                 columns: table => new
                 {
@@ -53,45 +66,24 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Modalities",
+                name: "ClubModality",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ClubId = table.Column<int>(type: "int", nullable: true)
+                    ClubsId = table.Column<int>(type: "int", nullable: false),
+                    ModalitiesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Modalities", x => x.Id);
+                    table.PrimaryKey("PK_ClubModality", x => new { x.ClubsId, x.ModalitiesId });
                     table.ForeignKey(
-                        name: "FK_Modalities_Club_ClubId",
-                        column: x => x.ClubId,
-                        principalTable: "Club",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ModalitiesClubs",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ClubId = table.Column<int>(type: "int", nullable: false),
-                    ModalityId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ModalitiesClubs", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ModalitiesClubs_Club_ClubId",
-                        column: x => x.ClubId,
+                        name: "FK_ClubModality_Club_ClubsId",
+                        column: x => x.ClubsId,
                         principalTable: "Club",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ModalitiesClubs_Modalities_ModalityId",
-                        column: x => x.ModalityId,
+                        name: "FK_ClubModality_Modalities_ModalitiesId",
+                        column: x => x.ModalitiesId,
                         principalTable: "Modalities",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -99,19 +91,19 @@ namespace SCManagement.Data.Migrations
 
             migrationBuilder.InsertData(
                 table: "Modalities",
-                columns: new[] { "Id", "ClubId", "Name" },
+                columns: new[] { "Id", "Name" },
                 values: new object[,]
                 {
-                    { 1, null, "Atletismo" },
-                    { 2, null, "Basquetebol" },
-                    { 3, null, "Futebol" },
-                    { 4, null, "Futsal" },
-                    { 5, null, "Hóquei em Patins" },
-                    { 6, null, "Natação" },
-                    { 7, null, "Voleibol" },
-                    { 8, null, "BTT" },
-                    { 9, null, "Taekwondo" },
-                    { 10, null, "Orientação" }
+                    { 1, "Atletismo" },
+                    { 2, "Basquetebol" },
+                    { 3, "Futebol" },
+                    { 4, "Futsal" },
+                    { 5, "Hóquei em Patins" },
+                    { 6, "Natação" },
+                    { 7, "Voleibol" },
+                    { 8, "BTT" },
+                    { 9, "Taekwondo" },
+                    { 10, "Orientação" }
                 });
 
             migrationBuilder.InsertData(
@@ -137,34 +129,24 @@ namespace SCManagement.Data.Migrations
                 column: "PhotographyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Modalities_ClubId",
-                table: "Modalities",
-                column: "ClubId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ModalitiesClubs_ClubId",
-                table: "ModalitiesClubs",
-                column: "ClubId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ModalitiesClubs_ModalityId",
-                table: "ModalitiesClubs",
-                column: "ModalityId");
+                name: "IX_ClubModality_ModalitiesId",
+                table: "ClubModality",
+                column: "ModalitiesId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ModalitiesClubs");
+                name: "ClubModality");
 
             migrationBuilder.DropTable(
                 name: "RolesClub");
 
             migrationBuilder.DropTable(
-                name: "Modalities");
+                name: "Club");
 
             migrationBuilder.DropTable(
-                name: "Club");
+                name: "Modalities");
         }
     }
 }

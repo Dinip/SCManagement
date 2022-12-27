@@ -10,17 +10,14 @@ using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
 
-namespace SCManagement.Controllers
-{
+namespace SCManagement.Controllers {
     /// <summary>
     /// This class represents the Clubs Controller
     /// </summary>
     /// 
 
-    [Authorize]
-    public class ClubsController : Controller
-    {
-        
+    public class ClubsController : Controller {
+
         private readonly ApplicationDbContext _context;
 
         public ClubsController(ApplicationDbContext context)
@@ -42,8 +39,10 @@ namespace SCManagement.Controllers
                 return NotFound();
             }
 
-            var club = await _context.Club
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var club = await _context.Club.Include(c => c.Modalities).FirstOrDefaultAsync(m => m.Id == id);
+
+            ViewBag.Modalities = new SelectList(club.Modalities, "Id", "Name");
+
             if (club == null)
             {
                 return NotFound();
@@ -52,7 +51,10 @@ namespace SCManagement.Controllers
             return View(club);
         }
 
+
+
         // GET: Clubs/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewBag.Modalities = new SelectList(_context.Modalities.ToList(), "Id", "Name");
@@ -62,140 +64,94 @@ namespace SCManagement.Controllers
         // POST: Clubs/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
-        { 
-            
-            if (ModelState.IsValid)
+        {
+            List<Modality> modalities = await _context.Modalities.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
+
+            if (!ModelState.IsValid) return View();
+
+            Club c = new Club
             {
-                club.CreationDate = DateTime.Now;
-                _context.Add(club);
+                Name = club.Name,
+                Modalities = modalities,
+                CreationDate = DateTime.Now
+            };
 
-                await _context.SaveChangesAsync();
+            _context.Club.Add(c);
+            await _context.SaveChangesAsync();
 
-                foreach (int id in club.ModalitiesIds)
-                {
-                    _context.ModalitiesClubs.Add(new ModalitiesClub { ClubId = club.Id, ModalityId = id });
-                }
+            return RedirectToAction(nameof(Index));
 
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(club);
         }
 
         // GET: Clubs/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Club == null)
-            {
-                return NotFound();
-            }
-            var club = await _context.Club.FindAsync(id);
+            if (id == null || _context.Club == null) return NotFound();
 
-            //Modalities of the club
-            var clubModalities = _context.ModalitiesClubs.Where(c => c.ClubId == club.Id).ToList();
-            var modalities = _context.Modalities.ToList();
-            //List<Modality> modalities1 = new List<Modality>();
+            var club = await _context.Club.Include(c => c.Modalities).FirstOrDefaultAsync(c => c.Id == id);
 
-            //modalities that the club in clubModalities doesnt have
-            foreach (ModalitiesClub m in clubModalities)
-            {
-                modalities.Remove(_context.Modalities.Find(m.ModalityId));
-                //modalities1.Add(_context.Modalities.Find(m.ModalityId));
-            }
+            List<int> ClubModalitiesIds = club.Modalities.Select(m => m.Id).ToList();
 
-            ViewBag.Modalities = new SelectList(modalities, "Id", "Name");
-            //ViewBag.removeModalities = new SelectList(modalities1, "Id", "Name");
+            ViewBag.Modalities = new MultiSelectList(_context.Modalities.ToList(), "Id", "Name", ClubModalitiesIds);
 
-            if (club == null)
-            {
-                return NotFound();
-            }
+            if (club == null) return NotFound();
+
             return View(club);
         }
 
         // POST: Clubs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,PhoneNumber,About,CreationDate,EndDate,Photography,ModalitiesIds")] Club club)
         {
-            if (id != club.Id)
-            {
-                return NotFound();
-            }
+            if (id != club.Id) return NotFound();
+            if (!ModelState.IsValid) return View(club);
+            var actualClub = _context.Club.Include(c => c.Modalities).FirstOrDefault(c => c.Id == id);
+            if (actualClub == null) return NotFound();
 
-            foreach (int mId in club.ModalitiesIds)
+            List<Modality> newModalities = await _context.Modalities.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
+            //remove from club modalities which are not in the new modalities list
+            if (actualClub.Modalities != null)
             {
-                _context.ModalitiesClubs.Add(new ModalitiesClub { ClubId = club.Id, ModalityId = mId });
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                foreach (Modality m in actualClub.Modalities.ToList())
                 {
-                    _context.Update(club);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ClubExists(club.Id))
+                    if (!newModalities.Contains(m))
                     {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
+                        actualClub.Modalities.Remove(m);
                     }
                 }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(club);
-        }
 
-        // GET: Clubs/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Club == null)
-            {
-                return NotFound();
+                //add to club modalities the modalities that are in the new modalities list and aren't on club modalities list already
+                foreach (Modality m in newModalities.ToList())
+                {
+                    if (!actualClub.Modalities.Contains(m))
+                    {
+                        actualClub.Modalities.Add(m);
+                    }
+                }
             }
-
-            var club = await _context.Club
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (club == null)
+            else
             {
-                return NotFound();
+                actualClub.Modalities = newModalities;
             }
 
-            return View(club);
-        }
+            actualClub.Name = club.Name;
+            actualClub.Email = club.Email;
+            actualClub.PhoneNumber = club.PhoneNumber;
+            actualClub.About = club.About;
 
-        // POST: Clubs/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Club == null)
-            {
-                return Problem("Entity set 'ApplicationDbContext.Club'  is null.");
-            }
-            var club = await _context.Club.FindAsync(id);
-            if (club != null)
-            {
-                _context.Club.Remove(club);
-            }
-            
+            _context.Club.Update(actualClub);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool ClubExists(int id)
-        {
-          return _context.Club.Any(e => e.Id == id);
+            return RedirectToAction(nameof(Index));
         }
 
         //public bool RemoveImage { get; set; } = false;

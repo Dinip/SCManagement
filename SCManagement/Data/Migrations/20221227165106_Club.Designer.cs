@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SCManagement.Data;
 
@@ -11,9 +12,10 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221227165106_Club")]
+    partial class Club
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2544,35 +2546,6 @@ namespace SCManagement.Data.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("SCManagement.Models.UsersRoleClub", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClubId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubId");
-
-                    b.HasIndex("RoleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UsersRoleClub");
-                });
-
             modelBuilder.Entity("SCManagement.Services.AzureStorageService.Models.BlobDto", b =>
                 {
                     b.Property<int>("Id")
@@ -2728,38 +2701,6 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("ProfilePicture");
                 });
 
-            modelBuilder.Entity("SCManagement.Models.UsersRoleClub", b =>
-                {
-                    b.HasOne("SCManagement.Models.Club", "Club")
-                        .WithMany("UsersRoleClub")
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SCManagement.Models.RoleClub", "Role")
-                        .WithMany("UsersRoleClub")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SCManagement.Models.User", "User")
-                        .WithMany("UsersRoleClub")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-
-                    b.Navigation("Role");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SCManagement.Models.Club", b =>
-                {
-                    b.Navigation("UsersRoleClub");
-                });
-
             modelBuilder.Entity("SCManagement.Models.Country", b =>
                 {
                     b.Navigation("Districts");
@@ -2768,16 +2709,6 @@ namespace SCManagement.Data.Migrations
             modelBuilder.Entity("SCManagement.Models.District", b =>
                 {
                     b.Navigation("Counties");
-                });
-
-            modelBuilder.Entity("SCManagement.Models.RoleClub", b =>
-                {
-                    b.Navigation("UsersRoleClub");
-                });
-
-            modelBuilder.Entity("SCManagement.Models.User", b =>
-                {
-                    b.Navigation("UsersRoleClub");
                 });
 #pragma warning restore 612, 618
         }

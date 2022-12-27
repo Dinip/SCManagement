@@ -9,14 +9,12 @@ using SCManagement.Services.AzureStorageService.Models;
 using Xunit.Abstractions;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
-namespace SCManagement.Models
-{
+namespace SCManagement.Models {
     /// <summary>
     /// This class represents a Club
     /// </summary>
-    public class Club
-    {
-        
+    public class Club {
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Error_Required")]
@@ -27,7 +25,7 @@ namespace SCManagement.Models
         [EmailAddress]
         [Display(Name = "Email")]
         public string? Email { get; set; }
-        
+
         [Phone]
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
@@ -47,7 +45,9 @@ namespace SCManagement.Models
 
         public ICollection<Modality>? Modalities { get; set; }
 
+        public ICollection<UsersRoleClub>? UsersRoleClub { get; set; }
+
         [NotMapped]
-        public IEnumerable<int> ModalitiesIds { get; set; }
+        public IEnumerable<int>? ModalitiesIds { get; set; }
     }
 }

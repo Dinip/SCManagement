@@ -37,5 +37,7 @@ namespace SCManagement.Models
 
         [Required(ErrorMessage = "Error_Required")]
         public string Theme { get; set; } = "light";
+
+        public ICollection<UsersRoleClub>? UsersRoleClub { get; set; }
     }
 }

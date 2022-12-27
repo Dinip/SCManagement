@@ -85,7 +85,7 @@ namespace SCManagement.Data {
         
         public DbSet<RoleClub> RolesClub { get; set; }
 
-        public DbSet<ModalitiesClub> ModalitiesClubs { get; set; }
+       
     }
 }
 

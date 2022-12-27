@@ -8,5 +8,7 @@
         public int Id { get; set; }
 
         public string RoleName { get; set; }
+
+        public ICollection<UsersRoleClub>? UsersRoleClub { get; set; }
     }
 }
