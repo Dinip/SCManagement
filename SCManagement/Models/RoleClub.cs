@@ -1,11 +1,12 @@
 ﻿namespace SCManagement.Models
 {
     /// <summary>
-    /// This class represents a Modality
+    /// This class represents a Role in a club
     /// </summary>
-    public class Modality
+    public class RoleClub
     {
         public int Id { get; set; }
-        public string Name { get; set; }
+
+        public string RoleName { get; set; }
     }
 }

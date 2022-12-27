@@ -180,7 +180,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountyId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("SCManagement.Models.Club", b =>
@@ -194,14 +194,13 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("About")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("AddressId")
+                    b.Property<int?>("AddressId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("EndDate")
@@ -209,10 +208,10 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("PhotographyId")
@@ -224,7 +223,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("PhotographyId");
 
-                    b.ToTable("Club");
+                    b.ToTable("Club", (string)null);
                 });
 
             modelBuilder.Entity("SCManagement.Models.Country", b =>
@@ -241,7 +240,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country");
+                    b.ToTable("Country", (string)null);
 
                     b.HasData(
                         new
@@ -270,7 +269,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("County");
+                    b.ToTable("County", (string)null);
 
                     b.HasData(
                         new
@@ -2142,7 +2141,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("District");
+                    b.ToTable("District", (string)null);
 
                     b.HasData(
                         new
@@ -2321,6 +2320,29 @@ namespace SCManagement.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("SCManagement.Models.ModalitiesClub", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModalityId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("ModalityId");
+
+                    b.ToTable("ModalitiesClubs", (string)null);
+                });
+
             modelBuilder.Entity("SCManagement.Models.Modality", b =>
                 {
                     b.Property<int>("Id")
@@ -2340,7 +2362,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("Modality");
+                    b.ToTable("Modalities", (string)null);
 
                     b.HasData(
                         new
@@ -2392,6 +2414,50 @@ namespace SCManagement.Data.Migrations
                         {
                             Id = 10,
                             Name = "Orientação"
+                        });
+                });
+
+            modelBuilder.Entity("SCManagement.Models.RoleClub", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RolesClub", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RoleName = "Sócio"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RoleName = "Atleta"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RoleName = "Treinador"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RoleName = "Secretaria"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            RoleName = "Administrador de Clube"
                         });
                 });
 
@@ -2514,7 +2580,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlobDto");
+                    b.ToTable("BlobDto", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -2583,9 +2649,7 @@ namespace SCManagement.Data.Migrations
                 {
                     b.HasOne("SCManagement.Models.Address", "Address")
                         .WithMany()
-                        .HasForeignKey("AddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AddressId");
 
                     b.HasOne("SCManagement.Services.AzureStorageService.Models.BlobDto", "Photography")
                         .WithMany()
@@ -2616,6 +2680,25 @@ namespace SCManagement.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Country");
+                });
+
+            modelBuilder.Entity("SCManagement.Models.ModalitiesClub", b =>
+                {
+                    b.HasOne("SCManagement.Models.Club", "club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SCManagement.Models.Modality", "modality")
+                        .WithMany()
+                        .HasForeignKey("ModalityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("club");
+
+                    b.Navigation("modality");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Modality", b =>

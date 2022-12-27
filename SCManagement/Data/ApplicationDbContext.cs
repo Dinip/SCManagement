@@ -66,11 +66,26 @@ namespace SCManagement.Data {
                 new Modality { Id = 9, Name = "Taekwondo" },
                 new Modality { Id = 10, Name = "Orientação" }
                 );
+
+            //Create Roles for the Club
+            builder.Entity<RoleClub>().HasData(
+                new RoleClub { Id = 1, RoleName = "Sócio" },
+                new RoleClub { Id = 2, RoleName = "Atleta" },
+                new RoleClub { Id = 3, RoleName = "Treinador" },
+                new RoleClub { Id = 4, RoleName = "Secretaria" },
+                new RoleClub { Id = 5, RoleName = "Administrador de Clube" }
+                );
         }
 
-        public DbSet<SCManagement.Services.AzureStorageService.Models.BlobDto> BlobDto { get; set; }
+        public DbSet<BlobDto> BlobDto { get; set; }
 
-        public DbSet<SCManagement.Models.Club> Club { get; set; }
+        public DbSet<Club> Club { get; set; }
+
+        public DbSet<Modality> Modalities{ get; set; }
+        
+        public DbSet<RoleClub> RolesClub { get; set; }
+
+        public DbSet<ModalitiesClub> ModalitiesClubs { get; set; }
     }
 }
 

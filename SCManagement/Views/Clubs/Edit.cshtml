@@ -34,20 +34,18 @@
                 <span asp-validation-for="About" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control" />
-                <span asp-validation-for="CreationDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
-                <span asp-validation-for="EndDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Photography" class="control-label"></label>
                 <input asp-for="Photography" class="form-control" />
                 <span asp-validation-for="Photography" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="ModalitiesIds" class="control-label"></label>
+                <select multiple asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.modalities"></select>
+            </div>
+            @*<div class="form-group">
+                <label asp-for="ModalitiesIds" class="control-label"></label>
+                <select multiple asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.removeModalities"></select>
+            </div>*@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

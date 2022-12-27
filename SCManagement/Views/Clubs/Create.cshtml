@@ -17,48 +17,12 @@
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="About" class="control-label"></label>
-                <input asp-for="About" class="form-control" />
-                <span asp-validation-for="About" class="text-danger"></span>
+                <label asp-for="ModalitiesIds" class="control-label"></label>
+                <select multiple required asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.modalities"></select>
             </div>
 
-            <div class="form-group">
-
-                
-            </div>
-
-            @*<div>
-                <img id="profilePicture"
-                     src="@Model.PhotographyUrl"
-                     class="rounded-circle"
-                     width="128px"
-                     height="128px"
-                     onclick="document.getElementById('selectedFile').click()"
-                     style="cursor:pointer; object-fit: cover" />
-                <button id="btnRemoveImage"
-                        type="button"
-                        class="btn btn-danger @Model.ShowRemoveButton()"
-                        onclick="removePhoto()">
-                    Remove Photo
-                </button>
-            </div>
-
-            <div>
-                <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/png, image/jpeg"
-                       onchange="handleUpload(this)" />
-                <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
-            </div>*@
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -71,5 +35,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
