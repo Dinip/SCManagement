@@ -23,7 +23,7 @@ namespace SCManagement.ViewComponents
             
             ViewBag.Counties = new SelectList(await _locationService.GetCounties(district.First().Id), "Id", "Name");
 
-            return View("Address");
+            return View("LocationSearch");
         }
     }
 }

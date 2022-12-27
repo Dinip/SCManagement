@@ -75,6 +75,12 @@ namespace SCManagement.Controllers
             return View(address);
         }
 
+        [HttpPost]
+        public async Task<IEnumerable<County>> Search(string id)
+        {
+            return await _context.Counties.Where(c => c.Name.Contains(id.ToLower())).Take(5).ToListAsync();
+        }
+
         // GET: Addresses/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
