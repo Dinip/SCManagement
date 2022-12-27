@@ -1,0 +1,56 @@
+﻿@model Address
+
+<div class="form-group">
+    <input id="search_city"
+           type="search"
+           class="form-control"
+           placeholder=""
+           aria-label="Search"
+           onkeyup="debounce()" />
+    <div id="locationList">
+    </div>
+</div>
+
+<script src="/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    let timer = null
+    let debounce = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            search(document.getElementById('search_city').value);
+        }, 750);
+    };
+
+    let search = (value) => {
+        if (value == null || value.length < 2) return;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Search","Addresses")',
+            dataType: 'json',
+            data: { id: value },
+            success: countiesToList,
+            error: function (ex) {
+                console.log('Failed to retrieve states.' + ex);
+            }
+        });
+    }
+
+    let countiesToList = (counties) => {
+        $("#locationList").empty();
+        let list = document.getElementById("locationList")
+        for (let county of counties) {
+            let span = document.createElement("span")
+            span.textContent = county.name
+            span.value = county.id
+            list.appendChild(span)
+        }
+    }
+
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
