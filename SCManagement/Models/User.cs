@@ -37,5 +37,10 @@ namespace SCManagement.Models
 
         [Required(ErrorMessage = "Error_Required")]
         public string Theme { get; set; } = "light";
+
+        public string GetFullName()
+        {
+            return $"{FirstName} {LastName}";
+        }
     }
 }

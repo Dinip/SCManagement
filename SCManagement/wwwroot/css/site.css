@@ -170,16 +170,12 @@ input:checked + .slider:before {
     }
 
 
-#card {
+.card-to-dark {
     background: #D9D9D9;
     backdrop-filter: blur(30px);
     margin-top: 60px;
     max-height: 900px;
     border-radius: 20px;
-}
-
-.container-fluid{
-    min-width: 100% !important;
 }
 
 .dropdown-menu-full {

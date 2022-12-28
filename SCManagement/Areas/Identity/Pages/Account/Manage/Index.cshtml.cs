@@ -63,6 +63,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
+        
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -88,6 +89,8 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
 
+            public string Email { get; set; }
+
             [Display(Name = "Date Of Birth")]
             [DataType(DataType.Date)]
             [DateOfBirth(MinAge = 6, MaxAge = 100, ErrorMessage = "Error_DateOfBirth")]
@@ -95,6 +98,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
 
             public IFormFile? File { get; set; }
             public bool RemoveImage { get; set; } = false;
+
 
             //public int? AddressId { get; set; }
             //public Address? Address { get; set; }
@@ -115,6 +119,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 LastName = user.LastName,
                 PhoneNumber = phoneNumber,
                 DateOfBirth = user.DateOfBirth,
+                Email = user.Email
             };
         }
 
