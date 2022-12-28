@@ -1,6 +1,7 @@
 ﻿@inject IHtmlLocalizer<SharedResource> HtmlLocalizer
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
+
 @{
     ViewData["Title"] = @StringLocalizer["Home Page"];
 }
@@ -15,6 +16,9 @@
     <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
     
 </head>
+
+
+
 <body id="body">
     <div class="container-fluid">
         <div id="card" class="card">
@@ -31,6 +35,8 @@
     <div class="container">
         <partial name="_InfoPartial" />
     </div>
+    
+ 
 
     <script src="~/js/site.js" asp-append-version="true"></script>
 </body>

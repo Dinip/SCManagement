@@ -1,0 +1,51 @@
+﻿@model Address
+
+<div class="form-group">
+    <label  class="control-label">Country </label>
+    <select id="Country" class="form-control" asp-items="ViewBag.Countries" required></select>
+</div>
+<div class="form-group">
+    <label  class="control-label"></label>
+    <select id="District"  class="form-control" asp-items="ViewBag.Districts"></select>
+</div>
+<div class="form-group">
+    <label asp-for="CountyId" class="control-label"></label>
+    <select id="County" asp-for="CountyId" class="form-control" asp-items="ViewBag.Counties"></select>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    
+    $(document).ready(function () {
+        //Dropdownlist Selectedchange event
+        $("#District").change(function () {
+            $("#County").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetCounties","AddressT")', // we are calling json method
+                dataType: 'json',
+                data: { id: $("#District").val() },
+                success: function (states) {
+                    // states contains the JSON formatted list
+                    // of states passed from the controller
+
+                    $("#County").append('<option value="' + "0" + '">' + "Select county" + '</option>');
+                    debugger;
+                    $.each(states, function (i, state) {
+                        $("#County").append('<option value="' + state.county + '">' + state.name + '</option>');
+                        // here we are adding option for States
+                    });
+
+                },
+                error: function (ex) {
+                    alert('Failed to retrieve states.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+</script>
+
+
+
+               

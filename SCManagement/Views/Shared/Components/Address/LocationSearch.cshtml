@@ -1,0 +1,45 @@
+﻿@model Address
+
+<div class="form-group">
+    <input id="search_city" type="text" placeholder="" aria-label="Search" onkeyup="debounce()" list="locationList" />
+    <select id="locationList" asp-for="CountyId"></select>
+
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script type="text/javascript">
+    let timer = null
+    let debounce = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            search(document.getElementById('search_city').value);
+        }, 750);
+    };
+
+    let search = (value) => {
+        if (value == null || value.length <= 2) $("#locationList").empty();
+        if (value == null || value.length < 2) return;
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Search","Location")',
+            dataType: 'json',
+            data: { id: value },
+            success: countiesToList,
+            error: function (ex) {
+                console.log('Failed to retrieve counties.' + ex);
+            }
+        });
+    }
+
+    let countiesToList = (counties) => {
+        $("#locationList").empty();
+        let list = document.getElementById("locationList")
+        for (let county of counties) {
+            $("#locationList").append('<option value="' + county.id + '">' + county.name + '</option>');
+        }
+    }
+
+</script>
+
+

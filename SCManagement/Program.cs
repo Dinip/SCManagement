@@ -2,9 +2,12 @@
 using SCManagement;
 using SCManagement.Middlewares;
 using SCManagement.Services;
+using SCManagement.Services.Location;
 
 var builder = WebApplication.CreateBuilder(args);
 RegisterServices.Register(builder.Configuration, builder.Services);
+
+builder.Services.AddTransient<ILocationService, LocationService>();
 
 var app = builder.Build();
 
@@ -37,6 +40,10 @@ using (var ser = app.Services.CreateScope())
 }
 //this needs to be in this order, after user auth
 app.UseRequestLocalizationCookies();
+
+app.MapControllerRoute(
+    name: "Address",
+    pattern: "{controller=Addresses}/{action=Create}/{address}/{addressComponent?}");
 
 app.MapControllerRoute(
     name: "default",
