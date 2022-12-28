@@ -115,6 +115,17 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
+                    var user = _signInManager.UserManager.Users.FirstOrDefault(f => f.Email == Input.Email);
+                    if (user != null)
+                    {
+                        Response
+                        .Cookies
+                        .Append(".AspNetCore.Culture", string.Join("|", $"c={user.Language}", $"uic={user.Language}"),
+                        new CookieOptions
+                        {
+                            Expires = DateTimeOffset.UtcNow.AddMonths(6),
+                        });
+                    }
                     _logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }

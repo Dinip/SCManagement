@@ -1,5 +1,6 @@
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 using SCManagement;
+using SCManagement.Middlewares;
 using SCManagement.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,6 +25,9 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication();
+app.UseAuthorization();
+
 using (var ser = app.Services.CreateScope())
 {
     var services = ser.ServiceProvider;
@@ -31,9 +35,8 @@ using (var ser = app.Services.CreateScope())
     var localizationOptions = services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value;
     app.UseRequestLocalization(localizationOptions);
 }
-
-app.UseAuthentication();
-app.UseAuthorization();
+//this needs to be in this order, after user auth
+app.UseRequestLocalizationCookies();
 
 app.MapControllerRoute(
     name: "default",

@@ -6,6 +6,7 @@ using SCManagement.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using SCManagement.Services.AzureStorageService;
+using SCManagement.Middlewares;
 
 namespace SCManagement.Services
 {
@@ -52,20 +53,21 @@ namespace SCManagement.Services
                 };
             });
             services.AddSingleton<SharedResourceService>();
+            services.AddScoped<RequestLocalizationCookiesMiddleware>();
             #endregion
 
             #region register google authentication
             string GoogleId = configuration["GoogleId"];
             string GoogleSecret = configuration["GoogleSecret"];
 
-            if (string.IsNullOrEmpty(GoogleId) && string.IsNullOrEmpty(GoogleSecret))
+            if (!string.IsNullOrEmpty(GoogleId) && !string.IsNullOrEmpty(GoogleSecret))
             {
                 services.AddAuthentication().AddGoogle(options =>
                 {
                     options.ClientId = configuration["GoogleId"];
                     options.ClientSecret = configuration["GoogleSecret"];
                     //options.ClaimActions.MapJsonKey("urn:google:picture", "picture", "url");
-                    options.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
+                    //options.ClaimActions.MapJsonKey("urn:google:locale", "locale", "string");
                 });
             }
             #endregion
@@ -74,7 +76,7 @@ namespace SCManagement.Services
             string MicrosoftId = configuration["MicrosoftId"];
             string MicrosoftSecret = configuration["MicrosoftSecret"];
 
-            if (string.IsNullOrEmpty(MicrosoftId) && string.IsNullOrEmpty(MicrosoftSecret))
+            if (!string.IsNullOrEmpty(MicrosoftId) && !string.IsNullOrEmpty(MicrosoftSecret))
             {
                 services.AddAuthentication().AddMicrosoftAccount(options =>
                 {

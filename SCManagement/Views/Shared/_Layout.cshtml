@@ -28,6 +28,9 @@
                         <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
                         <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">Clubs</a>
                         <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
+                        
+                        @await Component.InvokeAsync("CulturePicker")
+
                         <hr />
 
                         <div class="dropdown d-block d-md-none nav-item">

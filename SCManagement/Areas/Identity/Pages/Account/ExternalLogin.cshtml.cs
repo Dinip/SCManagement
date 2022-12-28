@@ -90,7 +90,6 @@ namespace SCManagement.Areas.Identity.Pages.Account
             public string Email { get; set; }
             public string FirstName { get; set; }
             public string LastName { get; set; }
-            public string Language { get; set; } = "en-US";
         }
 
         public IActionResult OnGet() => RedirectToPage("./Login");
@@ -122,6 +121,18 @@ namespace SCManagement.Areas.Identity.Pages.Account
             var result = await _signInManager.ExternalLoginSignInAsync(info.LoginProvider, info.ProviderKey, isPersistent: false, bypassTwoFactor: true);
             if (result.Succeeded)
             {
+                var user = await _userManager.GetUserAsync(info.Principal);
+                if (user != null)
+                {
+                    Response
+                    .Cookies
+                    .Append(".AspNetCore.Culture", string.Join("|", $"c={user.Language}", $"uic={user.Language}"),
+                    new CookieOptions
+                    {
+                        Expires = DateTimeOffset.UtcNow.AddMonths(6),
+                    });
+                }
+
                 _logger.LogInformation("{Name} logged in with {LoginProvider} provider.", info.Principal.Identity.Name, info.LoginProvider);
                 return LocalRedirect(returnUrl);
             }
@@ -151,12 +162,6 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 {
                     Input.LastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
                 }
-
-                if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Locality))
-                {
-                    bool isPTLang = info.Principal.FindFirstValue(ClaimTypes.Locality).Contains("pt");
-                    Input.Language = isPTLang ? "pt-PT" : "en-US";
-                }
                 return Page();
             }
         }
@@ -180,7 +185,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
-                user.Language = Input.Language;
+
+                var currentCulture = HttpContext.Request.Cookies.FirstOrDefault(f => f.Key == ".AspNetCore.Culture");
+                if (currentCulture.Value != null)
+                {
+                    //set current lang to user
+                    user.Language = currentCulture.Value!.Split("|")?[0].Split("=")[1];
+                }
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)

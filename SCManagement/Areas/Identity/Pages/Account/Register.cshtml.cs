@@ -127,6 +127,13 @@ namespace SCManagement.Areas.Identity.Pages.Account
             {
                 var user = CreateUser();
 
+                var currentCulture = HttpContext.Request.Cookies.FirstOrDefault(f => f.Key == ".AspNetCore.Culture");
+                if (currentCulture.Value != null)
+                {
+                    //set current lang to user
+                    user.Language = currentCulture.Value!.Split("|")?[0].Split("=")[1];
+                }
+
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
 
