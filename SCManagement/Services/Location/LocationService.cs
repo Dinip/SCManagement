@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
+using Unidecode.NET;
 
 namespace SCManagement.Services.Location
 {
@@ -12,29 +13,32 @@ namespace SCManagement.Services.Location
             _context = context;
         }
 
-        public async Task<AddressComponent> Address(AddressComponent addressComponent)
-        {
-            return new AddressComponent
-            { 
-                County = addressComponent.County,
-                District = addressComponent.District,
-                Country = addressComponent.Country
-            };
-        }
-
         public async Task<IEnumerable<Country>> GetCountries()
         {
-            return await _context.Countries.Include(c => c.Districts).ToListAsync();
+            return await _context.Country.Include(c => c.Districts).ToListAsync();
         }
-        
+
         public async Task<IEnumerable<District>> GetDistricts(int countryId)
         {
-            return await _context.Districts.Where(d => d.CountryId == countryId).ToListAsync();
+            return await _context.District.Where(d => d.CountryId == countryId).ToListAsync();
         }
-        
+
         public async Task<IEnumerable<County>> GetCounties(int id)
         {
-            return await _context.Counties.Where(c => c.DistrictId == id).ToListAsync();
+            return await _context.County.Where(c => c.DistrictId == id).ToListAsync();
+        }
+
+        public async Task<IEnumerable<County>> SearchCountiesName(string name)
+        {
+            string normalizedName = name.Unidecode();
+            return await _context.County
+                .Where(c => c.NormalizedName.Contains(normalizedName))
+                .OrderBy(o => o.Name)
+                .Take(5)
+                .Include(c => c.District)
+                .ThenInclude(d => d.Country)
+                .Select(s => new County { Id = s.Id, Name = $"{s.Name}, {s.District!.Name}, {s.District.Country!.Name}" })
+                .ToListAsync();
         }
     }
 }

@@ -1,29 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.Location;
 
 namespace SCManagement.Controllers
 {
-    public class AddressTController : Controller
+    [Authorize]
+    public class LocationController : Controller
     {
         private readonly ILocationService _locationService;
 
-        public AddressTController( ILocationService locationService)
+        public LocationController(ILocationService locationService)
         {
             _locationService = locationService;
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Address(AddressComponent addressComponent)
-        {
-            return View(await _locationService.Address(addressComponent));
         }
 
         [HttpPost]
@@ -44,5 +33,10 @@ namespace SCManagement.Controllers
             return await _locationService.GetCounties(id);
         }
 
+        [HttpPost]
+        public async Task<IEnumerable<County>> Search(string id)
+        {
+            return await _locationService.SearchCountiesName(id);
+        }
     }
 }

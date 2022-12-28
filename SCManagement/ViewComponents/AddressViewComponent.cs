@@ -15,13 +15,13 @@ namespace SCManagement.ViewComponents
         }
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var countries = await _locationService.GetCountries();
-            ViewBag.Countries = new SelectList(countries, "Id", "Name");
+            //var countries = await _locationService.GetCountries();
+            //ViewBag.Countries = new SelectList(countries, "Id", "Name");
 
-            var district = await _locationService.GetDistricts(countries.First().Id);
-            ViewBag.Districts = new SelectList(district, "Id", "Name");
+            //var district = await _locationService.GetDistricts(countries.First().Id);
+            //ViewBag.Districts = new SelectList(district, "Id", "Name");
             
-            ViewBag.Counties = new SelectList(await _locationService.GetCounties(district.First().Id), "Id", "Name");
+            //ViewBag.Counties = new SelectList(await _locationService.GetCounties(district.First().Id), "Id", "Name");
 
             return View("LocationSearch");
         }

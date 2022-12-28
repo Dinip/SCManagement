@@ -180,7 +180,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountyId");
 
-                    b.ToTable("Address", (string)null);
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Country", b =>
@@ -195,15 +195,20 @@ namespace SCManagement.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
-                    b.ToTable("Country", (string)null);
+                    b.ToTable("Country");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Name = "Portugal"
+                            Name = "Portugal",
+                            NormalizedName = "portugal"
                         });
                 });
 
@@ -222,1860 +227,2172 @@ namespace SCManagement.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("County", (string)null);
+                    b.ToTable("County");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             DistrictId = 1,
-                            Name = "Águeda"
+                            Name = "Águeda",
+                            NormalizedName = "agueda"
                         },
                         new
                         {
                             Id = 2,
                             DistrictId = 1,
-                            Name = "Albergaria-a-Velha"
+                            Name = "Albergaria-a-Velha",
+                            NormalizedName = "albergaria-a-velha"
                         },
                         new
                         {
                             Id = 3,
                             DistrictId = 1,
-                            Name = "Anadia"
+                            Name = "Anadia",
+                            NormalizedName = "anadia"
                         },
                         new
                         {
                             Id = 4,
                             DistrictId = 1,
-                            Name = "Arouca"
+                            Name = "Arouca",
+                            NormalizedName = "arouca"
                         },
                         new
                         {
                             Id = 5,
                             DistrictId = 1,
-                            Name = "Aveiro"
+                            Name = "Aveiro",
+                            NormalizedName = "aveiro"
                         },
                         new
                         {
                             Id = 6,
                             DistrictId = 1,
-                            Name = "Castelo de Paiva"
+                            Name = "Castelo de Paiva",
+                            NormalizedName = "castelo de paiva"
                         },
                         new
                         {
                             Id = 7,
                             DistrictId = 1,
-                            Name = "Espinho"
+                            Name = "Espinho",
+                            NormalizedName = "espinho"
                         },
                         new
                         {
                             Id = 8,
                             DistrictId = 1,
-                            Name = "Estarreja"
+                            Name = "Estarreja",
+                            NormalizedName = "estarreja"
                         },
                         new
                         {
                             Id = 9,
                             DistrictId = 1,
-                            Name = "Santa Maria da Feira"
+                            Name = "Santa Maria da Feira",
+                            NormalizedName = "santa maria da feira"
                         },
                         new
                         {
                             Id = 10,
                             DistrictId = 1,
-                            Name = "Ílhavo"
+                            Name = "Ílhavo",
+                            NormalizedName = "ilhavo"
                         },
                         new
                         {
                             Id = 11,
                             DistrictId = 1,
-                            Name = "Mealhada"
+                            Name = "Mealhada",
+                            NormalizedName = "mealhada"
                         },
                         new
                         {
                             Id = 12,
                             DistrictId = 1,
-                            Name = "Murtosa"
+                            Name = "Murtosa",
+                            NormalizedName = "murtosa"
                         },
                         new
                         {
                             Id = 13,
                             DistrictId = 1,
-                            Name = "Oliveira de Azeméis"
+                            Name = "Oliveira de Azeméis",
+                            NormalizedName = "oliveira de azemeis"
                         },
                         new
                         {
                             Id = 14,
                             DistrictId = 1,
-                            Name = "Oliveira do Bairro"
+                            Name = "Oliveira do Bairro",
+                            NormalizedName = "oliveira do bairro"
                         },
                         new
                         {
                             Id = 15,
                             DistrictId = 1,
-                            Name = "Ovar"
+                            Name = "Ovar",
+                            NormalizedName = "ovar"
                         },
                         new
                         {
                             Id = 16,
                             DistrictId = 1,
-                            Name = "São João da Madeira"
+                            Name = "São João da Madeira",
+                            NormalizedName = "sao joao da madeira"
                         },
                         new
                         {
                             Id = 17,
                             DistrictId = 1,
-                            Name = "Sever do Vouga"
+                            Name = "Sever do Vouga",
+                            NormalizedName = "sever do vouga"
                         },
                         new
                         {
                             Id = 18,
                             DistrictId = 1,
-                            Name = "Vagos"
+                            Name = "Vagos",
+                            NormalizedName = "vagos"
                         },
                         new
                         {
                             Id = 19,
                             DistrictId = 1,
-                            Name = "Vale de Cambra"
+                            Name = "Vale de Cambra",
+                            NormalizedName = "vale de cambra"
                         },
                         new
                         {
                             Id = 20,
                             DistrictId = 2,
-                            Name = "Aljustrel"
+                            Name = "Aljustrel",
+                            NormalizedName = "aljustrel"
                         },
                         new
                         {
                             Id = 21,
                             DistrictId = 2,
-                            Name = "Almodôvar"
+                            Name = "Almodôvar",
+                            NormalizedName = "almodovar"
                         },
                         new
                         {
                             Id = 22,
                             DistrictId = 2,
-                            Name = "Alvito"
+                            Name = "Alvito",
+                            NormalizedName = "alvito"
                         },
                         new
                         {
                             Id = 23,
                             DistrictId = 2,
-                            Name = "Barrancos"
+                            Name = "Barrancos",
+                            NormalizedName = "barrancos"
                         },
                         new
                         {
                             Id = 24,
                             DistrictId = 2,
-                            Name = "Beja"
+                            Name = "Beja",
+                            NormalizedName = "beja"
                         },
                         new
                         {
                             Id = 25,
                             DistrictId = 2,
-                            Name = "Castro Verde"
+                            Name = "Castro Verde",
+                            NormalizedName = "castro verde"
                         },
                         new
                         {
                             Id = 26,
                             DistrictId = 2,
-                            Name = "Cuba"
+                            Name = "Cuba",
+                            NormalizedName = "cuba"
                         },
                         new
                         {
                             Id = 27,
                             DistrictId = 2,
-                            Name = "Ferreira do Alentejo"
+                            Name = "Ferreira do Alentejo",
+                            NormalizedName = "ferreira do alentejo"
                         },
                         new
                         {
                             Id = 28,
                             DistrictId = 2,
-                            Name = "Mértola"
+                            Name = "Mértola",
+                            NormalizedName = "mertola"
                         },
                         new
                         {
                             Id = 29,
                             DistrictId = 2,
-                            Name = "Moura"
+                            Name = "Moura",
+                            NormalizedName = "moura"
                         },
                         new
                         {
                             Id = 30,
                             DistrictId = 2,
-                            Name = "Odemira"
+                            Name = "Odemira",
+                            NormalizedName = "odemira"
                         },
                         new
                         {
                             Id = 31,
                             DistrictId = 2,
-                            Name = "Ourique"
+                            Name = "Ourique",
+                            NormalizedName = "ourique"
                         },
                         new
                         {
                             Id = 32,
                             DistrictId = 2,
-                            Name = "Serpa"
+                            Name = "Serpa",
+                            NormalizedName = "serpa"
                         },
                         new
                         {
                             Id = 33,
                             DistrictId = 2,
-                            Name = "Vidigueira"
+                            Name = "Vidigueira",
+                            NormalizedName = "vidigueira"
                         },
                         new
                         {
                             Id = 34,
                             DistrictId = 3,
-                            Name = "Amares"
+                            Name = "Amares",
+                            NormalizedName = "amares"
                         },
                         new
                         {
                             Id = 35,
                             DistrictId = 3,
-                            Name = "Barcelos"
+                            Name = "Barcelos",
+                            NormalizedName = "barcelos"
                         },
                         new
                         {
                             Id = 36,
                             DistrictId = 3,
-                            Name = "Braga"
+                            Name = "Braga",
+                            NormalizedName = "braga"
                         },
                         new
                         {
                             Id = 37,
                             DistrictId = 3,
-                            Name = "Cabeceiras de Basto"
+                            Name = "Cabeceiras de Basto",
+                            NormalizedName = "cabeceiras de basto"
                         },
                         new
                         {
                             Id = 38,
                             DistrictId = 3,
-                            Name = "Celorico de Basto"
+                            Name = "Celorico de Basto",
+                            NormalizedName = "celorico de basto"
                         },
                         new
                         {
                             Id = 39,
                             DistrictId = 3,
-                            Name = "Esposende"
+                            Name = "Esposende",
+                            NormalizedName = "esposende"
                         },
                         new
                         {
                             Id = 40,
                             DistrictId = 3,
-                            Name = "Fafe"
+                            Name = "Fafe",
+                            NormalizedName = "fafe"
                         },
                         new
                         {
                             Id = 41,
                             DistrictId = 3,
-                            Name = "Guimarães"
+                            Name = "Guimarães",
+                            NormalizedName = "guimaraes"
                         },
                         new
                         {
                             Id = 42,
                             DistrictId = 3,
-                            Name = "Póvoa de Lanhoso"
+                            Name = "Póvoa de Lanhoso",
+                            NormalizedName = "povoa de lanhoso"
                         },
                         new
                         {
                             Id = 43,
                             DistrictId = 3,
-                            Name = "Terras de Bouro"
+                            Name = "Terras de Bouro",
+                            NormalizedName = "terras de bouro"
                         },
                         new
                         {
                             Id = 44,
                             DistrictId = 3,
-                            Name = "Vieira do Minho"
+                            Name = "Vieira do Minho",
+                            NormalizedName = "vieira do minho"
                         },
                         new
                         {
                             Id = 45,
                             DistrictId = 3,
-                            Name = "Vila Nova de Famalicão"
+                            Name = "Vila Nova de Famalicão",
+                            NormalizedName = "vila nova de famalicao"
                         },
                         new
                         {
                             Id = 46,
                             DistrictId = 3,
-                            Name = "Vila Verde"
+                            Name = "Vila Verde",
+                            NormalizedName = "vila verde"
                         },
                         new
                         {
                             Id = 47,
                             DistrictId = 3,
-                            Name = "Vizela"
+                            Name = "Vizela",
+                            NormalizedName = "vizela"
                         },
                         new
                         {
                             Id = 48,
                             DistrictId = 4,
-                            Name = "Alfândega da Fé"
+                            Name = "Alfândega da Fé",
+                            NormalizedName = "alfandega da fe"
                         },
                         new
                         {
                             Id = 49,
                             DistrictId = 4,
-                            Name = "Bragança"
+                            Name = "Bragança",
+                            NormalizedName = "braganca"
                         },
                         new
                         {
                             Id = 50,
                             DistrictId = 4,
-                            Name = "Carrazeda de Ansiães"
+                            Name = "Carrazeda de Ansiães",
+                            NormalizedName = "carrazeda de ansiaes"
                         },
                         new
                         {
                             Id = 51,
                             DistrictId = 4,
-                            Name = "Freixo de Espada à Cinta"
+                            Name = "Freixo de Espada à Cinta",
+                            NormalizedName = "freixo de espada a cinta"
                         },
                         new
                         {
                             Id = 52,
                             DistrictId = 4,
-                            Name = "Macedo de Cavaleiros"
+                            Name = "Macedo de Cavaleiros",
+                            NormalizedName = "macedo de cavaleiros"
                         },
                         new
                         {
                             Id = 53,
                             DistrictId = 4,
-                            Name = "Miranda do Douro"
+                            Name = "Miranda do Douro",
+                            NormalizedName = "miranda do douro"
                         },
                         new
                         {
                             Id = 54,
                             DistrictId = 4,
-                            Name = "Mirandela"
+                            Name = "Mirandela",
+                            NormalizedName = "mirandela"
                         },
                         new
                         {
                             Id = 55,
                             DistrictId = 4,
-                            Name = "Mogadouro"
+                            Name = "Mogadouro",
+                            NormalizedName = "mogadouro"
                         },
                         new
                         {
                             Id = 56,
                             DistrictId = 4,
-                            Name = "Torre de Moncorvo"
+                            Name = "Torre de Moncorvo",
+                            NormalizedName = "torre de moncorvo"
                         },
                         new
                         {
                             Id = 57,
                             DistrictId = 4,
-                            Name = "Vila Flor"
+                            Name = "Vila Flor",
+                            NormalizedName = "vila flor"
                         },
                         new
                         {
                             Id = 58,
                             DistrictId = 4,
-                            Name = "Vimioso"
+                            Name = "Vimioso",
+                            NormalizedName = "vimioso"
                         },
                         new
                         {
                             Id = 59,
                             DistrictId = 4,
-                            Name = "Vinhais"
+                            Name = "Vinhais",
+                            NormalizedName = "vinhais"
                         },
                         new
                         {
                             Id = 60,
                             DistrictId = 5,
-                            Name = "Belmonte"
+                            Name = "Belmonte",
+                            NormalizedName = "belmonte"
                         },
                         new
                         {
                             Id = 61,
                             DistrictId = 5,
-                            Name = "Castelo Branco"
+                            Name = "Castelo Branco",
+                            NormalizedName = "castelo branco"
                         },
                         new
                         {
                             Id = 62,
                             DistrictId = 5,
-                            Name = "Covilhã"
+                            Name = "Covilhã",
+                            NormalizedName = "covilha"
                         },
                         new
                         {
                             Id = 63,
                             DistrictId = 5,
-                            Name = "Fundão"
+                            Name = "Fundão",
+                            NormalizedName = "fundao"
                         },
                         new
                         {
                             Id = 64,
                             DistrictId = 5,
-                            Name = "Idanha-a-Nova"
+                            Name = "Idanha-a-Nova",
+                            NormalizedName = "idanha-a-nova"
                         },
                         new
                         {
                             Id = 65,
                             DistrictId = 5,
-                            Name = "Oleiros"
+                            Name = "Oleiros",
+                            NormalizedName = "oleiros"
                         },
                         new
                         {
                             Id = 66,
                             DistrictId = 5,
-                            Name = "Penamacor"
+                            Name = "Penamacor",
+                            NormalizedName = "penamacor"
                         },
                         new
                         {
                             Id = 67,
                             DistrictId = 5,
-                            Name = "Proença-a-Nova"
+                            Name = "Proença-a-Nova",
+                            NormalizedName = "proenca-a-nova"
                         },
                         new
                         {
                             Id = 68,
                             DistrictId = 5,
-                            Name = "Sertã"
+                            Name = "Sertã",
+                            NormalizedName = "serta"
                         },
                         new
                         {
                             Id = 69,
                             DistrictId = 5,
-                            Name = "Vila de Rei"
+                            Name = "Vila de Rei",
+                            NormalizedName = "vila de rei"
                         },
                         new
                         {
                             Id = 70,
                             DistrictId = 5,
-                            Name = "Vila Velha de Ródão"
+                            Name = "Vila Velha de Ródão",
+                            NormalizedName = "vila velha de rodao"
                         },
                         new
                         {
                             Id = 71,
                             DistrictId = 6,
-                            Name = "Arganil"
+                            Name = "Arganil",
+                            NormalizedName = "arganil"
                         },
                         new
                         {
                             Id = 72,
                             DistrictId = 6,
-                            Name = "Cantanhede"
+                            Name = "Cantanhede",
+                            NormalizedName = "cantanhede"
                         },
                         new
                         {
                             Id = 73,
                             DistrictId = 6,
-                            Name = "Coimbra"
+                            Name = "Coimbra",
+                            NormalizedName = "coimbra"
                         },
                         new
                         {
                             Id = 74,
                             DistrictId = 6,
-                            Name = "Condeixa-a-Nova"
+                            Name = "Condeixa-a-Nova",
+                            NormalizedName = "condeixa-a-nova"
                         },
                         new
                         {
                             Id = 75,
                             DistrictId = 6,
-                            Name = "Figueira da Foz"
+                            Name = "Figueira da Foz",
+                            NormalizedName = "figueira da foz"
                         },
                         new
                         {
                             Id = 76,
                             DistrictId = 6,
-                            Name = "Góis"
+                            Name = "Góis",
+                            NormalizedName = "gois"
                         },
                         new
                         {
                             Id = 77,
                             DistrictId = 6,
-                            Name = "Lousã"
+                            Name = "Lousã",
+                            NormalizedName = "lousa"
                         },
                         new
                         {
                             Id = 78,
                             DistrictId = 6,
-                            Name = "Mira"
+                            Name = "Mira",
+                            NormalizedName = "mira"
                         },
                         new
                         {
                             Id = 79,
                             DistrictId = 6,
-                            Name = "Miranda do Corvo"
+                            Name = "Miranda do Corvo",
+                            NormalizedName = "miranda do corvo"
                         },
                         new
                         {
                             Id = 80,
                             DistrictId = 6,
-                            Name = "Montemor-o-Velho"
+                            Name = "Montemor-o-Velho",
+                            NormalizedName = "montemor-o-velho"
                         },
                         new
                         {
                             Id = 81,
                             DistrictId = 6,
-                            Name = "Oliveira do Hospital"
+                            Name = "Oliveira do Hospital",
+                            NormalizedName = "oliveira do hospital"
                         },
                         new
                         {
                             Id = 82,
                             DistrictId = 6,
-                            Name = "Pampilhosa da Serra"
+                            Name = "Pampilhosa da Serra",
+                            NormalizedName = "pampilhosa da serra"
                         },
                         new
                         {
                             Id = 83,
                             DistrictId = 6,
-                            Name = "Penacova"
+                            Name = "Penacova",
+                            NormalizedName = "penacova"
                         },
                         new
                         {
                             Id = 84,
                             DistrictId = 6,
-                            Name = "Penela"
+                            Name = "Penela",
+                            NormalizedName = "penela"
                         },
                         new
                         {
                             Id = 85,
                             DistrictId = 6,
-                            Name = "Soure"
+                            Name = "Soure",
+                            NormalizedName = "soure"
                         },
                         new
                         {
                             Id = 86,
                             DistrictId = 6,
-                            Name = "Tábua"
+                            Name = "Tábua",
+                            NormalizedName = "tabua"
                         },
                         new
                         {
                             Id = 87,
                             DistrictId = 6,
-                            Name = "Vila Nova de Poiares"
+                            Name = "Vila Nova de Poiares",
+                            NormalizedName = "vila nova de poiares"
                         },
                         new
                         {
                             Id = 88,
                             DistrictId = 7,
-                            Name = "Alandroal"
+                            Name = "Alandroal",
+                            NormalizedName = "alandroal"
                         },
                         new
                         {
                             Id = 89,
                             DistrictId = 7,
-                            Name = "Arraiolos"
+                            Name = "Arraiolos",
+                            NormalizedName = "arraiolos"
                         },
                         new
                         {
                             Id = 90,
                             DistrictId = 7,
-                            Name = "Borba"
+                            Name = "Borba",
+                            NormalizedName = "borba"
                         },
                         new
                         {
                             Id = 91,
                             DistrictId = 7,
-                            Name = "Estremoz"
+                            Name = "Estremoz",
+                            NormalizedName = "estremoz"
                         },
                         new
                         {
                             Id = 92,
                             DistrictId = 7,
-                            Name = "Évora"
+                            Name = "Évora",
+                            NormalizedName = "evora"
                         },
                         new
                         {
                             Id = 93,
                             DistrictId = 7,
-                            Name = "Montemor-o-Novo"
+                            Name = "Montemor-o-Novo",
+                            NormalizedName = "montemor-o-novo"
                         },
                         new
                         {
                             Id = 94,
                             DistrictId = 7,
-                            Name = "Mora"
+                            Name = "Mora",
+                            NormalizedName = "mora"
                         },
                         new
                         {
                             Id = 95,
                             DistrictId = 7,
-                            Name = "Mourão"
+                            Name = "Mourão",
+                            NormalizedName = "mourao"
                         },
                         new
                         {
                             Id = 96,
                             DistrictId = 7,
-                            Name = "Portel"
+                            Name = "Portel",
+                            NormalizedName = "portel"
                         },
                         new
                         {
                             Id = 97,
                             DistrictId = 7,
-                            Name = "Redondo"
+                            Name = "Redondo",
+                            NormalizedName = "redondo"
                         },
                         new
                         {
                             Id = 98,
                             DistrictId = 7,
-                            Name = "Reguengos de Monsaraz"
+                            Name = "Reguengos de Monsaraz",
+                            NormalizedName = "reguengos de monsaraz"
                         },
                         new
                         {
                             Id = 99,
                             DistrictId = 7,
-                            Name = "Vendas Novas"
+                            Name = "Vendas Novas",
+                            NormalizedName = "vendas novas"
                         },
                         new
                         {
                             Id = 100,
                             DistrictId = 7,
-                            Name = "Viana do Alentejo"
+                            Name = "Viana do Alentejo",
+                            NormalizedName = "viana do alentejo"
                         },
                         new
                         {
                             Id = 101,
                             DistrictId = 7,
-                            Name = "Vila Viçosa"
+                            Name = "Vila Viçosa",
+                            NormalizedName = "vila vicosa"
                         },
                         new
                         {
                             Id = 102,
                             DistrictId = 8,
-                            Name = "Albufeira"
+                            Name = "Albufeira",
+                            NormalizedName = "albufeira"
                         },
                         new
                         {
                             Id = 103,
                             DistrictId = 8,
-                            Name = "Alcoutim"
+                            Name = "Alcoutim",
+                            NormalizedName = "alcoutim"
                         },
                         new
                         {
                             Id = 104,
                             DistrictId = 8,
-                            Name = "Aljezur"
+                            Name = "Aljezur",
+                            NormalizedName = "aljezur"
                         },
                         new
                         {
                             Id = 105,
                             DistrictId = 8,
-                            Name = "Castro Marim"
+                            Name = "Castro Marim",
+                            NormalizedName = "castro marim"
                         },
                         new
                         {
                             Id = 106,
                             DistrictId = 8,
-                            Name = "Faro"
+                            Name = "Faro",
+                            NormalizedName = "faro"
                         },
                         new
                         {
                             Id = 107,
                             DistrictId = 8,
-                            Name = "Lagoa"
+                            Name = "Lagoa",
+                            NormalizedName = "lagoa"
                         },
                         new
                         {
                             Id = 108,
                             DistrictId = 8,
-                            Name = "Lagos"
+                            Name = "Lagos",
+                            NormalizedName = "lagos"
                         },
                         new
                         {
                             Id = 109,
                             DistrictId = 8,
-                            Name = "Loulé"
+                            Name = "Loulé",
+                            NormalizedName = "loule"
                         },
                         new
                         {
                             Id = 110,
                             DistrictId = 8,
-                            Name = "Monchique"
+                            Name = "Monchique",
+                            NormalizedName = "monchique"
                         },
                         new
                         {
                             Id = 111,
                             DistrictId = 8,
-                            Name = "Olhão"
+                            Name = "Olhão",
+                            NormalizedName = "olhao"
                         },
                         new
                         {
                             Id = 112,
                             DistrictId = 8,
-                            Name = "Portimão"
+                            Name = "Portimão",
+                            NormalizedName = "portimao"
                         },
                         new
                         {
                             Id = 113,
                             DistrictId = 8,
-                            Name = "São Brás de Alportel"
+                            Name = "São Brás de Alportel",
+                            NormalizedName = "sao bras de alportel"
                         },
                         new
                         {
                             Id = 114,
                             DistrictId = 8,
-                            Name = "Silves"
+                            Name = "Silves",
+                            NormalizedName = "silves"
                         },
                         new
                         {
                             Id = 115,
                             DistrictId = 8,
-                            Name = "Tavira"
+                            Name = "Tavira",
+                            NormalizedName = "tavira"
                         },
                         new
                         {
                             Id = 116,
                             DistrictId = 8,
-                            Name = "Vila do Bispo"
+                            Name = "Vila do Bispo",
+                            NormalizedName = "vila do bispo"
                         },
                         new
                         {
                             Id = 117,
                             DistrictId = 8,
-                            Name = "Vila Real de Santo António"
+                            Name = "Vila Real de Santo António",
+                            NormalizedName = "vila real de santo antonio"
                         },
                         new
                         {
                             Id = 118,
                             DistrictId = 9,
-                            Name = "Aguiar da Beira"
+                            Name = "Aguiar da Beira",
+                            NormalizedName = "aguiar da beira"
                         },
                         new
                         {
                             Id = 119,
                             DistrictId = 9,
-                            Name = "Almeida"
+                            Name = "Almeida",
+                            NormalizedName = "almeida"
                         },
                         new
                         {
                             Id = 120,
                             DistrictId = 9,
-                            Name = "Celorico da Beira"
+                            Name = "Celorico da Beira",
+                            NormalizedName = "celorico da beira"
                         },
                         new
                         {
                             Id = 121,
                             DistrictId = 9,
-                            Name = "Figueira de Castelo Rodrigo"
+                            Name = "Figueira de Castelo Rodrigo",
+                            NormalizedName = "figueira de castelo rodrigo"
                         },
                         new
                         {
                             Id = 122,
                             DistrictId = 9,
-                            Name = "Fornos de Algodres"
+                            Name = "Fornos de Algodres",
+                            NormalizedName = "fornos de algodres"
                         },
                         new
                         {
                             Id = 123,
                             DistrictId = 9,
-                            Name = "Gouveia"
+                            Name = "Gouveia",
+                            NormalizedName = "gouveia"
                         },
                         new
                         {
                             Id = 124,
                             DistrictId = 9,
-                            Name = "Guarda"
+                            Name = "Guarda",
+                            NormalizedName = "guarda"
                         },
                         new
                         {
                             Id = 125,
                             DistrictId = 9,
-                            Name = "Manteigas"
+                            Name = "Manteigas",
+                            NormalizedName = "manteigas"
                         },
                         new
                         {
                             Id = 126,
                             DistrictId = 9,
-                            Name = "Mêda"
+                            Name = "Mêda",
+                            NormalizedName = "meda"
                         },
                         new
                         {
                             Id = 127,
                             DistrictId = 9,
-                            Name = "Pinhel"
+                            Name = "Pinhel",
+                            NormalizedName = "pinhel"
                         },
                         new
                         {
                             Id = 128,
                             DistrictId = 9,
-                            Name = "Sabugal"
+                            Name = "Sabugal",
+                            NormalizedName = "sabugal"
                         },
                         new
                         {
                             Id = 129,
                             DistrictId = 9,
-                            Name = "Seia"
+                            Name = "Seia",
+                            NormalizedName = "seia"
                         },
                         new
                         {
                             Id = 130,
                             DistrictId = 9,
-                            Name = "Trancoso"
+                            Name = "Trancoso",
+                            NormalizedName = "trancoso"
                         },
                         new
                         {
                             Id = 131,
                             DistrictId = 9,
-                            Name = "Vila Nova de Foz Côa"
+                            Name = "Vila Nova de Foz Côa",
+                            NormalizedName = "vila nova de foz coa"
                         },
                         new
                         {
                             Id = 132,
                             DistrictId = 10,
-                            Name = "Alcobaça"
+                            Name = "Alcobaça",
+                            NormalizedName = "alcobaca"
                         },
                         new
                         {
                             Id = 133,
                             DistrictId = 10,
-                            Name = "Alvaiázere"
+                            Name = "Alvaiázere",
+                            NormalizedName = "alvaiazere"
                         },
                         new
                         {
                             Id = 134,
                             DistrictId = 10,
-                            Name = "Ansião"
+                            Name = "Ansião",
+                            NormalizedName = "ansiao"
                         },
                         new
                         {
                             Id = 135,
                             DistrictId = 10,
-                            Name = "Batalha"
+                            Name = "Batalha",
+                            NormalizedName = "batalha"
                         },
                         new
                         {
                             Id = 136,
                             DistrictId = 10,
-                            Name = "Bombarral"
+                            Name = "Bombarral",
+                            NormalizedName = "bombarral"
                         },
                         new
                         {
                             Id = 137,
                             DistrictId = 10,
-                            Name = "Caldas da Rainha"
+                            Name = "Caldas da Rainha",
+                            NormalizedName = "caldas da rainha"
                         },
                         new
                         {
                             Id = 138,
                             DistrictId = 10,
-                            Name = "Castanheira de Pêra"
+                            Name = "Castanheira de Pêra",
+                            NormalizedName = "castanheira de pera"
                         },
                         new
                         {
                             Id = 139,
                             DistrictId = 10,
-                            Name = "Figueiró dos Vinhos"
+                            Name = "Figueiró dos Vinhos",
+                            NormalizedName = "figueiro dos vinhos"
                         },
                         new
                         {
                             Id = 140,
                             DistrictId = 10,
-                            Name = "Leiria"
+                            Name = "Leiria",
+                            NormalizedName = "leiria"
                         },
                         new
                         {
                             Id = 141,
                             DistrictId = 10,
-                            Name = "Marinha Grande"
+                            Name = "Marinha Grande",
+                            NormalizedName = "marinha grande"
                         },
                         new
                         {
                             Id = 142,
                             DistrictId = 10,
-                            Name = "Nazaré"
+                            Name = "Nazaré",
+                            NormalizedName = "nazare"
                         },
                         new
                         {
                             Id = 143,
                             DistrictId = 10,
-                            Name = "Óbidos"
+                            Name = "Óbidos",
+                            NormalizedName = "obidos"
                         },
                         new
                         {
                             Id = 144,
                             DistrictId = 10,
-                            Name = "Pedrógão Grande"
+                            Name = "Pedrógão Grande",
+                            NormalizedName = "pedrogao grande"
                         },
                         new
                         {
                             Id = 145,
                             DistrictId = 10,
-                            Name = "Peniche"
+                            Name = "Peniche",
+                            NormalizedName = "peniche"
                         },
                         new
                         {
                             Id = 146,
                             DistrictId = 10,
-                            Name = "Pombal"
+                            Name = "Pombal",
+                            NormalizedName = "pombal"
                         },
                         new
                         {
                             Id = 147,
                             DistrictId = 10,
-                            Name = "Porto de Mós"
+                            Name = "Porto de Mós",
+                            NormalizedName = "porto de mos"
                         },
                         new
                         {
                             Id = 148,
                             DistrictId = 11,
-                            Name = "Alenquer"
+                            Name = "Alenquer",
+                            NormalizedName = "alenquer"
                         },
                         new
                         {
                             Id = 149,
                             DistrictId = 11,
-                            Name = "Arruda dos Vinhos"
+                            Name = "Arruda dos Vinhos",
+                            NormalizedName = "arruda dos vinhos"
                         },
                         new
                         {
                             Id = 150,
                             DistrictId = 11,
-                            Name = "Azambuja"
+                            Name = "Azambuja",
+                            NormalizedName = "azambuja"
                         },
                         new
                         {
                             Id = 151,
                             DistrictId = 11,
-                            Name = "Cadaval"
+                            Name = "Cadaval",
+                            NormalizedName = "cadaval"
                         },
                         new
                         {
                             Id = 152,
                             DistrictId = 11,
-                            Name = "Cascais"
+                            Name = "Cascais",
+                            NormalizedName = "cascais"
                         },
                         new
                         {
                             Id = 153,
                             DistrictId = 11,
-                            Name = "Lisboa"
+                            Name = "Lisboa",
+                            NormalizedName = "lisboa"
                         },
                         new
                         {
                             Id = 154,
                             DistrictId = 11,
-                            Name = "Loures"
+                            Name = "Loures",
+                            NormalizedName = "loures"
                         },
                         new
                         {
                             Id = 155,
                             DistrictId = 11,
-                            Name = "Lourinhã"
+                            Name = "Lourinhã",
+                            NormalizedName = "lourinha"
                         },
                         new
                         {
                             Id = 156,
                             DistrictId = 11,
-                            Name = "Mafra"
+                            Name = "Mafra",
+                            NormalizedName = "mafra"
                         },
                         new
                         {
                             Id = 157,
                             DistrictId = 11,
-                            Name = "Oeiras"
+                            Name = "Oeiras",
+                            NormalizedName = "oeiras"
                         },
                         new
                         {
                             Id = 158,
                             DistrictId = 11,
-                            Name = "Sintra"
+                            Name = "Sintra",
+                            NormalizedName = "sintra"
                         },
                         new
                         {
                             Id = 159,
                             DistrictId = 11,
-                            Name = "Sobral de Monte Agraço"
+                            Name = "Sobral de Monte Agraço",
+                            NormalizedName = "sobral de monte agraco"
                         },
                         new
                         {
                             Id = 160,
                             DistrictId = 11,
-                            Name = "Torres Vedras"
+                            Name = "Torres Vedras",
+                            NormalizedName = "torres vedras"
                         },
                         new
                         {
                             Id = 161,
                             DistrictId = 11,
-                            Name = "Vila Franca de Xira"
+                            Name = "Vila Franca de Xira",
+                            NormalizedName = "vila franca de xira"
                         },
                         new
                         {
                             Id = 162,
                             DistrictId = 11,
-                            Name = "Amadora"
+                            Name = "Amadora",
+                            NormalizedName = "amadora"
                         },
                         new
                         {
                             Id = 163,
                             DistrictId = 11,
-                            Name = "Odivelas"
+                            Name = "Odivelas",
+                            NormalizedName = "odivelas"
                         },
                         new
                         {
                             Id = 164,
                             DistrictId = 12,
-                            Name = "Alter do Chão"
+                            Name = "Alter do Chão",
+                            NormalizedName = "alter do chao"
                         },
                         new
                         {
                             Id = 165,
                             DistrictId = 12,
-                            Name = "Arronches"
+                            Name = "Arronches",
+                            NormalizedName = "arronches"
                         },
                         new
                         {
                             Id = 166,
                             DistrictId = 12,
-                            Name = "Avis"
+                            Name = "Avis",
+                            NormalizedName = "avis"
                         },
                         new
                         {
                             Id = 167,
                             DistrictId = 12,
-                            Name = "Campo Maior"
+                            Name = "Campo Maior",
+                            NormalizedName = "campo maior"
                         },
                         new
                         {
                             Id = 168,
                             DistrictId = 12,
-                            Name = "Castelo de Vide"
+                            Name = "Castelo de Vide",
+                            NormalizedName = "castelo de vide"
                         },
                         new
                         {
                             Id = 169,
                             DistrictId = 12,
-                            Name = "Crato"
+                            Name = "Crato",
+                            NormalizedName = "crato"
                         },
                         new
                         {
                             Id = 170,
                             DistrictId = 12,
-                            Name = "Elvas"
+                            Name = "Elvas",
+                            NormalizedName = "elvas"
                         },
                         new
                         {
                             Id = 171,
                             DistrictId = 12,
-                            Name = "Fronteira"
+                            Name = "Fronteira",
+                            NormalizedName = "fronteira"
                         },
                         new
                         {
                             Id = 172,
                             DistrictId = 12,
-                            Name = "Gavião"
+                            Name = "Gavião",
+                            NormalizedName = "gaviao"
                         },
                         new
                         {
                             Id = 173,
                             DistrictId = 12,
-                            Name = "Marvão"
+                            Name = "Marvão",
+                            NormalizedName = "marvao"
                         },
                         new
                         {
                             Id = 174,
                             DistrictId = 12,
-                            Name = "Monforte"
+                            Name = "Monforte",
+                            NormalizedName = "monforte"
                         },
                         new
                         {
                             Id = 175,
                             DistrictId = 12,
-                            Name = "Nisa"
+                            Name = "Nisa",
+                            NormalizedName = "nisa"
                         },
                         new
                         {
                             Id = 176,
                             DistrictId = 12,
-                            Name = "Ponte de Sor"
+                            Name = "Ponte de Sor",
+                            NormalizedName = "ponte de sor"
                         },
                         new
                         {
                             Id = 177,
                             DistrictId = 12,
-                            Name = "Portalegre"
+                            Name = "Portalegre",
+                            NormalizedName = "portalegre"
                         },
                         new
                         {
                             Id = 178,
                             DistrictId = 12,
-                            Name = "Sousel"
+                            Name = "Sousel",
+                            NormalizedName = "sousel"
                         },
                         new
                         {
                             Id = 179,
                             DistrictId = 13,
-                            Name = "Amarante"
+                            Name = "Amarante",
+                            NormalizedName = "amarante"
                         },
                         new
                         {
                             Id = 180,
                             DistrictId = 13,
-                            Name = "Baião"
+                            Name = "Baião",
+                            NormalizedName = "baiao"
                         },
                         new
                         {
                             Id = 181,
                             DistrictId = 13,
-                            Name = "Felgueiras"
+                            Name = "Felgueiras",
+                            NormalizedName = "felgueiras"
                         },
                         new
                         {
                             Id = 182,
                             DistrictId = 13,
-                            Name = "Gondomar"
+                            Name = "Gondomar",
+                            NormalizedName = "gondomar"
                         },
                         new
                         {
                             Id = 183,
                             DistrictId = 13,
-                            Name = "Lousada"
+                            Name = "Lousada",
+                            NormalizedName = "lousada"
                         },
                         new
                         {
                             Id = 184,
                             DistrictId = 13,
-                            Name = "Maia"
+                            Name = "Maia",
+                            NormalizedName = "maia"
                         },
                         new
                         {
                             Id = 185,
                             DistrictId = 13,
-                            Name = "Marco de Canaveses"
+                            Name = "Marco de Canaveses",
+                            NormalizedName = "marco de canaveses"
                         },
                         new
                         {
                             Id = 186,
                             DistrictId = 13,
-                            Name = "Matosinhos"
+                            Name = "Matosinhos",
+                            NormalizedName = "matosinhos"
                         },
                         new
                         {
                             Id = 187,
                             DistrictId = 13,
-                            Name = "Paços de Ferreira"
+                            Name = "Paços de Ferreira",
+                            NormalizedName = "pacos de ferreira"
                         },
                         new
                         {
                             Id = 188,
                             DistrictId = 13,
-                            Name = "Paredes"
+                            Name = "Paredes",
+                            NormalizedName = "paredes"
                         },
                         new
                         {
                             Id = 189,
                             DistrictId = 13,
-                            Name = "Penafiel"
+                            Name = "Penafiel",
+                            NormalizedName = "penafiel"
                         },
                         new
                         {
                             Id = 190,
                             DistrictId = 13,
-                            Name = "Porto"
+                            Name = "Porto",
+                            NormalizedName = "porto"
                         },
                         new
                         {
                             Id = 191,
                             DistrictId = 13,
-                            Name = "Póvoa de Varzim"
+                            Name = "Póvoa de Varzim",
+                            NormalizedName = "povoa de varzim"
                         },
                         new
                         {
                             Id = 192,
                             DistrictId = 13,
-                            Name = "Santo Tirso"
+                            Name = "Santo Tirso",
+                            NormalizedName = "santo tirso"
                         },
                         new
                         {
                             Id = 193,
                             DistrictId = 13,
-                            Name = "Valongo"
+                            Name = "Valongo",
+                            NormalizedName = "valongo"
                         },
                         new
                         {
                             Id = 194,
                             DistrictId = 13,
-                            Name = "Vila do Conde"
+                            Name = "Vila do Conde",
+                            NormalizedName = "vila do conde"
                         },
                         new
                         {
                             Id = 195,
                             DistrictId = 13,
-                            Name = "Vila Nova de Gaia"
+                            Name = "Vila Nova de Gaia",
+                            NormalizedName = "vila nova de gaia"
                         },
                         new
                         {
                             Id = 196,
                             DistrictId = 13,
-                            Name = "Trofa"
+                            Name = "Trofa",
+                            NormalizedName = "trofa"
                         },
                         new
                         {
                             Id = 197,
                             DistrictId = 14,
-                            Name = "Abrantes"
+                            Name = "Abrantes",
+                            NormalizedName = "abrantes"
                         },
                         new
                         {
                             Id = 198,
                             DistrictId = 14,
-                            Name = "Alcanena"
+                            Name = "Alcanena",
+                            NormalizedName = "alcanena"
                         },
                         new
                         {
                             Id = 199,
                             DistrictId = 14,
-                            Name = "Almeirim"
+                            Name = "Almeirim",
+                            NormalizedName = "almeirim"
                         },
                         new
                         {
                             Id = 200,
                             DistrictId = 14,
-                            Name = "Alpiarça"
+                            Name = "Alpiarça",
+                            NormalizedName = "alpiarca"
                         },
                         new
                         {
                             Id = 201,
                             DistrictId = 14,
-                            Name = "Benavente"
+                            Name = "Benavente",
+                            NormalizedName = "benavente"
                         },
                         new
                         {
                             Id = 202,
                             DistrictId = 14,
-                            Name = "Cartaxo"
+                            Name = "Cartaxo",
+                            NormalizedName = "cartaxo"
                         },
                         new
                         {
                             Id = 203,
                             DistrictId = 14,
-                            Name = "Chamusca"
+                            Name = "Chamusca",
+                            NormalizedName = "chamusca"
                         },
                         new
                         {
                             Id = 204,
                             DistrictId = 14,
-                            Name = "Constância"
+                            Name = "Constância",
+                            NormalizedName = "constancia"
                         },
                         new
                         {
                             Id = 205,
                             DistrictId = 14,
-                            Name = "Coruche"
+                            Name = "Coruche",
+                            NormalizedName = "coruche"
                         },
                         new
                         {
                             Id = 206,
                             DistrictId = 14,
-                            Name = "Entroncamento"
+                            Name = "Entroncamento",
+                            NormalizedName = "entroncamento"
                         },
                         new
                         {
                             Id = 207,
                             DistrictId = 14,
-                            Name = "Ferreira do Zêzere"
+                            Name = "Ferreira do Zêzere",
+                            NormalizedName = "ferreira do zezere"
                         },
                         new
                         {
                             Id = 208,
                             DistrictId = 14,
-                            Name = "Golegã"
+                            Name = "Golegã",
+                            NormalizedName = "golega"
                         },
                         new
                         {
                             Id = 209,
                             DistrictId = 14,
-                            Name = "Mação"
+                            Name = "Mação",
+                            NormalizedName = "macao"
                         },
                         new
                         {
                             Id = 210,
                             DistrictId = 14,
-                            Name = "Rio Maior"
+                            Name = "Rio Maior",
+                            NormalizedName = "rio maior"
                         },
                         new
                         {
                             Id = 211,
                             DistrictId = 14,
-                            Name = "Salvaterra de Magos"
+                            Name = "Salvaterra de Magos",
+                            NormalizedName = "salvaterra de magos"
                         },
                         new
                         {
                             Id = 212,
                             DistrictId = 14,
-                            Name = "Santarém"
+                            Name = "Santarém",
+                            NormalizedName = "santarem"
                         },
                         new
                         {
                             Id = 213,
                             DistrictId = 14,
-                            Name = "Sardoal"
+                            Name = "Sardoal",
+                            NormalizedName = "sardoal"
                         },
                         new
                         {
                             Id = 214,
                             DistrictId = 14,
-                            Name = "Tomar"
+                            Name = "Tomar",
+                            NormalizedName = "tomar"
                         },
                         new
                         {
                             Id = 215,
                             DistrictId = 14,
-                            Name = "Torres Novas"
+                            Name = "Torres Novas",
+                            NormalizedName = "torres novas"
                         },
                         new
                         {
                             Id = 216,
                             DistrictId = 14,
-                            Name = "Vila Nova da Barquinha"
+                            Name = "Vila Nova da Barquinha",
+                            NormalizedName = "vila nova da barquinha"
                         },
                         new
                         {
                             Id = 217,
                             DistrictId = 14,
-                            Name = "Ourém"
+                            Name = "Ourém",
+                            NormalizedName = "ourem"
                         },
                         new
                         {
                             Id = 218,
                             DistrictId = 15,
-                            Name = "Alcácer do Sal"
+                            Name = "Alcácer do Sal",
+                            NormalizedName = "alcacer do sal"
                         },
                         new
                         {
                             Id = 219,
                             DistrictId = 15,
-                            Name = "Alcochete"
+                            Name = "Alcochete",
+                            NormalizedName = "alcochete"
                         },
                         new
                         {
                             Id = 220,
                             DistrictId = 15,
-                            Name = "Almada"
+                            Name = "Almada",
+                            NormalizedName = "almada"
                         },
                         new
                         {
                             Id = 221,
                             DistrictId = 15,
-                            Name = "Barreiro"
+                            Name = "Barreiro",
+                            NormalizedName = "barreiro"
                         },
                         new
                         {
                             Id = 222,
                             DistrictId = 15,
-                            Name = "Grândola"
+                            Name = "Grândola",
+                            NormalizedName = "grandola"
                         },
                         new
                         {
                             Id = 223,
                             DistrictId = 15,
-                            Name = "Moita"
+                            Name = "Moita",
+                            NormalizedName = "moita"
                         },
                         new
                         {
                             Id = 224,
                             DistrictId = 15,
-                            Name = "Montijo"
+                            Name = "Montijo",
+                            NormalizedName = "montijo"
                         },
                         new
                         {
                             Id = 225,
                             DistrictId = 15,
-                            Name = "Palmela"
+                            Name = "Palmela",
+                            NormalizedName = "palmela"
                         },
                         new
                         {
                             Id = 226,
                             DistrictId = 15,
-                            Name = "Santiago do Cacém"
+                            Name = "Santiago do Cacém",
+                            NormalizedName = "santiago do cacem"
                         },
                         new
                         {
                             Id = 227,
                             DistrictId = 15,
-                            Name = "Seixal"
+                            Name = "Seixal",
+                            NormalizedName = "seixal"
                         },
                         new
                         {
                             Id = 228,
                             DistrictId = 15,
-                            Name = "Sesimbra"
+                            Name = "Sesimbra",
+                            NormalizedName = "sesimbra"
                         },
                         new
                         {
                             Id = 229,
                             DistrictId = 15,
-                            Name = "Setúbal"
+                            Name = "Setúbal",
+                            NormalizedName = "setubal"
                         },
                         new
                         {
                             Id = 230,
                             DistrictId = 15,
-                            Name = "Sines"
+                            Name = "Sines",
+                            NormalizedName = "sines"
                         },
                         new
                         {
                             Id = 231,
                             DistrictId = 16,
-                            Name = "Arcos de Valdevez"
+                            Name = "Arcos de Valdevez",
+                            NormalizedName = "arcos de valdevez"
                         },
                         new
                         {
                             Id = 232,
                             DistrictId = 16,
-                            Name = "Caminha"
+                            Name = "Caminha",
+                            NormalizedName = "caminha"
                         },
                         new
                         {
                             Id = 233,
                             DistrictId = 16,
-                            Name = "Melgaço"
+                            Name = "Melgaço",
+                            NormalizedName = "melgaco"
                         },
                         new
                         {
                             Id = 234,
                             DistrictId = 16,
-                            Name = "Monção"
+                            Name = "Monção",
+                            NormalizedName = "moncao"
                         },
                         new
                         {
                             Id = 235,
                             DistrictId = 16,
-                            Name = "Paredes de Coura"
+                            Name = "Paredes de Coura",
+                            NormalizedName = "paredes de coura"
                         },
                         new
                         {
                             Id = 236,
                             DistrictId = 16,
-                            Name = "Ponte da Barca"
+                            Name = "Ponte da Barca",
+                            NormalizedName = "ponte da barca"
                         },
                         new
                         {
                             Id = 237,
                             DistrictId = 16,
-                            Name = "Ponte de Lima"
+                            Name = "Ponte de Lima",
+                            NormalizedName = "ponte de lima"
                         },
                         new
                         {
                             Id = 238,
                             DistrictId = 16,
-                            Name = "Valença"
+                            Name = "Valença",
+                            NormalizedName = "valenca"
                         },
                         new
                         {
                             Id = 239,
                             DistrictId = 16,
-                            Name = "Viana do Castelo"
+                            Name = "Viana do Castelo",
+                            NormalizedName = "viana do castelo"
                         },
                         new
                         {
                             Id = 240,
                             DistrictId = 16,
-                            Name = "Vila Nova de Cerveira"
+                            Name = "Vila Nova de Cerveira",
+                            NormalizedName = "vila nova de cerveira"
                         },
                         new
                         {
                             Id = 241,
                             DistrictId = 17,
-                            Name = "Alijó"
+                            Name = "Alijó",
+                            NormalizedName = "alijo"
                         },
                         new
                         {
                             Id = 242,
                             DistrictId = 17,
-                            Name = "Boticas"
+                            Name = "Boticas",
+                            NormalizedName = "boticas"
                         },
                         new
                         {
                             Id = 243,
                             DistrictId = 17,
-                            Name = "Chaves"
+                            Name = "Chaves",
+                            NormalizedName = "chaves"
                         },
                         new
                         {
                             Id = 244,
                             DistrictId = 17,
-                            Name = "Mesão Frio"
+                            Name = "Mesão Frio",
+                            NormalizedName = "mesao frio"
                         },
                         new
                         {
                             Id = 245,
                             DistrictId = 17,
-                            Name = "Mondim de Basto"
+                            Name = "Mondim de Basto",
+                            NormalizedName = "mondim de basto"
                         },
                         new
                         {
                             Id = 246,
                             DistrictId = 17,
-                            Name = "Montalegre"
+                            Name = "Montalegre",
+                            NormalizedName = "montalegre"
                         },
                         new
                         {
                             Id = 247,
                             DistrictId = 17,
-                            Name = "Murça"
+                            Name = "Murça",
+                            NormalizedName = "murca"
                         },
                         new
                         {
                             Id = 248,
                             DistrictId = 17,
-                            Name = "Peso da Régua"
+                            Name = "Peso da Régua",
+                            NormalizedName = "peso da regua"
                         },
                         new
                         {
                             Id = 249,
                             DistrictId = 17,
-                            Name = "Ribeira de Pena"
+                            Name = "Ribeira de Pena",
+                            NormalizedName = "ribeira de pena"
                         },
                         new
                         {
                             Id = 250,
                             DistrictId = 17,
-                            Name = "Sabrosa"
+                            Name = "Sabrosa",
+                            NormalizedName = "sabrosa"
                         },
                         new
                         {
                             Id = 251,
                             DistrictId = 17,
-                            Name = "Santa Marta de Penaguião"
+                            Name = "Santa Marta de Penaguião",
+                            NormalizedName = "santa marta de penaguiao"
                         },
                         new
                         {
                             Id = 252,
                             DistrictId = 17,
-                            Name = "Valpaços"
+                            Name = "Valpaços",
+                            NormalizedName = "valpacos"
                         },
                         new
                         {
                             Id = 253,
                             DistrictId = 17,
-                            Name = "Vila Pouca de Aguiar"
+                            Name = "Vila Pouca de Aguiar",
+                            NormalizedName = "vila pouca de aguiar"
                         },
                         new
                         {
                             Id = 254,
                             DistrictId = 17,
-                            Name = "Vila Real"
+                            Name = "Vila Real",
+                            NormalizedName = "vila real"
                         },
                         new
                         {
                             Id = 255,
                             DistrictId = 18,
-                            Name = "Armamar"
+                            Name = "Armamar",
+                            NormalizedName = "armamar"
                         },
                         new
                         {
                             Id = 256,
                             DistrictId = 18,
-                            Name = "Carregal do Sal"
+                            Name = "Carregal do Sal",
+                            NormalizedName = "carregal do sal"
                         },
                         new
                         {
                             Id = 257,
                             DistrictId = 18,
-                            Name = "Castro Daire"
+                            Name = "Castro Daire",
+                            NormalizedName = "castro daire"
                         },
                         new
                         {
                             Id = 258,
                             DistrictId = 18,
-                            Name = "Cinfães"
+                            Name = "Cinfães",
+                            NormalizedName = "cinfaes"
                         },
                         new
                         {
                             Id = 259,
                             DistrictId = 18,
-                            Name = "Lamego"
+                            Name = "Lamego",
+                            NormalizedName = "lamego"
                         },
                         new
                         {
                             Id = 260,
                             DistrictId = 18,
-                            Name = "Mangualde"
+                            Name = "Mangualde",
+                            NormalizedName = "mangualde"
                         },
                         new
                         {
                             Id = 261,
                             DistrictId = 18,
-                            Name = "Moimenta da Beira"
+                            Name = "Moimenta da Beira",
+                            NormalizedName = "moimenta da beira"
                         },
                         new
                         {
                             Id = 262,
                             DistrictId = 18,
-                            Name = "Mortágua"
+                            Name = "Mortágua",
+                            NormalizedName = "mortagua"
                         },
                         new
                         {
                             Id = 263,
                             DistrictId = 18,
-                            Name = "Nelas"
+                            Name = "Nelas",
+                            NormalizedName = "nelas"
                         },
                         new
                         {
                             Id = 264,
                             DistrictId = 18,
-                            Name = "Oliveira de Frades"
+                            Name = "Oliveira de Frades",
+                            NormalizedName = "oliveira de frades"
                         },
                         new
                         {
                             Id = 265,
                             DistrictId = 18,
-                            Name = "Penalva do Castelo"
+                            Name = "Penalva do Castelo",
+                            NormalizedName = "penalva do castelo"
                         },
                         new
                         {
                             Id = 266,
                             DistrictId = 18,
-                            Name = "Penedono"
+                            Name = "Penedono",
+                            NormalizedName = "penedono"
                         },
                         new
                         {
                             Id = 267,
                             DistrictId = 18,
-                            Name = "Resende"
+                            Name = "Resende",
+                            NormalizedName = "resende"
                         },
                         new
                         {
                             Id = 268,
                             DistrictId = 18,
-                            Name = "Santa Comba Dão"
+                            Name = "Santa Comba Dão",
+                            NormalizedName = "santa comba dao"
                         },
                         new
                         {
                             Id = 269,
                             DistrictId = 18,
-                            Name = "São João da Pesqueira"
+                            Name = "São João da Pesqueira",
+                            NormalizedName = "sao joao da pesqueira"
                         },
                         new
                         {
                             Id = 270,
                             DistrictId = 18,
-                            Name = "São Pedro do Sul"
+                            Name = "São Pedro do Sul",
+                            NormalizedName = "sao pedro do sul"
                         },
                         new
                         {
                             Id = 271,
                             DistrictId = 18,
-                            Name = "Sátão"
+                            Name = "Sátão",
+                            NormalizedName = "satao"
                         },
                         new
                         {
                             Id = 272,
                             DistrictId = 18,
-                            Name = "Sernancelhe"
+                            Name = "Sernancelhe",
+                            NormalizedName = "sernancelhe"
                         },
                         new
                         {
                             Id = 273,
                             DistrictId = 18,
-                            Name = "Tabuaço"
+                            Name = "Tabuaço",
+                            NormalizedName = "tabuaco"
                         },
                         new
                         {
                             Id = 274,
                             DistrictId = 18,
-                            Name = "Tarouca"
+                            Name = "Tarouca",
+                            NormalizedName = "tarouca"
                         },
                         new
                         {
                             Id = 275,
                             DistrictId = 18,
-                            Name = "Tondela"
+                            Name = "Tondela",
+                            NormalizedName = "tondela"
                         },
                         new
                         {
                             Id = 276,
                             DistrictId = 18,
-                            Name = "Vila Nova de Paiva"
+                            Name = "Vila Nova de Paiva",
+                            NormalizedName = "vila nova de paiva"
                         },
                         new
                         {
                             Id = 277,
                             DistrictId = 18,
-                            Name = "Viseu"
+                            Name = "Viseu",
+                            NormalizedName = "viseu"
                         },
                         new
                         {
                             Id = 278,
                             DistrictId = 18,
-                            Name = "Vouzela"
+                            Name = "Vouzela",
+                            NormalizedName = "vouzela"
                         },
                         new
                         {
                             Id = 279,
                             DistrictId = 19,
-                            Name = "Calheta"
+                            Name = "Calheta",
+                            NormalizedName = "calheta"
                         },
                         new
                         {
                             Id = 280,
                             DistrictId = 19,
-                            Name = "Câmara de Lobos"
+                            Name = "Câmara de Lobos",
+                            NormalizedName = "camara de lobos"
                         },
                         new
                         {
                             Id = 281,
                             DistrictId = 19,
-                            Name = "Funchal"
+                            Name = "Funchal",
+                            NormalizedName = "funchal"
                         },
                         new
                         {
                             Id = 282,
                             DistrictId = 19,
-                            Name = "Machico"
+                            Name = "Machico",
+                            NormalizedName = "machico"
                         },
                         new
                         {
                             Id = 283,
                             DistrictId = 19,
-                            Name = "Ponta do Sol"
+                            Name = "Ponta do Sol",
+                            NormalizedName = "ponta do sol"
                         },
                         new
                         {
                             Id = 284,
                             DistrictId = 19,
-                            Name = "Porto Moniz"
+                            Name = "Porto Moniz",
+                            NormalizedName = "porto moniz"
                         },
                         new
                         {
                             Id = 285,
                             DistrictId = 19,
-                            Name = "Ribeira Brava"
+                            Name = "Ribeira Brava",
+                            NormalizedName = "ribeira brava"
                         },
                         new
                         {
                             Id = 286,
                             DistrictId = 19,
-                            Name = "Santa Cruz"
+                            Name = "Santa Cruz",
+                            NormalizedName = "santa cruz"
                         },
                         new
                         {
                             Id = 287,
                             DistrictId = 19,
-                            Name = "Santana"
+                            Name = "Santana",
+                            NormalizedName = "santana"
                         },
                         new
                         {
                             Id = 288,
                             DistrictId = 19,
-                            Name = "São Vicente"
+                            Name = "São Vicente",
+                            NormalizedName = "sao vicente"
                         },
                         new
                         {
                             Id = 289,
                             DistrictId = 20,
-                            Name = "Porto Santo"
+                            Name = "Porto Santo",
+                            NormalizedName = "porto santo"
                         },
                         new
                         {
                             Id = 290,
                             DistrictId = 21,
-                            Name = "Vila do Porto"
+                            Name = "Vila do Porto",
+                            NormalizedName = "vila do porto"
                         },
                         new
                         {
                             Id = 291,
                             DistrictId = 22,
-                            Name = "Lagoa"
+                            Name = "Lagoa",
+                            NormalizedName = "lagoa"
                         },
                         new
                         {
                             Id = 292,
                             DistrictId = 22,
-                            Name = "Nordeste"
+                            Name = "Nordeste",
+                            NormalizedName = "nordeste"
                         },
                         new
                         {
                             Id = 293,
                             DistrictId = 22,
-                            Name = "Ponta Delgada"
+                            Name = "Ponta Delgada",
+                            NormalizedName = "ponta delgada"
                         },
                         new
                         {
                             Id = 294,
                             DistrictId = 22,
-                            Name = "Povoação"
+                            Name = "Povoação",
+                            NormalizedName = "povoacao"
                         },
                         new
                         {
                             Id = 295,
                             DistrictId = 22,
-                            Name = "Ribeira Grande"
+                            Name = "Ribeira Grande",
+                            NormalizedName = "ribeira grande"
                         },
                         new
                         {
                             Id = 296,
                             DistrictId = 22,
-                            Name = "Vila Franca do Campo"
+                            Name = "Vila Franca do Campo",
+                            NormalizedName = "vila franca do campo"
                         },
                         new
                         {
                             Id = 297,
                             DistrictId = 23,
-                            Name = "Angra do Heroísmo"
+                            Name = "Angra do Heroísmo",
+                            NormalizedName = "angra do heroismo"
                         },
                         new
                         {
                             Id = 298,
                             DistrictId = 23,
-                            Name = "Vila da Praia da Vitória"
+                            Name = "Vila da Praia da Vitória",
+                            NormalizedName = "vila da praia da vitoria"
                         },
                         new
                         {
                             Id = 299,
                             DistrictId = 24,
-                            Name = "Santa Cruz da Graciosa"
+                            Name = "Santa Cruz da Graciosa",
+                            NormalizedName = "santa cruz da graciosa"
                         },
                         new
                         {
                             Id = 300,
                             DistrictId = 25,
-                            Name = "Calheta"
+                            Name = "Calheta",
+                            NormalizedName = "calheta"
                         },
                         new
                         {
                             Id = 301,
                             DistrictId = 25,
-                            Name = "Velas"
+                            Name = "Velas",
+                            NormalizedName = "velas"
                         },
                         new
                         {
                             Id = 302,
                             DistrictId = 26,
-                            Name = "Lajes do Pico"
+                            Name = "Lajes do Pico",
+                            NormalizedName = "lajes do pico"
                         },
                         new
                         {
                             Id = 303,
                             DistrictId = 26,
-                            Name = "Madalena"
+                            Name = "Madalena",
+                            NormalizedName = "madalena"
                         },
                         new
                         {
                             Id = 304,
                             DistrictId = 26,
-                            Name = "São Roque do Pico"
+                            Name = "São Roque do Pico",
+                            NormalizedName = "sao roque do pico"
                         },
                         new
                         {
                             Id = 305,
                             DistrictId = 27,
-                            Name = "Horta"
+                            Name = "Horta",
+                            NormalizedName = "horta"
                         },
                         new
                         {
                             Id = 306,
                             DistrictId = 28,
-                            Name = "Lajes das Flores"
+                            Name = "Lajes das Flores",
+                            NormalizedName = "lajes das flores"
                         },
                         new
                         {
                             Id = 307,
                             DistrictId = 28,
-                            Name = "Santa Cruz das Flores"
+                            Name = "Santa Cruz das Flores",
+                            NormalizedName = "santa cruz das flores"
                         },
                         new
                         {
                             Id = 308,
                             DistrictId = 29,
-                            Name = "Corvo"
+                            Name = "Corvo",
+                            NormalizedName = "corvo"
                         });
                 });
 
@@ -2094,186 +2411,219 @@ namespace SCManagement.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("NormalizedName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("District", (string)null);
+                    b.ToTable("District");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
                             CountryId = 1,
-                            Name = "Aveiro"
+                            Name = "Aveiro",
+                            NormalizedName = "aveiro"
                         },
                         new
                         {
                             Id = 2,
                             CountryId = 1,
-                            Name = "Beja"
+                            Name = "Beja",
+                            NormalizedName = "beja"
                         },
                         new
                         {
                             Id = 3,
                             CountryId = 1,
-                            Name = "Braga"
+                            Name = "Braga",
+                            NormalizedName = "braga"
                         },
                         new
                         {
                             Id = 4,
                             CountryId = 1,
-                            Name = "Bragança"
+                            Name = "Bragança",
+                            NormalizedName = "braganca"
                         },
                         new
                         {
                             Id = 5,
                             CountryId = 1,
-                            Name = "Castelo Branco"
+                            Name = "Castelo Branco",
+                            NormalizedName = "castelo branco"
                         },
                         new
                         {
                             Id = 6,
                             CountryId = 1,
-                            Name = "Coimbra"
+                            Name = "Coimbra",
+                            NormalizedName = "coimbra"
                         },
                         new
                         {
                             Id = 7,
                             CountryId = 1,
-                            Name = "Évora"
+                            Name = "Évora",
+                            NormalizedName = "evora"
                         },
                         new
                         {
                             Id = 8,
                             CountryId = 1,
-                            Name = "Faro"
+                            Name = "Faro",
+                            NormalizedName = "faro"
                         },
                         new
                         {
                             Id = 9,
                             CountryId = 1,
-                            Name = "Guarda"
+                            Name = "Guarda",
+                            NormalizedName = "guarda"
                         },
                         new
                         {
                             Id = 10,
                             CountryId = 1,
-                            Name = "Leiria"
+                            Name = "Leiria",
+                            NormalizedName = "leiria"
                         },
                         new
                         {
                             Id = 11,
                             CountryId = 1,
-                            Name = "Lisboa"
+                            Name = "Lisboa",
+                            NormalizedName = "lisboa"
                         },
                         new
                         {
                             Id = 12,
                             CountryId = 1,
-                            Name = "Portalegre"
+                            Name = "Portalegre",
+                            NormalizedName = "portalegre"
                         },
                         new
                         {
                             Id = 13,
                             CountryId = 1,
-                            Name = "Porto"
+                            Name = "Porto",
+                            NormalizedName = "porto"
                         },
                         new
                         {
                             Id = 14,
                             CountryId = 1,
-                            Name = "Santarém"
+                            Name = "Santarém",
+                            NormalizedName = "santarem"
                         },
                         new
                         {
                             Id = 15,
                             CountryId = 1,
-                            Name = "Setúbal"
+                            Name = "Setúbal",
+                            NormalizedName = "setubal"
                         },
                         new
                         {
                             Id = 16,
                             CountryId = 1,
-                            Name = "Viana do Castelo"
+                            Name = "Viana do Castelo",
+                            NormalizedName = "viana do castelo"
                         },
                         new
                         {
                             Id = 17,
                             CountryId = 1,
-                            Name = "Vila Real"
+                            Name = "Vila Real",
+                            NormalizedName = "vila real"
                         },
                         new
                         {
                             Id = 18,
                             CountryId = 1,
-                            Name = "Viseu"
+                            Name = "Viseu",
+                            NormalizedName = "viseu"
                         },
                         new
                         {
                             Id = 19,
                             CountryId = 1,
-                            Name = "Ilha da Madeira"
+                            Name = "Ilha da Madeira",
+                            NormalizedName = "ilha da madeira"
                         },
                         new
                         {
                             Id = 20,
                             CountryId = 1,
-                            Name = "Ilha de Porto Santo"
+                            Name = "Ilha de Porto Santo",
+                            NormalizedName = "ilha de porto santo"
                         },
                         new
                         {
                             Id = 21,
                             CountryId = 1,
-                            Name = "Ilha de Santa Maria"
+                            Name = "Ilha de Santa Maria",
+                            NormalizedName = "ilha de santa maria"
                         },
                         new
                         {
                             Id = 22,
                             CountryId = 1,
-                            Name = "Ilha de São Miguel"
+                            Name = "Ilha de São Miguel",
+                            NormalizedName = "ilha de sao miguel"
                         },
                         new
                         {
                             Id = 23,
                             CountryId = 1,
-                            Name = "Ilha Terceira"
+                            Name = "Ilha Terceira",
+                            NormalizedName = "ilha terceira"
                         },
                         new
                         {
                             Id = 24,
                             CountryId = 1,
-                            Name = "Ilha Graciosa"
+                            Name = "Ilha Graciosa",
+                            NormalizedName = "ilha graciosa"
                         },
                         new
                         {
                             Id = 25,
                             CountryId = 1,
-                            Name = "Ilha de São Jorge"
+                            Name = "Ilha de São Jorge",
+                            NormalizedName = "ilha de sao jorge"
                         },
                         new
                         {
                             Id = 26,
                             CountryId = 1,
-                            Name = "Ilha do Pico"
+                            Name = "Ilha do Pico",
+                            NormalizedName = "ilha do pico"
                         },
                         new
                         {
                             Id = 27,
                             CountryId = 1,
-                            Name = "Ilha do Faial"
+                            Name = "Ilha do Faial",
+                            NormalizedName = "ilha do faial"
                         },
                         new
                         {
                             Id = 28,
                             CountryId = 1,
-                            Name = "Ilha das Flores"
+                            Name = "Ilha das Flores",
+                            NormalizedName = "ilha das flores"
                         },
                         new
                         {
                             Id = 29,
                             CountryId = 1,
-                            Name = "Ilha do Corvo"
+                            Name = "Ilha do Corvo",
+                            NormalizedName = "ilha do corvo"
                         });
                 });
 
@@ -2396,7 +2746,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlobDto", (string)null);
+                    b.ToTable("BlobDto");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
