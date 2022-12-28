@@ -12,7 +12,7 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221227184022_UserRolesClub")]
+    [Migration("20221227190514_UserRolesClub")]
     partial class UserRolesClub
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

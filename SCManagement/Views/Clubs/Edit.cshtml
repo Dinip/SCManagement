@@ -1,7 +1,8 @@
-﻿@model SCManagement.Models.Club
+﻿@model SCManagement.Controllers.ClubsController.EditModel
 
 @{
     ViewData["Title"] = "Edit";
+    string ShowRemoveButton() => Model.PhotoUri.Contains("uploads") ? "" : "d-none";
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
@@ -11,9 +12,32 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
+
+            <div>
+                <img id="profilePicture"
+                     src="@Model.PhotoUri"
+                     class="rounded-circle"
+                     width="128px"
+                     height="128px"
+                     onclick="document.getElementById('selectedFile').click()"
+                     style="cursor:pointer; object-fit: cover" />
+                <button id="btnRemoveImage"
+                        type="button"
+                        class="btn btn-danger @ShowRemoveButton()"
+                        onclick="removePhoto()">
+                    Remove Photo
+                </button>
+            </div>
+
+            <div>
+                <input id="selectedFile" asp-for="File" type="file" class="form-control d-none" accept="image/png, image/jpeg" onchange="handleUpload(this)" />
+                <input id="removeImage" asp-for="RemoveImage" type="hidden" />
+            </div>
+
+
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
@@ -34,11 +58,6 @@
                 <input asp-for="About" class="form-control" />
                 <span asp-validation-for="About" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Photography" class="control-label"></label>
-                <input asp-for="Photography" class="form-control" />
-                <span asp-validation-for="Photography" class="text-danger"></span>
-            </div>
 
             <div class="form-group">
                 <label asp-for="ModalitiesIds" class="control-label"></label>
@@ -55,6 +74,21 @@
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+<script type="text/javascript">
+    function removePhoto() {
+        document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
+        document.getElementById("removeImage").value = true
+        document.getElementById("selectedFile").value = ""
+        document.getElementById("btnRemoveImage").classList.add("d-none")
+    }
+    function handleUpload(event) {
+        document.getElementById('profilePicture').src = window.URL.createObjectURL(event.files[0])
+        document.getElementById("btnRemoveImage").classList.remove("d-none")
+    }
+</script>
+
 
 @section Scripts {
     @{

@@ -41,6 +41,8 @@ namespace SCManagement.Models {
 
         public BlobDto? Photography { get; set; }
 
+        public int? AddressId { get; set; }
+
         public Address? Address { get; set; }
 
         public ICollection<Modality>? Modalities { get; set; }

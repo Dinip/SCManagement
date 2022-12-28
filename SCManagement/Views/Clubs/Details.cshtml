@@ -10,47 +10,36 @@
     <h4>Club</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+
+        <img id="profilePicture"
+             src="@Model.Photography.Uri"
+             class="rounded-circle"
+             width="128px"
+             height="128px" />
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Email)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Email)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.PhoneNumber)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PhoneNumber)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.About)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.About)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreationDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreationDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Photography)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Photography)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Modalities)
@@ -58,14 +47,33 @@
         <dd class="col-sm-10">
             @foreach (var item in ViewBag.modalities)
             {
-                    <p>@item.Text</p>
+                <p>@item.Text</p>
             }
-           
-           
         </dd>
+            @if (ViewBag.isAssociate)
+            {
+                <div class="form-group">
+                    <!-- se for socio aparece um botao vermelho (danger) a dizer "deixar de ser socio" se nao o contrario -->
+                <!-- devia fazer um post para um metodo -->
+                <!-- passar a ser um botao mesmo, que tem um onclick e chama javascript ajax post -->
+                    <input type="submit" value="Associate" class="btn btn-btn-danger" onclick="submeter(false)" />
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <input type="submit" value="Associate" class="btn btn-primary" />
+                </div>
+            }
     </dl>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+<script>
+    let a = "@Model.Id"
+    // quando chamax o ajax, metodo post para aqui = /Club/Associate/ + @Model.Id (clubid)
+</script>

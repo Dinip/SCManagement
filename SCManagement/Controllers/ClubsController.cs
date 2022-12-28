@@ -1,28 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Utilities;
 using SCManagement.Data;
 using SCManagement.Models;
+using SCManagement.Services.AzureStorageService;
+using SCManagement.Services.AzureStorageService.Models;
 
-namespace SCManagement.Controllers {
+namespace SCManagement.Controllers
+{
     /// <summary>
     /// This class represents the Clubs Controller
     /// </summary>
     /// 
 
-    public class ClubsController : Controller {
+    public class ClubsController : Controller
+    {
 
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<User> _userManager;
+        private readonly IAzureStorage _azureStorage;
 
-        public ClubsController(ApplicationDbContext context)
+        public ClubsController(ApplicationDbContext context, UserManager<User> userManager, IAzureStorage azureStorage)
         {
             _context = context;
+            _userManager = userManager;
+            _azureStorage = azureStorage;
         }
 
         // GET: Clubs
@@ -39,8 +50,13 @@ namespace SCManagement.Controllers {
                 return NotFound();
             }
 
-            var club = await _context.Club.Include(c => c.Modalities).FirstOrDefaultAsync(m => m.Id == id);
+            var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(m => m.Id == id);
+            if (club.Photography == null)
+            {
+                club.Photography = new BlobDto { Uri = "https://cdn.scmanagement.me/public/user_placeholder.png" };
+            }
 
+            //aqui vem logo se o user é ou nao socio (true ou false) dentro da viewbag
             ViewBag.Modalities = new SelectList(club.Modalities, "Id", "Name");
 
             if (club == null)
@@ -51,12 +67,13 @@ namespace SCManagement.Controllers {
             return View(club);
         }
 
-
-
         // GET: Clubs/Create
         [Authorize]
         public IActionResult Create()
         {
+            //check if the user already has/is part of a club and if so, don't allow to create a new one
+            if (UserAlreadyInAClub(GetUserIdFromAuthedUser())) return NotFound(); //not this, fix
+
             ViewBag.Modalities = new SelectList(_context.Modalities.ToList(), "Id", "Name");
             return View();
         }
@@ -70,8 +87,11 @@ namespace SCManagement.Controllers {
         public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
         {
             List<Modality> modalities = await _context.Modalities.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
-
             if (!ModelState.IsValid) return View();
+
+            string userId = GetUserIdFromAuthedUser();
+            //check if the user already has/is part of a club and if so, don't allow to create a new one
+            if (UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
 
             Club c = new Club
             {
@@ -79,6 +99,11 @@ namespace SCManagement.Controllers {
                 Modalities = modalities,
                 CreationDate = DateTime.Now
             };
+
+            //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
+            List<UsersRoleClub> roles = new();
+            roles.Add(new UsersRoleClub { UserId = userId, RoleId = 5 });
+            c.UsersRoleClub = roles;
 
             _context.Club.Add(c);
             await _context.SaveChangesAsync();
@@ -93,7 +118,10 @@ namespace SCManagement.Controllers {
         {
             if (id == null || _context.Club == null) return NotFound();
 
-            var club = await _context.Club.Include(c => c.Modalities).FirstOrDefaultAsync(c => c.Id == id);
+            //role id 5 means that is club admin
+            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 5)) return NotFound();
+
+            var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(c => c.Id == id);
 
             List<int> ClubModalitiesIds = club.Modalities.Select(m => m.Id).ToList();
 
@@ -101,7 +129,23 @@ namespace SCManagement.Controllers {
 
             if (club == null) return NotFound();
 
-            return View(club);
+            var c = new EditModel
+            {
+                Id = club.Id,
+                Name = club.Name,
+                Email = club.Email,
+                PhoneNumber = club.PhoneNumber,
+                About = club.About,
+                CreationDate = club.CreationDate,
+                AddressId = club.AddressId,
+                Address = club.Address,
+                ModalitiesIds = ClubModalitiesIds,
+                PhotographyId = club.PhotographyId,
+                Photography = club.Photography,
+                PhotoUri = club.Photography == null ? "https://cdn.scmanagement.me/public/user_placeholder.png" : club.Photography.Uri,
+            };
+
+            return View(c);
         }
 
         // POST: Clubs/Edit/5
@@ -110,12 +154,31 @@ namespace SCManagement.Controllers {
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,PhoneNumber,About,CreationDate,EndDate,Photography,ModalitiesIds")] Club club)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Email,PhoneNumber,About,CreationDate,AddressId,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             if (id != club.Id) return NotFound();
             if (!ModelState.IsValid) return View(club);
-            var actualClub = _context.Club.Include(c => c.Modalities).FirstOrDefault(c => c.Id == id);
+            var actualClub = _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefault(c => c.Id == id);
             if (actualClub == null) return NotFound();
+
+
+            if (club.RemoveImage)
+            {
+                await CheckAndDeletePhoto(actualClub);
+            }
+
+            if (club.File != null)
+            {
+                BlobResponseDto uploadResult = await _azureStorage.UploadAsync(club.File);
+                if (uploadResult.Error)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                await CheckAndDeletePhoto(actualClub);
+                actualClub.Photography = uploadResult.Blob;
+                _context.Club.Update(actualClub);
+                await _context.SaveChangesAsync();
+            }
 
             List<Modality> newModalities = await _context.Modalities.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
             //remove from club modalities which are not in the new modalities list
@@ -154,117 +217,122 @@ namespace SCManagement.Controllers {
             return RedirectToAction(nameof(Index));
         }
 
-        //public bool RemoveImage { get; set; } = false;
+        private bool UserHasRoleInClub(string userId, int clubId, int roleId)
+        {
+            var role = _context.UsersRoleClub.FirstOrDefault(f => f.UserId == userId && f.ClubId == clubId && f.RoleId == roleId);
 
-        //public async Task<IActionResult> OnPostAsync()
-        //{
-        //    var user = await _userManager.GetUserAsync(User);
-        //    if (user == null)
-        //    {
-        //        return NotFound($"Unable to load user with ID '{_userManager.GetUserId(User)}'.");
-        //    }
+            return role != null;
+        }
 
-        //    if (!ModelState.IsValid)
-        //    {
-        //        await LoadAsync(user);
-        //        return Page();
-        //    }
+        private bool UserAlreadyInAClub(string userId)
+        {
+            var alreadyRole = _context.UsersRoleClub.FirstOrDefault(f => f.UserId == userId);
+            return alreadyRole != null;
+        }
 
-        //    //override user with information about profile picture
-        //    user = await _context.Users.Include(c => c.ProfilePicture).FirstAsync(u => u.Id == user.Id);
+        private string GetUserIdFromAuthedUser()
+        {
+            return _userManager.GetUserId(User);
+        }
 
-        //    //Checks if the user first name is diferent from the user first name saved, and if so trie to update 
-        //    if (user.FirstName != Input.FirstName)
-        //    {
-        //        user.FirstName = Input.FirstName;
-        //        var result = await _userManager.UpdateAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["First Name"]}";
-        //            return RedirectToPage();
-        //        }
-        //    }
+        private async Task CheckAndDeletePhoto(Club club)
+        {
+            if (club.Photography != null)
+            {
+                await _azureStorage.DeleteAsync(club.Photography.Uuid);
+                _context.BlobDto.Remove(club.Photography);
+                club.Photography = null;
+                //update club to remove photo and save changes
+                _context.Update(club);
+                await _context.SaveChangesAsync();
+            }
+        }
 
-        //    //Checks if the user last name is diferent from the user last name saved, and if so trie to update 
-        //    if (user.LastName != Input.LastName)
-        //    {
-        //        user.LastName = Input.LastName;
-        //        var result = await _userManager.UpdateAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Last Name"]}";
-        //            return RedirectToPage();
-        //        }
-        //    }
+        public class EditModel
+        {
+            public int Id { get; set; }
 
-        //    //Checks if the user phone number is diferent from the user phone number saved, and if so trie to update 
-        //    if (user.PhoneNumber != Input.PhoneNumber)
-        //    {
-        //        user.PhoneNumber = Input.PhoneNumber;
-        //        var result = await _userManager.UpdateAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Phone number"]}";
-        //            return RedirectToPage();
-        //        }
-        //    }
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(60, ErrorMessage = "Error_Length", MinimumLength = 2)]
+            [Display(Name = "Clube Name")]
+            public string Name { get; set; }
 
-        //    //Checks if the user date of birth is diferent from the user date of birth saved, and if so trie to update 
-        //    if (user.DateOfBirth != Input.DateOfBirth)
-        //    {
-        //        user.DateOfBirth = Input.DateOfBirth;
-        //        var result = await _userManager.UpdateAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Date Of Birth"]}";
-        //            return RedirectToPage();
-        //        }
-        //    }
+            [EmailAddress]
+            [Display(Name = "Email")]
+            public string? Email { get; set; }
 
-        //    if (Input.RemoveImage)
-        //    {
-        //        await CheckAndDeleteProfilePicture(user);
-        //    }
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string? PhoneNumber { get; set; }
 
-        //    if (Input.File != null)
-        //    {
-        //        BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.File);
-        //        if (uploadResult.Error)
-        //        {
-        //            StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Profile Picure"]}";
-        //            return RedirectToPage();
-        //        }
-        //        await CheckAndDeleteProfilePicture(user);
-        //        user.ProfilePicture = uploadResult.Blob;
-        //        var result = await _userManager.UpdateAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Profile Picure"]}";
-        //            return RedirectToPage();
-        //        }
-        //    }
+            [Display(Name = "About")]
+            public string? About { get; set; }
 
-        //    await _signInManager.RefreshSignInAsync(user);
-        //    StatusMessage = _stringLocalizer["StatusMessage_ProfileUpdate"];
-        //    return RedirectToPage();
-        //}
+            public DateTime CreationDate { get; set; }
 
-        //public string ShowRemoveButton() => ProfilePictureUrl.Contains("uploads") ? "" : "d-none";
+            public int? PhotographyId { get; set; }
+
+            public BlobDto? Photography { get; set; }
+
+            public int? AddressId { get; set; }
+
+            public Address? Address { get; set; }
+
+            public IEnumerable<int>? ModalitiesIds { get; set; }
+
+            public string? PhotoUri { get; set; }
+            public IFormFile? File { get; set; }
+            public bool RemoveImage { get; set; } = false;
+        }
+
+        public bool UserWhitoutRoles (int id)
+        {
+            int countRoles = 5;
+            
+            for (int i = 0; i < 5; i++)
+            {
+                if (UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, countRoles))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Associate(int? id, int clubId)
+        {
+            //get user
+            //var userId = GetUserIdFromAuthedUser();
+
+            //tens que receber o id do clube
 
 
 
+            //verify if a user have a role associate in a club, if have remove it, if not add it
+            if (UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 1))
+            {
+                //remove a user from a club
+                _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => int.Parse(u.UserId) == id && u.ClubId == clubId).FirstOrDefault());
 
-        //private async Task CheckAndDeleteProfilePicture(User user)
-        //{
-        //    if (user.ProfilePicture != null)
-        //    {
-        //        await _azureStorage.DeleteAsync(user.ProfilePicture.Uuid);
-        //        _context.BlobDto.Remove(user.ProfilePicture);
-        //        user.ProfilePicture = null;
-        //        //update user and save changes
-        //        _context.Update(user);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //}
+            }
+            else if (!_context.UsersRoleClub.Where(u => int.Parse(u.UserId) == id && u.ClubId == clubId).Any())
+            {
+                _context.UsersRoleClub.Add(new UsersRoleClub { UserId = ""+id , ClubId = clubId });
+            }
+            else
+            {
+                return NotFound();
+            }
+
+
+
+
+            return View(); //retorna um 200 ou 500
+
+        }
+
     }
 }

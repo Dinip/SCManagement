@@ -21,7 +21,7 @@
                      style="cursor:pointer; object-fit: cover" />
                 <button id="btnRemoveImage"
                         type="button"
-                        class="btn btn-danger @Model.ShowRemoveButton()"
+                        class="btn btn-danger"
                         onclick="removePhoto()">
                     Remove Photo
                 </button>
@@ -61,6 +61,7 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
+
         function removePhoto() {
             document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
             document.getElementById("removeImage").value = true
