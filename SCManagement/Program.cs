@@ -42,10 +42,6 @@ using (var ser = app.Services.CreateScope())
 app.UseRequestLocalizationCookies();
 
 app.MapControllerRoute(
-    name: "Address",
-    pattern: "{controller=Addresses}/{action=Create}/{address}/{addressComponent?}");
-
-app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();

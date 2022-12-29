@@ -26,9 +26,9 @@
                 <div class="collapse navbar-collapse justify-content-between" style="text-align:center;">
                     <div class="navbar-nav">
                         <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                        <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">Clubs</a>
                         <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
-                        
+                        <a class="nav-item nav-link" asp-controller="Clubs" asp-area="" asp-action="Index">Clubs</a>
+
                         @await Component.InvokeAsync("CulturePicker")
 
                         <hr />

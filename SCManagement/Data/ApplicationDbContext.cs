@@ -20,6 +20,10 @@ namespace SCManagement.Data
         public DbSet<County> County { get; set; }
         public DbSet<Address> Address { get; set; }
         public DbSet<BlobDto> BlobDto { get; set; }
+        public DbSet<Club> Club { get; set; }
+        public DbSet<Modality> Modality { get; set; }
+        public DbSet<RoleClub> RoleClub { get; set; }
+        public DbSet<UsersRoleClub> UsersRoleClub { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -64,6 +68,29 @@ namespace SCManagement.Data
             }
             //add list of counties to db
             builder.Entity<County>().HasData(counties);
+
+            //Create Modalities
+            builder.Entity<Modality>().HasData(
+                new Modality { Id = 1, Name = "Atletismo" },
+                new Modality { Id = 2, Name = "Basquetebol" },
+                new Modality { Id = 3, Name = "Futebol" },
+                new Modality { Id = 4, Name = "Futsal" },
+                new Modality { Id = 5, Name = "Hóquei em Patins" },
+                new Modality { Id = 6, Name = "Natação" },
+                new Modality { Id = 7, Name = "Voleibol" },
+                new Modality { Id = 8, Name = "BTT" },
+                new Modality { Id = 9, Name = "Taekwondo" },
+                new Modality { Id = 10, Name = "Orientação" }
+                );
+
+            //Create Roles for the Club
+            builder.Entity<RoleClub>().HasData(
+                new RoleClub { Id = 1, RoleName = "Sócio" },
+                new RoleClub { Id = 2, RoleName = "Atleta" },
+                new RoleClub { Id = 3, RoleName = "Treinador" },
+                new RoleClub { Id = 4, RoleName = "Secretaria" },
+                new RoleClub { Id = 5, RoleName = "Administrador de Clube" }
+                );
         }
     }
 }
