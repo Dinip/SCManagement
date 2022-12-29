@@ -22,20 +22,6 @@ if (window.innerWidth <= 768) {
     dropdownM.classList.add("dropdown-menu");
 }
 
-function editProfile() {
-    var profile = document.getElementById("cardBodyProfile");
-    var edit = document.getElementById("cardBodyProfileEdit");
-    profile.classList.add("d-none");
-    edit.classList.remove("d-none");
-}
-
-function saveProfile() {
-    var profile = document.getElementById("cardBodyProfile");
-    var edit = document.getElementById("cardBodyProfileEdit");
-    profile.classList.remove("d-none");
-    edit.classList.add("d-none");
-}
-
 function myFunction() {
     var element = document.getElementById("navBar");
     var darkToggle = document.getElementById("darkToggle");
@@ -70,6 +56,7 @@ function myFunction() {
         logoText1.style.fill = 'white';
 
         for (let i = 0; i < card.length; i++) {
+            console.log(card.length)
             card[i].style.background = '#515151';
         }
         for (let i = 0; i < body.length; i++) {

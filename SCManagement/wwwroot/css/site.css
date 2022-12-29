@@ -184,5 +184,4 @@ input:checked + .slider:before {
     border-left: none;
     border-right: none;
     text-align: center;
-    margin-top: -($spacer * .25 * 3);
 }

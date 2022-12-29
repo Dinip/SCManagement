@@ -4,104 +4,87 @@
     ViewData["Title"] = "Profile";
 }
 
+<div class=" row ms-5 mb-0 d-flex">
+    <h1 class=" col text-to-dark">User Profile</h1>
+</div>
 
 <div class="container-fluid row justify-content-evenly">
-    <h1 class="text-to-dark row ms-5 mb-0">User Profile</h1>
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div id="card1" class="col-3 card-to-dark card">
-            <div class="card-body p-5  align-content-center justify-content-center" style="max-height: 500px;">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div id="card1" class="col-md-3 col-8 card-to-dark card">
+        <div class="card-body p-5  align-content-center justify-content-center" style="max-height: 500px;">
             <div style="text-align:center;">
-                    <img id="profilePicture"
-                         src="@Model.ProfilePictureUrl"
-                         class="rounded-circle"
-                         width="200"
-                         height="200" />
-                    <i class="fa-solid fa-pen-to-square fa-2xl position-absolute" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer; margin-top:40%; margin-left:-5%;"></i>
+                <img id="profilePicture"
+                     src="@Model.ProfilePictureUrl"
+                     class="rounded-circle col"
+                     style="width:100%; max-height:300px; height:auto;"
+                    />
+                <div class="col">
+                    <i class="fa-solid fa-xl fa-trash row" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
+                    <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
                 </div>
-                <h3 class="text-to-dark text-center" style="margin-top:50px;">@Model.Input.FirstName @Model.Input.LastName</h3>
+                
             </div>
+            <h3 class="text-to-dark text-center" style="margin-top:50px;">@Model.Input.FirstName @Model.Input.LastName</h3>
         </div>
+    </div>
 
-        <div id="card2" class="col-8 card-to-dark card mt-5">
-            <div id="cardBodyProfile" class="p-5">
+    <div id="card2" class="col-8 card-to-dark card mt-5">
+        <div class="card-body justify-content-between align-content-between ">
+            <partial name="_StatusMessage" for="StatusMessage" />
+            <form id="profile-form" method="post" enctype="multipart/form-data">
                 <div class="row">
-                    <strong class="col text-to-dark">Full Name</strong>
-                    <div class="col">
-                        <label class="text-to-dark">@Model.Input.FirstName @Model.Input.LastName</label>
-                        <i class="fa-solid fa-pen-to-square" onclick="editProfile()"></i>
+                    <div class="col form-floating" style="margin-bottom:20px; padding:0; margin-right:3px;">
+                        <input asp-for="Input.FirstName" class="form-control" />
+                        <label asp-for="Input.FirstName" class="form-label"></label>
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="col form-floating" style="margin-bottom:20px; padding:0;">
+                        <input asp-for="Input.LastName" class="form-control" />
+                        <label asp-for="Input.LastName" class="form-label"></label>
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
                     </div>
                 </div>
-                <hr />
-                <div class="row">
-                    <strong class="col text-to-dark">Email</strong>
-                    <div class="col">
-                        <label class="ctext-to-dark">@User.Identity?.Name!</label>
-                        <a class="fa-solid fa-pen-to-square text-black" asp-page="/Account/Manage/Email"></a>
-                    </div>
+                <hr style="margin-bottom:20px;" />
+                <div class="row form-floating" style="margin-bottom:20px;">
+                    <input asp-for="Input.PhoneNumber" class="form-control" />
+                    <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
                 </div>
-                <hr />
-                <div class="row">
-                    <div class="col">
-                        <strong class="text-to-dark" style="margin-right:20px;">Phone Number</strong>
-                        <label class="text-to-dark">@Model.Input.PhoneNumber</label>
-                        <i class="fa-solid fa-pen-to-square" onclick="editProfile()"></i>
-                    </div>
-                    <div class="col">
-                        <strong class="text-to-dark" style="margin-right:20px;">Birthday</strong>
-                        <label class="text-to-dark">@Model.Input.DateOfBirth.Value.ToShortDateString()</label>
-                        <i class="fa-solid fa-pen-to-square" onclick="editProfile()"></i>
-                    </div>
+                <hr style="margin-bottom:20px;" />
+                <div class="row form-floating" style="margin-bottom:20px;">
+                    <input asp-for="Input.DateOfBirth" class="form-control" />
+                    <label asp-for="Input.DateOfBirth" class="form-label"></label>
+                    <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
                 </div>
-                <hr />
+                <hr style="margin-bottom:20px;" />
                 <div class="row">
                     <strong class="col text-to-dark">Password</strong>
-                    <a class="col" asp-page="/Account/Manage/ChangePassword">Change Password</a>
+                    <a class="col text-end text-black text-to-dark" asp-page="/Account/Manage/ChangePassword">Change Password</a>
                 </div>
-            </div>
+                <hr style="margin-bottom:20px;" />
+                <div class="row">
+                    <strong class="col text-to-dark">Email</strong>
+                    <div class="col text-end">
+                        <label class="text-to-dark" style="margin-right:20px;">@User.Identity?.Name!</label>
+                        <a class="text-black text-to-dark" asp-page="/Account/Manage/Email">Change Email</a>
+                    </div>
+                </div>
+                <button id="update-profile-button" style="border-radius: 10px;
+                                                        background-color: #00639A;
+                                                        border-color: #00639A;
+                                                        margin-top:50px !important;"
+                        type="submit" class="w-100 btn btn-lg btn-primary">
+                    Save
+                </button>
 
-            <div id="cardBodyProfileEdit" class="card-body justify-content-between align-content-between d-none">
-                <partial name="_StatusMessage" for="StatusMessage" />
-                <form id="profile-form" method="post" enctype="multipart/form-data">
-                    <div class="row">
-                        <div class="col form-floating" style="margin-bottom:20px; padding:0; margin-right:3px;">
-                            <input asp-for="Input.FirstName" class="form-control" />
-                            <label asp-for="Input.FirstName" class="form-label"></label>
-                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
-                        </div>
-                        <div class="col form-floating" style="margin-bottom:20px; padding:0;">
-                            <input asp-for="Input.LastName" class="form-control" />
-                            <label asp-for="Input.LastName" class="form-label"></label>
-                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
-                        </div>
-                    </div>
-                    <hr style="margin-bottom:20px;" />
-                    <div class="row form-floating" style="margin-bottom:20px;">
-                        <input asp-for="Input.PhoneNumber" class="form-control" />
-                        <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                        <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
-                    </div>
-                    <hr style="margin-bottom:20px;"/>
-                    <div class="row form-floating" style="margin-bottom:20px;">
-                        <input asp-for="Input.DateOfBirth" class="form-control" />
-                        <label asp-for="Input.DateOfBirth" class="form-label"></label>
-                        <span asp-validation-for="Input.DateOfBirth" class="text-danger"></span>
-                    </div>
-                    <button id="update-profile-button" style="border-radius: 10px;
-                                                                background-color: #00639A;
-                                                                border-color: #00639A;"
-                                                                type="submit" class="w-100 btn btn-lg btn-primary" onclick="saveProfile()">
-                        Save
-                    </button>
-                </form>
-            </div>
-            
-
+                <div>
+                    <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/png, image/jpeg"
+                           onchange="handleUpload(this)" />
+                    <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
+                </div>
+            </form>
         </div>
-        <div>
-            <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/png, image/jpeg"
-                   onchange="handleUpload(this)" />
-            <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
-        </div>
+    </div>
 </div>
 
 @section Scripts {
