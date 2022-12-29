@@ -13,5 +13,6 @@
 
         public int RoleId { get; set; }
         public RoleClub? Role { get; set; }
+        public DateTime? JoinDate { get; set; }
     }
 }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -11,16 +13,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Utilities;
 using SCManagement.Data;
+
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 
 namespace SCManagement.Controllers {
+    
     /// <summary>
     /// This class represents the Clubs Controller
     /// </summary>
     /// 
-
     public class ClubsController : Controller {
 
         private readonly ApplicationDbContext _context;
@@ -63,31 +66,38 @@ namespace SCManagement.Controllers {
                 return NotFound();
             }
 
+            //get the club to be viewed
             var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(m => m.Id == id);
+
+            //If the club does not have an image, one is placed by default.
             if (club.Photography == null)
             {
                 club.Photography = new BlobDto { Uri = "https://cdn.scmanagement.me/public/user_placeholder.png" };
             }
 
+            //viewbag that will have the modalities of the club 
             ViewBag.Modalities = new SelectList(club.Modalities, "Id", "Name");
 
+            //get user id
             string userId = GetUserIdFromAuthedUser();
+            
+            //get ids of roles that a user have in a club
             List<int> roleIds = UserRolesInClub(userId, (int)id);
 
-            //se o user tiver uma role e essa role nao for o 1 (socio), significa que é staff (geral)
+            //if the user has a role and this role is not 1(partner), it means that it is staff(general)
             if (roleIds.Count != 0 && !roleIds.Contains(1))
             {
                 ViewBag.btnValue = "Tornar-me sócio";
                 ViewBag.btnClasses = "btn-primary disabled";
             }
-            //o user já é sócio? então deixa de ser
+            //Is the user already a member? so stop being
             else if (roleIds.Contains(1))
             {
                 //add a associate to the club
                 ViewBag.btnValue = "Deixar de ser sócio";
                 ViewBag.btnClasses = "btn-danger";
             }
-            //o user ainda nao é sócio, então passa a ser (user sem roles no clube)
+            //the user is not yet a member, so he becomes one (user without roles in the club)
             else
             {
                 //remove a user from a club
@@ -115,6 +125,7 @@ namespace SCManagement.Controllers {
             if (UserAlreadyInAClub(GetUserIdFromAuthedUser())) return NotFound(); //not this, fix
 
             ViewBag.Modalities = new SelectList(_context.Modalities.ToList(), "Id", "Name");
+            
             return View();
         }
 
@@ -131,13 +142,17 @@ namespace SCManagement.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
         {
+            
             List<Modality> modalities = await _context.Modalities.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
             if (!ModelState.IsValid) return View();
 
+            //get id of the user
             string userId = GetUserIdFromAuthedUser();
+            
             //check if the user already has/is part of a club and if so, don't allow to create a new one
             if (UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
 
+            //Create a new club
             Club c = new Club
             {
                 Name = club.Name,
@@ -147,6 +162,8 @@ namespace SCManagement.Controllers {
 
             //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
             List<UsersRoleClub> roles = new();
+
+            //add a role whit the user that create the club
             roles.Add(new UsersRoleClub { UserId = userId, RoleId = 5 });
             c.UsersRoleClub = roles;
 
@@ -159,7 +176,7 @@ namespace SCManagement.Controllers {
 
         // GET: Clubs/Edit/5
         /// <summary>
-        /// 
+        /// This method returns the Edit View
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -171,10 +188,13 @@ namespace SCManagement.Controllers {
             //role id 5 means that is club admin
             if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 5)) return NotFound();
 
+            //get the club
             var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(c => c.Id == id);
 
+            //get ids of the modalities of the club
             List<int> ClubModalitiesIds = club.Modalities.Select(m => m.Id).ToList();
 
+            //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(_context.Modalities.ToList(), "Id", "Name", ClubModalitiesIds);
 
             if (club == null) return NotFound();
@@ -202,7 +222,7 @@ namespace SCManagement.Controllers {
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         /// <summary>
-        /// 
+        /// This method returns the Edit View
         /// </summary>
         /// <param name="id"></param>
         /// <param name="club"></param>
@@ -214,15 +234,18 @@ namespace SCManagement.Controllers {
         {
             if (id != club.Id) return NotFound();
             if (!ModelState.IsValid) return View(club);
+            
+            //get the club
             var actualClub = _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefault(c => c.Id == id);
             if (actualClub == null) return NotFound();
 
-
+            //delete the club picture 
             if (club.RemoveImage)
             {
                 await CheckAndDeletePhoto(actualClub);
             }
 
+            //add club picture
             if (club.File != null)
             {
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(club.File);
@@ -236,7 +259,9 @@ namespace SCManagement.Controllers {
                 await _context.SaveChangesAsync();
             }
 
+            //new modalities choosed
             List<Modality> newModalities = await _context.Modalities.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
+            
             //remove from club modalities which are not in the new modalities list
             if (actualClub.Modalities != null)
             {
@@ -262,6 +287,7 @@ namespace SCManagement.Controllers {
                 actualClub.Modalities = newModalities;
             }
 
+            //updates to the settings of club
             actualClub.Name = club.Name;
             actualClub.Email = club.Email;
             actualClub.PhoneNumber = club.PhoneNumber;
@@ -273,8 +299,9 @@ namespace SCManagement.Controllers {
             return RedirectToAction(nameof(Index));
         }
 
+
         /// <summary>
-        /// 
+        /// Allow to know if a user have a role in the club
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="clubId"></param>
@@ -287,6 +314,12 @@ namespace SCManagement.Controllers {
         }
 
 
+        /// <summary>
+        /// Allows to obtain the roles that the user has in the club
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         private List<int> UserRolesInClub(string userId, int clubId)
         {
             List<int> rolesId = new List<int>();
@@ -294,6 +327,12 @@ namespace SCManagement.Controllers {
             return rolesId;
         }
 
+        /// <summary>
+        /// Allow to know if a user are in the club
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         private bool UserAlreadyInAClub(string userId, int? clubId = null)
         {
             if (clubId != null)
@@ -305,11 +344,20 @@ namespace SCManagement.Controllers {
             return alreadyRole != null;
         }
 
+        /// <summary>
+        /// Get id of the user
+        /// </summary>
+        /// <returns></returns>
         private string GetUserIdFromAuthedUser()
         {
             return _userManager.GetUserId(User);
         }
 
+        /// <summary>
+        /// Allows you to delete a photo that the club had placed
+        /// </summary>
+        /// <param name="club"></param>
+        /// <returns></returns>
         private async Task CheckAndDeletePhoto(Club club)
         {
             if (club.Photography != null)
@@ -317,11 +365,13 @@ namespace SCManagement.Controllers {
                 await _azureStorage.DeleteAsync(club.Photography.Uuid);
                 _context.BlobDto.Remove(club.Photography);
                 club.Photography = null;
+            
                 //update club to remove photo and save changes
                 _context.Update(club);
                 await _context.SaveChangesAsync();
             }
         }
+
 
         public class EditModel {
             public int Id { get; set; }
@@ -376,7 +426,9 @@ namespace SCManagement.Controllers {
 
             await HandleAssociateStatus((int)id);
 
+            //get club
             var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(m => m.Id == id);
+            
             if (club.Photography == null)
             {
                 club.Photography = new BlobDto { Uri = "https://cdn.scmanagement.me/public/user_placeholder.png" };
@@ -393,35 +445,81 @@ namespace SCManagement.Controllers {
             return View("Details", club);
         }
 
+        /// <summary>
+        /// Allows you to join as a club member as well as stop being a member
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         private async Task HandleAssociateStatus(int clubId)
         {
             string userId = GetUserIdFromAuthedUser();
             List<int> roleIds = UserRolesInClub(userId, clubId);
-
-            //se o user tiver uma role e essa role nao for o 1 (socio), significa que é staff (geral)
+            
+            //if the user has a role and this role is not 1(partner), it means that it is staff(general)
             if (roleIds.Count != 0 && !roleIds.Contains(1))
             {
-                ViewBag.btnValue = "Tornar-me sócio";
+                ViewBag.btnValue = "Associate";
                 ViewBag.btnClasses = "btn-primary disabled";
             }
-            //o user já é sócio? então deixa de ser
+            //Is the user already a member? so stop being
             else if (roleIds.Contains(1))
             {
                 //remove a user from a club
                 _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.UserId == userId && u.ClubId == clubId && u.RoleId == 1).FirstOrDefault());
                 await _context.SaveChangesAsync();
-                ViewBag.btnValue = "Tornar-me sócio";
+                ViewBag.btnValue = "Associate";
                 ViewBag.btnClasses = "btn-primary";
             }
-            //o user ainda nao é sócio, então passa a ser (user sem roles no clube)
+            //the user is not yet a member, so he becomes one(user without roles in the club)
             else
             {
                 //add a associate to the club
-                _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = 1 });
+                _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = 1, JoinDate = DateTime.Now });
                 await _context.SaveChangesAsync();
-                ViewBag.btnValue = "Deixar de ser sócio";
+                ViewBag.btnValue = "Member";
                 ViewBag.btnClasses = "btn-danger";
             }
         }
+
+        /// <summary>
+        /// Return a view which corresponds to the page that has the list of club members
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
+        [Authorize]
+        public async Task<IActionResult> PartnersList(int id)
+        {
+            //get all users of the club that are associate
+            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 5)) return NotFound();
+            
+            var associates = _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 1);
+
+            var partners = await _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 1).Select(u => u.User).ToListAsync();
+            
+            ViewBag.associates = partners;
+         
+            return View(associates);
+        }
+
+
+        /// <summary>
+        /// Allows to remove a partener from the club
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        public async Task<IActionResult> RemovePartner(int id)
+        {
+            var clubId = _context.UsersRoleClub.Where(u => u.Id == id).FirstOrDefault().ClubId;
+
+            //remove a user from a club
+            _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.Id == id).FirstOrDefault());
+            await _context.SaveChangesAsync();
+
+            id = clubId;
+
+            return RedirectToAction("PartnersList", new { id });
+        }
+       
     }
 }

@@ -1,0 +1,45 @@
+﻿@model IEnumerable<SCManagement.Models.UsersRoleClub>
+
+@{
+    ViewData["Title"] = "PartnersList";
+}
+
+<h1>PartnersList</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.JoinDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                @foreach (User user in ViewBag.associates)
+                {
+                    if( user.Id == item.UserId)
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => user.FirstName)
+                        </td>
+                    }
+                }
+            <td>
+                @Html.DisplayFor(modelItem => item.JoinDate)
+            </td>
+            <td>
+                 <a asp-action="RemovePartner" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

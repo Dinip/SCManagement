@@ -68,37 +68,3 @@
         window.history.replaceState(null, null, "/Clubs/Details/" + "@Model.Id");
     }
 </script>
-
-@*window.onload = (event) => {
-  console.log("page is fully loaded");
-};*@
-@*
-<script>
-    function submeter(isAssociate) {
-        let id = "@Model.Id";
-        let url = "/Clubs/Associate/" + id;
-        $.post(url, function (data) {
-            if (data.success) {
-                alert("success");
-            }
-            else {
-                alert("error");
-            }
-        });
-    }
-
-    $.ajax({
-        type: 'POST',
-        url: '@Url.Action("Associate","AddressT")', // we are calling json method
-        dataType: 'json',
-        data: { id: $("#District").val() },
-        success: function (counties) {
-            // counties contains the JSON formatted list
-            // of counties passed from the controller
-            $("#County").append('<option value="' + "0" + '">' + "Select county" + '</option>');
-            $.each(counties, function (i, state) {
-                $("#County").append('<option value="' + state.id + '">' + state.name + '</option>');
-                // here we are adding option for counties
-            });
-</script>
-*@
