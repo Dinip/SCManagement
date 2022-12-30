@@ -13,6 +13,18 @@
 
         public int RoleId { get; set; }
         public RoleClub? Role { get; set; }
-        public DateTime? JoinDate { get; set; }
+        //little trick to make creation date automatically use the current date
+        public DateTime? JoinDate
+        {
+            get
+            {
+                return dateJoined.HasValue
+                   ? dateJoined.Value
+                   : DateTime.Now;
+            }
+
+            set { dateJoined = value; }
+        }
+        private DateTime? dateJoined = null;
     }
 }

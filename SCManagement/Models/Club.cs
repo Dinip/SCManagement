@@ -33,7 +33,21 @@ namespace SCManagement.Models {
         [Display(Name = "About")]
         public string? About { get; set; }
 
-        public DateTime CreationDate { get; set; }
+
+        //little trick to make creation date automatically use the current date
+        public DateTime CreationDate
+        {
+            get
+            {
+                return dateCreated.HasValue
+                   ? dateCreated.Value
+                   : DateTime.Now;
+            }
+
+            set { dateCreated = value; }
+        }
+
+        private DateTime? dateCreated = null;
 
         public DateTime? EndDate { get; set; }
 
@@ -50,6 +64,8 @@ namespace SCManagement.Models {
         public ICollection<UsersRoleClub>? UsersRoleClub { get; set; }
 
         [NotMapped]
+        [Display(Name = "Modalities")]
+        [Required(ErrorMessage = "Error_Required")]
         public IEnumerable<int>? ModalitiesIds { get; set; }
     }
 }

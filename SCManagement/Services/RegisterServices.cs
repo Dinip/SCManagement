@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Middlewares;
+using SCManagement.Services.ClubService;
 
 namespace SCManagement.Services
 {
@@ -22,6 +23,8 @@ namespace SCManagement.Services
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
             services.AddDatabaseDeveloperPageExceptionFilter();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddIdentity<User, IdentityRole>(options =>
             {
@@ -105,6 +108,7 @@ namespace SCManagement.Services
             #endregion
 
             services.AddTransient<IAzureStorage, AzureStorage>();
+            services.AddTransient<IClubService, SCManagement.Services.ClubService.ClubService>();
         }
     }
 }

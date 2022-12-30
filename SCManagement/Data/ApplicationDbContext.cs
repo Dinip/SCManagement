@@ -24,6 +24,7 @@ namespace SCManagement.Data
         public DbSet<Modality> Modality { get; set; }
         public DbSet<RoleClub> RoleClub { get; set; }
         public DbSet<UsersRoleClub> UsersRoleClub { get; set; }
+        public DbSet<CodeClub> CodeClub { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -91,6 +92,7 @@ namespace SCManagement.Data
                 new RoleClub { Id = 4, RoleName = "Secretaria" },
                 new RoleClub { Id = 5, RoleName = "Administrador de Clube" }
                 );
+
         }
     }
 }

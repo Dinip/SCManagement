@@ -4,24 +4,30 @@ using System.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
+using SCManagement.Services.ClubService;
 
-namespace SCManagement.Controllers {
-    
+namespace SCManagement.Controllers
+{
+
     /// <summary>
     /// This class represents the Clubs Controller
     /// </summary>
     /// 
-    public class ClubsController : Controller {
+    public class ClubsController : Controller
+    {
 
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IAzureStorage _azureStorage;
+        private readonly IClubService _clubService;
 
         /// <summary>
         /// This is the constructor of the Clubs Controller
@@ -29,11 +35,13 @@ namespace SCManagement.Controllers {
         /// <param name="context"></param>
         /// <param name="userManager"></param>
         /// <param name="azureStorage"></param>
-        public ClubsController(ApplicationDbContext context, UserManager<User> userManager, IAzureStorage azureStorage)
+        /// <param name="clubService"></param>
+        public ClubsController(ApplicationDbContext context, UserManager<User> userManager, IAzureStorage azureStorage, IClubService clubService)
         {
             _context = context;
             _userManager = userManager;
             _azureStorage = azureStorage;
+            _clubService = clubService;
         }
 
         // GET: Clubs
@@ -73,7 +81,7 @@ namespace SCManagement.Controllers {
 
             //get user id
             string userId = GetUserIdFromAuthedUser();
-            
+
             //get ids of roles that a user have in a club
             List<int> roleIds = UserRolesInClub(userId, (int)id);
 
@@ -118,7 +126,7 @@ namespace SCManagement.Controllers {
             if (UserAlreadyInAClub(GetUserIdFromAuthedUser())) return NotFound(); //not this, fix
 
             ViewBag.Modalities = new SelectList(_context.Modality.ToList(), "Id", "Name");
-            
+
             return View();
         }
 
@@ -135,13 +143,13 @@ namespace SCManagement.Controllers {
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
         {
-            
+
             List<Modality> modalities = await _context.Modality.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
             if (!ModelState.IsValid) return View();
 
             //get id of the user
             string userId = GetUserIdFromAuthedUser();
-            
+
             //check if the user already has/is part of a club and if so, don't allow to create a new one
             if (UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
 
@@ -227,7 +235,7 @@ namespace SCManagement.Controllers {
         {
             if (id != club.Id) return NotFound();
             if (!ModelState.IsValid) return View(club);
-            
+
             //get the club
             var actualClub = _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefault(c => c.Id == id);
             if (actualClub == null) return NotFound();
@@ -254,7 +262,7 @@ namespace SCManagement.Controllers {
 
             //new modalities choosed
             List<Modality> newModalities = await _context.Modality.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
-            
+
             //remove from club modalities which are not in the new modalities list
             if (actualClub.Modalities != null)
             {
@@ -358,7 +366,7 @@ namespace SCManagement.Controllers {
                 await _azureStorage.DeleteAsync(club.Photography.Uuid);
                 _context.BlobDto.Remove(club.Photography);
                 club.Photography = null;
-            
+
                 //update club to remove photo and save changes
                 _context.Update(club);
                 await _context.SaveChangesAsync();
@@ -366,7 +374,8 @@ namespace SCManagement.Controllers {
         }
 
 
-        public class EditModel {
+        public class EditModel
+        {
             public int Id { get; set; }
 
             [Required(ErrorMessage = "Error_Required")]
@@ -395,6 +404,8 @@ namespace SCManagement.Controllers {
 
             public Address? Address { get; set; }
 
+            [Display(Name = "Modalities")]
+            [Required(ErrorMessage = "Error_Required")]
             public IEnumerable<int>? ModalitiesIds { get; set; }
 
             public string? PhotoUri { get; set; }
@@ -421,7 +432,7 @@ namespace SCManagement.Controllers {
 
             //get club
             var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(m => m.Id == id);
-            
+
             if (club.Photography == null)
             {
                 club.Photography = new BlobDto { Uri = "https://cdn.scmanagement.me/public/user_placeholder.png" };
@@ -447,7 +458,7 @@ namespace SCManagement.Controllers {
         {
             string userId = GetUserIdFromAuthedUser();
             List<int> roleIds = UserRolesInClub(userId, clubId);
-            
+
             //if the user has a role and this role is not 1(partner), it means that it is staff(general)
             if (roleIds.Count != 0 && !roleIds.Contains(1))
             {
@@ -484,13 +495,13 @@ namespace SCManagement.Controllers {
         {
             //get all users of the club that are associate
             if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 5)) return NotFound();
-            
+
             var associates = _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 1);
 
             var partners = await _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 1).Select(u => u.User).ToListAsync();
-            
+
             ViewBag.associates = partners;
-         
+
             return View(associates);
         }
 
@@ -513,6 +524,93 @@ namespace SCManagement.Controllers {
 
             return RedirectToAction("PartnersList", new { id });
         }
-       
+
+        [Authorize]
+        public async Task<IActionResult> CreateCode(int? id)
+        {
+            if (id == null || _context.Club == null) return NotFound();
+
+            //check if the user accessing is manager (secratary or club admin)
+            if (!_clubService.IsClubManager(_userManager.GetUserId(User), (int)id)) return NotFound();
+
+            ViewBag.Roles = new SelectList(await _clubService.GetRoles(), "Id", "RoleName");
+
+            return PartialView("_PartialCreateCode");
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateCode(int? id, [Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
+        {
+            if (id == null || _context.Club == null) return NotFound();
+
+            string userId = _userManager.GetUserId(User);
+
+            //check if the user accessing is manager (secratary or club admin)
+            if (!_clubService.IsClubManager(userId, (int)id)) return NotFound();
+
+            if (ModelState.IsValid)
+            {
+                //generate a code
+                CodeClub generatedCode = await _clubService.GenerateCode((int)id, userId, codeClub.RoleId, codeClub.ExpireDate);
+                TempData["Code"] = JsonConvert.SerializeObject(await _clubService.GetCodeWithInfos(generatedCode.Id));
+            }
+
+            return RedirectToAction("Codes", new { id = 1 });
+        }
+
+        public class CreateCodeModel
+        {
+            [Required(ErrorMessage = "Error_Required")]
+            [Display(Name = "Role")]
+            public int RoleId { get; set; }
+
+            [Display(Name = "Expire Date")]
+            [DataType(DataType.Date)]
+            public DateTime? ExpireDate { get; set; }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> Codes(int? id)
+        {
+            if (id == null || _context.Club == null) return NotFound();
+
+            var code = TempData["Code"];
+            if (code != null)
+            {
+                ViewBag.Code = JsonConvert.DeserializeObject<CodeClub>(code.ToString());
+            }
+
+            string userId = _userManager.GetUserId(User);
+
+            //check if the user accessing is manager (secratary or club admin)
+            if (!_clubService.IsClubManager(userId, (int)id)) return NotFound();
+
+            return View(await _clubService.GetCodes((int)id));
+        }
+
+        [Authorize]
+        public IActionResult Join(string? code)
+        {
+            return View("Join", new CodeClub { Code = code });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> Join([Bind("Code")] CodeClub cc)
+        {
+            if (_context.Club == null) return NotFound();
+
+            string userId = _userManager.GetUserId(User);
+            if (cc.Code == null || _clubService.IsAlreadyInAClub(userId)) return NotFound();
+
+            bool joined = _clubService.UseCode(userId, cc.Code);
+
+            if (!joined) return NotFound();
+
+            return RedirectToAction("Index", "Home");
+        }
     }
 }
