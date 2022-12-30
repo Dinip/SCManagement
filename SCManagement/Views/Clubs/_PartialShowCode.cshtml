@@ -3,6 +3,16 @@
 <div>
     <h4>CodeClub</h4>
     <hr />
+
+    @if (ViewBag.ApprovedCodeStatus == true)
+    {
+        <p>Code successfully approved</p>
+    }
+    else if (ViewBag.ApprovedCodeStatus == false)
+    {
+        <p>Error approving code</p>
+    }
+
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Code)
@@ -44,20 +54,34 @@
             @Html.DisplayNameFor(model => model.CreatedByUser)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedByUser.FirstName)
+            @Html.DisplayFor(model => model.CreatedByUser.FullName)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.UsedByUser)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UsedByUser.FirstName)
+            @Html.DisplayFor(model => model.UsedByUser.FullName)
         </dd>
+        @if (!Model.Approved && ViewBag.IsAdmin)
+        {
+            <a href="/Clubs/Codes/@Model.ClubId?approveCode=@Model.Id">Approve</a>
+        }
+        <form asp-action="SendCodeEmail">
+            <div class="form-group">
+                <label name="Email" value="Email" class="control-label"></label>
+                <input name="Email" class="form-control" />
+            </div>
+            <input name="CodeId" value="@Model.Id" class="form-control" hidden />
+            <input name="ClubId" value="@Model.ClubId" class="form-control" hidden />
+            <div class="form-group">
+                <input type="submit" value="Send" class="btn btn-primary" />
+            </div>
+        </form>
     </dl>
 </div>
 
 <script type="text/javascript">
     window.onload = () => {
-        console.log("aqui")
         document.getElementById("modal").style.display = "block";
     }
 </script>

@@ -6,11 +6,6 @@
 
 <h1>CodesList</h1>
 
-<p>
-    <button onclick="openCreate()">Create New</button>
-</p>
-
-
 <div id="modal" class="modal">
     <div class="modal-content">
         <span onclick="$('#modal').hide()" class="close">&times;</span>
@@ -18,6 +13,10 @@
             @if (ViewBag.Code != null)
             {
                 @await Html.PartialAsync("_PartialShowCode", (CodeClub)ViewBag.Code)
+            }
+            @if (ViewBag.ApprovedCodeStatus != null)
+            {
+                @await Html.PartialAsync("_PartialShowCode", Model.First(f=>f.Code == ViewBag.ApprovedCode))
             }
         </div>
     </div>
@@ -77,18 +76,22 @@
                     @Html.DisplayFor(modelItem => item.Role.RoleName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.CreatedByUser.FirstName)
+                    @Html.DisplayFor(modelItem => item.CreatedByUser.FullName)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UsedByUser.FirstName)
+                    @Html.DisplayFor(modelItem => item.UsedByUser.FullName)
                 </td>
                 <td>
-                    <a asp-action="Resend" asp-route-id="@item.Id">Resend</a>
+                    <a href="/Clubs/Codes/@item.ClubId?code=@item.Id">Details</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+<p>
+    <button onclick="openCreate()">Create New</button>
+</p>
 
 <style>
     /* The Modal (background) */
@@ -141,7 +144,7 @@
 
     function openCreate() {
         $.ajax({
-            url: '/Clubs/CreateCode/1',
+            url: '/Clubs/CreateCode/@ViewBag.ClubId',
             type: 'GET',
             async: false,
             success: function (result) {

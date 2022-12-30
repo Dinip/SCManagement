@@ -10,6 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <p>@ViewBag.Message</p>
         <form asp-action="Join">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -25,5 +26,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

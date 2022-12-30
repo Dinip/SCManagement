@@ -1,6 +1,9 @@
-﻿using System.Security.Policy;
+﻿using System;
+using System.Security.Policy;
+using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json.Linq;
 using SCManagement.Data;
 using SCManagement.Models;
 
@@ -11,12 +14,18 @@ namespace SCManagement.Services.ClubService
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IHttpContextAccessor _httpContext;
+        private readonly SharedResourceService _sharedResource;
 
-        public ClubService(ApplicationDbContext context, IEmailSender emailSender, IHttpContextAccessor httpContext)
+        public ClubService(
+            ApplicationDbContext context,
+            IEmailSender emailSender,
+            IHttpContextAccessor httpContext,
+            SharedResourceService sharedResource)
         {
             _context = context;
             _emailSender = emailSender;
             _httpContext = httpContext;
+            _sharedResource = sharedResource;
         }
 
         public Task<Club> CreateClub(Club club)
@@ -48,7 +57,7 @@ namespace SCManagement.Services.ClubService
         /// Generate a join club code (the code in string) with 10 chars
         /// but first check if the code is unique on the database
         /// </summary>
-        /// <returns></returns>
+        /// <returns>a code with 8 chars</returns>
         private string generateCode()
         {
             string code;
@@ -65,6 +74,11 @@ namespace SCManagement.Services.ClubService
             return code;
         }
 
+        /// <summary>
+        /// Auxiliary method to check if the code is unique on the database
+        /// </summary>
+        /// <param name="code">code to check</param>
+        /// <returns></returns>
         private bool codeAlreadyExists(string code)
         {
             return _context.CodeClub.Any(c => c.Code == code);
@@ -73,17 +87,17 @@ namespace SCManagement.Services.ClubService
         /// <summary>
         /// Generates a code to access a club and saves it
         /// </summary>
-        /// <param name="clubId"></param>
-        /// <param name="creatorId"></param>
-        /// <param name="roleId"></param>
-        /// <param name="expireDate"></param>
-        /// <returns></returns>
+        /// <param name="clubId">id of the club to generate the code</param>
+        /// <param name="creatorId">id of the person who created the code</param>
+        /// <param name="roleId">id of the role that the code will assign</param>
+        /// <param name="expireDate">expire date of the code</param>
+        /// <returns>code</returns>
         public async Task<CodeClub> GenerateCode(int clubId, string creatorId, int roleId, DateTime? expireDate)
         {
             // if trying to generate a code to a secretary role and the user
             // is another secretary, the code must be validated by the club admin first
             bool isApproved = true;
-            if (roleId == 4 && userHasRoleInClub(creatorId, clubId, 4))
+            if (roleId == 40 && IsClubSecretary(creatorId, clubId))
             {
                 isApproved = false;
             }
@@ -97,8 +111,15 @@ namespace SCManagement.Services.ClubService
             if (!isApproved)
             {
                 string hostUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}";
-                string url = $"${hostUrl}/Clubs/ValidateCode?code=${code}";
-                await sendEmailToClubAdmin(clubId, "Approve code creation", $"Approve creation of the code {cc.Code} to the Secretary Role. <a href=\"{url}\">");
+                string url = $"{hostUrl}/Clubs/Codes/{cc.ClubId}?approveCode={cc.Code}";
+                string roleName = _context.RoleClub.Where(r => r.Id == cc.RoleId).Select(r => r.RoleName).First();
+                Dictionary<string, string> values = new Dictionary<string, string>
+                {
+                    { "_CODE_", cc.Code },
+                    { "_ROLE_", roleName },
+                    { "_CALLBACK_URL_", url }
+                };
+                await sendEmailToClubAdmin(clubId, "Subject_ApproveCode", "Email_ApproveCode", values);
             }
 
             return cc;
@@ -117,52 +138,29 @@ namespace SCManagement.Services.ClubService
             return rolesId;
         }
 
-        /// <summary>
-        /// Check if the user has a specific role in a club
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="clubId"></param>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        private bool userHasRoleInClub(string userId, int clubId, int roleId)
-        {
-            return userRolesInClub(userId, clubId).Contains(roleId);
-        }
-
-        /// <summary>
-        /// Allow to know if a user are in the club
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="clubId"></param>
-        /// <returns></returns>
-        private bool userAlreadyInAClub(string userId, int? clubId = null)
-        {
-            if (clubId == null)
-            {
-                return _context.UsersRoleClub.Any(f => f.UserId == userId);
-            }
-            return _context.UsersRoleClub.Any(f => f.UserId == userId && f.ClubId == clubId);
-        }
-
         private User getClubAdmin(int clubId)
         {
-            return _context.UsersRoleClub.Where(r => r.ClubId == clubId && r.RoleId == 5).Include(r => r.User).Select(r => r.User).FirstOrDefault()!;
+            return _context.UsersRoleClub.Where(r => r.ClubId == clubId && r.RoleId == 50).Include(r => r.User).Select(r => r.User).FirstOrDefault()!;
         }
 
-        private async Task sendEmailToClubAdmin(int clubId, string subject, string content)
+        private async Task sendEmailToClubAdmin(int clubId, string keySubject, string keyContent, Dictionary<string, string>? values = null)
         {
             User admin = getClubAdmin(clubId);
-            await _emailSender.SendEmailAsync(admin.Email, subject, content);
+            string emailBody = _sharedResource.Get(keyContent, admin.Language);
+
+            if (values != null)
+            {
+                foreach (KeyValuePair<string, string> entry in values)
+                {
+                    emailBody = emailBody.Replace(entry.Key, entry.Value);
+                }
+            }
+            await _emailSender.SendEmailAsync(admin.Email, _sharedResource.Get(keySubject, admin.Language), emailBody);
         }
 
         public Task<IEnumerable<RoleClub>> GetRoles()
         {
-            return Task.FromResult(_context.RoleClub.Where(r => r.Id != 1 && r.Id != 5).AsEnumerable());
-        }
-
-        public bool IsClubManager(string userId, int clubId)
-        {
-            return userRolesInClub(userId, clubId).Any(r => r == 4 || r == 5);
+            return Task.FromResult(_context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).AsEnumerable());;
         }
 
         public Task<IEnumerable<CodeClub>> GetCodes(int clubId)
@@ -176,6 +174,7 @@ namespace SCManagement.Services.ClubService
                 {
                     Id = c.Id,
                     Code = c.Code,
+                    ClubId = c.ClubId,
                     Approved = c.Approved,
                     CreationDate = c.CreationDate,
                     ExpireDate = c.ExpireDate,
@@ -187,47 +186,167 @@ namespace SCManagement.Services.ClubService
                 .AsEnumerable());
         }
 
-        public async Task<CodeClub> GetCodeWithInfos(int id)
+        public async Task<CodeClub?> GetCodeWithInfos(int id)
         {
             return await _context.CodeClub
                 .Where(c => c.Id == id)
                 .Include(c => c.Role)
                 .Include(c => c.CreatedByUser)
                 .Include(c => c.UsedByUser)
+                .Include(c => c.Club)
                 .Select(c => new CodeClub
                 {
                     Id = c.Id,
                     Code = c.Code,
+                    ClubId = c.ClubId,
                     Approved = c.Approved,
                     CreationDate = c.CreationDate,
                     ExpireDate = c.ExpireDate,
                     UsedDate = c.UsedDate,
+                    Club = new Club { Name = c.Club.Name },
                     CreatedByUser = new User { FirstName = c.CreatedByUser.FirstName, LastName = c.CreatedByUser.LastName },
                     UsedByUser = new User { FirstName = c.UsedByUser.FirstName, LastName = c.UsedByUser.LastName },
                     Role = new RoleClub { RoleName = c.Role.RoleName }
                 })
-                .FirstAsync();
+                .FirstOrDefaultAsync();
         }
 
-        public bool IsAlreadyInAClub(string userId)
+        public bool UserAlreadyInAClub(string userId, int? clubId)
         {
-            return userAlreadyInAClub(userId);
+            if (clubId == null)
+            {
+                return _context.UsersRoleClub.Any(f => f.UserId == userId);
+            }
+            return _context.UsersRoleClub.Any(f => f.UserId == userId && f.ClubId == clubId);
         }
 
-        public bool UseCode(string userId, string code)
+        public KeyValuePair<bool, string> UseCode(string userId, CodeClub code)
         {
-            CodeClub cc = _context.CodeClub.Where(c => c.Code == code).FirstOrDefault()!;
+            if (code == null)
+            {
+                return new KeyValuePair<bool, string>(false, "Code not found");
+            }
 
-            //code not found, not approved, already used or expired, return false and dont join
-            if (cc == null || !cc.Approved || cc.UsedByUserId != null || cc.ExpireDate < DateTime.Now) return false;
+            CodeClub cc = _context.CodeClub.Where(c => c.Code == code.Code).FirstOrDefault()!;
+
+            if (cc == null)
+            {
+                return new KeyValuePair<bool, string>(false, "Code not found");
+            }
+
+            if (!cc.Approved)
+            {
+                return new KeyValuePair<bool, string>(false, "Code not approved");
+            }
+
+            if (cc.UsedByUserId != null)
+            {
+                return new KeyValuePair<bool, string>(false, "Code already used");
+            }
+
+            if (cc.ExpireDate < DateTime.Now)
+            {
+                return new KeyValuePair<bool, string>(false, "Code expired");
+            }
+
+            if (UserAlreadyInAClub(userId, cc.ClubId))
+            {
+                return new KeyValuePair<bool, string>(false, "You are already part of the club with another role");
+            }
 
             _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = cc.ClubId, RoleId = cc.RoleId });
             cc.UsedByUserId = userId;
             cc.UsedDate = DateTime.Now;
             _context.CodeClub.Update(cc);
+            _context.SaveChanges();
+            return new KeyValuePair<bool, string>(true, "Success");
 
+        }
+
+        public bool IsClubAdmin(string userId, int clubId)
+        {
+            return userRolesInClub(userId, clubId).Contains(50);
+        }
+
+        public bool IsClubSecretary(string userId, int clubId)
+        {
+            return userRolesInClub(userId, clubId).Contains(40);
+        }
+
+        public bool IsClubManager(string userId, int clubId)
+        {
+            return userRolesInClub(userId, clubId).Any(r => r == 40 || r == 50);
+        }
+
+        public bool IsClubTrainer(string userId, int clubId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsClubStaff(string userId, int clubId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsClubAthlete(string userId, int clubId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsClubMember(string userId, int clubId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsClubPartner(string userId, int clubId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool ApproveCode(string code)
+        {
+            CodeClub? cc = _context.CodeClub.Where(c => c.Code == code).FirstOrDefault();
+            if (cc == null) return false;
+            cc.Approved = true;
+            _context.Update(cc);
             _context.SaveChanges();
             return true;
+        }
+
+        public Task SendCodeEmail(int codeId, string email, int clubId)
+        {
+            CodeClub? code = GetCodeWithInfos(codeId).Result;
+            if (code == null || code.ClubId != clubId) return Task.CompletedTask;
+            User? user = GetUser(email);
+            string lang = "en-US";
+            if (user != null) lang = user.Language;
+
+            string emailBody = _sharedResource.Get("Email_InviteClub", lang);
+
+            string hostUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}";
+
+            Dictionary<string, string> values = new Dictionary<string, string>
+                {
+                    { "_CODE_", code.Code },
+                    { "_ROLE_", code.Role.RoleName },
+                    { "_CLUB_", code.Club.Name },
+                    { "_INVITER_", code.CreatedByUser.FirstName },
+                    { "_CALLBACK_URL_", $"{hostUrl}/Clubs/Join/?code={code.Code}" },
+                    { "_PAGE_URL_", $"{hostUrl}/Clubs/Join" }
+                };
+
+            foreach (KeyValuePair<string, string> entry in values)
+            {
+                emailBody = emailBody.Replace(entry.Key, entry.Value);
+            }
+
+            _emailSender.SendEmailAsync(email.ToLower(), _sharedResource.Get("Subject_InviteClub", lang), emailBody);
+            return Task.CompletedTask;
+        }
+
+        private User? GetUser(string email)
+        {
+            return _context.Users.Where(u => u.NormalizedEmail == email.ToUpper()).FirstOrDefault();
         }
     }
 }

@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
+using SCManagement.Models.Validations;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
@@ -86,13 +87,13 @@ namespace SCManagement.Controllers
             List<int> roleIds = UserRolesInClub(userId, (int)id);
 
             //if the user has a role and this role is not 1(partner), it means that it is staff(general)
-            if (roleIds.Count != 0 && !roleIds.Contains(1))
+            if (roleIds.Count != 0 && !roleIds.Contains(10))
             {
                 ViewBag.btnValue = "Tornar-me sócio";
                 ViewBag.btnClasses = "btn-primary disabled";
             }
             //Is the user already a member? so stop being
-            else if (roleIds.Contains(1))
+            else if (roleIds.Contains(10))
             {
                 //add a associate to the club
                 ViewBag.btnValue = "Deixar de ser sócio";
@@ -165,7 +166,7 @@ namespace SCManagement.Controllers
             List<UsersRoleClub> roles = new();
 
             //add a role whit the user that create the club
-            roles.Add(new UsersRoleClub { UserId = userId, RoleId = 5, JoinDate = DateTime.Now });
+            roles.Add(new UsersRoleClub { UserId = userId, RoleId = 50, JoinDate = DateTime.Now });
             c.UsersRoleClub = roles;
 
             _context.Club.Add(c);
@@ -187,7 +188,7 @@ namespace SCManagement.Controllers
             if (id == null || _context.Club == null) return NotFound();
 
             //role id 5 means that is club admin
-            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 5)) return NotFound();
+            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 50)) return NotFound();
 
             //get the club
             var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(c => c.Id == id);
@@ -460,16 +461,16 @@ namespace SCManagement.Controllers
             List<int> roleIds = UserRolesInClub(userId, clubId);
 
             //if the user has a role and this role is not 1(partner), it means that it is staff(general)
-            if (roleIds.Count != 0 && !roleIds.Contains(1))
+            if (roleIds.Count != 0 && !roleIds.Contains(10))
             {
                 ViewBag.btnValue = "Associate";
                 ViewBag.btnClasses = "btn-primary disabled";
             }
             //Is the user already a member? so stop being
-            else if (roleIds.Contains(1))
+            else if (roleIds.Contains(10))
             {
                 //remove a user from a club
-                _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.UserId == userId && u.ClubId == clubId && u.RoleId == 1).FirstOrDefault());
+                _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.UserId == userId && u.ClubId == clubId && u.RoleId == 10).FirstOrDefault());
                 await _context.SaveChangesAsync();
                 ViewBag.btnValue = "Associate";
                 ViewBag.btnClasses = "btn-primary";
@@ -478,7 +479,7 @@ namespace SCManagement.Controllers
             else
             {
                 //add a associate to the club
-                _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = 1, JoinDate = DateTime.Now });
+                _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = 10, JoinDate = DateTime.Now });
                 await _context.SaveChangesAsync();
                 ViewBag.btnValue = "Member";
                 ViewBag.btnClasses = "btn-danger";
@@ -494,7 +495,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> PartnersList(int id)
         {
             //get all users of the club that are associate
-            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 5)) return NotFound();
+            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 50)) return NotFound();
 
             var associates = _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 1);
 
@@ -553,8 +554,16 @@ namespace SCManagement.Controllers
             if (ModelState.IsValid)
             {
                 //generate a code
-                CodeClub generatedCode = await _clubService.GenerateCode((int)id, userId, codeClub.RoleId, codeClub.ExpireDate);
+                DateTime? expireDate = codeClub.ExpireDate;
+                if (expireDate != null)
+                {
+                    expireDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
+                }
+                CodeClub generatedCode = await _clubService.GenerateCode((int)id, userId, codeClub.RoleId, expireDate);
                 TempData["Code"] = JsonConvert.SerializeObject(await _clubService.GetCodeWithInfos(generatedCode.Id));
+
+                bool isAdmin = _clubService.IsClubAdmin(userId, (int)id);
+                ViewBag.isAdmin = isAdmin;
             }
 
             return RedirectToAction("Codes", new { id = 1 });
@@ -572,20 +581,40 @@ namespace SCManagement.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> Codes(int? id)
+        public async Task<IActionResult> Codes(int? id, string? approveCode, int? code)
         {
             if (id == null || _context.Club == null) return NotFound();
 
-            var code = TempData["Code"];
-            if (code != null)
+            var c = TempData["Code"];
+            if (c != null)
             {
-                ViewBag.Code = JsonConvert.DeserializeObject<CodeClub>(code.ToString());
+                ViewBag.Code = JsonConvert.DeserializeObject<CodeClub>(c.ToString());
             }
+            ViewBag.ClubId = id;
 
             string userId = _userManager.GetUserId(User);
 
             //check if the user accessing is manager (secratary or club admin)
             if (!_clubService.IsClubManager(userId, (int)id)) return NotFound();
+            bool isAdmin = _clubService.IsClubAdmin(userId, (int)id);
+
+            ViewBag.isAdmin = isAdmin;
+
+            if (approveCode != null && isAdmin)
+            {
+                //approve the usage of the code
+                ViewBag.ApprovedCodeStatus = _clubService.ApproveCode(approveCode);
+                ViewBag.ApprovedCode = approveCode;
+            }
+
+            if (code != null)
+            {
+                CodeClub? cc = await _clubService.GetCodeWithInfos((int)code);
+                if (cc != null && cc.ClubId == id)
+                {
+                    ViewBag.Code = cc;
+                }
+            }
 
             return View(await _clubService.GetCodes((int)id));
         }
@@ -604,13 +633,31 @@ namespace SCManagement.Controllers
             if (_context.Club == null) return NotFound();
 
             string userId = _userManager.GetUserId(User);
-            if (cc.Code == null || _clubService.IsAlreadyInAClub(userId)) return NotFound();
 
-            bool joined = _clubService.UseCode(userId, cc.Code);
+            KeyValuePair<bool, string> joined = _clubService.UseCode(userId, cc);
 
-            if (!joined) return NotFound();
+            ViewBag.Message = joined.Value;
+            if (joined.Key == false) return View("Join", new CodeClub { Code = cc.Code });
 
             return RedirectToAction("Index", "Home");
         }
+
+        [Authorize]
+        [HttpPost]
+        [AutoValidateAntiforgeryToken]
+        public async Task<IActionResult> SendCodeEmail(int codeId, string email, int clubId)
+        {
+            if (_context.Club == null) return NotFound();
+
+            string userId = _userManager.GetUserId(User);
+
+            //check if the user accessing is manager (secratary or club admin)
+            if (!_clubService.IsClubManager(userId, clubId)) return NotFound();
+
+            await _clubService.SendCodeEmail(codeId, email, clubId);
+
+            return RedirectToAction("Codes", new { id = 1 });
+        }
+
     }
 }

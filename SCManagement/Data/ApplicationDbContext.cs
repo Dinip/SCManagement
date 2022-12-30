@@ -86,11 +86,11 @@ namespace SCManagement.Data
 
             //Create Roles for the Club
             builder.Entity<RoleClub>().HasData(
-                new RoleClub { Id = 1, RoleName = "Sócio" },
-                new RoleClub { Id = 2, RoleName = "Atleta" },
-                new RoleClub { Id = 3, RoleName = "Treinador" },
-                new RoleClub { Id = 4, RoleName = "Secretaria" },
-                new RoleClub { Id = 5, RoleName = "Administrador de Clube" }
+                new RoleClub { Id = 10, RoleName = "Sócio" },
+                new RoleClub { Id = 20, RoleName = "Atleta" },
+                new RoleClub { Id = 30, RoleName = "Treinador" },
+                new RoleClub { Id = 40, RoleName = "Secretaria" },
+                new RoleClub { Id = 50, RoleName = "Administrador de Clube" }
                 );
 
         }

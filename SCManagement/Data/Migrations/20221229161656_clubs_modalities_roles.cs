@@ -754,11 +754,11 @@ namespace SCManagement.Data.Migrations
                 columns: new[] { "Id", "RoleName" },
                 values: new object[,]
                 {
-                    { 1, "Sócio" },
-                    { 2, "Atleta" },
-                    { 3, "Treinador" },
-                    { 4, "Secretaria" },
-                    { 5, "Administrador de Clube" }
+                    { 10, "Sócio" },
+                    { 20, "Atleta" },
+                    { 30, "Treinador" },
+                    { 40, "Secretaria" },
+                    { 50, "Administrador de Clube" }
                 });
 
             migrationBuilder.CreateIndex(

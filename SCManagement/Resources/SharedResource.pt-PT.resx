@@ -196,7 +196,7 @@
     <value>&lt;!doctype html&gt;&lt;html lang="en"&gt;&lt;head&gt;    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;    &lt;title&gt;Confirm your email change&lt;/title&gt;    &lt;meta name="description" content="Reset Password Email Template."&gt;    &lt;style type="text/css"&gt;        a:hover {            text-decoration: underline !important;        }    &lt;/style&gt;&lt;/head&gt;&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;    &lt;!--100% body table--&gt;    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;        &lt;tr&gt;            &lt;td&gt;                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"                    align="center" cellpadding="0" cellspacing="0"&gt;                    &lt;tr&gt;                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                    &lt;tr&gt;                        &lt;td&gt;                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;                                &lt;tr&gt;                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;                                &lt;/tr&gt;                                &lt;tr&gt;                                    &lt;td style="padding:0 35px;"&gt;                                        &lt;h1                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;                                            Please confirm your email change&lt;/h1&gt; &lt;span                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Tap the                                            button below to confirm your new email (CHANGE_EMAIL). If you didn't change the email, you can safely delete this email.&lt;/p&gt;                                             &lt;a href="CALLBACK_URL"                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;                                            confirm email change&lt;/a&gt;                                    &lt;/td&gt;                                &lt;/tr&gt;                                &lt;tr&gt;                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;                                &lt;/tr&gt;                            &lt;/table&gt;                        &lt;/td&gt;                    &lt;tr&gt;                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;                    &lt;/tr&gt;                &lt;/table&gt;            &lt;/td&gt;        &lt;/tr&gt;    &lt;/table&gt; &lt;!--/100% body table--&gt;&lt;/body&gt;&lt;/html&gt;</value>
   </data>
   <data name="Subject_ConfirmEmail" xml:space="preserve">
-    <value>Confirma a tua alteração de email.</value>
+    <value>Confirma a tua alteração de email</value>
   </data>
   <data name="Phone number" xml:space="preserve">
     <value>Número de telemóvel</value>
@@ -266,5 +266,147 @@
   </data>
   <data name="Resend" xml:space="preserve">
     <value>Reenviar</value>
+  </data>
+  <data name="Email_ApproveCode" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+  &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+  &lt;title&gt;Aprovar código&lt;/title&gt;
+  &lt;meta name="description" content="Reset Password Email Template."&gt;
+  &lt;style type="text/css"&gt;
+    a:hover {
+      text-decoration: underline !important;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+  &lt;!--100% body table--&gt;
+  &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+    style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;
+        &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+          align="center" cellpadding="0" cellspacing="0"&gt;
+          &lt;tr&gt;
+            &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt; &lt;img
+                  width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo" alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="padding:0 35px;"&gt;
+                    &lt;h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                      Confirma a criação de um código&lt;/h1&gt; &lt;span
+                      style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                    &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Clica no botão abaixo para aprovares o código  _CODE_ para o cargo _ROLE_.
+                    &lt;/p&gt; &lt;a href="_CALLBACK_URL_"
+                      style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Aprovar&lt;/a&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/table&gt;
+            &lt;/td&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+  </data>
+  <data name="Subject_ApproveCode" xml:space="preserve">
+    <value>Aprova a criação de um código</value>
+  </data>
+  <data name="Error_DateFuture" xml:space="preserve">
+    <value>A data deve ser maior ou igual que a atual</value>
+  </data>
+  <data name="Email_InviteClub" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+  &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+  &lt;title&gt;Convite Clube&lt;/title&gt;
+  &lt;meta name="description" content="Reset Password Email Template."&gt;
+  &lt;style type="text/css"&gt;
+    a:hover {
+      text-decoration: underline !important;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+  &lt;!--100% body table--&gt;
+  &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+    style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;
+        &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+          align="center" cellpadding="0" cellspacing="0"&gt;
+          &lt;tr&gt;
+            &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt; &lt;img
+                  width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo" alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="padding:0 35px;"&gt;
+                    &lt;h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                      Convite para Clube&lt;/h1&gt; &lt;span
+                      style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                    &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Foste convidado por _INVITER_ para te juntares ao clube _CLUB_ com a função de _ROLE_.
+                      Usa o código _CODE_ &lt;a href="_PAGE_URL_"&gt;nesta página&lt;/a&gt; ou clica no botão abaixo para aceitares o convite.
+                    &lt;/p&gt; &lt;a href="_CALLBACK_URL_"
+                      style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Aceitar Convite&lt;/a&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/table&gt;
+            &lt;/td&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+  </data>
+  <data name="Subject_InviteClub" xml:space="preserve">
+    <value>Foste convidado para fazer parte de um clube</value>
   </data>
 </root>

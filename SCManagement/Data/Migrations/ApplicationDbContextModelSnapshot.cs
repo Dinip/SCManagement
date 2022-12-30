@@ -34,7 +34,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ModalitiesId");
 
-                    b.ToTable("ClubModality");
+                    b.ToTable("ClubModality", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -195,7 +195,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountyId");
 
-                    b.ToTable("Address");
+                    b.ToTable("Address", (string)null);
                 });
 
             modelBuilder.Entity("SCManagement.Models.Club", b =>
@@ -238,7 +238,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("PhotographyId");
 
-                    b.ToTable("Club");
+                    b.ToTable("Club", (string)null);
                 });
 
             modelBuilder.Entity("SCManagement.Models.CodeClub", b =>
@@ -292,7 +292,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UsedByUserId");
 
-                    b.ToTable("CodeClub");
+                    b.ToTable("CodeClub", (string)null);
                 });
 
             modelBuilder.Entity("SCManagement.Models.Country", b =>
@@ -313,7 +313,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country");
+                    b.ToTable("Country", (string)null);
 
                     b.HasData(
                         new
@@ -347,7 +347,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("County");
+                    b.ToTable("County", (string)null);
 
                     b.HasData(
                         new
@@ -2531,7 +2531,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("District");
+                    b.ToTable("District", (string)null);
 
                     b.HasData(
                         new
@@ -2753,7 +2753,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Modality");
+                    b.ToTable("Modality", (string)null);
 
                     b.HasData(
                         new
@@ -2822,7 +2822,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleClub");
+                    b.ToTable("RoleClub", (string)null);
 
                     b.HasData(
                         new
@@ -2977,7 +2977,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersRoleClub");
+                    b.ToTable("UsersRoleClub", (string)null);
                 });
 
             modelBuilder.Entity("SCManagement.Services.AzureStorageService.Models.BlobDto", b =>
@@ -3003,7 +3003,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlobDto");
+                    b.ToTable("BlobDto", (string)null);
                 });
 
             modelBuilder.Entity("ClubModality", b =>

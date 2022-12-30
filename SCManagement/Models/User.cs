@@ -2,6 +2,7 @@
 using SCManagement.Models.Validations;
 using SCManagement.Services.AzureStorageService.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCManagement.Models
 {
@@ -39,5 +40,12 @@ namespace SCManagement.Models
         public string Theme { get; set; } = "light";
 
         public ICollection<UsersRoleClub>? UsersRoleClub { get; set; }
+
+        [NotMapped]
+        [Display(Name = "Full Name")]
+        public string FullName
+        {
+            get => $"{FirstName} {LastName}";
+        }
     }
 }

@@ -172,7 +172,7 @@
     <value>Error confirming your email.</value>
   </data>
   <data name="Subject_ConfirmAccount" xml:space="preserve">
-    <value>Confirm your account.</value>
+    <value>Confirm your account</value>
   </data>
   <data name="Subject_ResetPassword" xml:space="preserve">
     <value>Reset Password</value>
@@ -266,7 +266,7 @@
 &lt;/html&gt;</value>
   </data>
   <data name="Subject_ConfirmEmail" xml:space="preserve">
-    <value>Confirm your email change.</value>
+    <value>Confirm your email change</value>
   </data>
   <data name="Phone number" xml:space="preserve">
     <value>Phone number</value>
@@ -333,5 +333,148 @@
   </data>
   <data name="Resend" xml:space="preserve">
     <value>Resend</value>
+  </data>
+  <data name="Email_ApproveCode" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+  &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+  &lt;title&gt;Approve code&lt;/title&gt;
+  &lt;meta name="description" content="Reset Password Email Template."&gt;
+  &lt;style type="text/css"&gt;
+    a:hover {
+      text-decoration: underline !important;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+  &lt;!--100% body table--&gt;
+  &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+    style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;
+        &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+          align="center" cellpadding="0" cellspacing="0"&gt;
+          &lt;tr&gt;
+            &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt; &lt;img
+                  width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo" alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="padding:0 35px;"&gt;
+                    &lt;h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                      Approve a code&lt;/h1&gt; &lt;span
+                      style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                    &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Tap the button below to approve
+                      the code _CODE_ for the role _ROLE_.
+                    &lt;/p&gt; &lt;a href="_CALLBACK_URL_"
+                      style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Approve&lt;/a&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/table&gt;
+            &lt;/td&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+  </data>
+  <data name="Subject_ApproveCode" xml:space="preserve">
+    <value>Approve code creation</value>
+  </data>
+  <data name="Error_DateFuture" xml:space="preserve">
+    <value>Date must be after or equal to current date</value>
+  </data>
+  <data name="Email_InviteClub" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+  &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+  &lt;title&gt;Club Invite&lt;/title&gt;
+  &lt;meta name="description" content="Reset Password Email Template."&gt;
+  &lt;style type="text/css"&gt;
+    a:hover {
+      text-decoration: underline !important;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+  &lt;!--100% body table--&gt;
+  &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+    style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;
+        &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+          align="center" cellpadding="0" cellspacing="0"&gt;
+          &lt;tr&gt;
+            &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt; &lt;img
+                  width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo" alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="padding:0 35px;"&gt;
+                    &lt;h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                      Club Invite&lt;/h1&gt; &lt;span
+                      style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                    &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;You were invited by _INVITER_ to join the club _CLUB_ with the role _ROLE_.
+                      Use the code _CODE_ in &lt;a href="_PAGE_URL_"&gt;this page&lt;/a&gt; or tap the button below to accept the invite to the club.
+                    &lt;/p&gt; &lt;a href="_CALLBACK_URL_"
+                      style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase; font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Accept Invite&lt;/a&gt;
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/table&gt;
+            &lt;/td&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+  </data>
+  <data name="Subject_InviteClub" xml:space="preserve">
+    <value>You were invited to join a club</value>
   </data>
 </root>
