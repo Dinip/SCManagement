@@ -14,6 +14,7 @@ using SCManagement.Models.Validations;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.Location;
 
 namespace SCManagement.Controllers
 {
@@ -24,7 +25,6 @@ namespace SCManagement.Controllers
     /// 
     public class ClubsController : Controller
     {
-
         private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
         private readonly IAzureStorage _azureStorage;
@@ -45,22 +45,22 @@ namespace SCManagement.Controllers
             _clubService = clubService;
         }
 
-        // GET: Clubs
+
         /// <summary>
         /// This method returns the Index View
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Index view </returns>
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Club.Include(c => c.Modalities).ToListAsync());
+            return View(await _clubService.GetClubs());
         }
 
-        // GET: Clubs/Details/5
+
         /// <summary>
         /// This method returns the Details View
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">club id to view</param>
+        /// <returns>Deatils view</returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Club == null)
@@ -69,7 +69,7 @@ namespace SCManagement.Controllers
             }
 
             //get the club to be viewed
-            var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(m => m.Id == id);
+            var club = await _clubService.GetClub((int)id);
 
             //If the club does not have an image, one is placed by default.
             if (club.Photography == null)
@@ -84,7 +84,7 @@ namespace SCManagement.Controllers
             string userId = GetUserIdFromAuthedUser();
 
             //get ids of roles that a user have in a club
-            List<int> roleIds = UserRolesInClub(userId, (int)id);
+            List<int> roleIds = _clubService.UserRolesInClub(userId, club.Id);
 
             //if the user has a role and this role is not 1(partner), it means that it is staff(general)
             if (roleIds.Count != 0 && !roleIds.Contains(10))
@@ -115,89 +115,69 @@ namespace SCManagement.Controllers
             return View(club);
         }
 
-        // GET: Clubs/Create
+
         /// <summary>
         /// This method returns the Create View
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Create View</returns>
         [Authorize]
         public IActionResult Create()
         {
             //check if the user already has/is part of a club and if so, don't allow to create a new one
-            if (UserAlreadyInAClub(GetUserIdFromAuthedUser())) return NotFound(); //not this, fix
+            if (_clubService.UserAlreadyInAClub(GetUserIdFromAuthedUser())) return NotFound(); //not this, fix
 
-            ViewBag.Modalities = new SelectList(_context.Modality.ToList(), "Id", "Name");
+            ViewBag.Modalities = new SelectList(_clubService.GetModalities().Result, "Id", "Name");
 
             return View();
         }
 
-        // POST: Clubs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         /// <summary>
         /// This method returns the Create View
         /// </summary>
-        /// <param name="club"></param>
-        /// <returns></returns>
+        /// <param name="club">Clube to be created</param>
+        /// <returns>Index View</returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
         {
 
-            List<Modality> modalities = await _context.Modality.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
             if (!ModelState.IsValid) return View();
 
             //get id of the user
             string userId = GetUserIdFromAuthedUser();
 
             //check if the user already has/is part of a club and if so, don't allow to create a new one
-            if (UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
+            if (_clubService.UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
 
-            //Create a new club
-            Club c = new Club
-            {
-                Name = club.Name,
-                Modalities = modalities,
-                CreationDate = DateTime.Now
-            };
-
-            //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
-            List<UsersRoleClub> roles = new();
-
-            //add a role whit the user that create the club
-            roles.Add(new UsersRoleClub { UserId = userId, RoleId = 50, JoinDate = DateTime.Now });
-            c.UsersRoleClub = roles;
-
-            _context.Club.Add(c);
-            await _context.SaveChangesAsync();
+            await _clubService.CreateClub(club, userId);
 
             return RedirectToAction(nameof(Index));
 
         }
 
-        // GET: Clubs/Edit/5
         /// <summary>
         /// This method returns the Edit View
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">club id to be edited</param>
+        /// <returns>Edit View</returns>
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Club == null) return NotFound();
 
-            //role id 5 means that is club admin
-            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 50)) return NotFound();
+            //role id 50 means that is club admin
+            if (!_clubService.IsClubAdmin(GetUserIdFromAuthedUser(),(int)id)) return NotFound();
 
             //get the club
-            var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(c => c.Id == id);
+            var club = await _clubService.GetClub((int)id);
 
             //get ids of the modalities of the club
             List<int> ClubModalitiesIds = club.Modalities.Select(m => m.Id).ToList();
 
             //viewbag that have the modalities of the club
-            ViewBag.Modalities = new MultiSelectList(_context.Modality.ToList(), "Id", "Name", ClubModalitiesIds);
+            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
 
             if (club == null) return NotFound();
 
@@ -220,15 +200,13 @@ namespace SCManagement.Controllers
             return View(c);
         }
 
-        // POST: Clubs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         /// <summary>
         /// This method returns the Edit View
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="club"></param>
-        /// <returns></returns>
+        /// <param name="id">id the clube to be edited</param>
+        /// <param name="club">club to be edited</param>
+        /// <returns>View Index</returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -236,9 +214,9 @@ namespace SCManagement.Controllers
         {
             if (id != club.Id) return NotFound();
             if (!ModelState.IsValid) return View(club);
-
+            
             //get the club
-            var actualClub = _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefault(c => c.Id == id);
+            var actualClub = await _clubService.GetClub(id);
             if (actualClub == null) return NotFound();
 
             //delete the club picture 
@@ -303,53 +281,9 @@ namespace SCManagement.Controllers
 
 
         /// <summary>
-        /// Allow to know if a user have a role in the club
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="clubId"></param>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        private bool UserHasRoleInClub(string userId, int clubId, int roleId)
-        {
-            var r = _context.UsersRoleClub.FirstOrDefault(f => f.UserId == userId && f.ClubId == clubId && f.RoleId == roleId);
-            return r != null;
-        }
-
-
-        /// <summary>
-        /// Allows to obtain the roles that the user has in the club
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="clubId"></param>
-        /// <returns></returns>
-        private List<int> UserRolesInClub(string userId, int clubId)
-        {
-            List<int> rolesId = new List<int>();
-            rolesId.AddRange(_context.UsersRoleClub.Where(f => f.UserId == userId && f.ClubId == clubId).Select(r => r.RoleId).ToList());
-            return rolesId;
-        }
-
-        /// <summary>
-        /// Allow to know if a user are in the club
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="clubId"></param>
-        /// <returns></returns>
-        private bool UserAlreadyInAClub(string userId, int? clubId = null)
-        {
-            if (clubId != null)
-            {
-                var alreadySpecificRole = _context.UsersRoleClub.FirstOrDefault(f => f.UserId == userId && f.ClubId == clubId);
-                return alreadySpecificRole != null;
-            }
-            var alreadyRole = _context.UsersRoleClub.FirstOrDefault(f => f.UserId == userId);
-            return alreadyRole != null;
-        }
-
-        /// <summary>
         /// Get id of the user
         /// </summary>
-        /// <returns></returns>
+        /// <returns>Returns the user id</returns>
         private string GetUserIdFromAuthedUser()
         {
             return _userManager.GetUserId(User);
@@ -358,8 +292,8 @@ namespace SCManagement.Controllers
         /// <summary>
         /// Allows you to delete a photo that the club had placed
         /// </summary>
-        /// <param name="club"></param>
-        /// <returns></returns>
+        /// <param name="club">Club to eliminate the photograph</param>
+        /// <returns>A task</returns>
         private async Task CheckAndDeletePhoto(Club club)
         {
             if (club.Photography != null)
@@ -417,8 +351,8 @@ namespace SCManagement.Controllers
         /// <summary>
         /// This method allows adding a member to the club if he has no role in the club, or allows removing a member from the club if he is.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">id of the club</param>
+        /// <returns>Deatils View</returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -428,11 +362,11 @@ namespace SCManagement.Controllers
             {
                 return NotFound();
             }
-
+            
             await HandleAssociateStatus((int)id);
 
             //get club
-            var club = await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(m => m.Id == id);
+            var club = await _clubService.GetClub((int)id);
 
             if (club.Photography == null)
             {
@@ -453,21 +387,20 @@ namespace SCManagement.Controllers
         /// <summary>
         /// Allows you to join as a club member as well as stop being a member
         /// </summary>
-        /// <param name="clubId"></param>
+        /// <param name="clubId">id of the club to handle associate status</param>
         /// <returns></returns>
         private async Task HandleAssociateStatus(int clubId)
         {
             string userId = GetUserIdFromAuthedUser();
-            List<int> roleIds = UserRolesInClub(userId, clubId);
 
             //if the user has a role and this role is not 1(partner), it means that it is staff(general)
-            if (roleIds.Count != 0 && !roleIds.Contains(10))
+            if (_clubService.IsClubMember(userId, clubId) && !_clubService.IsClubPartner(userId, clubId))
             {
                 ViewBag.btnValue = "Associate";
                 ViewBag.btnClasses = "btn-primary disabled";
             }
             //Is the user already a member? so stop being
-            else if (roleIds.Contains(10))
+            else if (_clubService.IsClubPartner(userId, clubId))
             {
                 //remove a user from a club
                 _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.UserId == userId && u.ClubId == clubId && u.RoleId == 10).FirstOrDefault());
@@ -475,6 +408,7 @@ namespace SCManagement.Controllers
                 ViewBag.btnValue = "Associate";
                 ViewBag.btnClasses = "btn-primary";
             }
+
             //the user is not yet a member, so he becomes one(user without roles in the club)
             else
             {
@@ -490,32 +424,32 @@ namespace SCManagement.Controllers
         /// Return a view which corresponds to the page that has the list of club members
         /// </summary>
         /// <param name="clubId"></param>
-        /// <returns></returns>
+        /// <returns>view PartenersList</returns>
         [Authorize]
         public async Task<IActionResult> PartnersList(int id)
         {
             //get all users of the club that are associate
-            if (!UserHasRoleInClub(GetUserIdFromAuthedUser(), (int)id, 50)) return NotFound();
+            if (_clubService.IsClubStaff(GetUserIdFromAuthedUser(),id) == false) return NotFound();
 
-            var associates = _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 1);
+            var partners = _clubService.GetPartnerList(id);
 
-            var partners = await _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 1).Select(u => u.User).ToListAsync();
+            var partnersUsers = await _context.UsersRoleClub.Where(u => u.ClubId == id && u.RoleId == 10).Select(u => u.User).ToListAsync();
 
-            ViewBag.associates = partners;
+            ViewBag.associates = partnersUsers;
 
-            return View(associates);
+            return View(partners);
         }
-
-
+        
+        
         /// <summary>
         /// Allows to remove a partener from the club
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">id of the club</param>
+        /// <returns>view PartenersList</returns>
         [Authorize]
         public async Task<IActionResult> RemovePartner(int id)
         {
-            var clubId = _context.UsersRoleClub.Where(u => u.Id == id).FirstOrDefault().ClubId;
+            var clubId = _clubService.GetClubId(id);
 
             //remove a user from a club
             _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.Id == id).FirstOrDefault());
