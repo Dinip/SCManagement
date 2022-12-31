@@ -21,6 +21,16 @@ namespace SCManagement.Controllers {
             return View();
         }
 
+        public IActionResult MyClub()
+        {
+            return View();
+        }
+
+        public IActionResult CreateClub()
+        {
+            return View();
+        }
+
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

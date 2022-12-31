@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -25,9 +29,20 @@
 
                 <div class="collapse navbar-collapse justify-content-between" style="text-align:center;">
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                        <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
-                        <a class="nav-item nav-link" asp-controller="Clubs" asp-area="" asp-action="Index">Clubs</a>
+
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="MyClub">MyClub</a>
+                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">MyZone</a>
+                        }
+                        else
+                        {
+                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">Clubs</a>
+                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
+                        }
+
 
                         @await Component.InvokeAsync("CulturePicker")
 
