@@ -6,9 +6,6 @@
 
 <h1>PartnersList</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -22,24 +19,23 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-                @foreach (User user in ViewBag.associates)
-                {
-                    if( user.Id == item.UserId)
-                    {
-                        <td>
-                            @Html.DisplayFor(modelItem => user.FirstName)
-                        </td>
-                    }
-                }
-            <td>
-                @Html.DisplayFor(modelItem => item.JoinDate)
-            </td>
-            <td>
-                 <a asp-action="RemovePartner" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JoinDate)
+                </td>
+                <td>
+                    <form asp-action="RemoveUser">
+                        <input name="Id" value="@item.Id" class="form-control" hidden />
+                        <input name="Page" value="PartnersList" class="form-control" hidden />
+                        <input type="submit" value="Remove partner" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -6,6 +6,8 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using SCManagement.Data;
 using SCManagement.Models;
+using SCManagement.Services.AzureStorageService;
+using SCManagement.Services.AzureStorageService.Models;
 
 namespace SCManagement.Services.ClubService
 {
@@ -15,17 +17,20 @@ namespace SCManagement.Services.ClubService
         private readonly IEmailSender _emailSender;
         private readonly IHttpContextAccessor _httpContext;
         private readonly SharedResourceService _sharedResource;
+        private readonly IAzureStorage _azureStorage;
 
         public ClubService(
             ApplicationDbContext context,
             IEmailSender emailSender,
             IHttpContextAccessor httpContext,
-            SharedResourceService sharedResource)
+            SharedResourceService sharedResource,
+            IAzureStorage azureStorage)
         {
             _context = context;
             _emailSender = emailSender;
             _httpContext = httpContext;
             _sharedResource = sharedResource;
+            _azureStorage = azureStorage;
         }
 
         /// <summary>
@@ -40,7 +45,6 @@ namespace SCManagement.Services.ClubService
             //Create a new club
             Club c = new Club
             {
-
                 Name = club.Name,
                 Modalities = GetModalities().Result.Where(m => club.ModalitiesIds.Contains(m.Id)).ToList(),
                 CreationDate = DateTime.Now
@@ -93,9 +97,11 @@ namespace SCManagement.Services.ClubService
             return await _context.Club.Include(c => c.Modalities).ToListAsync();
         }
 
-        public Task<Club> UpdateClub(Club club)
+        public async Task<Club> UpdateClub(Club club)
         {
-            throw new NotImplementedException();
+            _context.Club.Update(club);
+            await _context.SaveChangesAsync();
+            return club;
         }
 
         /// <summary>
@@ -398,7 +404,7 @@ namespace SCManagement.Services.ClubService
         /// <returns>a boolean value, true is the user is a Member of the club, false if not</returns>
         public bool IsClubMember(string userId, int clubId)
         {
-            return UserRolesInClub(userId, clubId).Any(r => r == 20 || r == 30 || r == 40 );
+            return UserRolesInClub(userId, clubId).Any(r => r == 20 || r == 30 || r == 40);
         }
 
         /// <summary>
@@ -481,31 +487,86 @@ namespace SCManagement.Services.ClubService
             return r != null;
         }
 
-        /// <summary>
-        /// Allows you to get the list of club partners
-        /// </summary>
-        /// <param name="clubId">id of the club</param>
-        /// <returns>A list of club partners</returns>
-        public IQueryable<UsersRoleClub> GetPartnerList(int clubId)
+        public async Task<IEnumerable<UsersRoleClub>> GetClubPartners(int clubId)
         {
-            return  _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 10);
+            //when the payment module is done, this should return the status of the partner, based on the payment status
+            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 10).Include(r => r.User).ToListAsync();
         }
 
-        //public async Task<IEnumerable<User>> GetPartnerListUsers(int clubId)
-        //{
-        //    return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 10).Select(u => u.User).ToListAsync();
-        //}
+        public async Task RemoveClubUser(int userRoleClubId)
+        {
+            _context.UsersRoleClub.Remove(await _context.UsersRoleClub.FindAsync(userRoleClubId));
+            await _context.SaveChangesAsync();
+        }
 
-        //public async void RemoveClubUser(string userId, int clubId, int roleId)
-        //{
-        //    _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.UserId == userId && u.ClubId == clubId && u.RoleId == roleId).FirstOrDefault());
-        //    await _context.SaveChangesAsync();
-        //}
+        public async Task RemoveClubUser(string userId, int clubId, int roleId)
+        {
+            _context.UsersRoleClub.Remove(await _context.UsersRoleClub.Where(r => r.UserId == userId && r.ClubId == clubId && r.RoleId == roleId).FirstAsync());
+            await _context.SaveChangesAsync();
+        }
 
-        //public async void AddClubUser(string userId, int clubId, int roleId)
-        //{
-        //    _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
-        //    await _context.SaveChangesAsync();
-        //}
+        public async Task UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null)
+        {
+
+            //new profile picture provided, delete old from storage and update club to new one
+            if (file != null)
+            {
+                BlobResponseDto uploadResult = await _azureStorage.UploadAsync(file);
+                await deletePhoto(club);
+                club.Photography = uploadResult.Blob;
+                return;
+            }
+
+            if (remove)
+            {
+                await deletePhoto(club);
+                return;
+            }
+        }
+
+        private async Task deletePhoto(Club club)
+        {
+            if (club.Photography != null)
+            {
+                await _azureStorage.DeleteAsync(club.Photography.Uuid);
+                _context.BlobDto.Remove(club.Photography);
+                club.Photography = null;
+            }
+        }
+
+        public void UpdateClubModalities(Club club, IEnumerable<int> ModalitiesIds)
+        {
+            //new modalities choosed
+            List<Modality> newModalities = GetModalities().Result.Where(m => ModalitiesIds.Contains(m.Id)).ToList();
+
+            //remove from club modalities which are not in the new modalities list
+            foreach (Modality m in club.Modalities.ToList())
+            {
+                if (!newModalities.Contains(m))
+                {
+                    club.Modalities.Remove(m);
+                }
+            }
+
+            //add to club modalities the modalities that are in the new modalities list and aren't on club modalities list already
+            foreach (Modality m in newModalities.ToList())
+            {
+                if (!club.Modalities.Contains(m))
+                {
+                    club.Modalities.Add(m);
+                }
+            }
+        }
+
+        public async Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId)
+        {
+            return await _context.UsersRoleClub.FindAsync(userRoleClubId);
+        }
+
+        public async Task AddUserToClub(string userId, int clubId, int roleId)
+        {
+            var a = _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
+            await _context.SaveChangesAsync();
+        }
     }
 }

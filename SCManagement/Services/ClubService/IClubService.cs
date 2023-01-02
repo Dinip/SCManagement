@@ -10,7 +10,6 @@ namespace SCManagement.Services.ClubService
     {
         public Task<IEnumerable<Club>> GetClubs();
         public Task<Club> GetClub(int id);
-        public int GetClubId(int id);
         public Task<Club> CreateClub(Club club, string userId);
         public Task<Club> UpdateClub(Club club);
         public Task<Club> DeleteClub(int id);
@@ -31,16 +30,14 @@ namespace SCManagement.Services.ClubService
         public bool ApproveCode(string code);
         public Task SendCodeEmail(int codeId, string email, int clubId);
         public List<int> UserRolesInClub(string userId, int clubId);
-        public IQueryable<UsersRoleClub> GetPartnerList(int clubId);
         public Task<IEnumerable<Modality>> GetModalities();
         public bool UserHasRoleInClub(string userId, int clubId, int roleId);
-
-        //PROBLEMAS
-        //public Task<IEnumerable<User>> GetPartnerListUsers(int clubId);
-
-        //public void RemoveClubUser(string userId, int clubId, int roleId);
-
-        //public void AddClubUser(string userId, int clubId, int roleId);
-
+        public Task<IEnumerable<UsersRoleClub>> GetClubPartners(int clubId);
+        public Task UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null);
+        public void UpdateClubModalities(Club club, IEnumerable<int> ModalitiesIds);
+        public Task RemoveClubUser(int userRoleClubId);
+        public Task RemoveClubUser(string userId, int clubId, int roleId);
+        public Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId);
+        public Task AddUserToClub(string userId, int clubId, int roleId);
     }
 }
