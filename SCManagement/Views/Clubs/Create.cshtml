@@ -39,6 +39,8 @@
                                 <select multiple required asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.modalities"></select>
                             </div>
 
+                            <partial name="_AddressPartial" model="Model.Address" />
+
                             <div class="form-group mt-2">
                                 <input type="submit" value="Create" class="btn btn-primary" />
                             </div>

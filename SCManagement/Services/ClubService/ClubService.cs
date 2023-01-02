@@ -8,6 +8,7 @@ using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
+using SCManagement.Services.Location;
 
 namespace SCManagement.Services.ClubService
 {
@@ -18,19 +19,22 @@ namespace SCManagement.Services.ClubService
         private readonly IHttpContextAccessor _httpContext;
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
+        private readonly ILocationService _locationService;
 
         public ClubService(
             ApplicationDbContext context,
             IEmailSender emailSender,
             IHttpContextAccessor httpContext,
             SharedResourceService sharedResource,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            ILocationService locationService)
         {
             _context = context;
             _emailSender = emailSender;
             _httpContext = httpContext;
             _sharedResource = sharedResource;
             _azureStorage = azureStorage;
+            _locationService = locationService;
         }
 
         /// <summary>
@@ -39,7 +43,7 @@ namespace SCManagement.Services.ClubService
         /// <param name="club">club to be created</param>
         /// <param name="userId">user who created the club</param>
         /// <returns>A new club</returns>
-        public async Task<Club> CreateClub(Club club, string userId)
+        public async Task<Club> CreateClub(Club club, string userId, int addressId)
         {
 
             //Create a new club
@@ -47,7 +51,8 @@ namespace SCManagement.Services.ClubService
             {
                 Name = club.Name,
                 Modalities = GetModalities().Result.Where(m => club.ModalitiesIds.Contains(m.Id)).ToList(),
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                AddressId = addressId,
             };
 
             //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
@@ -567,6 +572,16 @@ namespace SCManagement.Services.ClubService
         {
             var a = _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number)
+        {
+            Address address = await _locationService.GetAddress(countyId, street, zipCode, number);
+
+            _context.Address.Add(address);
+            await _context.SaveChangesAsync();
+            
+            return address.Id;
         }
     }
 }

@@ -142,10 +142,12 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club, int CountyId)
+        public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club, int CountyId, string Street, string ZipCode, string Number)
         {
-
             if (!ModelState.IsValid) return View();
+
+            //get the address
+            int addressId = await _clubService.GetAddressAsync(CountyId, Street, ZipCode, Number);
 
             //get id of the user
             string userId = GetUserIdFromAuthedUser();
@@ -153,7 +155,7 @@ namespace SCManagement.Controllers
             //check if the user already has/is part of a club and if so, don't allow to create a new one
             if (_clubService.UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
 
-            await _clubService.CreateClub(club, userId);
+            await _clubService.CreateClub(club, userId, addressId);
 
             return RedirectToAction(nameof(Index));
 

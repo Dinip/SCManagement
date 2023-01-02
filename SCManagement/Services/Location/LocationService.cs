@@ -41,16 +41,17 @@ namespace SCManagement.Services.Location
                 .ToListAsync();
         }
 
-        public Task<Address> GetAddress(int CountyId)
+        public async Task<Address> GetAddress(int countyId, string street, string zipCode, string number)
         {
-            return _context.Address
-                .Include(a => a.County)
-                .ThenInclude(c => c.District)
-                .ThenInclude(d => d.Country)
-                .FirstOrDefaultAsync(a => a.Id == CountyId);
+            Address address = new Address
+            {
+                CountyId = countyId,
+                Street = street,
+                ZipCode = zipCode,
+                Number = number
+            };
+                
+            return address;
         }
-
-        
-        
     }
 }

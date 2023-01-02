@@ -10,7 +10,7 @@ namespace SCManagement.Services.ClubService
     {
         public Task<IEnumerable<Club>> GetClubs();
         public Task<Club> GetClub(int id);
-        public Task<Club> CreateClub(Club club, string userId);
+        public Task<Club> CreateClub(Club club, string userId, int addressId);
         public Task<Club> UpdateClub(Club club);
         public Task<Club> DeleteClub(int id);
         public Task<CodeClub> GenerateCode(int clubId, string creatorId, int roleId, DateTime? expireDate);
@@ -39,5 +39,6 @@ namespace SCManagement.Services.ClubService
         public Task RemoveClubUser(string userId, int clubId, int roleId);
         public Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId);
         public Task AddUserToClub(string userId, int clubId, int roleId);
+        public Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number);
     }
 }
