@@ -23,6 +23,8 @@
                 <select multiple required asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.modalities"></select>
             </div>
 
+            @await Component.InvokeAsync("Address", new {address = Model.Address})
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

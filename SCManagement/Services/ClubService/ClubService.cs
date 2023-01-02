@@ -295,7 +295,7 @@ namespace SCManagement.Services.ClubService
 
         public bool IsClubMember(string userId, int clubId)
         {
-            return userRolesInClub(userId, clubId).Any(r => r == 10 || r == 20 || r == 30 || r == 40 || r == 50);
+            return userRolesInClub(userId, clubId).Any(r => r == 20 || r == 30 || r == 40 || r == 50);
         }
 
         public bool IsClubPartner(string userId, int clubId)

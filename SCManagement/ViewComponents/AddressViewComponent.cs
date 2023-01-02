@@ -13,17 +13,9 @@ namespace SCManagement.ViewComponents
         {
             _locationService = locationService;
         }
-        public async Task<IViewComponentResult> InvokeAsync()
+        public async Task<IViewComponentResult> InvokeAsync(Address address)
         {
-            //var countries = await _locationService.GetCountries();
-            //ViewBag.Countries = new SelectList(countries, "Id", "Name");
-
-            //var district = await _locationService.GetDistricts(countries.First().Id);
-            //ViewBag.Districts = new SelectList(district, "Id", "Name");
-            
-            //ViewBag.Counties = new SelectList(await _locationService.GetCounties(district.First().Id), "Id", "Name");
-
-            return View("LocationSearch");
+            return View("LocationSearch", address);
         }
     }
 }

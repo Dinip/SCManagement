@@ -124,11 +124,18 @@ namespace SCManagement.Controllers
         public IActionResult Create()
         {
             //check if the user already has/is part of a club and if so, don't allow to create a new one
-            if (UserAlreadyInAClub(GetUserIdFromAuthedUser())) return NotFound(); //not this, fix
+            //if (UserAlreadyInAClub(GetUserIdFromAuthedUser())) return NotFound(); //not this, fix
 
             ViewBag.Modalities = new SelectList(_context.Modality.ToList(), "Id", "Name");
 
-            return View();
+            Address address = new Address();
+
+            Club club = new Club
+            {
+                Address = address
+            };
+
+            return View(club);
         }
 
         // POST: Clubs/Create
@@ -142,7 +149,7 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
+        public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club, int CountyId)
         {
 
             List<Modality> modalities = await _context.Modality.Where(m => club.ModalitiesIds.Contains(m.Id)).ToListAsync();
@@ -152,14 +159,18 @@ namespace SCManagement.Controllers
             string userId = GetUserIdFromAuthedUser();
 
             //check if the user already has/is part of a club and if so, don't allow to create a new one
-            if (UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
+            //if (UserAlreadyInAClub(userId)) return NotFound(); //not this, fix
 
             //Create a new club
             Club c = new Club
             {
                 Name = club.Name,
                 Modalities = modalities,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                Address = new Address
+                {
+                    CountyId = CountyId,
+                }
             };
 
             //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
@@ -555,7 +566,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> RemoveMember(int id, int clubId)
         {
             //remove a user from a club
-            _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.Id == id && u.ClubId == clubId).FirstOrDefault());
+            _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.Id == id).FirstOrDefault());
             await _context.SaveChangesAsync();
 
             return RedirectToAction("MembersList", new { id = clubId });
