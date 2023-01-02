@@ -320,7 +320,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> PartnersList(int? id)
         {
             if (id == null) return NotFound();
-            //get all users of the club that are associate
+            //get all users of the club that are partner
             if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
 
             return View(await _clubService.GetClubPartners((int)id));
