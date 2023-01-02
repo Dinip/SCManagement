@@ -11,7 +11,7 @@
             <button class="btn fa-solid fa-user fa-2xl shadow-none text-to-dark mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
             <ul class="dropdown-menu" style="margin-top: 26px; left: -100px; width: 220px;" id="Dropdown1">
                 <li class="dropdown-item" style="padding: 5px;">
-                    <a class="nav-link text-to-dark" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserAsync(User).Result.FullName</a>
+                    <a class="nav-link text-to-dark" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@UserManager.GetUserAsync(User).Result?.FullName</a>
                 </li>
                 <li class="dropdown-item" style="padding: 5px;">
                     <a class="nav-link text-to-dark" href="#">Conta corrente</a>
