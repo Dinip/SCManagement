@@ -280,27 +280,27 @@ namespace SCManagement.Services.ClubService
 
         public bool IsClubTrainer(string userId, int clubId)
         {
-            throw new NotImplementedException();
+            return userRolesInClub(userId, clubId).Contains(30);
         }
 
         public bool IsClubStaff(string userId, int clubId)
         {
-            throw new NotImplementedException();
+            return userRolesInClub(userId, clubId).Any(r => r == 30 || r == 40 || r == 50);
         }
 
         public bool IsClubAthlete(string userId, int clubId)
         {
-            throw new NotImplementedException();
+            return userRolesInClub(userId, clubId).Contains(20);
         }
 
         public bool IsClubMember(string userId, int clubId)
         {
-            throw new NotImplementedException();
+            return userRolesInClub(userId, clubId).Any(r => r == 10 || r == 20 || r == 30 || r == 40 || r == 50);
         }
 
         public bool IsClubPartner(string userId, int clubId)
         {
-            throw new NotImplementedException();
+            return userRolesInClub(userId, clubId).Contains(10);
         }
 
         public bool ApproveCode(string code)

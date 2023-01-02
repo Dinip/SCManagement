@@ -506,7 +506,6 @@ namespace SCManagement.Controllers
             return View(associates);
         }
 
-
         /// <summary>
         /// Allows to remove a partener from the club
         /// </summary>
@@ -525,6 +524,44 @@ namespace SCManagement.Controllers
 
             return RedirectToAction("PartnersList", new { id });
         }
+
+        /// <summary>
+        /// Return a view which corresponds to the page that has the list of club members
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        public async Task<IActionResult> MembersList(int id)
+        {
+            if (id == null) return NotFound();
+
+            string userId = _userManager.GetUserId(User);
+            
+            //check if the user accessing is manager (secratary or club admin)
+            if (!_clubService.IsClubManager(userId, id)) return NotFound();
+
+            ViewBag.ClubId = id;
+
+            //get all members of the club 
+            return View(_context.UsersRoleClub.Where(u => u.ClubId == id).Include(u => u.User).Include(u => u.Role).ToList());
+        }
+
+        /// <summary>
+        /// Allows to remove a member from the club
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [Authorize]
+        public async Task<IActionResult> RemoveMember(int id, int clubId)
+        {
+            //remove a user from a club
+            _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.Id == id && u.ClubId == clubId).FirstOrDefault());
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("MembersList", new { id = clubId });
+        }
+
+
 
         [Authorize]
         public async Task<IActionResult> CreateCode(int? id)
