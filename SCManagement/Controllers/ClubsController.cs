@@ -428,7 +428,7 @@ namespace SCManagement.Controllers
         [Authorize]
         public async Task<IActionResult> PartnersList(int id)
         {
-            //get all users of the club that are associate
+            //get all users of the club that are partner
             if (_clubService.IsClubStaff(GetUserIdFromAuthedUser(),id) == false) return NotFound();
 
             var partners = _clubService.GetPartnerList(id);
