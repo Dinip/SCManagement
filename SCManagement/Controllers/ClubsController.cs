@@ -327,30 +327,37 @@ namespace SCManagement.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveUser(int? id, string page)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> StaffList(int? id)
         {
+
             if (id == null) return NotFound();
+            //get all users of the club that are staff members
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
 
-            UsersRoleClub? role = await _clubService.GetUserRoleClubFromId((int)id);
+            return View(await _clubService.GetClubStaff((int)id));
 
-            //role with specified id does not exist
-            if (role == null) return NotFound();
+            //if (id == null) return NotFound();
 
-            string userId = GetUserIdFromAuthedUser();
+            //UsersRoleClub? role = await _clubService.GetUserRoleClubFromId((int)id);
 
-            if (!_clubService.IsClubManager(userId, role.ClubId)) return NotFound();
+            ////role with specified id does not exist
+            //if (role == null) return NotFound();
 
-            if (role.RoleId == 50) return NotFound();
+            //string userId = GetUserIdFromAuthedUser();
 
-            //prevent the user secretary from trying to remove another secretary or admin
-            if (role.RoleId == 40 && _clubService.IsClubSecretary(userId, role.ClubId)) return NotFound();
+            //if (!_clubService.IsClubManager(userId, role.ClubId)) return NotFound();
 
-            //remove a user from a club
-            await _clubService.RemoveClubUser((int)id);
+            //if (role.RoleId == 50) return NotFound();
 
-            return RedirectToAction(page, new { id = role.ClubId });
+            ////prevent the user secretary from trying to remove another secretary or admin
+            //if (role.RoleId == 40 && _clubService.IsClubSecretary(userId, role.ClubId)) return NotFound();
+
+            ////remove a user from a club
+            //await _clubService.RemoveClubUser((int)id);
+
+            //return RedirectToAction(page, new { id = role.ClubId });
         }
 
         [Authorize]
@@ -481,5 +488,16 @@ namespace SCManagement.Controllers
 
             return RedirectToAction("Codes", new { id = 1 });
         }
+
+        [Authorize]
+        public async Task<IActionResult> AthletesList(int? id)
+        {
+            if (id == null) return NotFound();
+            //get all users of the club that are athletes
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            return View(await _clubService.GetClubAthletes((int)id));
+        }
     }
+    
 }

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Security.Policy;
-using System.Text.Encodings.Web;
-using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Linq;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
@@ -567,6 +563,19 @@ namespace SCManagement.Services.ClubService
         {
             var a = _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
             await _context.SaveChangesAsync();
+        }
+
+        public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId)
+        {
+
+            return Task.FromResult(_context.UsersRoleClub.Where(u => u.ClubId == clubId && (u.RoleId == 30 || u.RoleId == 40 || u.RoleId == 50)).Include(r => r.User).Include(r => r.Role).AsEnumerable());
+
+        }
+        public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId)
+        {
+
+            return Task.FromResult(_context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20 ).Include(r => r.User).AsEnumerable());
+
         }
     }
 }
