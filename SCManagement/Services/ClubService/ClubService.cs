@@ -400,7 +400,7 @@ namespace SCManagement.Services.ClubService
         /// <returns>a boolean value, true is the user is a Member of the club, false if not</returns>
         public bool IsClubMember(string userId, int clubId)
         {
-            return UserRolesInClub(userId, clubId).Any(r => r == 20 || r == 30 || r == 40);
+            return UserRolesInClub(userId, clubId).Any(r => r >= 20);
         }
 
         /// <summary>
@@ -565,17 +565,20 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
         }
 
-        public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId)
+        public async Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId)
         {
 
-            return Task.FromResult(_context.UsersRoleClub.Where(u => u.ClubId == clubId && (u.RoleId == 30 || u.RoleId == 40 || u.RoleId == 50)).Include(r => r.User).Include(r => r.Role).AsEnumerable());
+            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && (u.RoleId == 30 || u.RoleId == 40 || u.RoleId == 50))
+                .Include(r => r.User)
+                .Include(r => r.Role)
+                .ToListAsync();
 
         }
-        public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId)
+        public async Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId)
         {
-
-            return Task.FromResult(_context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20 ).Include(r => r.User).AsEnumerable());
-
+            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20)
+                .Include(r => r.User)
+                .ToListAsync();
         }
     }
 }
