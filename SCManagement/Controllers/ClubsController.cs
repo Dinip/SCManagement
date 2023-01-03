@@ -356,6 +356,16 @@ namespace SCManagement.Controllers
         }
 
         [Authorize]
+        public async Task<IActionResult> StaffList(int? id)
+        {
+            if (id == null) return NotFound();
+            //get all users of the club that are staff members
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            return View(await _clubService.GetClubStaff((int)id));
+        }
+
+        [Authorize]
         public async Task<IActionResult> CreateCode(int? id)
         {
             if (id == null) return NotFound();
@@ -505,5 +515,16 @@ namespace SCManagement.Controllers
 
             return RedirectToAction("Codes", new { id = 1 });
         }
+
+        [Authorize]
+        public async Task<IActionResult> AthletesList(int? id)
+        {
+            if (id == null) return NotFound();
+            //get all users of the club that are athletes
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            return View(await _clubService.GetClubAthletes((int)id));
+        }
     }
+    
 }
