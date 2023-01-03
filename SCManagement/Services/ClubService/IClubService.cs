@@ -40,5 +40,7 @@ namespace SCManagement.Services.ClubService
         public Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId);
         public Task AddUserToClub(string userId, int clubId, int roleId);
         public Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number);
+        public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId);
+        public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId);
     }
 }

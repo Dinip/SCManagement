@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Data;
+using System.Drawing;
+using System.Drawing.Imaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -8,9 +10,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using QRCoder;
 using SCManagement.Data;
 using SCManagement.Models;
-using SCManagement.Models.Validations;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
@@ -401,6 +403,16 @@ namespace SCManagement.Controllers
 
 
         [Authorize]
+        public async Task<IActionResult> StaffList(int? id)
+        {
+            if (id == null) return NotFound();
+            //get all users of the club that are staff members
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            return View(await _clubService.GetClubStaff((int)id));
+        }
+
+        [Authorize]
         public async Task<IActionResult> CreateCode(int? id)
         {
             if (id == null) return NotFound();
@@ -443,6 +455,25 @@ namespace SCManagement.Controllers
             return RedirectToAction("Codes", new { id });
         }
 
+        private void GenerateQRCode(string code)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                string link = $"https://localhost:7111/Clubs/Join/?code={code}";
+                QRCodeGenerator qR = new QRCodeGenerator();
+                QRCodeData data = qR.CreateQrCode(link, QRCodeGenerator.ECCLevel.Q);
+                QRCode qRCode = new QRCode(data);
+                
+                using (Bitmap bitmap = qRCode.GetGraphic(20))
+                {
+                    bitmap.Save(ms, format: ImageFormat.Png);
+                    ViewBag.QRCode = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
+                }
+            }
+        }
+
+
+
         public class CreateCodeModel
         {
             [Required(ErrorMessage = "Error_Required")]
@@ -462,7 +493,9 @@ namespace SCManagement.Controllers
             var c = TempData["Code"];
             if (c != null)
             {
-                ViewBag.Code = JsonConvert.DeserializeObject<CodeClub>(c.ToString());
+                CodeClub cc = JsonConvert.DeserializeObject<CodeClub>(c.ToString());
+                ViewBag.Code = cc;
+                GenerateQRCode(cc.Code);
             }
             ViewBag.ClubId = id;
 
@@ -487,6 +520,7 @@ namespace SCManagement.Controllers
                 if (cc != null && cc.ClubId == id)
                 {
                     ViewBag.Code = cc;
+                    GenerateQRCode(cc.Code);
                 }
             }
 
@@ -528,5 +562,16 @@ namespace SCManagement.Controllers
 
             return RedirectToAction("Codes", new { id = clubId });
         }
+
+        [Authorize]
+        public async Task<IActionResult> AthletesList(int? id)
+        {
+            if (id == null) return NotFound();
+            //get all users of the club that are athletes
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            return View(await _clubService.GetClubAthletes((int)id));
+        }
     }
+    
 }

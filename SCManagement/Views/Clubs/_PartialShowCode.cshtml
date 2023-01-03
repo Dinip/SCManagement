@@ -66,6 +66,12 @@
         {
             <a href="/Clubs/Codes/@Model.ClubId?approveCode=@Model.Id">Approve</a>
         }
+        
+        @if (ViewBag.QRCode != null)
+        {
+            <img src="@ViewBag.QRCode" style="width:200px; height:200px" />
+        }
+        
         <form asp-action="SendCodeEmail">
             <div class="form-group">
                 <label name="Email" value="Email" class="control-label"></label>
