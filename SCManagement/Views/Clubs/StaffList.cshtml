@@ -6,9 +6,7 @@
 <div class="mt-5">
 <h1>StaffList</h1>
 </div>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
 <table class="table">
     <thead>
         <tr>
@@ -36,11 +34,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.JoinDate)
             </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |*@
-                @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
-                @*<a asp-action="Delete" asp-route-id="@item.Id">Delete</a>*@
-            </td>
+                @if (ViewBag.UserRoleId > item.Role.Id)
+                {
+                    <td>
+                        <form asp-action="RemoveUser">
+                            <input name="Id" value="@item.Id" class="form-control" hidden />
+                            <input name="Page" value="StaffList" class="form-control" hidden />
+                            <input type="submit" value="Remove staff" class="btn btn-danger" />
+                        </form>
+                    </td>
+                }
         </tr>
 }
     </tbody>

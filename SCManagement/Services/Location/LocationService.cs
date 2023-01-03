@@ -40,18 +40,5 @@ namespace SCManagement.Services.Location
                 .Select(s => new County { Id = s.Id, Name = $"{s.Name}, {s.District!.Name}, {s.District.Country!.Name}" })
                 .ToListAsync();
         }
-
-        public async Task<Address> GetAddress(int countyId, string street, string zipCode, string number)
-        {
-            Address address = new Address
-            {
-                CountyId = countyId,
-                Street = street,
-                ZipCode = zipCode,
-                Number = number
-            };
-                
-            return address;
-        }
     }
 }

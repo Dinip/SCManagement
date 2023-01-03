@@ -30,6 +30,7 @@ namespace SCManagement.Services.ClubService
         public bool ApproveCode(string code);
         public Task SendCodeEmail(int codeId, string email, int clubId);
         public List<int> UserRolesInClub(string userId, int clubId);
+        public int GetUserRoleInClub(string userId, int clubId);
         public Task<IEnumerable<Modality>> GetModalities();
         public bool UserHasRoleInClub(string userId, int clubId, int roleId);
         public Task<IEnumerable<UsersRoleClub>> GetClubPartners(int clubId);
@@ -40,6 +41,7 @@ namespace SCManagement.Services.ClubService
         public Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId);
         public Task AddUserToClub(string userId, int clubId, int roleId);
         public Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number);
+        public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number);
         public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId);
         public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId);
     }

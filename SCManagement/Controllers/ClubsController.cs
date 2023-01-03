@@ -216,7 +216,7 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Email,PhoneNumber,About,CreationDate,AddressId,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit(int? id, [Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club, int CountyId, string Street, string ZipCode, string Number)
         {
             if (id == null || id != club.Id) return NotFound();
             if (!ModelState.IsValid) return View(club);
@@ -237,6 +237,8 @@ namespace SCManagement.Controllers
 
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
 
+            _clubService.UpdateClubAddress((int)actualClub.AddressId, CountyId, Street, ZipCode, Number);
+                
             await _clubService.UpdateClub(actualClub);
 
             return RedirectToAction(nameof(Index));
@@ -331,10 +333,45 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> PartnersList(int? id)
         {
             if (id == null) return NotFound();
+
+            string userId = GetUserIdFromAuthedUser();
+            
             //get all users of the club that are partner
             if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
 
+            ViewBag.UserRoleId = _clubService.GetUserRoleInClub(userId, (int)id);
+
             return View(await _clubService.GetClubPartners((int)id));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> StaffList(int? id)
+        {
+            if (id == null) return NotFound();
+
+            string userId = GetUserIdFromAuthedUser();
+            
+            //get all users of the club that are staff members
+            if (!_clubService.IsClubManager(userId, (int)id)) return NotFound();
+
+            ViewBag.UserRoleId = _clubService.GetUserRoleInClub(userId, (int)id);
+
+            return View(await _clubService.GetClubStaff((int)id));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AthletesList(int? id)
+        {
+            if (id == null) return NotFound();
+            
+            string userId = GetUserIdFromAuthedUser();
+            
+            //get all users of the club that are athletes
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            ViewBag.UserRoleId = _clubService.GetUserRoleInClub(userId, (int)id);
+
+            return View(await _clubService.GetClubAthletes((int)id));
         }
 
         [Authorize]
@@ -365,33 +402,12 @@ namespace SCManagement.Controllers
         }
 
         /// <summary>
-        /// Return a view which corresponds to the page that has the list of club members
+        /// Allows to remove a user with the role staff from the club
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [Authorize]
-        public async Task<IActionResult> MembersList(int id)
-        {
-            if (id == null) return NotFound();
-
-            string userId = _userManager.GetUserId(User);
-            
-            //check if the user accessing is manager (secratary or club admin)
-            if (!_clubService.IsClubManager(userId, id)) return NotFound();
-
-            ViewBag.ClubId = id;
-
-            //get all members of the club 
-            return View(_context.UsersRoleClub.Where(u => u.ClubId == id).Include(u => u.User).Include(u => u.Role).ToList());
-        }
-
-        /// <summary>
-        /// Allows to remove a member from the club
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [Authorize]
-        public async Task<IActionResult> RemoveMember(int id, int clubId)
+        public async Task<IActionResult> RemoveStaff(int id, int clubId)
         {
             //remove a user from a club
             _context.UsersRoleClub.Remove(_context.UsersRoleClub.Where(u => u.Id == id).FirstOrDefault());
@@ -399,18 +415,7 @@ namespace SCManagement.Controllers
 
             return RedirectToAction("MembersList", new { id = clubId });
         }
-
-
-
-        [Authorize]
-        public async Task<IActionResult> StaffList(int? id)
-        {
-            if (id == null) return NotFound();
-            //get all users of the club that are staff members
-            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
-
-            return View(await _clubService.GetClubStaff((int)id));
-        }
+        
 
         [Authorize]
         public async Task<IActionResult> CreateCode(int? id)
@@ -563,15 +568,7 @@ namespace SCManagement.Controllers
             return RedirectToAction("Codes", new { id = clubId });
         }
 
-        [Authorize]
-        public async Task<IActionResult> AthletesList(int? id)
-        {
-            if (id == null) return NotFound();
-            //get all users of the club that are athletes
-            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
-
-            return View(await _clubService.GetClubAthletes((int)id));
-        }
+        
     }
     
 }

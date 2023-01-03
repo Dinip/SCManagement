@@ -1,13 +1,22 @@
 ﻿@model Address
 
+@{
+    ViewData["Title"] = "Address";
+}
+
+
 <div class="form-group">
-    <input id="search_city" type="text" placeholder="" aria-label="Search" onkeyup="debounce()" list="locationList" />
+    <input id="search_city" asp-for="County.Name" type="text" placeholder="" aria-label="Search" onkeyup="debounce()" list="locationList" />
     <select id="locationList" asp-for="CountyId"></select>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 <script type="text/javascript">
+    window.onload = (event) => {
+        search(document.getElementById('search_city').value);
+    };
+
     let timer = null
     let debounce = () => {
         clearTimeout(timer);
@@ -17,6 +26,7 @@
     };
 
     let search = (value) => {
+        console.log(value);
         if (value == null || value.length <= 2) $("#locationList").empty();
         if (value == null || value.length < 2) return;
         $.ajax({
@@ -33,6 +43,7 @@
 
     let countiesToList = (counties) => {
         $("#locationList").empty();
+        console.log(counties);
         let list = document.getElementById("locationList")
         for (let county of counties) {
             $("#locationList").append('<option value="' + county.id + '">' + county.name + '</option>');

@@ -76,7 +76,7 @@ namespace SCManagement.Services.ClubService
         /// <returns>A wanted club</returns>
         public async Task<Club> GetClub(int id)
         {
-            return await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).Include(c => c.Address).Include(c => c.Address.County).FirstOrDefaultAsync(m => m.Id == id);
         }
 
         /// <summary>
@@ -188,6 +188,11 @@ namespace SCManagement.Services.ClubService
             List<int> rolesId = new List<int>();
             rolesId.AddRange(_context.UsersRoleClub.Where(f => f.UserId == userId && f.ClubId == clubId).Select(r => r.RoleId).ToList());
             return rolesId;
+        }
+
+        public int GetUserRoleInClub(string userId, int clubId)
+        {
+            return _context.UsersRoleClub.Where(f => f.UserId == userId && f.ClubId == clubId).Select(r => r.RoleId).FirstOrDefault();
         }
 
 
@@ -572,12 +577,30 @@ namespace SCManagement.Services.ClubService
 
         public async Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number)
         {
-            Address address = await _locationService.GetAddress(countyId, street, zipCode, number);
+            Address address = new Address
+            {
+                CountyId = countyId,
+                Street = street,
+                ZipCode = zipCode,
+                Number = number
+            };
 
             _context.Address.Add(address);
             await _context.SaveChangesAsync();
             
             return address.Id;
+        }
+
+        public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number)
+        {
+            Address address = _context.Address.Find(addressId);
+            address.CountyId = CountyId;
+            address.Street = Street;
+            address.ZipCode = ZipCode;
+            address.Number = Number;
+            
+            _context.Address.Update(address);
+            _context.SaveChanges();
         }
 
         public async Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId)

@@ -8,6 +8,5 @@ namespace SCManagement.Services.Location
         public Task<IEnumerable<District>> GetDistricts(int countryId);
         public Task<IEnumerable<County>> GetCounties(int districtId);
         public Task<IEnumerable<County>> SearchCountiesName(string name);
-        public Task<Address> GetAddress(int countyId, string street, string zipCode, string number);
     }
 }
