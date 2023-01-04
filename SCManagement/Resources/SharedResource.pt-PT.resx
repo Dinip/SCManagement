@@ -409,4 +409,19 @@
   <data name="Subject_InviteClub" xml:space="preserve">
     <value>Foste convidado para fazer parte de um clube</value>
   </data>
+  <data name="About Us" xml:space="preserve">
+    <value>Sobre nós</value>
+  </data>
+  <data name="About Us Content" xml:space="preserve">
+    <value>Somos um grupo de estudantes do instituto politécnico de Setúbal</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contactos</value>
+  </data>
+  <data name="Creators" xml:space="preserve">
+    <value>Criadores</value>
+  </data>
+  <data name="rights" xml:space="preserve">
+    <value>Todos os direitos estão reservados</value>
+  </data>
 </root>
