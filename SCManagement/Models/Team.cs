@@ -28,7 +28,9 @@ namespace SCManagement.Models
         public Modality? Modality { get; set; }
         public ICollection<User>? Athletes { get; set; }
         
-        public int TrainingId { get; set; }
+        public string TrainerId { get; set; }
         public User? Trainer { get; set; }
+        public int ClubId { get; set; }
+        public Club? Club { get; set; }
     }
 }

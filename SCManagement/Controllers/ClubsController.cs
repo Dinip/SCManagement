@@ -17,6 +17,7 @@ using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.Location;
+using SCManagement.Services.TeamService;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SCManagement.Controllers
@@ -32,6 +33,7 @@ namespace SCManagement.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IAzureStorage _azureStorage;
         private readonly IClubService _clubService;
+        private readonly ITeamService _teamService;
 
         /// <summary>
         /// This is the constructor of the Clubs Controller
@@ -40,12 +42,13 @@ namespace SCManagement.Controllers
         /// <param name="userManager"></param>
         /// <param name="azureStorage"></param>
         /// <param name="clubService"></param>
-        public ClubsController(ApplicationDbContext context, UserManager<User> userManager, IAzureStorage azureStorage, IClubService clubService)
+        public ClubsController(ApplicationDbContext context, UserManager<User> userManager, IAzureStorage azureStorage, IClubService clubService, ITeamService teamService)
         {
             _context = context;
             _userManager = userManager;
             _azureStorage = azureStorage;
             _clubService = clubService;
+            _teamService = teamService;
         }
 
 
@@ -568,7 +571,21 @@ namespace SCManagement.Controllers
             return RedirectToAction("Codes", new { id = clubId });
         }
 
-        
+        [Authorize]
+        public async Task<IActionResult> TeamList(int? id)
+        {
+            if (id == null) return NotFound();
+
+            string userId = GetUserIdFromAuthedUser();
+
+            //get all users of the club that are athletes
+            if (!_clubService.IsClubStaff(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            ViewBag.UserRoleId = _clubService.GetUserRoleInClub(userId, (int)id);
+
+            return View(await _teamService.GetTeams((int)id));
+        }
+
     }
     
 }
