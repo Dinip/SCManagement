@@ -93,6 +93,7 @@ namespace SCManagement.Data
                 new RoleClub { Id = 50, RoleName = "Administrador de Clube" }
                 );
 
+            builder.Entity<User>().Navigation(e => e.ProfilePicture).AutoInclude();
         }
     }
 }

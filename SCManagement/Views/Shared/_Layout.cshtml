@@ -32,18 +32,17 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="MyClub">MyClub</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">MyZone</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;"  asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="MyClub">MyClub</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">MyZone</a>
                         }
                         else
                         {
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">Clubs</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">Clubs</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
                         }
                         <hr />
-
                         <div class="dropdown d-block d-md-none nav-item">
                             <a class="nav-link" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
                                 Settings

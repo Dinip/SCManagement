@@ -85,8 +85,7 @@ namespace SCManagement.Controllers
                 club.Photography = new BlobDto { Uri = "https://cdn.scmanagement.me/public/user_placeholder.png" };
             }
 
-            //viewbag that will have the modalities of the club 
-            ViewBag.Modalities = new SelectList(club.Modalities, "Id", "Name");
+            ViewBag.NumberOfPartners = 5;
 
             string userId = GetUserIdFromAuthedUser();
 
@@ -94,19 +93,17 @@ namespace SCManagement.Controllers
             if (_clubService.IsClubMember(userId, club.Id))
             {
                 ViewBag.btnValue = "Become partner";
-                ViewBag.btnClasses = "btn-primary disabled";
+                ViewBag.btnClasses = "disabled";
             }
             //Is the user already a member? so stop being
             else if (_clubService.IsClubPartner(userId, club.Id))
             {
                 ViewBag.btnValue = "Remove partner";
-                ViewBag.btnClasses = "btn-danger";
             }
             //the user is not yet a member, so he becomes one(user without roles in the club)
             else
             {
                 ViewBag.btnValue = "Become partner";
-                ViewBag.btnClasses = "btn-primary";
             }
 
             return View(club);
