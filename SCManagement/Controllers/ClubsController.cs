@@ -83,8 +83,7 @@ namespace SCManagement.Controllers
                 club.Photography = new BlobDto { Uri = "https://cdn.scmanagement.me/public/user_placeholder.png" };
             }
 
-            //viewbag that will have the modalities of the club 
-            ViewBag.Modalities = new SelectList(club.Modalities, "Id", "Name");
+            ViewBag.NumberOfPartners = 5;
 
             string userId = GetUserIdFromAuthedUser();
 

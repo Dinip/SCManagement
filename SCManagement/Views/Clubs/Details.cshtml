@@ -4,66 +4,89 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
-<div>
-    <h4>Club</h4>
-    <hr />
-    <dl class="row">
-
-        <img id="profilePicture"
-             src="@Model.Photography.Uri"
-             class="rounded-circle"
-             width="128px"
-             height="128px" />
-
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.About)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.About)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Modalities)
-        </dt>
-        <dd class="col-sm-10">
-            @foreach (var item in ViewBag.modalities)
-            {
-                <p>@item.Text</p>
-            }
-        </dd>
-        <form asp-action="Associate">
-            <div class="form-group">
+<div style=" margin-top:50px;">>
+    <div class="container-fluid m-0 pb-5 pt-2 " id="colorthiefobj" style=" height:30%;">
+        <div class="row text-end">
+            <form asp-action="Associate">
                 <input asp-for="Id" class="form-control" hidden />
+                <input type="submit" class="btn signin me-5 mt-2 @ViewBag.btnClasses" value="@ViewBag.btnValue">Associate</input>
+            </form>
+        </div>
+        <div class="row">
+            <div class="col-3 d-flex justify-content-center ms-5">
+                <img id="clubPicture"
+                     src="@Model.Photography.Uri"
+                     crossorigin="anonymous"
+                     class="rounded-circle"
+                     width="150"
+                     height="150" />
             </div>
-            <div class="form-group">
-                <input type="submit" value="@ViewBag.btnValue" class="btn @ViewBag.btnClasses" />
+            <div class="col text-white">
+                <h1>@Html.DisplayFor(model => model.Name)</h1>
             </div>
-        </form>
-    </dl>
+        </div>
+    </div>
+    <div class="container d-flex" style="margin-top:-30px;">
+        <div class="card col me-5 shadow" style="border-radius:20px;">
+            <div class="card-body" style="border-radius:20px;">
+                <div class="row justify-content-end mb-2 me-3">
+                    @ViewBag.NumberOfPartners
+                </div>
+                <div class="row">
+                    <div class="col-3 ms-4"><h3>About:</h3></div>
+                    <div class="col-8 mt-1">@Html.DisplayFor(model => model.About)</div>
+                </div>
+                <div class="row mt-5 mb-5">
+                    <div class="col-3 ms-4"><h3>Modalities:</h3></div>
+                    <div class="col-auto mt-2">
+                        @String.Join(", ", Model.Modalities.Select(s => s.Name))
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card col-3 shadow" style="border-radius:20px;">
+            <div class="card-body">
+                <h4 class="mt-4">Contacts</h4>
+                <div class="row mt-3">
+                    <div class="col-2">
+                        <i class="fa-solid fa-envelope"></i>
+                    </div>
+                    <div class="col">@Html.DisplayFor(model => model.Email)</div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-2">
+                        <i class="fa-solid fa-phone"></i>
+                    </div>
+                    <div class="col-auto">@Html.DisplayFor(model => model.PhoneNumber)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script>
+    var colorThief = new ColorThief();
+
+    // Make sure everything is loaded
+    window.onload = function () {
+        const img = document.getElementById('clubPicture');
+        let color;
+        // Make sure image is finished loading
+        if (img.complete) {
+            color = colorThief.getColor(img);
+        } else {
+            image.addEventListener('load', function () {
+                color = colorThief.getColor(img);
+            });
+        }
+
+        // Use the new color as background for body
+        document.getElementById('colorthiefobj').style.background = 'linear-gradient(0deg, rgb(0,0,0) 0%, rgb(' + color + ') 100%)';
+        
+    };
+    
     if (window.history.replaceState) {
         window.history.replaceState(null, null, "/Clubs/Details/" + "@Model.Id");
     }

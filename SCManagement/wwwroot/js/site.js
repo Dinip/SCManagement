@@ -7,31 +7,30 @@ document.getElementById("Dropdown1").addEventListener('click', function (event) 
     event.stopPropagation();
 });
 
-const dropdown = document.querySelector('.dropdown');
+const dropdown2 = document.querySelector('.dropdown');
 const dropdownM = document.querySelector('.dropdown-menu');
-
+var elem = document.getElementById('dropdownMenuButton1');
+var fatherElem = elem.parentNode;
 if (window.innerWidth <= 768) {
-    var elem = document.getElementById('dropdownMenuButton1');
+    fatherElem.removeChild(elem);
 
-    elem.parentNode.removeChild(elem);
-
-    dropdown.classList.remove("dropdown");
+    dropdown2.classList.remove("dropdown");
     dropdownM.classList.remove("dropdown-menu");
 } else {
-    dropdown.classList.add("dropdown");
+    dropdown2.classList.add("dropdown");
     dropdownM.classList.add("dropdown-menu");
 }
 
 function myFunction() {
-    var element = document.getElementById("navBar");
-    var darkToggle = document.getElementById("darkToggle");
-    const texts = document.getElementsByClassName('text-to-dark');
-    const brand = document.querySelector('.navbar-brand');
-    const dropdown = document.getElementsByClassName('dropdown-menu');
-    const card = document.getElementsByClassName('card-to-dark');
-    const body = document.getElementsByClassName('body');
-    var logoText = document.getElementById("logoText");
-    var logoText1 = document.getElementById("logoText1");
+    let element = document.getElementById("navBar");
+    let darkToggle = document.getElementById("darkToggle");
+    let texts = document.getElementsByClassName('text-to-dark');
+    let brand = document.querySelector('.navbar-brand');
+    let dropdown = document.getElementsByClassName('dropdown-menu');
+    let card = document.getElementsByClassName('card-to-dark');
+    let body = document.getElementsByClassName('body');
+    let logoText = document.getElementById("logoText");
+    let logoText1 = document.getElementById("logoText1");
 
 
     if (darkToggle.checked || darkToggle1.checked) {

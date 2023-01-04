@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "My Club";
 }
-<h1>@ViewData["Title"]</h1>
 
 <html lang="en">
 <head>
@@ -14,9 +13,9 @@
 
 </head>
 
-<body id="body">
+<body class="body">
     <div class="container-fluid d-flex justify-content-center w-100">
-        <div class="text-center mt-5">
+        <div class="text-center" style="margin-top:130px;">
             <svg width="222" height="222" viewBox="0 0 222 222" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                 <rect width="222" height="222" fill="url(#pattern0)" fill-opacity="0.5" />
                 <defs>
@@ -33,7 +32,7 @@
                                                 margin-left: 20px;
                                                 padding: 5px 25px 5px 25px;
                                                 background-color: #00639A;
-                                                border-color: #00639A;">
+                                                border-color: #00639A;" asp-controller="Clubs" asp-area="" asp-action="Index">
                 Join a club
             </a>
             <br />

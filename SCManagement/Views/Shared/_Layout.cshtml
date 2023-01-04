@@ -32,41 +32,16 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="MyClub">MyClub</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">MyZone</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;"  asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="MyClub">MyClub</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">MyZone</a>
                         }
                         else
                         {
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">Clubs</a>
-                            <a class="nav-item nav-link" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">Clubs</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
                         }
-
-
-                        @await Component.InvokeAsync("CulturePicker")
-
-                        <hr />
-
-                        <div class="dropdown d-block d-md-none nav-item">
-                            <a class="nav-link" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                Settings
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-full" role="menu" id="Dropdown">
-                                <li style="padding: 5px;">
-                                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg text-to-dark"></i>
-                                    <label class="text-to-dark">DarkMode</label>
-                                    <label class="switch" style="margin-left: 10px;">
-                                        <input type="checkbox" onchange="myFunction()" id="darkToggle1">
-                                        <span class="slider round"></span>
-                                    </label>
-                                </li>
-                                <li class="dropdown-item" style="padding: 5px;">
-                                    <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas text-to-dark"></i>
-                                    <label class="text-to-dark">Language</label>
-                                </li>
-                            </ul>
-                        </div>
 
                         <hr />
                     </div>
