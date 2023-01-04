@@ -56,6 +56,15 @@ namespace SCManagement.Services.ClubService
             _context.Club.Add(c);
             await _context.SaveChangesAsync();
 
+
+            User user = _context.Users.First(u => u.Id == userId);
+            if (user.SelectedUserRoleClubId == null)
+            {
+                user.SelectedUserRoleClubId = c.UsersRoleClub.First(r => r.UserId == userId && r.RoleId == 50).Id;
+            }
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
             return c;
         }
 

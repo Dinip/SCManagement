@@ -371,7 +371,7 @@ namespace SCManagement.Controllers
             if (id == null) return NotFound();
 
             //check if the user accessing is manager (secratary or club admin)
-            if (!_clubService.IsClubManager(_userManager.GetUserId(User), (int)id)) return NotFound();
+            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
 
             ViewBag.Roles = new SelectList(await _clubService.GetRoles(), "Id", "RoleName");
 
@@ -385,7 +385,7 @@ namespace SCManagement.Controllers
         {
             if (id == null) return NotFound();
 
-            string userId = _userManager.GetUserId(User);
+            string userId = GetUserIdFromAuthedUser();
 
             //check if the user accessing is manager (secratary or club admin)
             if (!_clubService.IsClubManager(userId, (int)id)) return NotFound();
@@ -452,7 +452,7 @@ namespace SCManagement.Controllers
             }
             ViewBag.ClubId = id;
 
-            string userId = _userManager.GetUserId(User);
+            string userId = GetUserIdFromAuthedUser();
 
             //check if the user accessing is manager (secratary or club admin)
             if (!_clubService.IsClubManager(userId, (int)id)) return NotFound();
