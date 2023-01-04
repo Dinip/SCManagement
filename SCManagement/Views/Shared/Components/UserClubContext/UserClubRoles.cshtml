@@ -1,0 +1,10 @@
+﻿@if (ViewBag.Roles != null)
+{
+    <li class="dropdown-item" style="padding: 5px;">
+        <form asp-action="UpdateSelectedRole" asp-controller="User">
+            <div class="form-group">
+                <select name="usersClubRoleId" class="form-control" asp-items="ViewBag.Roles" onchange="this.parentElement.parentElement.submit();"></select>
+            </div>
+        </form>
+    </li>
+}

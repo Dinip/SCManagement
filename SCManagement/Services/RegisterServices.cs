@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Middlewares;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.UserService;
 
 namespace SCManagement.Services
 {
@@ -108,6 +109,7 @@ namespace SCManagement.Services
             #endregion
 
             services.AddTransient<IAzureStorage, AzureStorage>();
+            services.AddTransient<IUserService, SCManagement.Services.UserService.UserService>();
             services.AddTransient<IClubService, SCManagement.Services.ClubService.ClubService>();
         }
     }
