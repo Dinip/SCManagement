@@ -477,4 +477,19 @@
   <data name="Subject_InviteClub" xml:space="preserve">
     <value>You were invited to join a club</value>
   </data>
+  <data name="About Us" xml:space="preserve">
+    <value>About Us</value>
+  </data>
+  <data name="About Us Content" xml:space="preserve">
+    <value>We are a group of students from the Polytechnic Institute of Setúbal</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="Creators" xml:space="preserve">
+    <value>Creators</value>
+  </data>
+  <data name="rights" xml:space="preserve">
+    <value>All rights reserved</value>
+  </data>
 </root>
