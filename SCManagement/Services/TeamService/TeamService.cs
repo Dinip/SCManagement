@@ -15,32 +15,23 @@ namespace SCManagement.Services.TeamService
             _sharedResource = sharedResource;
         }
 
-        public async Task<Team> GetTeam(int clubId, int teamId)
+        public async Task<Team> GetTeam(int teamId)
         {
             return await _context.Team.Include(t => t.Modality)
-                .FirstOrDefaultAsync(t => t.Id == teamId && t.ClubId == clubId);
+                .FirstOrDefaultAsync(t => t.Id == teamId);
         }
 
         public async Task<IEnumerable<Team>> GetTeams(int clubId)
         {
-            return await _context.Team.Where(t => t.ClubId == clubId).Include(t => t.Modality).ToListAsync();
+            return await _context.Team.Where(t => t.ClubId == clubId).Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
         }
 
-        public async Task<Team> CreateTeam(Team team, string userId, int clubId)
+        public async Task<Team> CreateTeam(Team team)
         {
-            Team newTeam = new Team
-            {
-                Name = team.Name,
-                ClubId = clubId,
-                ModalityId = team.ModalityId,
-                CreationDate = DateTime.Now,
-                TrainerId = userId
-            };
-
-            _context.Team.Add(newTeam);
+            _context.Team.Add(team);
             await _context.SaveChangesAsync();
 
-            return newTeam;
+            return team;
         }
     }
 }

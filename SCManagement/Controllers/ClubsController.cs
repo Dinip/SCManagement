@@ -370,7 +370,7 @@ namespace SCManagement.Controllers
             string userId = GetUserIdFromAuthedUser();
             
             //get all users of the club that are athletes
-            if (!_clubService.IsClubManager(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+            if (!_clubService.IsClubStaff(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
 
             ViewBag.UserRoleId = _clubService.GetUserRoleInClub(userId, (int)id);
 
@@ -578,13 +578,69 @@ namespace SCManagement.Controllers
 
             string userId = GetUserIdFromAuthedUser();
 
-            //get all users of the club that are athletes
+            //get all users of the club that are Staff members
             if (!_clubService.IsClubStaff(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
 
             ViewBag.UserRoleId = _clubService.GetUserRoleInClub(userId, (int)id);
 
             return View(await _teamService.GetTeams((int)id));
         }
+
+        [Authorize]
+        public IActionResult CreateTeam(int? id)
+        {
+
+            if (id == null) return NotFound();
+            
+            //check if user is Trainer
+            if (!_clubService.IsClubTrainer(GetUserIdFromAuthedUser(), (int)id)) return NotFound();
+
+            ViewBag.Modalities = new SelectList(_clubService.GetClub((int)id).Result.Modalities, "Id", "Name");
+
+            
+            
+            return View();
+        }
+
+        /// <summary>
+        /// This method returns the Create View
+        /// </summary>
+        /// <param name="team">Clube to be created</param>
+        /// <returns>Index View</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTeam(int? id, [Bind("Id,Name,ModalityId")] TeamModel team)
+        {
+            if (id == null) return NotFound();
+
+            //get id of the user
+            string userId = GetUserIdFromAuthedUser();
+
+            //check if the user already has/is part of a club and if so, don't allow to create a new one
+            if (!_clubService.IsClubTrainer(userId, (int)id)) return NotFound(); //not this, fix
+
+            if (!ModelState.IsValid) return View();
+
+            await _teamService.CreateTeam(new Team { Name = team.Name, ModalityId = team.ModalityId, TrainerId = userId, ClubId =(int)id });
+
+            return RedirectToAction(nameof(TeamList));
+
+        }
+
+        public class TeamModel
+        {
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
+            [Display(Name = "Team Name")]
+            public string Name { get; set; }
+            [Required(ErrorMessage = "Error_Required")]
+            [Display(Name = "Modality")]
+            public int ModalityId { get; set; }
+            
+        }
+
+
 
     }
     

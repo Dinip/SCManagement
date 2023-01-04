@@ -9,31 +9,6 @@ namespace SCManagement.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 1);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 2);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 3);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 4);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 5);
-
             migrationBuilder.AddColumn<int>(
                 name: "TeamId",
                 table: "AspNetUsers",
@@ -48,7 +23,7 @@ namespace SCManagement.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModalityId = table.Column<int>(type: "int", nullable: false),
                     TrainerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClubId = table.Column<int>(type: "int", nullable: false)
@@ -74,18 +49,6 @@ namespace SCManagement.Data.Migrations
                         principalTable: "Modality",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.InsertData(
-                table: "RoleClub",
-                columns: new[] { "Id", "RoleName" },
-                values: new object[,]
-                {
-                    { 10, "Sócio" },
-                    { 20, "Atleta" },
-                    { 30, "Treinador" },
-                    { 40, "Secretaria" },
-                    { 50, "Administrador de Clube" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -129,46 +92,9 @@ namespace SCManagement.Data.Migrations
                 name: "IX_AspNetUsers_TeamId",
                 table: "AspNetUsers");
 
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 10);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 20);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 30);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 40);
-
-            migrationBuilder.DeleteData(
-                table: "RoleClub",
-                keyColumn: "Id",
-                keyValue: 50);
-
             migrationBuilder.DropColumn(
                 name: "TeamId",
                 table: "AspNetUsers");
-
-            migrationBuilder.InsertData(
-                table: "RoleClub",
-                columns: new[] { "Id", "RoleName" },
-                values: new object[,]
-                {
-                    { 1, "Sócio" },
-                    { 2, "Atleta" },
-                    { 3, "Treinador" },
-                    { 4, "Secretaria" },
-                    { 5, "Administrador de Clube" }
-                });
         }
     }
 }

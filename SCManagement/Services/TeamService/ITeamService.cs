@@ -6,8 +6,8 @@ namespace SCManagement.Services.TeamService
     {
 
         public Task<IEnumerable<Team>> GetTeams(int clubId);
-        public Task<Team> GetTeam(int clubId, int teamId);
+        public Task<Team> GetTeam(int teamId);
 
-        public Task<Team> CreateTeam(Team team, string userId, int clubId);
+        public Task<Team> CreateTeam(Team team);
     }
 }

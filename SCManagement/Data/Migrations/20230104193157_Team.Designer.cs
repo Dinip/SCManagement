@@ -12,7 +12,7 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230104162601_Team")]
+    [Migration("20230104193157_Team")]
     partial class Team
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -2868,7 +2868,7 @@ namespace SCManagement.Data.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("ModalityId")
