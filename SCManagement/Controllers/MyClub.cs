@@ -300,7 +300,7 @@ namespace SCManagement.Controllers
             //remove a user(role) from a club
             await _clubService.RemoveClubUser(userRoleToBeRomoved.Id);
 
-            return RedirectToAction(page, new { id = role.ClubId });
+            return RedirectToAction(page);
         }
 
         [Authorize]
