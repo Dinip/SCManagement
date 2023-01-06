@@ -21,28 +21,13 @@ namespace SCManagement.Controllers {
             return View();
         }
 
-        public IActionResult MyClub()
-        {
-            return View();
-        }
         public IActionResult Settings()
-        {
-            return View();
-        }
-
-        public IActionResult CreateClub()
         {
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult CustomError()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }

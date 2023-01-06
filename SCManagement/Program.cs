@@ -42,6 +42,11 @@ using (var ser = app.Services.CreateScope())
 app.UseRequestLocalizationCookies();
 
 app.MapControllerRoute(
+    name: "myclub",
+    pattern: "MyClub/",
+    defaults: new { controller = "MyClub", action = "Index" });
+
+app.MapControllerRoute(
     name: "clubs",
     pattern: "Clubs/{id}",
     defaults: new { controller = "Clubs", action = "Index" },
@@ -50,6 +55,7 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapRazorPages();
 
 using var scope = app.Services.CreateScope();

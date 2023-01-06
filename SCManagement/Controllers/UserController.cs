@@ -42,7 +42,7 @@ namespace SCManagement.Controllers
             {
                 await _userService.UpdateSelectedRole(userId, usersClubRoleId);
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "MyClub");
         }
     }
 }

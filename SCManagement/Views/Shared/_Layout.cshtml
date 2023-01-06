@@ -32,8 +32,8 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="nav-item nav-link text-to-dark" style="color:black;"  asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="MyClub">MyClub</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">MyClub</a>
                             <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">MyZone</a>
                         }
                         else
@@ -78,7 +78,7 @@
     </div>
 
 
-    
+
     <footer class="align-content-end">
         <partial name="footer"></partial>
     </footer>

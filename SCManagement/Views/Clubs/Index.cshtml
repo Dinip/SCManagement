@@ -33,7 +33,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Photography)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -59,13 +58,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Photography)
-            </td>
-            <td>
-                <a asp-action="Edit">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="PartnersList">Associates</a> |
-                <a asp-action="StaffList">Staff</a> |
-                <a asp-action="AthletesList">Athletes</a>
             </td>
         </tr>
 }
