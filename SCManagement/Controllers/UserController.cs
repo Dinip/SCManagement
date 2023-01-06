@@ -20,19 +20,27 @@ namespace SCManagement.Controllers
             _userManager = userManager;
         }
 
+        private string getUserIdFromAuthedUser()
+        {
+            return _userManager.GetUserId(User);
+        }
+
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateSelectedRole(int usersClubRoleId)
         {
-            User user = await _userManager.GetUserAsync(User);
+            string userId = getUserIdFromAuthedUser();
+            User user = await _userService.GetUserWithRoles(userId);
+
+            if (user.UsersRoleClub == null) return RedirectToAction("Index", "Home");
 
             //check if user has that role (prevent injection)
-            var hasRole = (await _userService.GetUserRoles(user.Id)).Any(x => x.Id == usersClubRoleId);
+            var hasRole = user.UsersRoleClub.Any(x => x.Id == usersClubRoleId);
             if (hasRole)
             {
-                user.SelectedUserRoleClubId = usersClubRoleId;
-                await _userService.UpdateUser(user);
+                await _userService.UpdateSelectedRole(userId, usersClubRoleId);
             }
             return RedirectToAction("Index", "Home");
         }

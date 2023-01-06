@@ -12,8 +12,8 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230104105657_UserRoleClubContext")]
-    partial class UserRoleClubContext
+    [Migration("20230105175141_SelectedUserRole")]
+    partial class SelectedUserRole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -2922,9 +2922,6 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SelectedUserRoleClubId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Theme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2969,6 +2966,9 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Selected")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .IsRequired()

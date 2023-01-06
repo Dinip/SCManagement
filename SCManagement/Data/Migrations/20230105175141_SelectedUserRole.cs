@@ -4,22 +4,23 @@
 
 namespace SCManagement.Data.Migrations
 {
-    public partial class UserRoleClubContext : Migration
+    public partial class SelectedUserRole : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "SelectedUserRoleClubId",
-                table: "AspNetUsers",
-                type: "int",
-                nullable: true);
+            migrationBuilder.AddColumn<bool>(
+                name: "Selected",
+                table: "UsersRoleClub",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "SelectedUserRoleClubId",
-                table: "AspNetUsers");
+                name: "Selected",
+                table: "UsersRoleClub");
         }
     }
 }

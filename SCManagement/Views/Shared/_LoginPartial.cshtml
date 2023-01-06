@@ -7,6 +7,10 @@
     @{
         var isSignedIn = SignInManager.IsSignedIn(User);
         var user = isSignedIn ? UserManager.GetUserAsync(User).Result : null;
+        if (user != null) user.ProfilePicture = user.ProfilePicture ?? new SCManagement.Services.AzureStorageService.Models.BlobDto
+            {
+                Uri = "https://cdn.scmanagement.me/public/user_placeholder.png"
+            };
     }
     @if (isSignedIn)
     {

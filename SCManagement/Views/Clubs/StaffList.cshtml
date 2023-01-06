@@ -4,7 +4,7 @@
     ViewData["Title"] = "StaffList";
 }
 <div class="mt-5">
-<h1>StaffList</h1>
+    <h1>StaffList</h1>
 </div>
 
 <table class="table">
@@ -23,28 +23,26 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.User.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Role.RoleName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.JoinDate)
-            </td>
-                @if (ViewBag.UserRoleId > item.Role.Id)
-                {
-                    <td>
-                        <form asp-action="RemoveUser">
-                            <input name="Id" value="@item.Id" class="form-control" hidden />
-                            <input name="Page" value="StaffList" class="form-control" hidden />
-                            <input type="submit" value="Remove staff" class="btn btn-danger" />
-                        </form>
-                    </td>
-                }
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Role.RoleName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.JoinDate)
+                </td>
+                <td>
+                    <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "d-none")">
+                        <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
+                        <input name="page" value="StaffList" class="form-control" hidden />
+                        <input type="submit" value="Remove staff" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

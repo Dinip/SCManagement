@@ -2920,9 +2920,6 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("SelectedUserRoleClubId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Theme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2967,6 +2964,9 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Selected")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .IsRequired()

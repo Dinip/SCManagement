@@ -42,6 +42,12 @@ using (var ser = app.Services.CreateScope())
 app.UseRequestLocalizationCookies();
 
 app.MapControllerRoute(
+    name: "clubs",
+    pattern: "Clubs/{id}",
+    defaults: new { controller = "Clubs", action = "Index" },
+    constraints: new { id = @"\d+" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.MapRazorPages();

@@ -64,7 +64,7 @@
         </dd>
         @if (!Model.Approved && ViewBag.IsAdmin)
         {
-            <a href="/Clubs/Codes/@Model.ClubId?approveCode=@Model.Id">Approve</a>
+            <a href="/Clubs/Codes?approveCode=@Model.Id">Approve</a>
         }
         
         @if (ViewBag.QRCode != null)

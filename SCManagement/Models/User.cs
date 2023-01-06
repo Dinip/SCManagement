@@ -39,8 +39,6 @@ namespace SCManagement.Models
         [Required(ErrorMessage = "Error_Required")]
         public string Theme { get; set; } = "light";
 
-        public int? SelectedUserRoleClubId { get; set; }
-
         public ICollection<UsersRoleClub>? UsersRoleClub { get; set; }
 
         [NotMapped]
@@ -48,6 +46,23 @@ namespace SCManagement.Models
         public string FullName
         {
             get => $"{FirstName} {LastName}";
+        }
+
+        [NotMapped]
+        [Display(Name = "Age")]
+        public int? Age
+        {
+            get
+            {
+                if (DateOfBirth.HasValue)
+                {
+                    var today = DateTime.Today;
+                    var age = today.Year - DateOfBirth.Value.Year;
+                    if (DateOfBirth.Value.Date > today.AddYears(-age)) age--;
+                    return age;
+                }
+                return null;
+            }
         }
     }
 }

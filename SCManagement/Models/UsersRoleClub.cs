@@ -26,5 +26,7 @@
             set { dateJoined = value; }
         }
         private DateTime? dateJoined = null;
+
+        public bool Selected { get; set; } = false;
     }
 }

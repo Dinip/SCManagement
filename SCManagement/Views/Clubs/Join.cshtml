@@ -4,7 +4,7 @@
     ViewData["Title"] = "Join";
 }
 
-<div class="card d-none associate-show" style="z-index: 9;">
+<div class="card associate-show">
     <div class="card-body">
         <div class="col-md-4">
             <p>@ViewBag.Message</p>
@@ -21,12 +21,11 @@
             </form>
         </div>
     </div>
-    
 </div>
 
 @section Scripts {
     @{
-        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="/js/site.js" asp-append-version="true"></script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
