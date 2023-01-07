@@ -1,0 +1,55 @@
+﻿@{
+    ViewData["Title"] = "Settings";
+}
+
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
+
+</head>
+
+<body class="body">
+    <div class="container w-100" style="margin-top:130px;">
+        <h2 class="text-to-dark">Notifications</h2>
+        <div class="card shadow mt-5" style="border-radius:10px;">
+            <div class="card-body mt-0">
+                <div class="row p-2">
+                    <h5 class="col text-to-dark">General</h5>
+                    <div class="col text-end">
+                        <label class="switch" style="margin-right: 20px;">
+                            <input type="checkbox" onchange="">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row p-2">
+                    <h5 class="col text-to-dark ">Events</h5>
+                    <div class="col text-end">
+                        <label class="switch" style="margin-right: 20px;">
+                            <input type="checkbox" onchange="">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <hr />
+                <div class="row p-2">
+                    <h5 class="col text-to-dark">Payments</h5>
+                    <div class="col text-end">
+                        <label class="switch" style="margin-right: 20px;">
+                            <input type="checkbox" onchange="">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

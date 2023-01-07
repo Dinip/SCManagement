@@ -23,7 +23,6 @@ namespace SCManagement.Models
         }
 
         private DateTime? dateCreated = null;
-        public DateTime? EndDate { get; set; }
         public int ModalityId { get; set; }
         public Modality? Modality { get; set; }
         public ICollection<User>? Athletes { get; set; }

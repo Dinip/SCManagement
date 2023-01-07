@@ -4,29 +4,28 @@
     ViewData["Title"] = "Join";
 }
 
-<h1>Join</h1>
-
-<h4>CodeClub</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <p>@ViewBag.Message</p>
-        <form asp-action="Join">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Code" class="control-label"></label>
-                <input asp-for="Code" class="form-control" />
-                <span asp-validation-for="Code" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Join" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="card associate-show">
+    <div class="card-body">
+        <div class="col-md-4">
+            <p>@ViewBag.Message</p>
+            <form asp-action="Join">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Code" class="control-label"></label>
+                    <input asp-for="Code" class="form-control" />
+                    <span asp-validation-for="Code" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Join" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     @{
+        <script src="/js/site.js" asp-append-version="true"></script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-    }
+}

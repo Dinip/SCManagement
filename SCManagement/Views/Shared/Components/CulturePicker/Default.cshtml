@@ -3,13 +3,14 @@
     <form method="GET">
         <div class="form-group">
             <select id="culture-picker"
-                    class="form-control"
+                    class="selectpicker me-3 mt-0"
                     name="culture"
-                    onchange="this.parentElement.parentElement.submit();">
+                    data-width="fit"
+                    onchange="this.parentElement.parentElement.submit();"
+                    style="margin-top:3px; height:35.98px; border-radius:10px; font-size:13px;">
                 @foreach (var culture in Model.SupportedCultures)
                 {
-                    <option value="@culture.Name"
-                        selected="@(Model.CurrentUICulture.Name == culture.Name)">
+                    <option value="@culture.Name" selected="@(Model.CurrentUICulture.Name == culture.Name)">
                         <span>@Model.ToFlagEmoji(culture.Name)</span> @culture.NativeName
                     </option>
                 }

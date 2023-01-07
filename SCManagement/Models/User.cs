@@ -47,5 +47,22 @@ namespace SCManagement.Models
         {
             get => $"{FirstName} {LastName}";
         }
+
+        [NotMapped]
+        [Display(Name = "Age")]
+        public int? Age
+        {
+            get
+            {
+                if (DateOfBirth.HasValue)
+                {
+                    var today = DateTime.Today;
+                    var age = today.Year - DateOfBirth.Value.Year;
+                    if (DateOfBirth.Value.Date > today.AddYears(-age)) age--;
+                    return age;
+                }
+                return null;
+            }
+        }
     }
 }

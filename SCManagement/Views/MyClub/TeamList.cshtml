@@ -7,7 +7,7 @@
 <h1>TeamList</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateTeam">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -17,9 +17,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Modality)
@@ -40,17 +37,14 @@
                 @Html.DisplayFor(modelItem => item.CreationDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Modality.Name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Trainer.FullName)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="EditTeam" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Teams" asp-route-id="@item.Id">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>

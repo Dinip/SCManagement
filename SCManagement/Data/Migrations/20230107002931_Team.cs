@@ -23,7 +23,6 @@ namespace SCManagement.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     ModalityId = table.Column<int>(type: "int", nullable: false),
                     TrainerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ClubId = table.Column<int>(type: "int", nullable: false)

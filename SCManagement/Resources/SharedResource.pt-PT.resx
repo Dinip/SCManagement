@@ -424,4 +424,19 @@
   <data name="rights" xml:space="preserve">
     <value>Todos os direitos estão reservados</value>
   </data>
+  <data name="Error_NotFound" xml:space="preserve">
+    <value>Not Found Error!</value>
+  </data>
+  <data name="Error_NotFound_Title" xml:space="preserve">
+    <value>Not Found</value>
+  </data>
+  <data name="Error_Unauthorized" xml:space="preserve">
+    <value>Não tens permissão para aceder a esta página</value>
+  </data>
+  <data name="Error_Unauthorized_Title" xml:space="preserve">
+    <value>Não autorizado</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Idade</value>
+  </data>
 </root>

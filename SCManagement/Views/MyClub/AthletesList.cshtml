@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SCManagement.Models.UsersRoleClub>
+
+@{
+    ViewData["Title"] = "AthletesList";
+}
+
+<h1>AthletesList</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.User.Age)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.User.Age)
+                </td>
+                <td>
+                    <form asp-action="RemoveUser" class="@(ViewBag.UserIsManager ? "": "d-none")">
+                        <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
+                        <input name="page" value="AthletesList" class="form-control" hidden />
+                        <input type="submit" value="Remove athlete" class="btn btn-danger" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

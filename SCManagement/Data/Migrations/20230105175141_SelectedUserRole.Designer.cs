@@ -12,8 +12,8 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230104193157_Team")]
-    partial class Team
+    [Migration("20230105175141_SelectedUserRole")]
+    partial class SelectedUserRole
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -2854,46 +2854,6 @@ namespace SCManagement.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("SCManagement.Models.Team", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClubId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("EndDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ModalityId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(40)
-                        .HasColumnType("nvarchar(40)");
-
-                    b.Property<string>("TrainerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubId");
-
-                    b.HasIndex("ModalityId");
-
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("Team");
-                });
-
             modelBuilder.Entity("SCManagement.Models.User", b =>
                 {
                     b.Property<string>("Id")
@@ -2962,9 +2922,6 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Theme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2990,8 +2947,6 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ProfilePictureId");
 
-                    b.HasIndex("TeamId");
-
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
@@ -3011,6 +2966,9 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("Selected")
+                        .HasColumnType("bit");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -3200,33 +3158,6 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("SCManagement.Models.Team", b =>
-                {
-                    b.HasOne("SCManagement.Models.Club", "Club")
-                        .WithMany()
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SCManagement.Models.Modality", "Modality")
-                        .WithMany()
-                        .HasForeignKey("ModalityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SCManagement.Models.User", "Trainer")
-                        .WithMany()
-                        .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-
-                    b.Navigation("Modality");
-
-                    b.Navigation("Trainer");
-                });
-
             modelBuilder.Entity("SCManagement.Models.User", b =>
                 {
                     b.HasOne("SCManagement.Models.Address", "Address")
@@ -3236,10 +3167,6 @@ namespace SCManagement.Data.Migrations
                     b.HasOne("SCManagement.Services.AzureStorageService.Models.BlobDto", "ProfilePicture")
                         .WithMany()
                         .HasForeignKey("ProfilePictureId");
-
-                    b.HasOne("SCManagement.Models.Team", null)
-                        .WithMany("Athletes")
-                        .HasForeignKey("TeamId");
 
                     b.Navigation("Address");
 
@@ -3291,11 +3218,6 @@ namespace SCManagement.Data.Migrations
             modelBuilder.Entity("SCManagement.Models.RoleClub", b =>
                 {
                     b.Navigation("UsersRoleClub");
-                });
-
-            modelBuilder.Entity("SCManagement.Models.Team", b =>
-                {
-                    b.Navigation("Athletes");
                 });
 
             modelBuilder.Entity("SCManagement.Models.User", b =>

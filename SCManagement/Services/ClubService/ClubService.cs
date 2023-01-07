@@ -15,7 +15,6 @@ namespace SCManagement.Services.ClubService
         private readonly IHttpContextAccessor _httpContext;
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
-        private readonly ILocationService _locationService;
 
         public ClubService(
             ApplicationDbContext context,
@@ -30,7 +29,6 @@ namespace SCManagement.Services.ClubService
             _httpContext = httpContext;
             _sharedResource = sharedResource;
             _azureStorage = azureStorage;
-            _locationService = locationService;
         }
 
         /// <summary>
@@ -41,7 +39,6 @@ namespace SCManagement.Services.ClubService
         /// <returns>A new club</returns>
         public async Task<Club> CreateClub(Club club, string userId, int addressId)
         {
-
             //Create a new club
             Club c = new Club
             {
@@ -144,23 +141,16 @@ namespace SCManagement.Services.ClubService
         /// <param name="roleId">id of the role that the code will assign</param>
         /// <param name="expireDate">expire date of the code</param>
         /// <returns>code</returns>
-        public async Task<CodeClub> GenerateCode(int clubId, string creatorId, int roleId, DateTime? expireDate)
+        public async Task<CodeClub> GenerateCode(CodeClub codeToCreate)
         {
-            // if trying to generate a code to a secretary role and the user
-            // is another secretary, the code must be validated by the club admin first
-            bool isApproved = true;
-            if (roleId == 40 && IsClubSecretary(creatorId, clubId))
-            {
-                isApproved = false;
-            }
-
             string code = generateCode();
-            CodeClub cc = new CodeClub { ClubId = clubId, RoleId = roleId, CreatedByUserId = creatorId, ExpireDate = expireDate, Code = code, Approved = isApproved };
+            CodeClub cc = codeToCreate;
+            cc.Code = code;
             _context.CodeClub.Add(cc);
             await _context.SaveChangesAsync();
 
             //send an email to club admin to validated the code
-            if (!isApproved)
+            if (!cc.Approved)
             {
                 string hostUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}";
                 string url = $"{hostUrl}/Clubs/Codes/{cc.ClubId}?approveCode={cc.Code}";
@@ -171,7 +161,7 @@ namespace SCManagement.Services.ClubService
                     { "_ROLE_", roleName },
                     { "_CALLBACK_URL_", url }
                 };
-                await sendEmailToClubAdmin(clubId, "Subject_ApproveCode", "Email_ApproveCode", values);
+                await sendEmailToClubAdmin(cc.ClubId, "Subject_ApproveCode", "Email_ApproveCode", values);
             }
 
             return cc;
@@ -339,67 +329,71 @@ namespace SCManagement.Services.ClubService
         /// <summary>
         /// Allow to know if the user is a admin of the club
         /// </summary>
-        /// <param name="userId">id of the user</param>
-        /// <param name="clubId">id of the club</param>
+        /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is admin of the club, false if not</returns>
-        public bool IsClubAdmin(string userId, int clubId)
+        public bool IsClubAdmin(UsersRoleClub userRoleClub)
         {
-            return UserRolesInClub(userId, clubId).Contains(50);
+            return userRoleClub.RoleId == 50;
         }
 
         /// <summary>
         /// Allow to know if the user is a secretary of the club
         /// </summary>
-        /// <param name="userId">id of the user</param>
-        /// <param name="clubId">id of the club</param>
+        /// <param name="userRoleClub">role object to eval</param>
+        /// <returns>a boolean value, true is the user is secretary of the club, false if not</returns>
+        public bool IsClubSecretary(UsersRoleClub userRoleClub)
+        {
+            return userRoleClub.RoleId == 40;
+
+        }
+        /// <summary>
+        /// Allow to know if the user is a secretary of the club
+        /// </summary>
+        /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is secretary of the club, false if not</returns>
         public bool IsClubSecretary(string userId, int clubId)
         {
-            return UserRolesInClub(userId, clubId).Contains(40);
+            return UserRolesInClub(userId, clubId).Any(r => r >= 20);
         }
 
         /// <summary>
         /// Allow to know if the user is a manager of the club
         /// </summary>
-        /// <param name="userId">id of the user</param>
-        /// <param name="clubId">id of the club</param>
+        /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is manager of the club, false if not</returns>
-        public bool IsClubManager(string userId, int clubId)
+        public bool IsClubManager(UsersRoleClub userRoleClub)
         {
-            return UserRolesInClub(userId, clubId).Any(r => r == 40 || r == 50);
+            return userRoleClub.RoleId == 40 || userRoleClub.RoleId == 50;
         }
 
         /// <summary>
         /// Allow to know if the user is a Trainer of the club
         /// </summary>
-        /// <param name="userId">id of the user</param>
-        /// <param name="clubId">id of the club</param>
+        /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is Trainer of the club, false if not</returns>
-        public bool IsClubTrainer(string userId, int clubId)
+        public bool IsClubTrainer(UsersRoleClub userRoleClub)
         {
-            return UserRolesInClub(userId, clubId).Contains(30);
+            return userRoleClub.RoleId == 30;
         }
 
         /// <summary>
         /// Allow to know if the user is a Staff of the club
         /// </summary>
-        /// <param name="userId">id of the user</param>
-        /// <param name="clubId">id of the club</param>
-        /// <returns>a boolean value, true is the user is Staff of the club, false if not</returns>
-        public bool IsClubStaff(string userId, int clubId)
+        /// <param name="userRoleClub">role object to eval</param>
+        /// <returns>a boolean value, true is the user is Staff (admin, secretary, trainer) of the club, false if not</returns>
+        public bool IsClubStaff(UsersRoleClub userRoleClub)
         {
-            return UserRolesInClub(userId, clubId).Any(r => r == 30 || r == 40 || r == 50);
+            return userRoleClub.RoleId == 30 || userRoleClub.RoleId == 40 || userRoleClub.RoleId == 50;
         }
 
         /// <summary>
         /// Allow to know if the user is a Athlete of the club
         /// </summary>
-        /// <param name="userId">id of the user</param>
-        /// <param name="clubId">id of the club</param>
+        /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is a Athlete of the club, false if not</returns>
-        public bool IsClubAthlete(string userId, int clubId)
+        public bool IsClubAthlete(UsersRoleClub userRoleClub)
         {
-            return UserRolesInClub(userId, clubId).Contains(20);
+            return userRoleClub.RoleId == 20;
         }
 
         /// <summary>
@@ -587,7 +581,7 @@ namespace SCManagement.Services.ClubService
 
             _context.Address.Add(address);
             await _context.SaveChangesAsync();
-            
+
             return address.Id;
         }
 
@@ -598,7 +592,7 @@ namespace SCManagement.Services.ClubService
             address.Street = Street;
             address.ZipCode = ZipCode;
             address.Number = Number;
-            
+
             _context.Address.Update(address);
             _context.SaveChanges();
         }
