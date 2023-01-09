@@ -1,13 +1,13 @@
 ﻿@model SCManagement.ViewComponents.CulturePickerModel
 <div>
     <form method="GET">
-        <div class="form-group">
+        <div class="form-group col-auto">
             <select id="culture-picker"
                     class="selectpicker me-3 mt-0"
                     name="culture"
                     data-width="fit"
                     onchange="this.parentElement.parentElement.submit();"
-                    style="margin-top:3px; height:35.98px; border-radius:10px; font-size:13px;">
+                    style="margin-top:3px; height:35.98px; border-radius:5px; font-size:13px;">
                 @foreach (var culture in Model.SupportedCultures)
                 {
                     <option value="@culture.Name" selected="@(Model.CurrentUICulture.Name == culture.Name)">

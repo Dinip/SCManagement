@@ -1,13 +1,13 @@
-﻿@model Address
+﻿
+@model Address
 
 @{
     ViewData["Title"] = "Address";
 }
 
-
-<div class="form-group">
-    <input id="search_city" asp-for="County.Name" type="text" placeholder="" aria-label="Search" onkeyup="debounce()" list="locationList" />
-    <select id="locationList" asp-for="CountyId"></select>
+<div class="form-group mt-2">
+    <input id="search_city" asp-for="County.Name" autocomplete="off" type="text" placeholder="Type a county..." aria-label="Search" onkeyup="debounce()" list="locationList" class="w-100" style="padding:6px 12px;"/>
+    <datalist id="locationList" asp-for="CountyId" ></datalist>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -16,7 +16,7 @@
     window.onload = (event) => {
         search(document.getElementById('search_city').value);
     };
-
+    
     let timer = null
     let debounce = () => {
         clearTimeout(timer);
@@ -46,10 +46,11 @@
         console.log(counties);
         let list = document.getElementById("locationList")
         for (let county of counties) {
-            $("#locationList").append('<option value="' + county.id + '">' + county.name + '</option>');
+            $("#locationList").append('<option data-value="' + county.id + '">' + county.name + '</option>');
         }
     }
+    
+
 
 </script>
-
 

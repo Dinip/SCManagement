@@ -15,28 +15,30 @@
                 <button class="btn fa-2xl shadow-none text-to-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="@user!.ProfilePicture?.Uri" class="rounded-circle" style="width: 45px; height: 45px;" />
                 </button>
-                <ul class="dropdown-menu" style="margin-top: 26px; left: -100px; width: 220px;" id="Dropdown1">
+                <ul class="dropdown-menu" style="margin-top: 10px; left: -150px; width: 230px;" id="Dropdown1">
                     <li class="dropdown-item" style="padding: 5px;">
                         <a class="nav-link text-to-dark" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user!.FullName</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
-                        <a class="nav-link text-to-dark" href="#">Conta corrente</a>
+                        <a class="nav-link text-to-dark" style="color:black;" href="#">Conta corrente</a>
                     </li>
                     <li style="padding: 5px;">
                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg  text-to-dark"></i>
                         <label class="text-to-dark">DarkMode</label>
-                        <label class="switch" style="margin-left: 10px;">
+                        <label class="switch" style="margin-left: 50px;">
                             <input type="checkbox" onchange="myFunction()" id="darkToggle">
                             <span class="slider round"></span>
                         </label>
                     </li>
-                    @await Component.InvokeAsync("UserClubContext")
                     <li class="dropdown-item" style="padding: 5px;">
-                        @await Component.InvokeAsync("CulturePicker")
+                        @await Component.InvokeAsync("UserClubContext")
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
-                        <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas text-to-dark"></i>
-                        <label class="text-to-dark">Language</label>
+                        <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-lg fa-earth-americas text-to-dark"></i>
+                        <label class="col-auto">
+                            @await Component.InvokeAsync("CulturePicker")
+                        </label>
+                        
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
                         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
