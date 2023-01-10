@@ -9,7 +9,7 @@ namespace SCManagement.Services.ClubService
     public interface IClubService
     {
         public Task<IEnumerable<Club>> GetClubs();
-        public Task<Club> GetClub(int id);
+        public Task<Club?> GetClub(int id);
         public Task<Club> CreateClub(Club club, string userId, int addressId);
         public Task<Club> UpdateClub(Club club);
         public Task<Club> DeleteClub(int id);

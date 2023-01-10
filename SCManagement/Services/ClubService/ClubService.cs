@@ -83,9 +83,26 @@ namespace SCManagement.Services.ClubService
         /// </summary>
         /// <param name="id">club id to find</param>
         /// <returns>A wanted club</returns>
-        public async Task<Club> GetClub(int id)
+        public async Task<Club?> GetClub(int id)
         {
-            return await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).Include(c => c.Address).Include(c => c.Address.County).FirstOrDefaultAsync(m => m.Id == id);
+
+            Club? club = await _context.Club
+                .Include(c => c.Modalities)
+                .Include(c => c.Photography)
+                .Include(c => c.Address)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (club != null && club.Address != null)
+            {
+                County county = await _context.County
+                    .Include(c => c.District)
+                    .ThenInclude(d => d.Country)
+                    .Select(s => new County { Id = s.Id, Name = $"{s.Name}, {s.District!.Name}, {s.District.Country!.Name}" })
+                    .FirstAsync(f => f.Id == club.Address.CountyId);
+
+                club.Address.County = county;
+            }
+            return club;
         }
 
         /// <summary>
@@ -596,7 +613,7 @@ namespace SCManagement.Services.ClubService
 
             _context.Address.Add(address);
             await _context.SaveChangesAsync();
-            
+
             return address.Id;
         }
 
@@ -607,7 +624,7 @@ namespace SCManagement.Services.ClubService
             address.Street = Street;
             address.ZipCode = ZipCode;
             address.Number = Number;
-            
+
             _context.Address.Update(address);
             _context.SaveChanges();
         }
