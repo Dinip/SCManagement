@@ -44,5 +44,8 @@ namespace SCManagement.Services.ClubService
         public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number);
         public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId);
         public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId);
+        public Task<IEnumerable<Modality>> GetClubModalities(int clubId);
+
+
     }
 }

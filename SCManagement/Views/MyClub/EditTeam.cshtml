@@ -1,0 +1,81 @@
+﻿@model SCManagement.Models.Team
+
+@{
+    ViewData["Title"] = "EditTeam";
+}
+
+<h1>EditTeam</h1>
+
+<h4>Team</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditTeam">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>      
+            <div class="form-group">
+                <label asp-for="ModalityId" class="control-label"></label>
+                <select asp-for="ModalityId" class="form-control" asp-items="ViewBag.Modalities"></select>
+                <span asp-validation-for="ModalityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Trainer" class="control-label"></label>
+                <a disabled class="form-control">@Model.Trainer.FullName</a>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Age
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Athletes != null)
+        {
+            @foreach (var item in Model.Athletes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.DateOfBirth - DateTime.Now)
+                    </td>
+                    <td>
+                        @*<form asp-action="RemoveAthlete" class="@(ViewBag.UserRoleId > item.RoleId ? "": "d-none")">
+                                <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
+                                <input name="page" value="StaffList" class="form-control" hidden />
+                                <input type="submit" value="Remove staff" class="btn btn-danger" />
+                            </form>*@
+                    </td>
+                </tr>
+            }
+        }
+        <a asp-action="AddAthleteOnTeam"> </a>
+    </tbody>
+        </table>
+        
+<div>
+    <a asp-action="TeamList">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

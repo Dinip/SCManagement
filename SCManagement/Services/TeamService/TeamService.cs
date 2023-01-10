@@ -17,7 +17,7 @@ namespace SCManagement.Services.TeamService
 
         public async Task<Team> GetTeam(int teamId)
         {
-            return await _context.Team.Include(t => t.Modality)
+            return await _context.Team.Include(t => t.Modality).Include(u => u.Trainer)
                 .FirstOrDefaultAsync(t => t.Id == teamId);
         }
 
@@ -32,6 +32,17 @@ namespace SCManagement.Services.TeamService
             await _context.SaveChangesAsync();
 
             return team;
+        }
+
+        public async Task<Team> UpdateTeam(Team team)
+        {
+            _context.Team.Update(team);
+            await _context.SaveChangesAsync();
+            return team;
+        }
+
+        public void UpdateTeamAthletes(Team team, IEnumerable<User> atheltes)
+        {
         }
     }
 }

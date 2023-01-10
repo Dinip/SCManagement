@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using QRCoder;
-using SCManagement.Data;
 using SCManagement.Models;
-using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.TeamService;
@@ -478,7 +476,7 @@ namespace SCManagement.Controllers
 
             //check role Trainer
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
-            
+
             ViewBag.Modalities = new SelectList(_clubService.GetClub(role.ClubId).Result.Modalities, "Id", "Name");
 
             return View();
@@ -517,10 +515,68 @@ namespace SCManagement.Controllers
             [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
             [Display(Name = "Team Name")]
             public string Name { get; set; }
-            
+
             [Required(ErrorMessage = "Error_Required")]
             [Display(Name = "Modality")]
             public int ModalityId { get; set; }
         }
+
+        [Authorize]
+        public async Task<IActionResult> EditTeam(int? id)
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check role
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            //get the club
+            var club = await _clubService.GetClub(role.ClubId);
+
+            //viewbag that have the modalities of the club
+            ViewBag.Modalities = new SelectList(await _clubService.GetClubModalities(club.Id), "Id", "Name");
+
+            if (club == null) return View("CustomError", "Error_NotFound");
+
+            //get the team
+            var team = await _teamService.GetTeam((int)id);
+
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            return View(team);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,ModalityId")] TeamModel team)
+        {
+            //check model state
+            if (!ModelState.IsValid) return View(team);
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check roles
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            //Update Team Atributes
+            Team teamToUpdate = await _teamService.GetTeam((int)id);
+            teamToUpdate.Name = team.Name;
+            teamToUpdate.ModalityId = team.ModalityId;
+
+            //Update Team On DataBase
+            await _teamService.UpdateTeam(teamToUpdate);
+
+            return RedirectToAction(nameof(TeamList));
+        }
+
     }
 }

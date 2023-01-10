@@ -9,5 +9,7 @@ namespace SCManagement.Services.TeamService
         public Task<Team> GetTeam(int teamId);
 
         public Task<Team> CreateTeam(Team team);
+        public Task<Team> UpdateTeam(Team team);
+        public void UpdateTeamAthletes(Team team, IEnumerable<User> atheltes);
     }
 }
