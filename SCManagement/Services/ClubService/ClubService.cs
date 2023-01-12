@@ -617,6 +617,11 @@ namespace SCManagement.Services.ClubService
         {
             return await _context.Club.Where(c => c.Id == clubId).SelectMany(c => c.Modalities).ToListAsync();
         }
+        
+        public async Task<IEnumerable<User>> GetAthletes(int clubId)
+        {
+            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
+        }
 
     }
 }

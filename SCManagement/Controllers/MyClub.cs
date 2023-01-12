@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -531,7 +532,7 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //check role
-            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
@@ -565,7 +566,7 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //check roles
-            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
             //Update Team Atributes
             Team teamToUpdate = await _teamService.GetTeam((int)id);
@@ -578,5 +579,58 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(TeamList));
         }
 
+
+        [Authorize]
+        public async Task<IActionResult> AddTeamAthletes(int id)
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check user role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            Team? team = await _teamService.GetTeam(id);
+
+            if(team == null) return View("CustomError", "Error_NotFound");
+
+            //if he is trainer need to be the trainer of the team
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+
+            List<User> clubAthletes = (await _clubService.GetAthletes(team.ClubId)).ToList();
+            IEnumerable<User> avaliableAthletes = clubAthletes.Where(x => !team.Athletes.Any(y => y.Id == x.Id)).ToList();
+
+
+            return PartialView("_PartialAddTeamAthletes", avaliableAthletes);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTeamAthletes(int id, List<string> selectedAthletes)
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check user role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            Team? team = await _teamService.GetTeam(id);
+
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            //if he is trainer need to be the trainer of the team
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+
+            _teamService.UpdateTeamAthletes(id, selectedAthletes);
+
+
+            return RedirectToAction(nameof(EditTeam),new {id=team.Id});
+        }
     }
 }

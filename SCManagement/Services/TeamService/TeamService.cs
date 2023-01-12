@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using NuGet.Packaging;
 using SCManagement.Data;
 using SCManagement.Models;
 
@@ -15,9 +16,9 @@ namespace SCManagement.Services.TeamService
             _sharedResource = sharedResource;
         }
 
-        public async Task<Team> GetTeam(int teamId)
+        public async Task<Team?> GetTeam(int teamId)
         {
-            return await _context.Team.Include(t => t.Modality).Include(u => u.Trainer)
+            return await _context.Team.Include(t => t.Modality).Include(u => u.Trainer).Include(u => u.Athletes)
                 .FirstOrDefaultAsync(t => t.Id == teamId);
         }
 
@@ -41,8 +42,21 @@ namespace SCManagement.Services.TeamService
             return team;
         }
 
-        public void UpdateTeamAthletes(Team team, IEnumerable<User> atheltes)
+        public async void UpdateTeamAthletes(int teamId, IEnumerable<string> atheltesId)
         {
+            Team? team = await GetTeam(teamId);
+            
+            if (team == null || atheltesId.Count() == 0) return;
+            
+            var athletesToAdd = await _context.UsersRoleClub.Where(u => u.UserId == atheltesId.First()).ToListAsync();
+
+            foreach(var athlete in athletesToAdd)
+            {
+                if (!team.Athletes.Contains(athlete.User))
+                    team.Athletes.Add(athlete.User);
+            }
+            _context.Team.Update(team);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -5,9 +5,21 @@
 }
 
 <h1>EditTeam</h1>
-
 <h4>Team</h4>
+
 <hr />
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content">
+           
+        </div>
+    </div>
+
+</div>
+
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="EditTeam">
@@ -56,7 +68,7 @@
                         @Html.DisplayFor(modelItem => item.FullName)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.DateOfBirth - DateTime.Now)
+                        @Html.DisplayFor(modelItem => item.Age)
                     </td>
                     <td>
                         @*<form asp-action="RemoveAthlete" class="@(ViewBag.UserRoleId > item.RoleId ? "": "d-none")">
@@ -68,7 +80,7 @@
                 </tr>
             }
         }
-        <a asp-action="AddAthleteOnTeam"> </a>
+        <a onclick="openCreate()">Add Athlete </a>
     </tbody>
         </table>
         
@@ -79,3 +91,65 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+
+
+    <script type="text/javascript">
+        let modal = document.getElementById("modal")
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                $("#modal").hide();
+            }
+        }
+
+        function openCreate() {
+            $.ajax({
+                url: '/MyClub/AddTeamAthletes/@Model.Id',
+                type: 'GET',
+                async: false,
+                success: function (result) {
+                    $("#modal-inner-content").html(result);
+                    $("#modal").show();
+                }
+            });
+        }
+    </script>
