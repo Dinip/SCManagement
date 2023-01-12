@@ -1,5 +1,8 @@
 ﻿@page
+@using SCManagement;
 @model IndexModel
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
 @{
     ViewData["Title"] = "Profile";
 }
@@ -18,7 +21,7 @@
                      class="rounded-circle col"
                      style="width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="col">
-                    <i class="fa-solid fa-xl fa-trash row" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
+                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
                     <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
                 </div>
                 
@@ -68,6 +71,28 @@
                         <a class="text-black text-to-dark" asp-page="/Account/Manage/Email">Change Email</a>
                     </div>
                 </div>
+                <hr style="margin-bottom:20px;" />
+
+                @*@if ((bool)ViewData["IsAtleteInAnyClub"] != false)
+                {
+                *@
+                
+                    <div class="row">
+                    <strong class="col text-to-dark">EMD</strong>
+                    <div class="col text-end">
+                        <a id="emd" class="text-to-dark" style="margin-right:20px; text-decoration:@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "none" : "" );"
+                           href=@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? $"{@Model.EMDUrl}" : "") target="_blank" >@Model.EMDUrl</a>
+
+                        <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash row @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" 
+                        style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removeEMD()"></i>
+                        <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
+                    </div>
+                    </div>
+                    
+                @*}*@
+                <hr style="margin-bottom:20px;" />
+                
+
                 <button id="update-profile-button" style="border-radius: 10px;
                                                         background-color: #00639A;
                                                         border-color: #00639A;
@@ -79,7 +104,10 @@
                 <div>
                     <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/png, image/jpeg"
                            onchange="handleUpload(this)" />
+                    <input id="selectedFileForEMD" asp-for="Input.FileEMD" type="file" class="form-control d-none" accept="application/pdf"
+                           onchange="handleUploadEMD(this)" />
                     <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
+                    <input id="removeEMD" asp-for="Input.RemoveEMD" type="hidden" />
                 </div>
             </form>
         </div>
@@ -89,16 +117,29 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
+        let removePend = "@StringLocalizer["Pending_Remove"]"
+        let savePend = "@StringLocalizer["Pending_Save"]"
 
         function removePhoto() {
             document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
             document.getElementById("removeImage").value = true
             document.getElementById("selectedFile").value = ""
-            document.getElementById("btnRemoveImage").classList.add("d-none")
+            document.getElementById("btnRemoveImage").classList.add("invisible")
+        }
+        function removeEMD() {
+            document.getElementById("emd").text = removePend
+            document.getElementById("removeEMD").value = true
+            document.getElementById("selectedFileForEMD").value = ""
+            document.getElementById("btnRemoveEMD").classList.add("invisible")
         }
         function handleUpload(event){
-            document.getElementById('profilePicture').src=window.URL.createObjectURL(event.files[0])
-            document.getElementById("btnRemoveImage").classList.remove("d-none")
+            document.getElementById('profilePicture').src = window.URL.createObjectURL(event.files[0])
+            document.getElementById("btnRemoveImage").classList.remove("invisible")
+        }
+        function handleUploadEMD(event) {
+            document.getElementById('emd').text = savePend
+            document.getElementById('emd').src = window.URL.createObjectURL(event.files[0])
+            document.getElementById("btnRemoveEMD").classList.remove("invisible")
         }
     </script>
 }

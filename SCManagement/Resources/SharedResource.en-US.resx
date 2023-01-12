@@ -507,4 +507,16 @@
   <data name="Age" xml:space="preserve">
     <value>Age</value>
   </data>
+  <data name="EMD" xml:space="preserve">
+    <value>SME</value>
+  </data>
+  <data name="Pending_Add" xml:space="preserve">
+    <value>Pendind add</value>
+  </data>
+  <data name="Pending_Remove" xml:space="preserve">
+    <value>Pending remove</value>
+  </data>
+  <data name="Pending_Save" xml:space="preserve">
+    <value>Pending save</value>
+  </data>
 </root>

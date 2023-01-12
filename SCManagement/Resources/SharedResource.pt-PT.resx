@@ -439,4 +439,16 @@
   <data name="Age" xml:space="preserve">
     <value>Idade</value>
   </data>
+  <data name="EMD" xml:space="preserve">
+    <value>EMD</value>
+  </data>
+  <data name="Pending_Add" xml:space="preserve">
+    <value>Ainda não adicionado </value>
+  </data>
+  <data name="Pending_Remove" xml:space="preserve">
+    <value>Remoção pendente</value>
+  </data>
+  <data name="Pending_Save" xml:space="preserve">
+    <value>Falta salvar</value>
+  </data>
 </root>

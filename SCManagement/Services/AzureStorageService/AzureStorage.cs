@@ -44,16 +44,18 @@ namespace SCManagement.Services.AzureStorageService
                 // Open a stream for the file we want to upload
                 await using (Stream? data = blob.OpenReadStream())
                 {
+                    var blobHttpHeader = new BlobHttpHeaders { ContentType = blob.ContentType };
                     // Upload the file async
-                    await client.UploadAsync(data);
+                    await client.UploadAsync(data, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
                 }
 
                 // Everything is OK and file got uploaded
                 response.Status = $"File {blob.FileName}/{uuid} Uploaded Successfully";
                 response.Error = false;
                 response.Blob.Uri = $"{_cdnUrl}/uploads/{uuid}";
-                response.Blob.OriginalName = client.Name;
+                response.Blob.OriginalName = blob.FileName;
                 response.Blob.Uuid = uuid;
+                response.Blob.ContentType = blob.ContentType;
 
             }
             // If the file already exists, we catch the exception and do not upload it
