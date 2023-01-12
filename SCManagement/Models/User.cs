@@ -64,5 +64,7 @@ namespace SCManagement.Models
                 return null;
             }
         }
+
+        private ICollection<Team> Teams { get; set; }
     }
 }

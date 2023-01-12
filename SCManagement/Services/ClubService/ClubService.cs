@@ -283,48 +283,48 @@ namespace SCManagement.Services.ClubService
             return _context.UsersRoleClub.Any(f => f.UserId == userId && f.ClubId == clubId);
         }
 
-        public KeyValuePair<bool, string> UseCode(string userId, CodeClub code)
+        public async Task<KeyValuePair<bool, string>> UseCode(string userId, CodeClub code)
         {
             if (code == null)
             {
-                return new KeyValuePair<bool, string>(false, "Code not found");
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code not found"));
             }
 
             CodeClub cc = _context.CodeClub.Where(c => c.Code == code.Code).FirstOrDefault()!;
 
             if (cc == null)
             {
-                return new KeyValuePair<bool, string>(false, "Code not found");
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code not found"));
             }
 
             if (!cc.Approved)
             {
-                return new KeyValuePair<bool, string>(false, "Code not approved");
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code not approved"));
             }
 
             if (cc.UsedByUserId != null)
             {
-                return new KeyValuePair<bool, string>(false, "Code already used");
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code already used"));
             }
 
             if (cc.ExpireDate < DateTime.Now)
             {
-                return new KeyValuePair<bool, string>(false, "Code expired");
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code expired"));
             }
 
             if (UserAlreadyInAClub(userId, cc.ClubId))
             {
-                return new KeyValuePair<bool, string>(false, "You are already part of the club with another role");
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "You are already part of the club with another role"));
             }
 
             _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = cc.ClubId, RoleId = cc.RoleId });
             cc.UsedByUserId = userId;
             cc.UsedDate = DateTime.Now;
             _context.CodeClub.Update(cc);
-            _context.SaveChanges();
-            return new KeyValuePair<bool, string>(true, "Success");
-
+            await _context.SaveChangesAsync();
+            return await Task.FromResult(new KeyValuePair<bool, string>(true, "Success"));
         }
+
 
         /// <summary>
         /// Allow to know if the user is a admin of the club
@@ -617,7 +617,7 @@ namespace SCManagement.Services.ClubService
         {
             return await _context.Club.Where(c => c.Id == clubId).SelectMany(c => c.Modalities).ToListAsync();
         }
-        
+
         public async Task<IEnumerable<User>> GetAthletes(int clubId)
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();

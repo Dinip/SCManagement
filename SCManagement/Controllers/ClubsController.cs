@@ -195,15 +195,14 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Join([Bind("Code")] CodeClub cc)
+        public async Task<IActionResult> Join([Bind("Code")] CodeClub cc)
         {
             string userId = getUserIdFromAuthedUser();
 
-            KeyValuePair<bool, string> joined = _clubService.UseCode(userId, cc);
+            KeyValuePair<bool, string> joined = await _clubService.UseCode(userId, cc);
 
             ViewBag.Message = joined.Value;
             if (joined.Key == false) return View("Join", new CodeClub { Code = cc.Code });
-
             return RedirectToAction("Index", "MyClub");
         }
     }

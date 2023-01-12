@@ -627,8 +627,7 @@ namespace SCManagement.Controllers
             //if he is trainer need to be the trainer of the team
             if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
 
-            _teamService.UpdateTeamAthletes(id, selectedAthletes);
-
+            await _teamService.UpdateTeamAthletes(id, selectedAthletes);
 
             return RedirectToAction(nameof(EditTeam),new {id=team.Id});
         }

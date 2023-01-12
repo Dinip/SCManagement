@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NuGet.Packaging;
 using SCManagement.Data;
 using SCManagement.Models;
 
@@ -8,12 +7,10 @@ namespace SCManagement.Services.TeamService
     public class TeamService : ITeamService
     {
         private readonly ApplicationDbContext _context;
-        private readonly SharedResourceService _sharedResource;
 
-        public TeamService(ApplicationDbContext context, SharedResourceService sharedResource)
+        public TeamService(ApplicationDbContext context)
         {
             _context = context;
-            _sharedResource = sharedResource;
         }
 
         public async Task<Team?> GetTeam(int teamId)
@@ -42,19 +39,23 @@ namespace SCManagement.Services.TeamService
             return team;
         }
 
-        public async void UpdateTeamAthletes(int teamId, IEnumerable<string> atheltesId)
+        public async Task UpdateTeamAthletes(int teamId, IEnumerable<string> atheltesId)
         {
-            Team? team = await GetTeam(teamId);
-            
-            if (team == null || atheltesId.Count() == 0) return;
-            
-            var athletesToAdd = await _context.UsersRoleClub.Where(u => u.UserId == atheltesId.First()).ToListAsync();
+            var team = await _context.Team.Include(u => u.Athletes).FirstOrDefaultAsync(t => t.Id == teamId);
 
-            foreach(var athlete in athletesToAdd)
+            if (team == null || !atheltesId.Any()) return;
+
+            var athletesToAdd = await _context.UsersRoleClub
+                .Where(r => atheltesId.Contains(r.UserId) && r.RoleId == 20 && r.ClubId == team.ClubId)
+                .Select(r => r.User)
+                .ToListAsync();
+
+            foreach (var athlete in athletesToAdd)
             {
-                if (!team.Athletes.Contains(athlete.User))
-                    team.Athletes.Add(athlete.User);
+                if (!team.Athletes.Contains(athlete))
+                    team.Athletes.Add(athlete);
             }
+
             _context.Team.Update(team);
             await _context.SaveChangesAsync();
         }

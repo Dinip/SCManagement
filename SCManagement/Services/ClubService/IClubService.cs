@@ -18,7 +18,7 @@ namespace SCManagement.Services.ClubService
         public Task<IEnumerable<CodeClub>> GetCodes(int clubId);
         public Task<CodeClub> GetCodeWithInfos(int id);
         public bool UserAlreadyInAClub(string userId, int? clubId = null);
-        public KeyValuePair<bool, string> UseCode(string userId, CodeClub code);
+        public Task<KeyValuePair<bool, string>> UseCode(string userId, CodeClub code);
         public bool IsClubAdmin(UsersRoleClub userRoleClub);
         public bool IsClubSecretary(UsersRoleClub userRoleClub);
         public bool IsClubManager(UsersRoleClub userRoleClub);

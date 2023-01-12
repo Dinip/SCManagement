@@ -5,16 +5,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SCManagement.Data.Migrations
 {
-    public partial class Team : Migration
+    public partial class Teams : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "TeamId",
-                table: "AspNetUsers",
-                type: "int",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Team",
                 columns: table => new
@@ -50,10 +44,30 @@ namespace SCManagement.Data.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_TeamId",
-                table: "AspNetUsers",
-                column: "TeamId");
+            migrationBuilder.CreateTable(
+                name: "TeamUser",
+                columns: table => new
+                {
+                    AthletesId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    TeamsId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TeamUser", x => new { x.AthletesId, x.TeamsId });
+                    table.ForeignKey(
+                        name: "FK_TeamUser_AspNetUsers_AthletesId",
+                        column: x => x.AthletesId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TeamUser_Team_TeamsId",
+                        column: x => x.TeamsId,
+                        principalTable: "Team",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.NoAction,
+                        onUpdate: ReferentialAction.NoAction);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Team_ClubId",
@@ -70,30 +84,19 @@ namespace SCManagement.Data.Migrations
                 table: "Team",
                 column: "TrainerId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_Team_TeamId",
-                table: "AspNetUsers",
-                column: "TeamId",
-                principalTable: "Team",
-                principalColumn: "Id");
+            migrationBuilder.CreateIndex(
+                name: "IX_TeamUser_TeamsId",
+                table: "TeamUser",
+                column: "TeamsId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_Team_TeamId",
-                table: "AspNetUsers");
+            migrationBuilder.DropTable(
+                name: "TeamUser");
 
             migrationBuilder.DropTable(
                 name: "Team");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_TeamId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "TeamId",
-                table: "AspNetUsers");
         }
     }
 }

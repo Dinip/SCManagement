@@ -2957,9 +2957,6 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TeamId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Theme")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -2984,8 +2981,6 @@ namespace SCManagement.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.HasIndex("ProfilePictureId");
-
-                    b.HasIndex("TeamId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -3049,6 +3044,21 @@ namespace SCManagement.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BlobDto");
+                });
+
+            modelBuilder.Entity("TeamUser", b =>
+                {
+                    b.Property<string>("AthletesId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("TeamsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AthletesId", "TeamsId");
+
+                    b.HasIndex("TeamsId");
+
+                    b.ToTable("TeamUser");
                 });
 
             modelBuilder.Entity("ClubModality", b =>
@@ -3235,10 +3245,6 @@ namespace SCManagement.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ProfilePictureId");
 
-                    b.HasOne("SCManagement.Models.Team", null)
-                        .WithMany("Athletes")
-                        .HasForeignKey("TeamId");
-
                     b.Navigation("Address");
 
                     b.Navigation("ProfilePicture");
@@ -3271,6 +3277,21 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("TeamUser", b =>
+                {
+                    b.HasOne("SCManagement.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("AthletesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SCManagement.Models.Team", null)
+                        .WithMany()
+                        .HasForeignKey("TeamsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("SCManagement.Models.Club", b =>
                 {
                     b.Navigation("UsersRoleClub");
@@ -3289,11 +3310,6 @@ namespace SCManagement.Data.Migrations
             modelBuilder.Entity("SCManagement.Models.RoleClub", b =>
                 {
                     b.Navigation("UsersRoleClub");
-                });
-
-            modelBuilder.Entity("SCManagement.Models.Team", b =>
-                {
-                    b.Navigation("Athletes");
                 });
 
             modelBuilder.Entity("SCManagement.Models.User", b =>
