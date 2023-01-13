@@ -717,6 +717,23 @@ namespace SCManagement.Controllers
 
         }
 
+        [Authorize]
+        public async Task<IActionResult> MyTeams()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+            
+            //Check if is athlete
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            
+            var teams = await _teamService.GetTeamsByAthlete(userId, role.ClubId);
+
+            return View(teams);
+        }
+
 
     }
 }

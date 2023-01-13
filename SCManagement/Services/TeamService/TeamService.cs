@@ -73,5 +73,12 @@ namespace SCManagement.Services.TeamService
             _context.Team.Remove(team);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId)
+        {
+            return await _context.Team.Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
+                .Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
+        }
     }
+    
 }

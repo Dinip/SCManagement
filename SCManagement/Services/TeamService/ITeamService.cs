@@ -15,5 +15,7 @@ namespace SCManagement.Services.TeamService
         public Task RemoveAthlete(Team team, User athlete);
 
         public Task DeleteTeam(Team team);
+
+        public Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId);
     }
 }
