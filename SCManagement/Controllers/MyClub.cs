@@ -672,5 +672,23 @@ namespace SCManagement.Controllers
 
             return RedirectToAction(nameof(EditTeam), new { id = team.Id });
         }
+
+        [Authorize]
+        public async Task<IActionResult> TeamDetails (int? id)
+        {
+            Team team = await _teamService.GetTeam((int)id);
+            if(team == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is member of the club
+            if(!_clubService.IsClubMember(role.UserId, role.ClubId)) return View("CustomError", "Error_Unauthorized");
+
+            return View(team);
+        }
     }
 }
