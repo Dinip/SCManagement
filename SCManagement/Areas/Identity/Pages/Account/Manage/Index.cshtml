@@ -4,19 +4,19 @@
     ViewData["Title"] = "Profile";
 }
 
-<div class=" row ms-5 mb-0 d-flex" style="margin-top:70px;">
+<div class=" row ms-5 mb-0 d-flex" style="margin-top:100px;">
     <h1 class=" col text-to-dark">User Profile</h1>
 </div>
 
 <div class="container-fluid row justify-content-evenly">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div id="card1" class="col-md-3 col-8 card-to-dark card">
-        <div class="card-body p-5  align-content-center justify-content-center" style="max-height: 500px;">
+    <div id="card1" class="col-md-3 col-8 card-to-dark card mt-5">
+        <div class="card-body pt-5 p-3 align-content-center justify-content-center" style="max-height: 500px;">
             <div style="text-align:center;">
                 <img id="profilePicture"
                      src="@Model.ProfilePictureUrl"
                      class="rounded-circle col"
-                     style="width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
+                     style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="col">
                     <i class="fa-solid fa-xl fa-trash row" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
                     <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>

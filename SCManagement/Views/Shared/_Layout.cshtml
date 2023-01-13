@@ -42,10 +42,11 @@
                             <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">Clubs</a>
                             <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
                         }
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Settings">Settings</a>
                         <hr />
                         <div class="dropdown d-block d-md-none nav-item">
                             <a class="nav-link" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                Settings
+                                More
                             </a>
                             <ul class="dropdown-menu dropdown-menu-full" role="menu" id="Dropdown">
                                 <li style="padding: 5px;">
@@ -72,7 +73,7 @@
 
     </header>
     <div class="container-fluid p-0">
-        <main role="main" class="pb-3">
+        <main role="main" class="pb-3" style="margin-top:70px !important; ">
             @RenderBody()
         </main>
     </div>

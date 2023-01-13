@@ -71,9 +71,36 @@ namespace SCManagement.Services.ClubService
         /// </summary>
         /// <param name="id">club id to find</param>
         /// <returns>A wanted club</returns>
-        public async Task<Club> GetClub(int id)
+        public async Task<Club?> GetClub(int id)
         {
-            return await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).Include(c => c.Address).Include(c => c.Address.County).FirstOrDefaultAsync(m => m.Id == id);
+            return await _context.Club
+                .Include(c => c.Modalities)
+                .Include(c => c.Photography)
+                .Include(c => c.Address)
+                .Include(c => c.Address.County)
+                .ThenInclude(c => c.District)
+                .ThenInclude(c => c.Country)
+                .Select(s => new Club
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Email = s.Email,
+                    PhoneNumber = s.PhoneNumber,
+                    About = s.About,
+                    Photography = s.Photography,
+                    Modalities = s.Modalities,
+                    Address = new Address
+                    {
+                        Street = s.Address.Street,
+                        Number = s.Address.Number,
+                        ZipCode = s.Address.ZipCode,
+                        County = new County
+                        {
+                            Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
+                        }
+                    }
+                })
+                .FirstOrDefaultAsync(m => m.Id == id);
         }
 
         /// <summary>
@@ -92,7 +119,35 @@ namespace SCManagement.Services.ClubService
         /// <returns>All clubs</returns>
         public async Task<IEnumerable<Club>> GetClubs()
         {
-            return await _context.Club.Include(c => c.Modalities).ToListAsync();
+            return await _context.Club
+               .Include(c => c.Modalities)
+               .Include(c => c.Photography)
+               .Include(c => c.Address)
+               .Include(c => c.Address.County)
+               .ThenInclude(c => c.District)
+               .ThenInclude(c => c.Country)
+               .Select(s =>
+               new Club
+               {
+                   Id = s.Id,
+                   Name = s.Name,
+                   Email = s.Email,
+                   PhoneNumber = s.PhoneNumber,
+                   About = s.About,
+                   Photography = s.Photography,
+                   Modalities = s.Modalities,
+                   Address = new Address
+                   {
+                       Street = s.Address.Street,
+                       Number = s.Address.Number,
+                       ZipCode = s.Address.ZipCode,
+                       County = new County
+                       {
+                           Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
+                       }
+                   }
+               })
+               .ToListAsync();
         }
 
         public async Task<Club> UpdateClub(Club club)
@@ -588,10 +643,11 @@ namespace SCManagement.Services.ClubService
         public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number)
         {
             Address address = _context.Address.Find(addressId);
-            address.CountyId = CountyId;
             address.Street = Street;
             address.ZipCode = ZipCode;
             address.Number = Number;
+            address.County = null;
+            address.CountyId = CountyId;
 
             _context.Address.Update(address);
             _context.SaveChanges();

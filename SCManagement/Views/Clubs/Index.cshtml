@@ -4,62 +4,48 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.About)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreationDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Photography)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.About)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Photography)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="container-fluid p-5">
+    <h2>Clubs List</h2>
+    <div class="row">
+        <div class="card card-to-dark col me-3" style="max-height:550px;">
+            <div class="card-body" style="max-height:550px;">
+                <div class="input-group rounded">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+                    <span class="input-group-text border-0" id="search-addon">
+                        <i class="fas fa-search"></i>
+                    </span>
+                </div>
+                
+                <div class="overflow-auto mt-4" style="max-height:400px;">
+                    @foreach (var item in Model)
+                    {
+                        <div class="card card-to-dark shadow-sm mt-2">
+                            <div class="card-body d-flex justify-content-between">
+                                <div class="col-4">
+                                    <h3 style="font-size: 2vw;">
+                                        @Html.DisplayFor(modelItem => item.Name)
+                                    </h3>
+                                    <p style="white-space: nowrap;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;">
+                                        @Html.DisplayFor(modelItem => item.About)
+                                    </p>
+                                    <p>
+                                        <a asp-route-id="@item.Id">Details</a>
+                                    </p>
+                                </div>
+                                <div class="col-4 d-flex justify-content-center align-items-center">
+                                    <img src="@(item?.Photography?.Uri ?? "https://cdn.scmanagement.me/public/user_placeholder.png")" crossorigin="anonymous" class="rounded-circle" style="height: 100px; object-fit:cover; aspect-ratio:1;" />
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="card col card-to-dark" style="max-height:550px; ">
+            <div class="card-body" >
+            </div>
+        </div>
+    </div>
+</div>

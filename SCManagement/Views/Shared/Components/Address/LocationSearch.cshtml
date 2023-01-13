@@ -4,10 +4,11 @@
     ViewData["Title"] = "Address";
 }
 
-
-<div class="form-group">
-    <input id="search_city" asp-for="County.Name" type="text" placeholder="" aria-label="Search" onkeyup="debounce()" list="locationList" />
-    <select id="locationList" asp-for="CountyId"></select>
+<div class="form-group mt-2">
+    <input required id="countyId" hidden asp-for="CountyId" />
+    <input id="search_city" value="@Model.County?.Name" autocomplete="off" type="text" placeholder="Type a county..." aria-label="Search" onkeyup="debounce()" list="locationList" class="w-100" style="padding:6px 12px;" />
+    <span asp-validation-for="CountyId" class="text-danger"></span>
+    <datalist id="locationList"></datalist>
 </div>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -26,12 +27,10 @@
     };
 
     let search = (value) => {
-        console.log(value);
-        if (value == null || value.length <= 2) $("#locationList").empty();
         if (value == null || value.length < 2) return;
         $.ajax({
             type: 'POST',
-            url: '@Url.Action("Search","Location")',
+            url: '/Location/Search',
             dataType: 'json',
             data: { id: value },
             success: countiesToList,
@@ -42,14 +41,22 @@
     }
 
     let countiesToList = (counties) => {
-        $("#locationList").empty();
+        if (counties != null && counties.length != 0) $("#locationList").empty();
         console.log(counties);
         let list = document.getElementById("locationList")
         for (let county of counties) {
-            $("#locationList").append('<option value="' + county.id + '">' + county.name + '</option>');
+            $("#locationList").append('<option data-value="' + county.id + '">' + county.name + '</option>');
         }
     }
 
+    $("#search_city").on('change', function () {
+        let val = $('#search_city').val()
+        let selectedVal = $("#locationList option").filter(function () {
+            return this.value == val;
+        }).attr('data-value')
+        if (!isNaN(selectedVal)) {
+            $("#countyId").val(selectedVal)
+        }
+    })
 </script>
-
 
