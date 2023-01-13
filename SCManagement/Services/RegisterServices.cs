@@ -29,7 +29,7 @@ namespace SCManagement.Services
 
             services.AddIdentity<User, IdentityRole>(options =>
             {
-                options.SignIn.RequireConfirmedAccount = true;
+                options.SignIn.RequireConfirmedAccount = false;
             })
               .AddDefaultUI()
               .AddEntityFrameworkStores<ApplicationDbContext>()
