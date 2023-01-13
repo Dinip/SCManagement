@@ -1,4 +1,5 @@
-﻿using SCManagement.Models;
+﻿using SCManagement.Data.Migrations;
+using SCManagement.Models;
 
 namespace SCManagement.Services.TeamService
 {
@@ -10,5 +11,7 @@ namespace SCManagement.Services.TeamService
         public Task<Team> CreateTeam(Team team);
         public Task<Team> UpdateTeam(Team team);
         public Task UpdateTeamAthletes(int teamId, IEnumerable<string> atheltesId);
+
+        public Task RemoveAthlete(Team team, User athlete);
     }
 }

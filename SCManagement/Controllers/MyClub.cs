@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -570,6 +571,12 @@ namespace SCManagement.Controllers
 
             //Update Team Atributes
             Team teamToUpdate = await _teamService.GetTeam((int)id);
+            if (teamToUpdate == null) return View("CustomError", "Error_NotFound");
+
+            //Check if team have modification
+            if (teamToUpdate.Name == team.Name && teamToUpdate.ModalityId == team.ModalityId) return RedirectToAction(nameof(TeamList));
+
+
             teamToUpdate.Name = team.Name;
             teamToUpdate.ModalityId = team.ModalityId;
 
@@ -600,6 +607,7 @@ namespace SCManagement.Controllers
             if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
 
             List<User> clubAthletes = (await _clubService.GetAthletes(team.ClubId)).ToList();
+            //check which athletes are available 
             IEnumerable<User> avaliableAthletes = clubAthletes.Where(x => !team.Athletes.Any(y => y.Id == x.Id)).ToList();
 
 
@@ -630,6 +638,39 @@ namespace SCManagement.Controllers
             await _teamService.UpdateTeamAthletes(id, selectedAthletes);
 
             return RedirectToAction(nameof(EditTeam),new {id=team.Id});
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveAtheleFromTeam(string? athleteId,int? teamId, string? page)
+        {
+            if (athleteId == null) return View("CustomError", "Error_NotFound");
+            if (teamId == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+
+            //check user role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            User athleteToRemove = await _userService.GetUser(athleteId);
+            //Chekc if athlete exists
+            if(athleteToRemove == null) return View("CustomError", "Error_NotFound");
+           
+            //check if athlete is on team
+            Team team = await _teamService.GetTeam((int)teamId);
+
+            //check if are using this service its good ??
+            if(!team.Athletes.Contains(athleteToRemove)) return View("CustomError", "Error_NotFound");
+
+            await _teamService.RemoveAthlete(team, athleteToRemove);
+
+            return RedirectToAction(nameof(EditTeam), new { id = team.Id });
         }
     }
 }

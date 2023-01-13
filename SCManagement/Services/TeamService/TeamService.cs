@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
+using SCManagement.Data.Migrations;
 using SCManagement.Models;
 
 namespace SCManagement.Services.TeamService
@@ -56,6 +57,17 @@ namespace SCManagement.Services.TeamService
                     team.Athletes.Add(athlete);
             }
 
+            _context.Team.Update(team);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task RemoveAthlete(Team team, User athlete)
+        {
+            if (team == null || athlete == null) return;
+
+            if (!team.Athletes.Contains(athlete)) return;
+
+            team.Athletes.Remove(athlete);
             _context.Team.Update(team);
             await _context.SaveChangesAsync();
         }
