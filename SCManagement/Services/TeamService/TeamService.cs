@@ -63,12 +63,14 @@ namespace SCManagement.Services.TeamService
 
         public async Task RemoveAthlete(Team team, User athlete)
         {
-            if (team == null || athlete == null) return;
-
-            if (!team.Athletes.Contains(athlete)) return;
-
             team.Athletes.Remove(athlete);
             _context.Team.Update(team);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteTeam(Team team)
+        {
+            _context.Team.Remove(team);
             await _context.SaveChangesAsync();
         }
     }

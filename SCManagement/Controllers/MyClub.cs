@@ -601,7 +601,7 @@ namespace SCManagement.Controllers
 
             Team? team = await _teamService.GetTeam(id);
 
-            if(team == null) return View("CustomError", "Error_NotFound");
+            if (team == null) return View("CustomError", "Error_NotFound");
 
             //if he is trainer need to be the trainer of the team
             if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
@@ -637,13 +637,13 @@ namespace SCManagement.Controllers
 
             await _teamService.UpdateTeamAthletes(id, selectedAthletes);
 
-            return RedirectToAction(nameof(EditTeam),new {id=team.Id});
+            return RedirectToAction(nameof(EditTeam), new { id = team.Id });
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> RemoveAtheleFromTeam(string? athleteId,int? teamId, string? page)
+        public async Task<IActionResult> RemoveAtheleFromTeam(string? athleteId, int? teamId, string? page)
         {
             if (athleteId == null) return View("CustomError", "Error_NotFound");
             if (teamId == null) return View("CustomError", "Error_NotFound");
@@ -660,13 +660,13 @@ namespace SCManagement.Controllers
 
             User athleteToRemove = await _userService.GetUser(athleteId);
             //Chekc if athlete exists
-            if(athleteToRemove == null) return View("CustomError", "Error_NotFound");
-           
+            if (athleteToRemove == null) return View("CustomError", "Error_NotFound");
+
             //check if athlete is on team
             Team team = await _teamService.GetTeam((int)teamId);
 
             //check if are using this service its good ??
-            if(!team.Athletes.Contains(athleteToRemove)) return View("CustomError", "Error_NotFound");
+            if (!team.Athletes.Contains(athleteToRemove)) return View("CustomError", "Error_NotFound");
 
             await _teamService.RemoveAthlete(team, athleteToRemove);
 
@@ -674,10 +674,10 @@ namespace SCManagement.Controllers
         }
 
         [Authorize]
-        public async Task<IActionResult> TeamDetails (int? id)
+        public async Task<IActionResult> TeamDetails(int? id)
         {
             Team team = await _teamService.GetTeam((int)id);
-            if(team == null) return View("CustomError", "Error_NotFound");
+            if (team == null) return View("CustomError", "Error_NotFound");
 
             //get id of the user
             string userId = getUserIdFromAuthedUser();
@@ -686,9 +686,37 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //Check if is member of the club
-            if(!_clubService.IsClubMember(role.UserId, role.ClubId)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubMember(role.UserId, role.ClubId)) return View("CustomError", "Error_Unauthorized");
 
             return View(team);
         }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTeam(int? id)
+        {
+            Team team = await _teamService.GetTeam((int)id);
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+            
+            //Check if is staff
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            //Check if is trainer
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+
+            await _teamService.DeleteTeam(team);
+
+            return RedirectToAction(nameof(TeamList));
+
+        }
+
+
     }
 }

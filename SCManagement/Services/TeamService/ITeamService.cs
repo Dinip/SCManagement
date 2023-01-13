@@ -13,5 +13,7 @@ namespace SCManagement.Services.TeamService
         public Task UpdateTeamAthletes(int teamId, IEnumerable<string> atheltesId);
 
         public Task RemoveAthlete(Team team, User athlete);
+
+        public Task DeleteTeam(Team team);
     }
 }

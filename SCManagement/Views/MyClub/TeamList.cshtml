@@ -28,27 +28,31 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreationDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modality.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Trainer.FullName)
-            </td>
-            <td>
-                <a asp-action="EditTeam" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="TeamDetails" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modality.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                </td>
+                <td>
+                    <a asp-action="EditTeam" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="TeamDetails" asp-route-id="@item.Id">Details</a> |
+                    <form asp-action="DeleteTeam">
+                        <input name="id" value="@item.Id" class="form-control" hidden />
+                        <button type="submit"> Delete </button>
+                    </form>
+                </td>
+            </tr>
+        }
         <a asp-action="CreateTeam">Create Team</a>
 
     </tbody>
