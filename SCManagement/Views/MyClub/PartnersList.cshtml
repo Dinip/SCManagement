@@ -4,38 +4,81 @@
     ViewData["Title"] = "PartnersList";
 }
 
-<h1>PartnersList</h1>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.JoinDate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.JoinDate)
-                </td>
-                <td>
-                    <form asp-action="RemoveUser">
-                        <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
-                        <input name="page" value="PartnersList" class="form-control" hidden />
-                        <input type="submit" value="Remove partner" class="btn btn-danger" />
-                    </form>
-                </td>
-            </tr>
+</head>
+
+<body class="body">
+    <div class="container-fluid ps-5 pe-5">
+        <h1 style="margin-top:130px !important;">Partners</h1>
+        <div class="card card-to-dark mt-5 shadow" style="height:650px !important;">
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.User)
+                                <i type="button" class="fa-solid fa-sort-up" id="sort-name" onclick="sortName()"></i>
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.JoinDate)
+                                <i type="button" class="fa-solid fa-sort-up" id="sort-join-date" onclick="sortJoinDate()"></i>
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.User.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.JoinDate)
+                                </td>
+                                <td>
+                                    <form asp-action="RemoveUser">
+                                        <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
+                                        <input name="page" value="PartnersList" class="form-control" hidden />
+                                        <input type="submit" value="Remove partner" class="btn btn-danger" />
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function sortName() {
+            let sortname = document.getElementById("sort-name");
+            sortSwap(sortname);
         }
-    </tbody>
-</table>
+
+        function sortJoinDate() {
+            let sortjdate = document.getElementById("sort-join-date");
+            sortSwap(sortjdate);
+        }
+
+        function sortSwap(sortelem){
+        if (sortelem.classList.contains("fa-sort-up")) {
+            sortelem.classList.remove("fa-sort-up");
+            sortelem.classList.add("fa-sort-down");
+        } else {
+            sortelem.classList.remove("fa-sort-down");
+            sortelem.classList.add("fa-sort-up");
+        }
+    }
+    </script>
+</body>
+</html>

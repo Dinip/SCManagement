@@ -33,8 +33,22 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">MyClub</a>
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">MyZone</a>
+                            <div class="dropdown nav-item">
+                                <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">Clubs</a>
+                                <ul class="dropdown-menu nav-item" style="margin-top: 20px;">
+                                    <li style="padding: 5px;">
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">MyClub</a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index"> Join a club</a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Create"> Create a club</a>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Settings">Settings</a>
                         }
                         else
                         {
@@ -42,7 +56,6 @@
                             <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">Clubs</a>
                             <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
                         }
-                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Settings">Settings</a>
                         <hr />
                         <div class="dropdown d-block d-md-none nav-item">
                             <a class="nav-link" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
@@ -59,12 +72,14 @@
                                 </li>
                                 <li class="dropdown-item" style="padding: 5px;">
                                     <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas text-to-dark"></i>
-                                    <label class="text-to-dark">Language</label>
+                                    <label class="col-auto">
+                                        @await Component.InvokeAsync("CulturePicker")
+                                    </label>
                                 </li>
                             </ul>
                         </div>
-
                         <hr />
+                        
                     </div>
                     <partial name="_LoginPartial" />
                 </div>
@@ -89,6 +104,11 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/8b1729a957.js" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script>
+        function showMenu(){
+
+        }
+    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
