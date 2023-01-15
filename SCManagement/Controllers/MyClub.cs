@@ -734,6 +734,26 @@ namespace SCManagement.Controllers
             return View(teams);
         }
 
+        [Authorize]
+        public async Task<IActionResult> AthleteDetails(string athleteId)
+        {
+            if (athleteId == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is staff
+            if (!_clubService.IsClubMember(role.UserId,role.ClubId)) return View("CustomError", "Error_Unauthorized");
+
+            User athlete = await _userService.GetUser(athleteId);
+            if (athlete == null) return View("CustomError", "Error_NotFound");
+
+            return PartialView("_PartialAthleteDetails", athlete); ;
+        }
+
 
     }
 }
