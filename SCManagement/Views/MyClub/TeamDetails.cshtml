@@ -65,7 +65,7 @@
                             @Html.DisplayFor(modelItem => item.Age)
                         </td>
                         <td>
-                            <a onclick="openCreate(@item.Id)">Details</a>
+                            <button onclick="openDetails('@item.Id')">Details</button>
                         </td>
                     </tr>
                 }
@@ -133,7 +133,8 @@
             }
         }
 
-        function openCreate(id) {
+        function openDetails(id) {
+            console.log("details", id)
             $.ajax({
                 url: `/MyClub/AthleteDetails/${id}`,
                 type: 'GET',

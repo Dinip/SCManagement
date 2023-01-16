@@ -704,7 +704,7 @@ namespace SCManagement.Controllers
 
             //get the user selected role
             var role = await _userService.GetSelectedRole(userId);
-            
+
             //Check if is staff
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
@@ -725,19 +725,19 @@ namespace SCManagement.Controllers
 
             //get the user selected role
             var role = await _userService.GetSelectedRole(userId);
-            
+
             //Check if is athlete
             if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-            
+
             var teams = await _teamService.GetTeamsByAthlete(userId, role.ClubId);
 
             return View(teams);
         }
 
         [Authorize]
-        public async Task<IActionResult> AthleteDetails(string athleteId)
+        public async Task<IActionResult> AthleteDetails(string id)
         {
-            if (athleteId == null) return View("CustomError", "Error_NotFound");
+            if (id == null) return View("CustomError", "Error_NotFound");
 
             //get id of the user
             string userId = getUserIdFromAuthedUser();
@@ -746,14 +746,15 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //Check if is staff
-            if (!_clubService.IsClubMember(role.UserId,role.ClubId)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
-            User athlete = await _userService.GetUser(athleteId);
+            //check if the athlete belongs to the club
+            if (!_clubService.IsClubMember(id, role.ClubId)) return View("CustomError", "Error_Unauthorized");
+            
+            var athlete = await _userService.GetUser(id);
             if (athlete == null) return View("CustomError", "Error_NotFound");
 
             return PartialView("_PartialAthleteDetails", athlete); ;
         }
-
-
     }
 }
