@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.Location;
+using static System.Net.WebRequestMethods;
 
 namespace SCManagement.Services.ClubService
 {
@@ -45,7 +47,7 @@ namespace SCManagement.Services.ClubService
                 Name = club.Name,
                 Modalities = GetModalities().Result.Where(m => club.ModalitiesIds.Contains(m.Id)).ToList(),
                 CreationDate = DateTime.Now,
-                AddressId = addressId,
+                AddressId = addressId
             };
 
             //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
@@ -71,9 +73,26 @@ namespace SCManagement.Services.ClubService
         /// </summary>
         /// <param name="id">club id to find</param>
         /// <returns>A wanted club</returns>
-        public async Task<Club> GetClub(int id)
+        public async Task<Club?> GetClub(int id)
         {
-            return await _context.Club.Include(c => c.Modalities).Include(c => c.Photography).Include(c => c.Address).Include(c => c.Address.County).FirstOrDefaultAsync(m => m.Id == id);
+
+            Club? club = await _context.Club
+                .Include(c => c.Modalities)
+                .Include(c => c.Photography)
+                .Include(c => c.Address)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (club != null && club.Address != null)
+            {
+                County county = await _context.County
+                    .Include(c => c.District)
+                    .ThenInclude(d => d.Country)
+                    .Select(s => new County { Id = s.Id, Name = $"{s.Name}, {s.District!.Name}, {s.District.Country!.Name}" })
+                    .FirstAsync(f => f.Id == club.Address.CountyId);
+
+                club.Address.County = county;
+            }
+            return club;
         }
 
         /// <summary>
@@ -92,7 +111,34 @@ namespace SCManagement.Services.ClubService
         /// <returns>All clubs</returns>
         public async Task<IEnumerable<Club>> GetClubs()
         {
-            return await _context.Club.Include(c => c.Modalities).ToListAsync();
+            return await _context.Club
+               .Include(c => c.Modalities)
+               .Include(c => c.Photography)
+               .Include(c => c.Address)
+               .Include(c => c.Address.County)
+               .ThenInclude(c => c.District)
+               .ThenInclude(c => c.Country)
+               .Select(s =>
+               new Club
+               {
+                   Name = s.Name,
+                   Email = s.Email,
+                   PhoneNumber = s.PhoneNumber,
+                   About = s.About,
+                   Photography = s.Photography,
+                   Modalities = s.Modalities,
+                   Address = new Address
+                   {
+                       Street = s.Address.Street,
+                       Number = s.Address.Number,
+                       ZipCode = s.Address.ZipCode,
+                       County = new County
+                       {
+                           Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
+                       }
+                   }
+               })
+               .ToListAsync();
         }
 
         public async Task<Club> UpdateClub(Club club)
@@ -571,12 +617,14 @@ namespace SCManagement.Services.ClubService
 
         public async Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number)
         {
+
             Address address = new Address
             {
                 CountyId = countyId,
                 Street = street,
                 ZipCode = zipCode,
-                Number = number
+                Number = number,
+                
             };
 
             _context.Address.Add(address);
