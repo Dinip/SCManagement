@@ -119,7 +119,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             var userWithEMD = await _context.Users.Include(u => u.EMD).FirstOrDefaultAsync(u => u.Id == user.Id);
 
             ViewData["IsAtleteInAnyClub"] = await _userService.IsAtleteInAnyClub(user.Id);
-            
+
             Username = userName;
             ProfilePictureUrl = userWithPFP.ProfilePicture == null ? "https://cdn.scmanagement.me/public/user_placeholder.png" : userWithPFP.ProfilePicture.Uri;
             EMDUrl = userWithEMD.EMD == null ? _stringLocalizer["Pending_Add"] : userWithEMD.EMD.Uri;
