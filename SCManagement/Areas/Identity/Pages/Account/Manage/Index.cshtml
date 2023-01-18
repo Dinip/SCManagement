@@ -83,10 +83,8 @@
                 </div>
                 <hr style="margin-bottom:20px;" />
 
-                @*@if ((bool)ViewData["IsAtleteInAnyClub"] != false)
+                @if ((bool)ViewData["IsAtleteInAnyClub"] != false)
                 {
-                *@
-                
                     <div class="row">
                     <strong class="col text-to-dark">EMD</strong>
                     <div class="col text-end">
@@ -98,9 +96,9 @@
                         <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
                     </div>
                     </div>
-                    
-                @*}*@
-                <hr style="margin-bottom:20px;" />
+                    <hr style="margin-bottom:20px;" />
+                }
+               
                 
 
                 <button id="update-profile-button" style="border-radius: 10px;
