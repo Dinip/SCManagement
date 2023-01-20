@@ -24,19 +24,19 @@ namespace SCManagement.Services.UserService
             await _signInManager.RefreshSignInAsync(user);
         }
 
-        public async Task<User> GetUser(string userId)
+        public async Task<User?> GetUser(string userId)
         {
             return await _context.Users.FindAsync(userId);
         }
 
-        public async Task<User> GetUserWithRoles(string userId)
+        public async Task<User?> GetUserWithRoles(string userId)
         {
             return await _context.Users
                 .Include(u => u.UsersRoleClub)
                 .ThenInclude(r => r.Club)
                 .Include(u => u.UsersRoleClub)
                 .ThenInclude(r => r.Role)
-                .FirstAsync(u => u.Id == userId);
+                .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
         public async Task UpdateSelectedRole(string userId, int usersRoleClubId)

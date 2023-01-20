@@ -18,29 +18,22 @@ namespace SCManagement.Controllers
     /// 
     public class ClubsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly IAzureStorage _azureStorage;
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
 
         /// <summary>
         /// This is the constructor of the Clubs Controller
         /// </summary>
-        /// <param name="context"></param>
         /// <param name="userManager"></param>
-        /// <param name="azureStorage"></param>
         /// <param name="clubService"></param>
+        /// <param name="userService"></param>
         public ClubsController(
-            ApplicationDbContext context,
             UserManager<User> userManager,
-            IAzureStorage azureStorage,
             IClubService clubService,
             IUserService userService)
         {
-            _context = context;
             _userManager = userManager;
-            _azureStorage = azureStorage;
             _clubService = clubService;
             _userService = userService;
         }
@@ -202,15 +195,14 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
-        public IActionResult Join([Bind("Code")] CodeClub cc)
+        public async Task<IActionResult> Join([Bind("Code")] CodeClub cc)
         {
             string userId = getUserIdFromAuthedUser();
 
-            KeyValuePair<bool, string> joined = _clubService.UseCode(userId, cc);
+            KeyValuePair<bool, string> joined = await _clubService.UseCode(userId, cc);
 
             ViewBag.Message = joined.Value;
             if (joined.Key == false) return View("Join", new CodeClub { Code = cc.Code });
-
             return RedirectToAction("Index", "MyClub");
         }
     }

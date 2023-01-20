@@ -18,7 +18,7 @@ namespace SCManagement.Services.ClubService
         public Task<IEnumerable<CodeClub>> GetCodes(int clubId);
         public Task<CodeClub> GetCodeWithInfos(int id);
         public bool UserAlreadyInAClub(string userId, int? clubId = null);
-        public KeyValuePair<bool, string> UseCode(string userId, CodeClub code);
+        public Task<KeyValuePair<bool, string>> UseCode(string userId, CodeClub code);
         public bool IsClubAdmin(UsersRoleClub userRoleClub);
         public bool IsClubSecretary(UsersRoleClub userRoleClub);
         public bool IsClubManager(UsersRoleClub userRoleClub);
@@ -44,5 +44,10 @@ namespace SCManagement.Services.ClubService
         public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number);
         public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId);
         public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId);
+        public Task<IEnumerable<Modality>> GetClubModalities(int clubId);
+
+        public Task<IEnumerable<User>> GetAthletes(int clubId);
+
+
     }
 }

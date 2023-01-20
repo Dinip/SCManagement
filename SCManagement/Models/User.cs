@@ -23,6 +23,7 @@ namespace SCManagement.Models
         [PersonalData]
         [Display(Name = "Date Of Birth")]
         [DateOfBirth(MinAge = 6, MaxAge = 100, ErrorMessage = "Error_DateOfBirth")]
+        [DataType(DataType.Date)]
         public DateTime? DateOfBirth { get; set; }
 
         public int? ProfilePictureId { get; set; }
@@ -64,5 +65,7 @@ namespace SCManagement.Models
                 return null;
             }
         }
+
+        private ICollection<Team> Teams { get; set; }
     }
 }

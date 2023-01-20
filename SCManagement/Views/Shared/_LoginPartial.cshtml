@@ -7,17 +7,14 @@
     @{
         var isSignedIn = SignInManager.IsSignedIn(User);
         var user = isSignedIn ? UserManager.GetUserAsync(User).Result : null;
-        if (user != null) user.ProfilePicture = user.ProfilePicture ?? new SCManagement.Services.AzureStorageService.Models.BlobDto
-            {
-                Uri = "https://cdn.scmanagement.me/public/user_placeholder.png"
-            };
+        var pfpUri = user?.ProfilePicture?.Uri ?? "https://cdn.scmanagement.me/public/user_placeholder.png";
     }
     @if (isSignedIn)
     {
         <li>
             <div class="dropdown d-none d-md-block">
                 <button class="btn fa-2xl shadow-none text-to-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="@user?.ProfilePicture?.Uri" class="rounded-circle" style="width: 45px; height: 45px; object-fit:cover;" />
+                    <img src="@pfpUri" class="rounded-circle" style="width: 45px; height: 45px;" />
                 </button>
                 <ul class="dropdown-menu" style="margin-top: 10px; left: -150px; width: 230px;" id="Dropdown1">
                     <li class="dropdown-item" style="padding: 5px;">

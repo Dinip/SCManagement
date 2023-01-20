@@ -5,6 +5,8 @@ using SCManagement.Models;
 using System.Text;
 using SCManagement.Services.AzureStorageService.Models;
 using Unidecode.NET;
+using System.Reflection.Emit;
+using Microsoft.Extensions.Hosting;
 
 namespace SCManagement.Data
 {
@@ -25,6 +27,7 @@ namespace SCManagement.Data
         public DbSet<RoleClub> RoleClub { get; set; }
         public DbSet<UsersRoleClub> UsersRoleClub { get; set; }
         public DbSet<CodeClub> CodeClub { get; set; }
+        public DbSet<Team> Team { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -94,6 +97,7 @@ namespace SCManagement.Data
                 );
 
             builder.Entity<User>().Navigation(e => e.ProfilePicture).AutoInclude();
+            builder.Entity<Team>().HasMany(x => x.Athletes).WithMany("Teams");
         }
     }
 }

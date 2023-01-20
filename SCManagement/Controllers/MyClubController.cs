@@ -1,18 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using QRCoder;
-using SCManagement.Data;
 using SCManagement.Models;
-using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers
@@ -24,31 +25,28 @@ namespace SCManagement.Controllers
     /// 
     public class MyClubController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserManager<User> _userManager;
-        private readonly IAzureStorage _azureStorage;
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
+        private readonly ITeamService _teamService;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
         /// </summary>
-        /// <param name="context"></param>
         /// <param name="userManager"></param>
-        /// <param name="azureStorage"></param>
         /// <param name="clubService"></param>
+        /// <param name="userService"></param>
+        /// <param name="teamService"></param>
         public MyClubController(
-            ApplicationDbContext context,
             UserManager<User> userManager,
-            IAzureStorage azureStorage,
             IClubService clubService,
-            IUserService userService)
+            IUserService userService,
+            ITeamService teamService)
         {
-            _context = context;
             _userManager = userManager;
-            _azureStorage = azureStorage;
             _clubService = clubService;
             _userService = userService;
+            _teamService = teamService;
         }
 
         /// <summary>
@@ -450,6 +448,313 @@ namespace SCManagement.Controllers
             await _clubService.SendCodeEmail(codeId, email, role.ClubId);
 
             return RedirectToAction("Codes", new { id = role.ClubId });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> TeamList()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.IsManager = _clubService.IsClubManager(role);
+
+            return View(await _teamService.GetTeams(role.ClubId));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> CreateTeam()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check role Trainer
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.Modalities = new SelectList(_clubService.GetClub(role.ClubId).Result.Modalities, "Id", "Name");
+
+            return View();
+        }
+
+        /// <summary>
+        /// This method returns the Create View
+        /// </summary>
+        /// <param name="team">Clube to be created</param>
+        /// <returns>Index View</returns>
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateTeam([Bind("Id,Name,ModalityId")] TeamModel team)
+        {
+            if (!ModelState.IsValid) return View(team);
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check role Trainer
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            await _teamService.CreateTeam(new Team { Name = team.Name, ModalityId = team.ModalityId, TrainerId = userId, ClubId = role.ClubId });
+
+            return RedirectToAction(nameof(TeamList));
+
+        }
+
+        public class TeamModel
+        {
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
+            [Display(Name = "Team Name")]
+            public string Name { get; set; }
+
+            [Required(ErrorMessage = "Error_Required")]
+            [Display(Name = "Modality")]
+            public int ModalityId { get; set; }
+        }
+
+        [Authorize]
+        public async Task<IActionResult> EditTeam(int? id)
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            //get the club
+            var club = await _clubService.GetClub(role.ClubId);
+
+            //viewbag that have the modalities of the club
+            ViewBag.Modalities = new SelectList(await _clubService.GetClubModalities(club.Id), "Id", "Name");
+
+            if (club == null) return View("CustomError", "Error_NotFound");
+
+            //get the team
+            var team = await _teamService.GetTeam((int)id);
+
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            return View(team);
+        }
+
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,ModalityId")] TeamModel team)
+        {
+            //check model state
+            if (!ModelState.IsValid) return View(team);
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check roles
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            //Update Team Atributes
+            Team teamToUpdate = await _teamService.GetTeam((int)id);
+            if (teamToUpdate == null) return View("CustomError", "Error_NotFound");
+
+            //Check if team have modification
+            if (teamToUpdate.Name == team.Name && teamToUpdate.ModalityId == team.ModalityId) return RedirectToAction(nameof(TeamList));
+
+
+            teamToUpdate.Name = team.Name;
+            teamToUpdate.ModalityId = team.ModalityId;
+
+            //Update Team On DataBase
+            await _teamService.UpdateTeam(teamToUpdate);
+
+            return RedirectToAction(nameof(TeamList));
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> AddTeamAthletes(int id)
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check user role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            Team? team = await _teamService.GetTeam(id);
+
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            //if he is trainer need to be the trainer of the team
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+
+            List<User> clubAthletes = (await _clubService.GetAthletes(team.ClubId)).ToList();
+            //check which athletes are available 
+            IEnumerable<User> avaliableAthletes = clubAthletes.Where(x => !team.Athletes.Any(y => y.Id == x.Id)).ToList();
+
+
+            return PartialView("_PartialAddTeamAthletes", avaliableAthletes);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTeamAthletes(int id, List<string> selectedAthletes)
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check user role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            Team? team = await _teamService.GetTeam(id);
+
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            //if he is trainer need to be the trainer of the team
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+
+            await _teamService.UpdateTeamAthletes(id, selectedAthletes);
+
+            return RedirectToAction(nameof(EditTeam), new { id = team.Id });
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveAtheleFromTeam(string? athleteId, int? teamId, string? page)
+        {
+            if (athleteId == null) return View("CustomError", "Error_NotFound");
+            if (teamId == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+
+            //check user role
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            User athleteToRemove = await _userService.GetUser(athleteId);
+            //Chekc if athlete exists
+            if (athleteToRemove == null) return View("CustomError", "Error_NotFound");
+
+            //check if athlete is on team
+            Team team = await _teamService.GetTeam((int)teamId);
+
+            //check if are using this service its good ??
+            if (!team.Athletes.Contains(athleteToRemove)) return View("CustomError", "Error_NotFound");
+
+            await _teamService.RemoveAthlete(team, athleteToRemove);
+
+            return RedirectToAction(nameof(EditTeam), new { id = team.Id });
+        }
+
+        [Authorize]
+        public async Task<IActionResult> TeamDetails(int? id)
+        {
+            Team team = await _teamService.GetTeam((int)id);
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is member of the club
+            if (!_clubService.IsClubMember(role.UserId, role.ClubId)) return View("CustomError", "Error_Unauthorized");
+
+            return View(team);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteTeam(int? id)
+        {
+            Team team = await _teamService.GetTeam((int)id);
+            if (team == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is staff
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            //Check if is trainer
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+
+            await _teamService.DeleteTeam(team);
+
+            return RedirectToAction(nameof(TeamList));
+
+        }
+
+        [Authorize]
+        public async Task<IActionResult> MyTeams()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is athlete
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var teams = await _teamService.GetTeamsByAthlete(userId, role.ClubId);
+
+            return View(teams);
+        }
+
+        [Authorize]
+        public async Task<IActionResult> AthleteDetails(string id)
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is staff
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            //check if the athlete belongs to the club
+            if (!_clubService.IsClubMember(id, role.ClubId)) return View("CustomError", "Error_Unauthorized");
+            
+            var athlete = await _userService.GetUser(id);
+            if (athlete == null) return View("CustomError", "Error_NotFound");
+
+            return PartialView("_PartialAthleteDetails", athlete); ;
         }
     }
 }

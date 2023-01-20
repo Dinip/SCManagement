@@ -1,0 +1,156 @@
+﻿@model SCManagement.Models.Team
+
+@{
+    ViewData["Title"] = "EditTeam";
+}
+
+<h1>EditTeam</h1>
+<h4>Team</h4>
+
+<hr />
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content">
+           
+        </div>
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditTeam">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>      
+            <div class="form-group">
+                <label asp-for="ModalityId" class="control-label"></label>
+                <select asp-for="ModalityId" class="form-control" asp-items="ViewBag.Modalities"></select>
+                <span asp-validation-for="ModalityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Trainer" class="control-label"></label>
+                <a disabled class="form-control">@Model.Trainer.FullName</a>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Name
+                </th>
+                <th>
+                    Age
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Athletes != null)
+        {
+            @foreach (var item in Model.Athletes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Age)
+                    </td>
+                    <td>
+                        <form asp-action="RemoveAtheleFromTeam">
+                                <input name="athleteId" value="@item.Id" class="form-control" hidden />
+                                <input name="teamId" value="@Model.Id" class="form-control" hidden />
+                                <input name="page" value="EditTeam" class="form-control" hidden />
+                                <input type="submit" value="Remove" class="btn btn-danger" />
+                            </form>
+                    </td>
+                </tr>
+            }
+        }
+        <a onclick="openCreate()">Add Athlete </a>
+    </tbody>
+        </table>
+        
+<div>
+    <a asp-action="TeamList">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+            .close:hover,
+            .close:focus {
+                color: black;
+                text-decoration: none;
+                cursor: pointer;
+            }
+    </style>
+
+
+    <script type="text/javascript">
+        let modal = document.getElementById("modal")
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                $("#modal").hide();
+            }
+        }
+
+        function openCreate() {
+            $.ajax({
+                url: '/MyClub/AddTeamAthletes/@Model.Id',
+                type: 'GET',
+                async: false,
+                success: function (result) {
+                    $("#modal-inner-content").html(result);
+                    $("#modal").show();
+                }
+            });
+        }
+    </script>

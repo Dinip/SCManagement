@@ -1,0 +1,59 @@
+﻿@model IEnumerable<SCManagement.Models.Team>
+
+@{
+    ViewData["Title"] = "TeamList";
+}
+
+<h1>TeamList</h1>
+
+<p>
+    <a asp-action="CreateTeam">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Modality)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Trainer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modality.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                </td>
+                <td>
+                    <a asp-action="EditTeam" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="TeamDetails" asp-route-id="@item.Id">Details</a> |
+                    <form asp-action="DeleteTeam">
+                        <input name="id" value="@item.Id" class="form-control" hidden />
+                        <button type="submit"> Delete </button>
+                    </form>
+                </td>
+            </tr>
+        }
+        <a asp-action="CreateTeam">Create Team</a>
+
+    </tbody>
+</table>

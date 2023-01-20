@@ -31,6 +31,7 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
 using (var ser = app.Services.CreateScope())
 {
     var services = ser.ServiceProvider;

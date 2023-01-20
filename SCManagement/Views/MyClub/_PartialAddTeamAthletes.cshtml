@@ -1,0 +1,29 @@
+﻿@model IEnumerable<SCManagement.Models.User>
+
+<h1>Atletas</h1>
+    
+<form method="post" asp-action="AddTeamAthletes">
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.FullName)</th>
+            <th>@Html.DisplayNameFor(model => model.Age)</th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                <td><input type="checkbox" name="selectedAthletes" value="@item.Id"></td>
+
+            </tr>
+        }
+    </table>
+    <button>Insert</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
