@@ -12,24 +12,22 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
-
+    <link rel="stylesheet" type="text/css" href="/lib/DataTables/datatables.css" />
 </head>
 
 <body class="body">
     <div class="container-fluid ps-5 pe-5">
         <h1 style="margin-top:130px !important;">Athletes</h1>
-        <div class="card card-to-dark mt-5 shadow" style="height:650px !important;">
+        <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
             <div class="card-body">
-                <table class="table">
+                <table id="table_id" class="display">
                     <thead>
                         <tr>
                             <th>
                                 @Html.DisplayNameFor(model => model.User)
-                                <i type="button" class="fa-solid fa-sort-up" id="sort-name" onclick="sortName()"></i>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.User.DateOfBirth)
-                                <i class="fa-solid fa-sort-up sort-age" id="sort-age" onclick="sortAge()"></i>
                             </th>
                             <th></th>
                         </tr>
@@ -44,7 +42,7 @@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.User.DateOfBirth)
                                 </td>
-                                <td>
+                                <td class="justify-content-end d-flex">
                                     <form asp-action="RemoveUser" class="@(ViewBag.UserIsManager ? "": "d-none")">
                                         <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
                                         <input name="page" value="AthletesList" class="form-control" hidden />
@@ -52,33 +50,24 @@
                                     </form>
                                 </td>
                             </tr>
-                        }s
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
     <script>
-        function sortName(){
-            let sortname = document.getElementById("sort-name");
-            sortSwap(sortname);
-        }
-
-        function sortAge(){
-            let sortage = document.getElementById("sort-age");
-            sortSwap(sortage);
-        }
-
-        function sortSwap(sortelem){
-            if (sortelem.classList.contains("fa-sort-up")) {
-                sortelem.classList.remove("fa-sort-up");
-                sortelem.classList.add("fa-sort-down");
-            } else {
-                sortelem.classList.remove("fa-sort-down");
-                sortelem.classList.add("fa-sort-up");
-            }
-        }
+        $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
     </script>
 </body>
 </html>

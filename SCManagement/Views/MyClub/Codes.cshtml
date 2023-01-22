@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
-
+    <link rel="stylesheet" type="text/css" href="/lib/DataTables/datatables.css" />
 </head>
 
 <body class="body">
@@ -22,11 +22,11 @@
         <p>
             <button onclick="openCreate()">Create New</button>
         </p>
-        <div class="card card-to-dark mt-5 shadow" style="height:650px !important;">
+        <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
             <div class="card-body">
 
                 <div id="modal" class="modal">
-                    <div class="modal-content">
+                    <div class="modal-content" style="margin-top:7%; margin-bottom:0;">
                         <span onclick="$('#modal').hide()" class="close">&times;</span>
                         <div id="modal-inner-content">
                             @if (ViewBag.Code != null)
@@ -42,7 +42,7 @@
 
                 </div>
 
-                <table class="table">
+                <table id="table_id" class="display">
                     <thead>
                         <tr>
                             <th>
@@ -50,30 +50,24 @@
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.CreationDate)
-                                <i type="button" class="fa-solid fa-sort-up" id="sortcreationdate" onclick="sortcreationdate()"></i>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.ExpireDate)
-                                <i type="button" class="fa-solid fa-sort-up" id="sortexpiredate" onclick="sortexpiredate()"></i>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.UsedDate)
-                                <i type="button" class="fa-solid fa-sort-up" id="sortuseddate" onclick="sortuseddate()"></i>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Approved)
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Role)
-                                <i type="button" class="fa-solid fa-sort-up" id="sortrole" onclick="sortrole()"></i>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.CreatedByUser)
-                                <i type="button" class="fa-solid fa-sort-up" id="sortcreateduser" onclick="sortcreateduser()"></i>
                             </th>
                             <th>
                                 @Html.DisplayNameFor(model => model.UsedByUser)
-                                <i type="button" class="fa-solid fa-sort-up" id="sortusedbyuser" onclick="sortusedbyuser()"></i>
                             </th>
                             <th></th>
                         </tr>
@@ -161,14 +155,25 @@
         }
 </style>
 
-
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
-    let modal = document.getElementById("modal")
+    let modal = document.getElementById("modal");
+    
     window.onclick = function (event) {
         if (event.target == modal) {
             $("#modal").hide();
         }
     }
+
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
 
     function openCreate() {
         $.ajax({
@@ -180,40 +185,5 @@
                 $("#modal").show();
             }
         });
-    }
-
-    function sortcreationdate() {
-        let sortname = document.getElementById("sortcreationdate");
-        sortSwap(sortname);
-    }
-    function sortexpiredate() {
-        let sortname = document.getElementById("sortexpiredate");
-        sortSwap(sortname);
-    }
-    function sortuseddate() {
-        let sortname = document.getElementById("sortuseddate");
-        sortSwap(sortname);
-    }
-    function sortrole() {
-        let sortname = document.getElementById("sortrole");
-        sortSwap(sortname);
-    }
-    function sortcreateduser() {
-        let sortname = document.getElementById("sortcreateduser");
-        sortSwap(sortname);
-    }
-    function sortusedbyuser() {
-        let sortname = document.getElementById("sortusedbyuser");
-        sortSwap(sortname);
-    }
-
-    function sortSwap(sortelem){
-        if (sortelem.classList.contains("fa-sort-up")) {
-            sortelem.classList.remove("fa-sort-up");
-            sortelem.classList.add("fa-sort-down");
-        } else {
-            sortelem.classList.remove("fa-sort-down");
-            sortelem.classList.add("fa-sort-up");
-        }
     }
 </script>

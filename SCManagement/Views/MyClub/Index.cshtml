@@ -14,7 +14,7 @@
 
 </head>
 
-<body class="body">
+<body class="body d-flex align-content-center">
     <div class="container-fluid d-flex justify-content-center w-100">
         @if (Model == null)
         {
@@ -31,36 +31,40 @@
                 <br />
                 <h2>You dont have your account associated to a club</h2>
                 <br />
-                <a type="button" class="btn text-white" style="border-radius: 10px;
-                                                margin-left: 20px;
-                                                padding: 5px 25px 5px 25px;
-                                                background-color: #00639A;
-                                                border-color: #00639A;" asp-controller="Clubs" asp-area="" asp-action="Index">
+                <a type="button" class="btn btn1 text-white" asp-controller="Clubs" asp-area="" asp-action="Index">
                     Join a club
                 </a>
                 <br />
-                <a type="button" class="btn mt-3 text-white" style="border-radius: 10px;
-                                                    margin-left: 20px;
-                                                    padding: 5px 25px 5px 25px;
-                                                    background-color: #00639A;
-                                                    border-color: #00639A;" asp-controller="Clubs" asp-area="" asp-action="Create">
+                <a type="button" class="btn btn1 mt-3 text-white" asp-controller="Clubs" asp-area="" asp-action="Create">
                     Create a club
                 </a>
             </div>
         }
         else
         {
-            <div class="text-center" style="margin-top:130px;">
-                <h1 class="display-4">Welcome to your club @Model.Name</h1>
-                <a class="btn btn-primary btn-lg" asp-controller="MyClub" asp-action="Edit">Edit</a>
-                <a class="btn btn-primary btn-lg" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">Public Page</a>
-                <a class="btn btn-primary btn-lg" asp-controller="MyClub" asp-action="PartnersList">Associates</a>
-                <a class="btn btn-primary btn-lg" asp-controller="MyClub" asp-action="StaffList">Staff</a>
-                <a class="btn btn-primary btn-lg" asp-controller="MyClub" asp-action="AthletesList">Athletes</a>
-                <a class="btn btn-primary btn-lg" asp-controller="MyClub" asp-action="Codes">Codes</a>
+            <div class="text-center" style="margin-top:15%;">
+                <h1 class="display-4 mb-5">Welcome to your club @Model.Name</h1>
+                <div class="d-flex justify-content-between">
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Edit">Edit</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">Public Page</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="PartnersList">Associates</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="StaffList">Staff</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="AthletesList">Athletes</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Codes">Codes</a>
+                </div>
+                
             </div>
         }
     </div>
     <script src="~/js/site.js" asp-append-version="true"></script>
+    <style>
+        .btn1{
+            border-radius: 10px;
+            margin-left: 20px;
+            padding: 5px 25px 5px 25px;
+            background-color: #00639A;
+            border-color: #00639A;
+        }
+    </style>
 </body>
 </html>

@@ -40,7 +40,10 @@
                                         <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">MyClub</a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index"> Join a club</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">Search club</a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Join"> Join with code</a>
                                     </li>
                                     <li style="padding: 5px;">
                                         <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Create"> Create a club</a>
@@ -95,7 +98,7 @@
 
 
 
-    <footer class="align-content-end">
+    <footer class="align-content-end" id="footer">
         <partial name="footer"></partial>
     </footer>
 
