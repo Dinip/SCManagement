@@ -8,12 +8,10 @@
     
 }
 
-<div id="modal " class="modal">
-    <div class="modal-content">
-        <span onclick="$('#modal').hide()" class="close">&times;</span>
-        <div id="modal-inner-content">
-            <iframe id="frame" src="@Model.EMDUrl" title="EMD" frameborder="0" style="overflow:hidden;height:100%;width:100%" ></iframe>
-        </div>
+<div id="modal" class="modal">
+    <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
+        <span onclick="$('#modal').hide()" class="close">&times;</span> 
+        <iframe id="frame" src="@Model.EMDUrl" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%" ></iframe>
     </div>
 </div>
 
@@ -95,7 +93,7 @@
                             }else{
                                 <span style="margin-right:20px;">No file saved!</span>
                             }
-                            <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "d-none")"
+                            <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
                            style="color:red; cursor:pointer; margin-right:20px;" onclick="removeEMD()"></i>
                             <i class="fa-solid fa-xl fa-pen-to-square" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
                         </div>
@@ -146,8 +144,7 @@
             document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
             document.getElementById("removeImage").value = true
             document.getElementById("selectedFile").value = ""
-            document.getElementById("btnRemoveImage").classList.add("d-none")
-            document.getElementById("emd").classList.add("d-none")
+            document.getElementById("btnRemoveImage").classList.add("invisible")
         }
         function removeEMD() {
             document.getElementById("emd").text = removePend
