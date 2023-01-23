@@ -8,7 +8,7 @@
     
 }
 
-<div id="modal" class="modal">
+<div id="modal " class="modal">
     <div class="modal-content">
         <span onclick="$('#modal').hide()" class="close">&times;</span>
         <div id="modal-inner-content">
@@ -85,16 +85,20 @@
 
                 @if ((bool)ViewData["IsAtleteInAnyClub"] != false)
                 {
-                    <div class="row">
-                    <strong class="col text-to-dark">EMD</strong>
-                    <div class="col text-end">
-                        <a id="emd" class="text-to-dark" style="margin-right:20px; text-decoration:@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "none" : "" );"
-                           onclick="toggleModal()"> @Model.EMDUrl</a>
-
-                        <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash row @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" 
-                        style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removeEMD()"></i>
-                        <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
-                    </div>
+                    <div class="row h-auto">
+                        <div class="col-2">
+                            <strong class="text-to-dark">EMD</strong>
+                        </div>
+                        <div class="col-10 text-end">
+                            @if (!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}")){
+                                <i id="emd" class="fa-solid fa-file fa-xl" style="margin-right:20px;" onclick="toggleModal()"></i>
+                            }else{
+                                <span style="margin-right:20px;">No file saved!</span>
+                            }
+                            <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "d-none")"
+                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeEMD()"></i>
+                            <i class="fa-solid fa-xl fa-pen-to-square" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
+                        </div>
                     </div>
                     <hr style="margin-bottom:20px;" />
                 }
@@ -142,7 +146,8 @@
             document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
             document.getElementById("removeImage").value = true
             document.getElementById("selectedFile").value = ""
-            document.getElementById("btnRemoveImage").classList.add("invisible")
+            document.getElementById("btnRemoveImage").classList.add("d-none")
+            document.getElementById("emd").classList.add("d-none")
         }
         function removeEMD() {
             document.getElementById("emd").text = removePend
