@@ -4,123 +4,80 @@
     ViewData["Title"] = "AthletesList";
 }
 
-<h1>AthletesList</h1>
-
-@*Popout Modal*@
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span onclick="$('#modal').hide()" class="close">&times;</span>
-        <div id="modal-inner-content">
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;">Athletes</h1>
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <div id="modal" class="modal">
+                <div class="modal-content">
+                    <span onclick="$('#modal').hide()" class="close">&times;</span>
+                    <div id="modal-inner-content">
+                    </div>
+                </div>
+            </div>
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.User.DateOfBirth)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="openDetails('@item.UserId')" style="cursor:pointer">  
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.User.DateOfBirth)
+                            </td>
+                            <td class="justify-content-end d-flex">
+                                <form asp-action="RemoveUser" class="@(ViewBag.UserIsManager ? "": "invisible")">
+                                    <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
+                                    <input name="page" value="AthletesList" class="form-control" hidden />
+                                    <input type="submit" value="Remove athlete" class="btn btn-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
-
 </div>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.User.Age)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr onclick="openDetails('@item.UserId')" style="cursor:pointer">
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.FullName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.User.Age)
-                </td>
-                <td>
-                    <form asp-action="RemoveUser" class="@(ViewBag.UserIsManager ? "": "d-none")">
-                        <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
-                        <input name="page" value="AthletesList" class="form-control" hidden />
-                        <input type="submit" value="Remove athlete" class="btn btn-danger" />
-                    </form>
-                </td>
-            </tr>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+    let modal = document.getElementById("modal")
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $("#modal").hide();
         }
-    </tbody>
-</table>
-
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
+    function openDetails(id) {
+        $.ajax({
+            url: `/MyClub/UserDetails/${id}`,
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
     }
-
-    <style>
-        /* The Modal (background) */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgb(0,0,0); /* Fallback color */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-        }
-
-        /* Modal Content/Box */
-        .modal-content {
-            background-color: #fefefe;
-            margin: 15% auto; /* 15% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 80%; /* Could be more or less, depending on screen size */
-        }
-
-        /* The Close Button */
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-            .close:hover,
-            .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-            }
-    </style>
-
-
-    <script type="text/javascript">
-        let modal = document.getElementById("modal")
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                $("#modal").hide();
-            }
-        }
-
-        function openDetails(id) {
-            console.log("details", id)
-            $.ajax({
-                url: `/MyClub/AthleteDetails/${id}`,
-                type: 'GET',
-                async: false,
-                success: function (result) {
-                    $("#modal-inner-content").html(result);
-                    $("#modal").show();
-                }
-            });
-        }
-    </script>
-
-
+</script>
