@@ -1,0 +1,11 @@
+﻿@model string
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = @StringLocalizer[$"{Model}_Title"];
+}
+
+<div style="display: flex; flex-direction:column; align-items: center; justify-content: center; height: 250px">
+    <h1 class="text-danger">@ViewData["Title"]</h1>
+    <p class="text-danger">@StringLocalizer[Model]</p>
+</div>

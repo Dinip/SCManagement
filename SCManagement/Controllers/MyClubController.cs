@@ -73,6 +73,8 @@ namespace SCManagement.Controllers
 
             if (role.ClubId == 0) return View();
 
+            ViewBag.RoleId = role.RoleId;
+
             return View(await _clubService.GetClub(role.ClubId));
         }
 
@@ -737,7 +739,7 @@ namespace SCManagement.Controllers
         [Authorize]
         public async Task<IActionResult> UserDetails(string id)
         {
-            if (id == null) return View("CustomError", "Error_NotFound");
+            if (id == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
 
             //get id of the user
             string userId = getUserIdFromAuthedUser();
@@ -746,16 +748,16 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //Check if is staff
-            if (!_clubService.IsClubMember(userId, role.ClubId)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubMember(userId, role.ClubId)) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
             //check if the athlete belongs to the club
-            if (!_clubService.IsClubMember(id, role.ClubId)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubMember(id, role.ClubId)) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
             
             var user = await _userService.GetUser(id);
-            if (user == null) return View("CustomError", "Error_NotFound");
+            if (user == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
 
             var userRoleId = _clubService.GetUserRoleInClub(user.Id, role.ClubId);
-            if (userRoleId > role.RoleId) return View("CustomError", "Error_Unauthorized");
+            if (userRoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
             return PartialView("_PartialUserDetails", user); ;
         }

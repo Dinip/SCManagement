@@ -347,34 +347,34 @@ namespace SCManagement.Services.ClubService
         {
             if (code == null)
             {
-                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code not found"));
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_NotFound"));
             }
 
             CodeClub cc = _context.CodeClub.Where(c => c.Code == code.Code).FirstOrDefault()!;
 
             if (cc == null)
             {
-                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code not found"));
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_NotFound"));
             }
 
             if (!cc.Approved)
             {
-                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code not approved"));
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_NotApproved"));
             }
 
             if (cc.UsedByUserId != null)
             {
-                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code already used"));
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_AlreadyUsed"));
             }
 
             if (cc.ExpireDate < DateTime.Now)
             {
-                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code expired"));
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_Expired"));
             }
 
             if (UserAlreadyInAClub(userId, cc.ClubId))
             {
-                return await Task.FromResult(new KeyValuePair<bool, string>(false, "You are already part of the club with another role"));
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_AlreadyPart"));
             }
 
             _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = cc.ClubId, RoleId = cc.RoleId });

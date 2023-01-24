@@ -34,11 +34,14 @@
                         <div class="form-group w-auto">
                             <h3><strong>Join with a code</strong></h3>
                             <div class="d-flex justify-content-center">
-                            <input asp-for="Code" class="form-control mt-3 w-auto" style="text-align:center; justify-self:center" />
+                                <input asp-for="Code" class="form-control mt-3 w-auto" style="text-align:center; justify-self:center" />
                             </div>
                             <span asp-validation-for="Code" class="text-danger "></span>
                         </div>
-                        <p style="color: red;">@ViewBag.Message</p>
+                        @if (ViewBag.Message != null)
+                        {
+                            <p style="color: red;">@StringLocalizer[ViewBag.Message]</p>
+                        }
                         <div class="form-group mt-3">
                             <input type="submit" value="Join" class="btn btn-primary" />
                         </div>
@@ -50,7 +53,7 @@
 </section>
 @section Scripts {
     @{
-    <script src="/js/site.js" asp-append-version="true"></script>
+        <script src="/js/site.js" asp-append-version="true"></script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
+    }
