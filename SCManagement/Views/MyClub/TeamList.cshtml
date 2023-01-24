@@ -45,12 +45,12 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Trainer.FullName)
                             </td>
-                            <td>
-                                <a asp-action="EditTeam" asp-route-id="@item.Id">Edit</a> |
-                                <a asp-action="TeamDetails" asp-route-id="@item.Id">Details</a> |
+                            <td class="d-flex justify-content-end align-items-center">
+                                <a asp-action="EditTeam" asp-route-id="@item.Id" class="me-2">Edit</a>
+                                <a asp-action="TeamDetails" asp-route-id="@item.Id" class="me-2">Details</a>
                                 <form asp-action="DeleteTeam">
                                     <input name="id" value="@item.Id" class="form-control" hidden />
-                                    <button type="submit"> Delete </button>
+                                    <button type="submit" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary"> Delete </button>
                                 </form>
                             </td>
                         </tr>

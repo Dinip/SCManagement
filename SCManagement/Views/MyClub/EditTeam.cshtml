@@ -4,11 +4,6 @@
     ViewData["Title"] = "EditTeam";
 }
 
-<h1>EditTeam</h1>
-<h4>Team</h4>
-
-<hr />
-
 <div id="modal" class="modal">
     <div class="modal-content">
         <span onclick="$('#modal').hide()" class="close">&times;</span>
@@ -17,80 +12,84 @@
     </div>
 </div>
 
-
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="EditTeam">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>      
-            <div class="form-group">
-                <label asp-for="ModalityId" class="control-label"></label>
-                <select asp-for="ModalityId" class="form-control" asp-items="ViewBag.Modalities"></select>
-                <span asp-validation-for="ModalityId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Trainer" class="control-label"></label>
-                <a disabled class="form-control">@Model.Trainer.FullName</a>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;">@Html.DisplayFor(model => model.Name)</h1>
+    <a asp-action="TeamList">Voltar</a>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="EditTeam">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Id" />
+                <div class="form-floating" style="margin-bottom:20px;">
+                    <input asp-for="Name" class="form-control" />
+                    <label asp-for="Name" class="control-label"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>      
+                <div class="form-floating" style="margin-bottom:20px;">
+                    <select asp-for="ModalityId" class="form-control" asp-items="ViewBag.Modalities"></select>
+                    <label asp-for="ModalityId" class="control-label"></label>
+                    <span asp-validation-for="ModalityId" class="text-danger"></span>
+                </div>
+                <div class="form-floating" style="margin-bottom:20px;">
+                    <a disabled class="form-control">@Model.Trainer.FullName</a>
+                    <label asp-for="Trainer" class="control-label"></label>
+                </div>
+                <div class="form-floating">
+                    <input type="submit" value="Save" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card mt-3 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <a onclick="openCreate()">Add Athlete </a>
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Age
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Athletes != null)
+                    {
+                        @foreach (var item in Model.Athletes)
+                        {
+                            <tr onclick="openDetails('@item.Id')" style="cursor:pointer">
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.FullName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Age)
+                                </td>
+                                <td class="d-flex justify-content-end">
+                                    <form asp-action="RemoveAtheleFromTeam">
+                                            <input name="athleteId" value="@item.Id" class="form-control" hidden />
+                                            <input name="teamId" value="@Model.Id" class="form-control" hidden />
+                                            <input name="page" value="EditTeam" class="form-control" hidden />
+                                            <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
+                                        </form>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Age
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model.Athletes != null)
-        {
-            @foreach (var item in Model.Athletes)
-            {
-                <tr onclick="openDetails('@item.Id')" style="cursor:pointer">
-                    <td>
-                        @Html.DisplayFor(modelItem => item.FullName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Age)
-                    </td>
-                    <td>
-                        <form asp-action="RemoveAtheleFromTeam">
-                                <input name="athleteId" value="@item.Id" class="form-control" hidden />
-                                <input name="teamId" value="@Model.Id" class="form-control" hidden />
-                                <input name="page" value="EditTeam" class="form-control" hidden />
-                                <input type="submit" value="Remove" class="btn btn-danger" />
-                            </form>
-                    </td>
-                </tr>
-            }
-        }
-        <a onclick="openCreate()">Add Athlete </a>
-    </tbody>
-</table>
-        
-<div>
-    <a asp-action="TeamList">Back to List</a>
-</div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
-
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+        <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
     let modal = document.getElementById("modal")
     window.onclick = function (event) {
@@ -98,6 +97,14 @@
             $("#modal").hide();
         }
     }
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
     function openCreate() {
         $.ajax({
             url: '/MyClub/AddTeamAthletes/@Model.Id',
