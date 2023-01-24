@@ -7,13 +7,7 @@
 
 <div>
     <div class="container-fluid m-0 pb-5 pt-2 " id="colorthiefobj" style=" height:30%;">
-        <div class="row text-end">
-            <form asp-action="Associate">
-                <input asp-for="Id" class="form-control" hidden />
-                <input type="submit" class="btn signin me-5 mt-2 btn-primary @ViewBag.btnClasses" value="@StringLocalizer[ViewBag.btnValue]"></input>
-            </form>
-        </div>
-        <div class="row">
+        <div class="row mt-5">
             <div class="col-3 d-flex justify-content-center ms-5">
                 <img id="clubPicture"
                      src="@Model.Photography.Uri"
@@ -30,6 +24,12 @@
     <div class="container d-flex" style="margin-top:-30px;">
         <div class="card col me-5 shadow" style="border-radius:20px;">
             <div class="card-body" style="border-radius:20px;">
+                <div class="row text-end">
+                    <form asp-action="Associate">
+                        <input asp-for="Id" class="form-control" hidden />
+                        <input type="submit" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn me-5 mt-2 btn-primary @ViewBag.btnClasses" value="@ViewBag.btnValue"></input>
+                    </form>
+                </div>
                 <div class="row">
                     <div class="col-3 ms-4"><h3>@StringLocalizer["About Us"]:</h3></div>
                     <div class="col-8 mt-1">@Html.DisplayFor(model => model.About)</div>
