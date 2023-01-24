@@ -653,7 +653,13 @@
     <value>Falta salvar</value>
   </data>
   <data name="SLOGAN" xml:space="preserve">
-    <value>Gere o teu clube com precisão: scmanagement</value>
+    <value>Gere o teu clube com precisão</value>
+  </data>
+  <data name="Change Email" xml:space="preserve">
+    <value>Mudar email</value>
+  </data>
+  <data name="Change Password" xml:space="preserve">
+    <value>Mudar palavra-passe</value>
   </data>
   <data name="Clubs" xml:space="preserve">
     <value>Clubes</value>
@@ -676,8 +682,12 @@
   <data name="My Club" xml:space="preserve">
     <value>Meu clube</value>
   </data>
-  <data name="sdf" xml:space="preserve">
-    <value />
+  <data name="NotDone" xml:space="preserve">
+    <value>De momento, como estamos em fase de desenvolvimento ainda não conseguimos mostrar as nossas principais funcionalidades.
+Pedimos desculpa pelo incomodo.</value>
+  </data>
+  <data name="Save" xml:space="preserve">
+    <value>Salvar</value>
   </data>
   <data name="Search club" xml:space="preserve">
     <value>Procurar por clube</value>
