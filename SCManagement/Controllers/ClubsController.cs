@@ -86,8 +86,6 @@ namespace SCManagement.Controllers
                 club.Photography = new BlobDto { Uri = "https://cdn.scmanagement.me/public/user_placeholder.png" };
             }
 
-            ViewBag.NumberOfPartners = 5;
-
             string userId = getUserIdFromAuthedUser();
 
             //if the user has a role in the club, cant be partner
@@ -120,14 +118,14 @@ namespace SCManagement.Controllers
         {
             ViewBag.Modalities = new SelectList(_clubService.GetModalities().Result, "Id", "Name");
 
-            Address address = new Address();
+            //Address address = new Address();
 
-            Club club = new Club
-            {
-                Address = address
-            };
+            //Club club = new Club
+            //{
+            //    Address = address
+            //};
 
-            return View(club);
+            return View(new Club());
         }
 
 
@@ -139,17 +137,17 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club, int CountyId, string Street, string ZipCode, string Number)
+        public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
         {
             if (!ModelState.IsValid) return View();
 
             //get the address
-            int addressId = await _clubService.GetAddressAsync(CountyId, Street, ZipCode, Number);
+            //int addressId = await _clubService.GetAddressAsync(CountyId, Street, ZipCode, Number);
 
             //get id of the user
             string userId = getUserIdFromAuthedUser();
 
-            Club createdClub = await _clubService.CreateClub(club, userId, addressId);
+            Club createdClub = await _clubService.CreateClub(club, userId);
 
             await _userService.UpdateSelectedRole(userId, createdClub.UsersRoleClub!.First().Id);
 
