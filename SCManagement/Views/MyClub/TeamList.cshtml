@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<SCManagement.Models.Team>
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "TeamList";
 }
 
 <div class="container-fluid ps-5 pe-5">
-    <h1 style="margin-top:130px !important;">Teams</h1>
+    <h1 style="margin-top:130px !important;">@StringLocalizer["Teams"]</h1>
     @if (ViewBag.IsManager != true)
     {
         <p>

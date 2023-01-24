@@ -276,9 +276,6 @@
 
 &lt;/html&gt;</value>
   </data>
-  <data name="Learn" xml:space="preserve">
-    <value>Learn about &lt;a href="https://docs.microsoft.com/aspnet/core"&gt;building Web apps with ASP.NET Core</value>
-  </data>
   <data name="Welcome" xml:space="preserve">
     <value>Bem Vindo</value>
   </data>
@@ -848,5 +845,41 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   </data>
   <data name="Welcomeclub" xml:space="preserve">
     <value>Bem-vindo ao teu</value>
+  </data>
+  <data name="Code_AlreadyPart" xml:space="preserve">
+    <value>Já fazes parte deste clube com outra função</value>
+  </data>
+  <data name="Code_AlreadyUsed" xml:space="preserve">
+    <value>Código já usado</value>
+  </data>
+  <data name="Code_Expired" xml:space="preserve">
+    <value>Código expirado</value>
+  </data>
+  <data name="Code_NotApproved" xml:space="preserve">
+    <value>Código não aprovado</value>
+  </data>
+  <data name="Code_NotFound" xml:space="preserve">
+    <value>Código não encontrado</value>
+  </data>
+  <data name="Events" xml:space="preserve">
+    <value>Eventos</value>
+  </data>
+  <data name="General" xml:space="preserve">
+    <value>Geral</value>
+  </data>
+  <data name="Join" xml:space="preserve">
+    <value>Juntar-se</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Nome</value>
+  </data>
+  <data name="Notifications" xml:space="preserve">
+    <value>Notificações</value>
+  </data>
+  <data name="Payments" xml:space="preserve">
+    <value>Pagamentos</value>
+  </data>
+  <data name="Register as a new user" xml:space="preserve">
+    <value>Registar como um novo utilizador</value>
   </data>
 </root>
