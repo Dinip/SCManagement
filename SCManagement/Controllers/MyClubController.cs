@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
-using QRCoder;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
@@ -353,11 +352,8 @@ namespace SCManagement.Controllers
                 Approved = !(_clubService.IsClubSecretary(role) && codeClub.RoleId >= 40)
             };
             CodeClub generatedCode = await _clubService.GenerateCode(codeToBeCreated);
-            TempData["Code"] = JsonConvert.SerializeObject(await _clubService.GetCodeWithInfos(generatedCode.Id));
 
-            ViewBag.isAdmin = _clubService.IsClubAdmin(role);
-
-            return RedirectToAction("Codes");
+            return RedirectToAction("Codes", new { code = generatedCode.Id });
         }
 
         public class CreateCodeModel
@@ -371,20 +367,6 @@ namespace SCManagement.Controllers
             public DateTime? ExpireDate { get; set; }
         }
 
-        private void GenerateQRCode(string code)
-        {
-            using MemoryStream ms = new MemoryStream();
-            var baseUri = $"{Request.Scheme}://{Request.Host}:{Request.Host}";
-            string link = $"{baseUri}/Clubs/Join/?code={code}";
-            QRCodeGenerator qR = new QRCodeGenerator();
-            QRCodeData data = qR.CreateQrCode(link, QRCodeGenerator.ECCLevel.Q);
-            QRCode qRCode = new QRCode(data);
-
-            using Bitmap bitmap = qRCode.GetGraphic(20);
-            bitmap.Save(ms, format: ImageFormat.Png);
-            ViewBag.QRCode = "data:image/png;base64," + Convert.ToBase64String(ms.ToArray());
-        }
-
         [Authorize]
         public async Task<IActionResult> Codes(string? approveCode, int? code)
         {
@@ -396,14 +378,6 @@ namespace SCManagement.Controllers
 
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
-
-            var c = TempData["Code"];
-            if (c != null)
-            {
-                CodeClub cc = JsonConvert.DeserializeObject<CodeClub>(c.ToString());
-                ViewBag.Code = cc;
-                GenerateQRCode(cc.Code);
-            }
 
             ViewBag.isAdmin = _clubService.IsClubAdmin(role);
 
@@ -420,7 +394,6 @@ namespace SCManagement.Controllers
                 if (cc != null && cc.ClubId == role.ClubId)
                 {
                     ViewBag.Code = cc;
-                    GenerateQRCode(cc.Code);
                 }
             }
 
@@ -752,7 +725,7 @@ namespace SCManagement.Controllers
 
             //check if the athlete belongs to the club
             if (!_clubService.IsClubMember(id, role.ClubId)) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
-            
+
             var user = await _userService.GetUser(id);
             if (user == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
 

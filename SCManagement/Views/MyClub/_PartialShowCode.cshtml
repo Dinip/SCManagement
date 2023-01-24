@@ -67,12 +67,9 @@
         {
             <a href="/Clubs/Codes?approveCode=@Model.Id">@stringLocalizer["Approve"]</a>
         }
-        
-        @if (ViewBag.QRCode != null)
-        {
-            <img src="@ViewBag.QRCode" style="width:200px; height:200px" />
-        }
-        
+
+        <div id="qrcode"></div>
+
         <form asp-action="SendCodeEmail">
             <div class="form-group">
                 <label name="Email" value="Email" class="control-label"></label>
@@ -87,8 +84,17 @@
     </dl>
 </div>
 
+<script type="text/javascript" charset="utf8" src="/lib/qrcodejs/qrcode.js"></script>
 <script type="text/javascript">
     window.onload = () => {
         document.getElementById("modal").style.display = "block";
+        var qrcode = new QRCode(document.getElementById("qrcode"), {
+            text: `https://${window.location.host}/Clubs/Join?code=@Model.Code`,
+            width: 200,
+            height: 200,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
     }
 </script>
