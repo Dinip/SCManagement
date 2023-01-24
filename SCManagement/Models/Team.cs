@@ -10,6 +10,7 @@ namespace SCManagement.Models
         [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
         [Display(Name = "Team Name")]
         public string Name { get; set; }
+        [Display(Name = "Date Created")]
         public DateTime CreationDate
         {
             get
@@ -22,7 +23,7 @@ namespace SCManagement.Models
             set { dateCreated = value; }
         }
 
-        [Display(Name = "Date Created")]
+        
         private DateTime? dateCreated = null;
         public int ModalityId { get; set; }
         [Display(Name = "Modalities")]

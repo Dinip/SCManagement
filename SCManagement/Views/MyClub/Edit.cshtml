@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Controllers.MyClubController.EditModel
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "Edit";
@@ -64,7 +65,7 @@
                 </div>
                 <hr style="margin-bottom:20px;" />
                 <div class="row form-floating">
-                    <input type="submit" value="Save" class="btn btn-primary mt-2 w-100" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+                    <input type="submit" value=@StringLocalizer["Save"] class="btn btn-primary mt-2 w-100" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                 </div>
                 <div>
                     <input id="selectedFile" asp-for="File" type="file" class="form-control d-none" accept="image/png, image/jpeg" onchange="handleUpload(this)" />
@@ -75,7 +76,7 @@
 
 
     </div>
-
+    
 </div>
 
 

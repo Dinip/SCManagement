@@ -846,4 +846,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="SoftwareDeveloper" xml:space="preserve">
     <value>Programador</value>
   </data>
+  <data name="Welcomeclub" xml:space="preserve">
+    <value>Bem-vindo ao teu</value>
+  </data>
 </root>
