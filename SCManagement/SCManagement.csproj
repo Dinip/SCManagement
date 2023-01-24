@@ -45,8 +45,4 @@
     <None Include=".editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="wwwroot\img\" />
-  </ItemGroup>
-
 </Project>
