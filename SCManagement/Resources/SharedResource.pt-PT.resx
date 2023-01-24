@@ -882,4 +882,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Register as a new user" xml:space="preserve">
     <value>Registar como um novo utilizador</value>
   </data>
+  <data name="Club Selected" xml:space="preserve">
+    <value>Clube Selecionado</value>
+  </data>
 </root>

@@ -17,21 +17,28 @@
                 <button class="btn fa-2xl shadow-none text-to-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="@pfpUri" class="rounded-circle" style="width: 45px; height: 45px;" />
                 </button>
-                <ul class="dropdown-menu" style="margin-top: 10px; left: -150px; width: 230px;" id="Dropdown1">
+                <ul class="dropdown-menu shadow" style="margin-top: 7px; left: -145px; width: 230px; border:none; border-radius:0;" id="Dropdown1">
                     <li class="dropdown-item" style="padding: 5px;">
                         <a class="nav-link text-to-dark" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user?.FullName</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
                         <a class="nav-link text-to-dark" style="color:black;" href="#">@StringLocalizer["Wallet"]</a>
                     </li>
-                    <li style="padding: 5px;">
-                        <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg  text-to-dark"></i>
-                        <label class="text-to-dark">@StringLocalizer["Dark mode"]</label>
-                        <label class="switch" style="margin-left: 50px;">
-                            <input type="checkbox" onchange="myFunction()" id="darkToggle">
-                            <span class="slider round"></span>
-                        </label>
+                    <li style="padding: 5px;" class="row">
+                        <div class="col-2">
+                            <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg col text-to-dark"></i>
+                        </div>
+                        <div class="col-6">
+                            <label class="text-to-dark col" style="font-size: 0.8vw;">@StringLocalizer["Dark mode"]</label>
+                        </div>
+                        <div class="col-4" style="text-align:right">
+                            <label class="switch">
+                                <input type="checkbox" onchange="myFunction()" id="darkToggle">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
                     </li>
+                    <li style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
                     <li class="dropdown-item" style="padding: 5px;">
                         @await Component.InvokeAsync("UserClubContext")
                     </li>
@@ -43,7 +50,7 @@
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
                         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            <button type="submit" style="color:black;" class="nav-link btn btn-link text-to-dark">@StringLocalizer["Logout"]</button>
+                            <button type="submit" style="color:black; text-align:left !important;" class="nav-link btn btn-link text-to-dark w-100">@StringLocalizer["Logout"]</button>
                         </form>
                     </li>
                 </ul>

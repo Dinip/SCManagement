@@ -751,4 +751,7 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Register as a new user" xml:space="preserve">
     <value>Register as a new user</value>
   </data>
+  <data name="Club Selected" xml:space="preserve">
+    <value>Selected Club</value>
+  </data>
 </root>
