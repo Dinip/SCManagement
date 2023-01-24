@@ -16,6 +16,7 @@ using SCManagement.Models;
 using SCManagement.Models.Validations;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
+using SCManagement.Services.UserService;
 
 namespace SCManagement.Areas.Identity.Pages.Account.Manage
 {
@@ -26,19 +27,22 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
         private readonly ApplicationDbContext _context;
         private readonly IAzureStorage _azureStorage;
+        private readonly IUserService _userService;
 
         public IndexModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IStringLocalizer<SharedResource> stringLocalizer,
             ApplicationDbContext context,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            IUserService userService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _stringLocalizer = stringLocalizer;
             _context = context;
             _azureStorage = azureStorage;
+            _userService = userService;
         }
 
         /// <summary>
@@ -55,6 +59,8 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
         public string StatusMessage { get; set; }
 
         public string ProfilePictureUrl { get; set; }
+
+        public string EMDUrl { get; set; }
 
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -97,8 +103,9 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             public DateTime? DateOfBirth { get; set; }
 
             public IFormFile? File { get; set; }
+            public IFormFile? FileEMD { get; set; }
             public bool RemoveImage { get; set; } = false;
-
+            public bool RemoveEMD { get; set; } = false;
 
             //public int? AddressId { get; set; }
             //public Address? Address { get; set; }
@@ -109,9 +116,13 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var userWithPFP = await _context.Users.Include(u => u.ProfilePicture).FirstOrDefaultAsync(u => u.Id == user.Id);
+            var userWithEMD = await _context.Users.Include(u => u.EMD).FirstOrDefaultAsync(u => u.Id == user.Id);
+
+            ViewData["IsAtleteInAnyClub"] = await _userService.IsAtleteInAnyClub(user.Id);
 
             Username = userName;
             ProfilePictureUrl = userWithPFP.ProfilePicture == null ? "https://cdn.scmanagement.me/public/user_placeholder.png" : userWithPFP.ProfilePicture.Uri;
+            EMDUrl = userWithEMD.EMD == null ? _stringLocalizer["Pending_Add"] : userWithEMD.EMD.Uri;
 
             Input = new InputModel
             {
@@ -149,8 +160,8 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            //override user with information about profile picture
-            user = await _context.Users.Include(c => c.ProfilePicture).FirstAsync(u => u.Id == user.Id);
+            //override user with information about profile picture and EMD
+            user = await _context.Users.Include(c => c.ProfilePicture).Include(c => c.EMD).FirstAsync(u => u.Id == user.Id);
 
             //Checks if the user first name is diferent from the user first name saved, and if so trie to update 
             if (user.FirstName != Input.FirstName)
@@ -205,6 +216,11 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 await CheckAndDeleteProfilePicture(user);
             }
 
+            if (Input.RemoveEMD)
+            {
+                await CheckAndDeleteEMD(user);
+            }
+
             if (Input.File != null)
             {
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.File);
@@ -223,6 +239,24 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            if (Input.FileEMD != null)
+            {
+                BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.FileEMD);
+                if (uploadResult.Error)
+                {
+                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
+                    return RedirectToPage();
+                }
+                await CheckAndDeleteEMD(user);
+                user.EMD = uploadResult.Blob;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
+                    return RedirectToPage();
+                }
+            }
+
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = _stringLocalizer["StatusMessage_ProfileUpdate"];
             return RedirectToPage();
@@ -237,6 +271,19 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 await _azureStorage.DeleteAsync(user.ProfilePicture.Uuid);
                 _context.BlobDto.Remove(user.ProfilePicture);
                 user.ProfilePicture = null;
+                //update user and save changes
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private async Task CheckAndDeleteEMD(User user)
+        {
+            if (user.EMD != null)
+            {
+                await _azureStorage.DeleteAsync(user.EMD.Uuid);
+                _context.BlobDto.Remove(user.EMD);
+                user.EMD = null;
                 //update user and save changes
                 _context.Update(user);
                 await _context.SaveChangesAsync();

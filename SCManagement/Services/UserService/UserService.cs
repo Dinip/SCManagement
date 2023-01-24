@@ -56,5 +56,10 @@ namespace SCManagement.Services.UserService
             var result = await _context.UsersRoleClub.FirstOrDefaultAsync(u => u.UserId == userId && u.Selected == true);
             return result ?? new UsersRoleClub { Id = 0, UserId = userId, ClubId = 0, RoleId = 0, Selected = false };
         }
+
+        public Task<bool> IsAtleteInAnyClub(string userId)
+        {
+            return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 20);
+        }
     }
 }

@@ -1,11 +1,18 @@
 ﻿@page
+@using SCManagement;
 @model IndexModel
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
 @{
     ViewData["Title"] = "Profile";
+    
 }
 
-<div class=" row ms-5 mb-0 d-flex" style="margin-top:100px;">
-    <h1 class=" col text-to-dark">User Profile</h1>
+<div id="modal" class="modal">
+    <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
+        <span onclick="$('#modal').hide()" class="close">&times;</span> 
+        <iframe id="frame" src="@Model.EMDUrl" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%" ></iframe>
+    </div>
 </div>
 
 <div class="container-fluid row justify-content-evenly">
@@ -18,7 +25,7 @@
                      class="rounded-circle col"
                      style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="col">
-                    <i class="fa-solid fa-xl fa-trash row" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
+                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
                     <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
                 </div>
                 
@@ -68,6 +75,30 @@
                         <a class="text-black text-to-dark" asp-page="/Account/Manage/Email">Change Email</a>
                     </div>
                 </div>
+                <hr style="margin-bottom:20px;" />
+
+                @if ((bool)ViewData["IsAtleteInAnyClub"] != false)
+                {
+                    <div class="row h-auto">
+                        <div class="col-2">
+                            <strong class="text-to-dark">EMD</strong>
+                        </div>
+                        <div class="col-10 text-end">
+                            @if (!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}")){
+                                <i id="emd" class="fa-solid fa-file fa-xl" style="margin-right:20px;" onclick="toggleModal()"></i>
+                            }else{
+                                <span style="margin-right:20px;">No file saved!</span>
+                            }
+                            <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
+                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeEMD()"></i>
+                            <i class="fa-solid fa-xl fa-pen-to-square" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
+                        </div>
+                    </div>
+                    <hr style="margin-bottom:20px;" />
+                }
+               
+                
+
                 <button id="update-profile-button" style="border-radius: 10px;
                                                         background-color: #00639A;
                                                         border-color: #00639A;
@@ -79,7 +110,10 @@
                 <div>
                     <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/png, image/jpeg"
                            onchange="handleUpload(this)" />
+                    <input id="selectedFileForEMD" asp-for="Input.FileEMD" type="file" class="form-control d-none" accept="application/pdf"
+                           onchange="handleUploadEMD(this)" />
                     <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
+                    <input id="removeEMD" asp-for="Input.RemoveEMD" type="hidden" />
                 </div>
             </form>
         </div>
@@ -89,16 +123,84 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
+        let removePend = "@StringLocalizer["Pending_Remove"]"
+        let savePend = "@StringLocalizer["Pending_Save"]"
+        let modal = document.getElementById("modal")
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                $("#modal").hide();
+            }
+        }
 
+        function toggleModal(){
+            $("#modal").show();
+        }
+        
         function removePhoto() {
             document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
             document.getElementById("removeImage").value = true
             document.getElementById("selectedFile").value = ""
-            document.getElementById("btnRemoveImage").classList.add("d-none")
+            document.getElementById("btnRemoveImage").classList.add("invisible")
+        }
+        function removeEMD() {
+            document.getElementById("emd").text = removePend
+            document.getElementById("removeEMD").value = true
+            document.getElementById("selectedFileForEMD").value = ""
+            document.getElementById("btnRemoveEMD").classList.add("invisible")
         }
         function handleUpload(event){
-            document.getElementById('profilePicture').src=window.URL.createObjectURL(event.files[0])
-            document.getElementById("btnRemoveImage").classList.remove("d-none")
+            document.getElementById('profilePicture').src = window.URL.createObjectURL(event.files[0])
+            document.getElementById("btnRemoveImage").classList.remove("invisible")
+        }
+        function handleUploadEMD(event) {
+            document.getElementById('emd').text = savePend
+            document.getElementById('emd').src = window.URL.createObjectURL(event.files[0])
+            document.getElementById("btnRemoveEMD").classList.remove("invisible")
         }
     </script>
 }
+
+<style>
+    .frame{
+        height: 90%;
+        width: 90%;
+    }
+    
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>

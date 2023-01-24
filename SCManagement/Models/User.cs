@@ -29,6 +29,9 @@ namespace SCManagement.Models
         public int? ProfilePictureId { get; set; }
         public BlobDto? ProfilePicture { get; set; }
 
+        public int? EMDId { get; set; }
+        public BlobDto? EMD { get; set; }
+
         public int? AddressId { get; set; }
         public Address? Address { get; set; }
 
