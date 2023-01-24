@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SCManagement.Models.CodeClub>
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "CodesList";
@@ -8,7 +9,7 @@
 <div class="container-fluid ps-5 pe-5">
     <h1 style="margin-top:130px !important;">Codes</h1>
     <p>
-        <button onclick="openCreate()">Create New</button>
+        <button onclick="openCreate()">@StringLocalizer["Create New"]</button>
     </p>
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
@@ -86,7 +87,7 @@
                                 @Html.DisplayFor(modelItem => item.UsedByUser.FullName)
                             </td>
                             <td>
-                                <a href="/MyClub/Codes?code=@item.Id">Details</a>
+                                <a href="/MyClub/Codes?code=@item.Id">@StringLocalizer["Details"]</a>
                             </td>
                         </tr>
                     }

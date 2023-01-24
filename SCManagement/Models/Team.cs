@@ -22,13 +22,16 @@ namespace SCManagement.Models
             set { dateCreated = value; }
         }
 
+        [Display(Name = "Date Created")]
         private DateTime? dateCreated = null;
         public int ModalityId { get; set; }
+        [Display(Name = "Modalities")]
         public Modality? Modality { get; set; }
         
         public ICollection<User>? Athletes { get; set; }
         
         public string TrainerId { get; set; }
+        [Display(Name = "Trainer")]
         public User? Trainer { get; set; }
         public int ClubId { get; set; }
         public Club? Club { get; set; }

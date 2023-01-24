@@ -19,7 +19,7 @@ namespace SCManagement.Models {
 
         [Required(ErrorMessage = "Error_Required")]
         [StringLength(60, ErrorMessage = "Error_Length", MinimumLength = 2)]
-        [Display(Name = "Clube Name")]
+        [Display(Name = "Club Name")]
         public string Name { get; set; }
 
         [EmailAddress]
@@ -30,7 +30,7 @@ namespace SCManagement.Models {
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
 
-        [Display(Name = "About")]
+        [Display(Name = "About Us")]
         public string? About { get; set; }
 
 

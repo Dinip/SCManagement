@@ -655,6 +655,9 @@
   <data name="SLOGAN" xml:space="preserve">
     <value>Gere o teu clube com precisão</value>
   </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Aprove</value>
+  </data>
   <data name="Approved" xml:space="preserve">
     <value>Aprovação</value>
   </data>
@@ -679,6 +682,9 @@
   <data name="Club" xml:space="preserve">
     <value>Clube</value>
   </data>
+  <data name="Club Name" xml:space="preserve">
+    <value>Nome do clube</value>
+  </data>
   <data name="Clubs" xml:space="preserve">
     <value>Clubes</value>
   </data>
@@ -688,6 +694,9 @@
   <data name="Code" xml:space="preserve">
     <value>Código</value>
   </data>
+  <data name="codeapproved" xml:space="preserve">
+    <value>Código aprovado com sucesso</value>
+  </data>
   <data name="Codes" xml:space="preserve">
     <value>Códigos</value>
   </data>
@@ -696,6 +705,9 @@
   </data>
   <data name="Create a club" xml:space="preserve">
     <value>Cria um clube</value>
+  </data>
+  <data name="Create New" xml:space="preserve">
+    <value>Criar Novo</value>
   </data>
   <data name="CreatedByUser" xml:space="preserve">
     <value>Criado pelo utilizador</value>
@@ -718,6 +730,9 @@
   <data name="Edit" xml:space="preserve">
     <value>Editar</value>
   </data>
+  <data name="Error approving code" xml:space="preserve">
+    <value>Erro ao aprovar o código</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Inicio</value>
   </data>
@@ -726,6 +741,9 @@
   </data>
   <data name="Join with code" xml:space="preserve">
     <value>Juntar-se com código</value>
+  </data>
+  <data name="JoinDate" xml:space="preserve">
+    <value>Data de entrada</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Terminar sessão</value>
@@ -767,11 +785,20 @@ Pedimos desculpa pelo incomodo.</value>
   <data name="Settings" xml:space="preserve">
     <value>Definições</value>
   </data>
+  <data name="Team Name" xml:space="preserve">
+    <value>Nome da equipa</value>
+  </data>
   <data name="Teams" xml:space="preserve">
     <value>Equipas</value>
   </data>
+  <data name="Trainer" xml:space="preserve">
+    <value>Treinador</value>
+  </data>
   <data name="UsedByUser" xml:space="preserve">
     <value>Usado pelo utilizador</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>Utilizador</value>
   </data>
   <data name="Wallet" xml:space="preserve">
     <value>Conta corrente</value>

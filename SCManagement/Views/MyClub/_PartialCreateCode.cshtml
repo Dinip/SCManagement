@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Controllers.MyClubController.CreateCodeModel
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <hr />
 <div class="row">
@@ -15,7 +16,7 @@
                 <select required asp-for="RoleId" class="form-control" asp-items="ViewBag.Roles"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value=@StringLocalizer["Create"] class="btn btn-primary" />
             </div>
         </form>
     </div>
