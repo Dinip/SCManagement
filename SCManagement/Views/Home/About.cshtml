@@ -1,0 +1,90 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+
+
+<h1 class="text-center pt-4">@StringLocalizer["About Us"]</h1>
+
+<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+<link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
+
+<div class="container mt-4">
+    <div class="card ps-2 pe-md-2 ">
+        <div class="card-body">
+            <p style="text-align:justify">
+                @StringLocalizer["AboutText"]
+            </p>
+        </div>
+    </div>
+
+
+    <div class="pt-4">
+        <div class="row row-cols-1 row-cols-md-2 g-4">
+            <div class="col">
+                <div class="card h-100">
+                    <img src="~/img/David.jpg" style="max-height:300px; max-width:100%; object-fit:cover" class="card-img-top"
+                         alt="David Belchior" />
+                    <div class="card-body">
+                        <h5 class="card-title">David Belchior - @StringLocalizer["ProjectManager"]</h5>
+                        <p class="card-text">
+                            @StringLocalizer["DavidAbout"]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="~/img/Guilherme.png" style="max-height:300px; max-width:100%; object-fit:cover" class="card-img-top"
+                         alt="Guilherme Oliveira" />
+                    <div class="card-body">
+                        <h5 class="card-title">Guilherme Oliveira - @StringLocalizer["FrontEndDeveloper"]</h5>
+                        <p class="card-text">
+                            @StringLocalizer["OliveiraAbout"]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="~/img/Peralta.jpeg" style="max-height:300px; max-width:100%; object-fit:cover" class="card-img-top"
+                         alt="Pedro Peralta" />
+                    <div class="card-body">
+                        <h5 class="card-title">Pedro Peralta - @StringLocalizer["SoftwareDeveloper"]</h5>
+                        <p class="card-text">
+                            @StringLocalizer["PeraltaAbout"]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="~/img/Andre.jpg" style="max-height:300px; max-width:100%; object-fit:cover" class="card-img-top"
+                         alt="André Matias" />
+                    <div class="card-body">
+                        <h5 class="card-title">André Matias - @StringLocalizer["SoftwareDeveloper"]</h5>
+                        <p class="card-text">
+                            @StringLocalizer["MatiasAbout"]
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card h-100">
+                    <img src="https://mdbcdn.b-cdn.net/img/new/standard/city/044.webp" style="max-height:300px; max-width:100%; object-fit:cover" class="card-img-top"
+                         alt="André Matias" />
+                    <div class="card-body">
+                        <h5 class="card-title">Dinis Pimpão - @StringLocalizer["SoftwareDeveloper"]</h5>
+                        <p class="card-text">
+                            @StringLocalizer["DinisAbout"]
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+</div>

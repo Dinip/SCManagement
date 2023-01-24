@@ -803,4 +803,47 @@ Pedimos desculpa pelo incomodo.</value>
   <data name="Wallet" xml:space="preserve">
     <value>Conta corrente</value>
   </data>
+  <data name="AboutText" xml:space="preserve">
+    <value>Bem-vindo ao SCManagement, este é um projeto que foi desenvolvido por estudantes de Engenharia Informática do Instituto Politécnico de Setúbal.
+                Como estudantes de engenharia, entendemos a importância de ter uma plataforma de gestão desportiva eficiente e fácil de utilizar, logo criamos o SCManagement, uma plataforma de gestão desportiva para clubes que oferece uma variedade
+                de recursos para gerir equipas, sócios, eventos entre outros.
+                Com a nossa aplicação, os clubes poderão ter acesso a todas as informações importantes em um só lugar, facilitando a sua administração.
+                Além disso, oferecemos uma interface intuitiva e fácil de utilizar.
+                Temos como foco ajudar os clubes a alcançar seus objetivos, tornando a gestão do clube mais eficiente e organizada.
+                Com o SCManagement, os clubes podem-se concentrar no que realmente importa: O Desempenho Desportivo.
+                Pretendes gerir o teu clube com mais facilidade e eficiência, então experimente o SCManagement e vê a diferença que podemos fazer.</value>
+  </data>
+  <data name="DavidAbout" xml:space="preserve">
+    <value>Sou um estudante de engenharia de software no instituto politécnico de setúbal.
+Tenho 20 anos e sou de Portugal.
+ Só tive contacto profissional em sectores diferentes da área em que me estou a formar.
+ Sou uma pessoa de mente aberta e aceito qualquer desafio. Na minha vida pessoal, admiro os valores da sinceridade, da dedicação,
+ e gentileza.</value>
+  </data>
+  <data name="DinisAbout" xml:space="preserve">
+    <value>Olá, tenho 21 anos, sou estudante universitário de Engenharia Informática no Instituto Politécnico de Setúbal.
+Tenho experiência na área e sou muito focado nos meus objetivos.</value>
+  </data>
+  <data name="FrontEndDeveloper" xml:space="preserve">
+    <value>Desenvolvedor FrontEnd</value>
+  </data>
+  <data name="MatiasAbout" xml:space="preserve">
+    <value>Comecei o meu interesse por programação no secundário, hoje frequento o terceiro ano da licenciatura em Engenharia Informática no instituto politécnico de setúbal , além dos meus estudos, sempre pratiquei futebol e graças a isto melhorei o trabalhar em equipa.</value>
+  </data>
+  <data name="OliveiraAbout" xml:space="preserve">
+    <value>O meu nome é Guilherme Oliveira, 
+                            Tenho 20 anos, sou estudante de Engenharia Informática no Instituto Politécnico de Setúbal, 
+                            e eu sou responsável pelo design gráfico deste projecto.</value>
+  </data>
+  <data name="PeraltaAbout" xml:space="preserve">
+    <value>Sou estudante de Engenharia Informática e tenho estado interessado em programação desde o liceu. Além disso, também pratico desporto, 
+                            especificamente Orientação Pedestre e BTT, onde alcancei títulos nacionais e faço parte da equipa nacional que representa Portugal em competições internacionais. 
+                            O desporto tornou-me mais disciplinado e organizado, permitindo-me gerir melhor o meu tempo para ter um bom desempenho tanto no desporto como na educação.</value>
+  </data>
+  <data name="ProjectManager" xml:space="preserve">
+    <value>Gestor De Projeto</value>
+  </data>
+  <data name="SoftwareDeveloper" xml:space="preserve">
+    <value>Programador</value>
+  </data>
 </root>

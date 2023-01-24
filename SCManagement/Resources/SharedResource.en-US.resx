@@ -672,4 +672,47 @@ We apologize for the inconvenience.</value>
   <data name="Wallet" xml:space="preserve">
     <value>Wallet</value>
   </data>
+  <data name="AboutText" xml:space="preserve">
+    <value>Welcome to SCManagement, this is a project that was developed by Computer Engineering students from the Polytechnic Institute of Setubal.
+                As engineering students, we understand the importance of having an efficient and easy to use sports management platform, so we created SCManagement, a sports management platform for clubs that offers a variety of features to manage teams, members, events
+                of features to manage teams, members, events and more.
+                With our application, clubs will have access to all important information in one place, making their administration easier.
+                In addition, we offer an intuitive and easy-to-use interface.
+                We focus on helping clubs achieve their goals by making club management more efficient and organized.
+                With SCManagement, clubs can focus on what really matters: Sport Performance.
+                You want to manage your club more easily and efficiently, then try SCManagement and see the difference we can make.</value>
+  </data>
+  <data name="DavidAbout" xml:space="preserve">
+    <value>I'm a software engineering student at the polytechnic institute of setúbal.
+                            I am 20 years old and I am from Portugal.
+                            I have only had professional contact in sectors different from the area I am majoring in.
+                            I'm an open-minded person and I welcome any challenge. In my personal life, I admire the values of sincerity, dedication,
+                            and kindness.</value>
+  </data>
+  <data name="DinisAbout" xml:space="preserve">
+    <value>Hello, I'm 21 years old, I'm a university student of Computer Engineering at the Polytechnic Institute of Setubal.
+I have experience in the area and I am very focused on my goals.</value>
+  </data>
+  <data name="FrontEndDeveloper" xml:space="preserve">
+    <value>FrontEnd Developer</value>
+  </data>
+  <data name="MatiasAbout" xml:space="preserve">
+    <value>I started my interest in programming in high school, and today I am in my third year of a degree in Computer Engineering at the Polytechnic Institute of Setúbal.</value>
+  </data>
+  <data name="OliveiraAbout" xml:space="preserve">
+    <value>My name is Guilherme Oliveira, 
+                            I am 20 years old, a student of Computer Engineering at the Instituto Politecnico de Setubal, 
+                            and I am responsible for the graphic design of this project.</value>
+  </data>
+  <data name="PeraltaAbout" xml:space="preserve">
+    <value>I am a student of Computer Engineering and have been interested in programming since high school. Besides that, I also practice sports, 
+                            specifically Pedestrian Orienteering and Mountain Biking, where I achieved national titles and am part of the national team representing Portugal in international competitions. 
+                            Sports have made me more disciplined and organized, allowing me to better manage my time to perform well in both sports and education.</value>
+  </data>
+  <data name="ProjectManager" xml:space="preserve">
+    <value>Project Manager</value>
+  </data>
+  <data name="SoftwareDeveloper" xml:space="preserve">
+    <value>Software Developer</value>
+  </data>
 </root>
