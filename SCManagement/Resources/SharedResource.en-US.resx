@@ -524,4 +524,34 @@
   <data name="SLOGAN" xml:space="preserve">
     <value>Manage your club with precision: scmanagement</value>
   </data>
+  <data name="Clubs" xml:space="preserve">
+    <value>Clubs</value>
+  </data>
+  <data name="Create a club" xml:space="preserve">
+    <value>Create a club</value>
+  </data>
+  <data name="Dark mode" xml:space="preserve">
+    <value>Dark mode</value>
+  </data>
+  <data name="Home" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="Join with code" xml:space="preserve">
+    <value>Join with code</value>
+  </data>
+  <data name="Logout" xml:space="preserve">
+    <value>Logout</value>
+  </data>
+  <data name="My Club" xml:space="preserve">
+    <value>My Club</value>
+  </data>
+  <data name="Search club" xml:space="preserve">
+    <value>Search club</value>
+  </data>
+  <data name="Settings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="Wallet" xml:space="preserve">
+    <value>Wallet</value>
+  </data>
 </root>

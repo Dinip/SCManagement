@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <!DOCTYPE html>
 <html lang="en">
@@ -32,32 +33,32 @@
 
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">@StringLocalizer["Home"]</a>
                             <div class="dropdown nav-item">
-                                <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">Clubs</a>
+                                <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">@StringLocalizer["Clubs"]</a>
                                 <ul class="dropdown-menu nav-item" style="margin-top: 20px;">
                                     <li style="padding: 5px;">
-                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">MyClub</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">@StringLocalizer["My Club"]</a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">Search club</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">@StringLocalizer["Search club"]</a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Join"> Join with code</a>
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Join">@StringLocalizer["Join with code"] </a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Create"> Create a club</a>
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Create">@StringLocalizer["Create a club"] </a>
                                     </li>
                                 </ul>
                             </div>
 
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Settings">Settings</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Settings">@StringLocalizer["Settings"]</a>
                         }
                         else
                         {
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">Home</a>
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">Clubs</a>
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">About</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">@StringLocalizer["Home"]</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">@StringLocalizer["Clubs"]</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Privacy">@StringLocalizer["About Us"]</a>
                         }
                         <hr />
                         <div class="dropdown d-block d-md-none nav-item">
