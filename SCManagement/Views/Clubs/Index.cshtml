@@ -5,10 +5,22 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container-fluid p-5">
+<!-- Import Mapbox GL JS  -->
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css"
+      rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
+      type="text/css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin="" />
+
+<div class="container-fluid p-5" style="height:50%; align-self:center">
     <h2>@StringLocalizer["Clubs List"]</h2>
     <div class="row">
-        <div class="card card-to-dark col me-3" style="max-height:550px;">
+        <div class="card card-to-dark col-xs-12 col-sm-12 col-md-4 me-2" style="min-height:400px;">
             <div class="card-body" style="max-height:550px;">
                 <div class="input-group rounded">
                     <input type="search" class="form-control rounded" placeholder=@StringLocalizer["Search"] aria-label="Search" aria-describedby="search-addon" />
@@ -16,7 +28,7 @@
                         <i class="fas fa-search"></i>
                     </span>
                 </div>
-                
+
                 <div class="overflow-auto mt-4" style="max-height:400px;">
                     @foreach (var item in Model)
                     {
@@ -44,9 +56,29 @@
                 </div>
             </div>
         </div>
-        <div class="card col card-to-dark" style="max-height:550px; ">
-            <div class="card-body" >
+        <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7" style="min-height:400px;">
+            <div class="card-body">
+                <div id='map'></div>
+                <script src="~/js/Mapbox.js" asp-append-version="true"></script>
             </div>
         </div>
     </div>
 </div>
+
+
+<style>
+
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        border-radius: 20px;
+        height: 100%
+    }
+
+    .mapboxgl-canvas-container {
+        height: 100vh;
+    }
+</style>
