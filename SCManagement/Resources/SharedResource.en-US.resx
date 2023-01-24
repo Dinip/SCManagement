@@ -481,7 +481,9 @@
     <value>About Us</value>
   </data>
   <data name="About Us Content" xml:space="preserve">
-    <value>We are a group of students from the Polytechnic Institute of Setúbal</value>
+    <value>SCManagement is a sports management platform for clubs, this was developed by Computer Engineering students from the Polytechnic Institute of Setubal. With our application, clubs can manage and track all aspects of their sport, from player and team management to financial administration and event planning. We believe that technology can make club management more efficient and easier, allowing clubs to focus on what really matters: the sport.
+
+</value>
   </data>
   <data name="Contacts" xml:space="preserve">
     <value>Contacts</value>
