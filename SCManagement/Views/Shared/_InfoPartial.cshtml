@@ -1,17 +1,14 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 @if (SignInManager.IsSignedIn(User)){
     
 }else{
     <div class="row align-items-center mt-xl-5">
-        <p class="col-md-4 col-lg-6 text-to-dark"style="text-align:center"> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-        <img src="" class="col-md-4 col-lg-6" alt="NotDone" />
-    </div>
-    <div class="row align-items-center mt-xl-5">
-        <p class="col-md-4 col-lg-6 text-to-dark" id="text1" style="text-align:center"> "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-        <img src="" class="col-md-4 col-lg-6" alt="NotDone" />
+        <p class="col-md-4 col-lg-6 text-to-dark" style="text-align:center"> @StringLocalizer["NotDone"]</p>
+        <img src="~/img/under-construction-png_667893.png" class="col-md-4 col-lg-6" alt="NotDone" />
     </div>
 }
