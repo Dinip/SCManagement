@@ -521,4 +521,7 @@
   <data name="Pending_Save" xml:space="preserve">
     <value>Pending save</value>
   </data>
+  <data name="SLOGAN" xml:space="preserve">
+    <value>Manage your club with precision: scmanagement</value>
+  </data>
 </root>

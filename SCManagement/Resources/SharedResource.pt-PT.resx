@@ -451,4 +451,7 @@
   <data name="Pending_Save" xml:space="preserve">
     <value>Falta salvar</value>
   </data>
+  <data name="SLOGAN" xml:space="preserve">
+    <value>Gerencie seu clube com precisão: scmanagement</value>
+  </data>
 </root>
