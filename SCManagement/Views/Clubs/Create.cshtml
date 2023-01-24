@@ -34,8 +34,9 @@
                     <div class="col-lg-6 col-12">
                         <form asp-action="Create">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="form-group">
+                            <div class="form-floating">
                                 <input id="idName" asp-for="Name" placeholder="Name" class="form-control" />
+                                <label asp-for="Name" class="control-label"></label>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="form-group mt-2">
