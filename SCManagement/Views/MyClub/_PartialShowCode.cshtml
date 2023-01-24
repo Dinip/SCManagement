@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Models.CodeClub
+@inject IStringLocalizer<SharedResource> stringLocalizer
 
 <div>
     <h4>CodeClub</h4>
@@ -6,11 +7,11 @@
 
     @if (ViewBag.ApprovedCodeStatus == true)
     {
-        <p>Code successfully approved</p>
+        <p>@stringLocalizer["codeapproved"]</p>
     }
     else if (ViewBag.ApprovedCodeStatus == false)
     {
-        <p>Error approving code</p>
+        <p>@stringLocalizer["Error approving code"]</p>
     }
 
     <dl class="row">
@@ -64,7 +65,7 @@
         </dd>
         @if (!Model.Approved && ViewBag.IsAdmin)
         {
-            <a href="/Clubs/Codes?approveCode=@Model.Id">Approve</a>
+            <a href="/Clubs/Codes?approveCode=@Model.Id">@stringLocalizer["Approve"]</a>
         }
         
         @if (ViewBag.QRCode != null)

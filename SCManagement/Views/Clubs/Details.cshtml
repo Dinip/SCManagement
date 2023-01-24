@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Models.Club
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "Details";
@@ -9,7 +10,7 @@
         <div class="row text-end">
             <form asp-action="Associate">
                 <input asp-for="Id" class="form-control" hidden />
-                <input type="submit" class="btn signin me-5 mt-2 btn-primary @ViewBag.btnClasses" value="@ViewBag.btnValue"></input>
+                <input type="submit" class="btn signin me-5 mt-2 btn-primary @ViewBag.btnClasses" value="@StringLocalizer[ViewBag.btnValue]"></input>
             </form>
         </div>
         <div class="row">
@@ -30,11 +31,11 @@
         <div class="card col me-5 shadow" style="border-radius:20px;">
             <div class="card-body" style="border-radius:20px;">
                 <div class="row">
-                    <div class="col-3 ms-4"><h3>About:</h3></div>
+                    <div class="col-3 ms-4"><h3>@StringLocalizer["About Us"]:</h3></div>
                     <div class="col-8 mt-1">@Html.DisplayFor(model => model.About)</div>
                 </div>
                 <div class="row mt-5 mb-5">
-                    <div class="col-3 ms-4"><h3>Modalities:</h3></div>
+                    <div class="col-3 ms-4"><h3>@StringLocalizer["Modalities"]:</h3></div>
                     <div class="col-auto mt-2">
                         @String.Join(", ", Model.Modalities.Select(s => s.Name))
                     </div>
@@ -43,7 +44,7 @@
         </div>
         <div class="card col-3 shadow" style="border-radius:20px;">
             <div class="card-body">
-                <h4 class="mt-4">Contacts</h4>
+                <h4 class="mt-4">@StringLocalizer["Contacts"]</h4>
                 <div class="row mt-3">
                     <div class="col-2">
                         <i class="fa-solid fa-envelope"></i>

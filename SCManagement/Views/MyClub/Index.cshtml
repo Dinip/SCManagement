@@ -1,4 +1,6 @@
 ﻿@model Club?;
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
 @{
     ViewData["Title"] = "My Club";
 }
@@ -28,14 +30,14 @@
                     </defs>
                 </svg>
                 <br />
-                <h2>You dont have your account associated to a club</h2>
+                <h2>@StringLocalizer["associated"]</h2>
                 <br />
                 <a type="button" class="btn btn1 text-white" asp-controller="Clubs" asp-area="" asp-action="Join">
-                    Join a club
+                    @StringLocalizer["Join a club"]
                 </a>
                 <br />
                 <a type="button" class="btn btn1 mt-3 text-white" asp-controller="Clubs" asp-area="" asp-action="Create">
-                    Create a club
+                    @StringLocalizer["Create a club"]
                 </a>
             </div>
         }
@@ -44,25 +46,25 @@
             <div class="text-center" style="margin-top:15%;">
                 <h1 class="display-4 mb-5">Welcome to your club @Model.Name</h1>
                 <div class="d-flex justify-content-between">
-                    <a class="btn btn1 btn-primary btn-lg" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">Public Page</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">@StringLocalizer["Public Page"]</a>
                     @if ((int)ViewBag.RoleId == 50)
                     {
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Edit">Edit</a>
+                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Edit">@StringLocalizer["Edit"]</a>
                     }
                     @if ((int)ViewBag.RoleId >= 40)
                     {
                         <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="StaffList">Staff</a>
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="PartnersList">Partners</a>
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Codes">Codes</a>
+                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="PartnersList">@StringLocalizer["Partners"]</a>
+                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Codes">@StringLocalizer["Codes"]</a>
                     }
                     @if ((int)ViewBag.RoleId >= 30)
                     {
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="AthletesList">Athletes</a>
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="TeamList">Teams</a>
+                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="AthletesList">@StringLocalizer["Athletes"]</a>
+                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="TeamList">@StringLocalizer["Teams"]</a>
                     }
                     @if ((int)ViewBag.RoleId == 20)
                     {
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="MyTeams">MyTeams</a>
+                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="MyTeams">@StringLocalizer["MyTeams"]</a>
                     }
                 </div>
 

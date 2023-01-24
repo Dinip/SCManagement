@@ -524,45 +524,150 @@
   <data name="SLOGAN" xml:space="preserve">
     <value>Manage your club with precision</value>
   </data>
+  <data name="Approve" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Approved</value>
+  </data>
+  <data name="associated" xml:space="preserve">
+    <value>You dont have your account associated to a club</value>
+  </data>
+  <data name="Athletes" xml:space="preserve">
+    <value>Athletes</value>
+  </data>
+  <data name="Become partner" xml:space="preserve">
+    <value>Become partner</value>
+  </data>
   <data name="Change Email" xml:space="preserve">
     <value>Change Email</value>
   </data>
   <data name="Change Password" xml:space="preserve">
     <value>Change Password</value>
   </data>
+  <data name="Choose modalities" xml:space="preserve">
+    <value>Choose modalities...</value>
+  </data>
+  <data name="Club" xml:space="preserve">
+    <value>Club</value>
+  </data>
+  <data name="Club Name" xml:space="preserve">
+    <value>Club Name</value>
+  </data>
   <data name="Clubs" xml:space="preserve">
     <value>Clubs</value>
+  </data>
+  <data name="Clubs List" xml:space="preserve">
+    <value>Clubs List</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Code</value>
+  </data>
+  <data name="codeapproved" xml:space="preserve">
+    <value>Code successfully approved</value>
+  </data>
+  <data name="Codes" xml:space="preserve">
+    <value>Codes</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Create</value>
   </data>
   <data name="Create a club" xml:space="preserve">
     <value>Create a club</value>
   </data>
+  <data name="Create New" xml:space="preserve">
+    <value>Create New</value>
+  </data>
+  <data name="CreatedByUser" xml:space="preserve">
+    <value>Created by user</value>
+  </data>
   <data name="Dark mode" xml:space="preserve">
     <value>Dark mode</value>
+  </data>
+  <data name="Date Created" xml:space="preserve">
+    <value>Criation date </value>
+  </data>
+  <data name="Date Expired" xml:space="preserve">
+    <value>Expired date </value>
+  </data>
+  <data name="Date Used" xml:space="preserve">
+    <value>Used date</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Details</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Edit</value>
+  </data>
+  <data name="Error approving code" xml:space="preserve">
+    <value>Error approving code</value>
   </data>
   <data name="Home" xml:space="preserve">
     <value>Home</value>
   </data>
+  <data name="Join a club" xml:space="preserve">
+    <value>Join a club</value>
+  </data>
   <data name="Join with code" xml:space="preserve">
     <value>Join with code</value>
+  </data>
+  <data name="JoinDate" xml:space="preserve">
+    <value>Join date</value>
   </data>
   <data name="Logout" xml:space="preserve">
     <value>Logout</value>
   </data>
+  <data name="Modalities" xml:space="preserve">
+    <value>Modalities</value>
+  </data>
   <data name="My Club" xml:space="preserve">
     <value>My Club</value>
+  </data>
+  <data name="MyTeams" xml:space="preserve">
+    <value>My Teams</value>
   </data>
   <data name="NotDone" xml:space="preserve">
     <value>At the moment, as we are in the development phase, we are not yet able to show you our main features.
 We apologize for the inconvenience.</value>
   </data>
+  <data name="Partners" xml:space="preserve">
+    <value>Partners</value>
+  </data>
+  <data name="Public Page" xml:space="preserve">
+    <value>Public Page</value>
+  </data>
+  <data name="Remove partner" xml:space="preserve">
+    <value>Remove partner</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Role</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Save</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Search</value>
   </data>
   <data name="Search club" xml:space="preserve">
     <value>Search club</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Settings</value>
+  </data>
+  <data name="Team Name" xml:space="preserve">
+    <value>Team Name</value>
+  </data>
+  <data name="Teams" xml:space="preserve">
+    <value>Teams</value>
+  </data>
+  <data name="Trainer" xml:space="preserve">
+    <value>Trainer</value>
+  </data>
+  <data name="UsedByUser" xml:space="preserve">
+    <value>Used by user</value>
+  </data>
+  <data name="User" xml:space="preserve">
+    <value>User</value>
   </data>
   <data name="Wallet" xml:space="preserve">
     <value>Wallet</value>
