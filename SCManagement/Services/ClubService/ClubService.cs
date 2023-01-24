@@ -37,7 +37,7 @@ namespace SCManagement.Services.ClubService
         /// <param name="club">club to be created</param>
         /// <param name="userId">user who created the club</param>
         /// <returns>A new club</returns>
-        public async Task<Club> CreateClub(Club club, string userId, int addressId)
+        public async Task<Club> CreateClub(Club club, string userId)
         {
             //Create a new club
             Club c = new Club
@@ -45,7 +45,7 @@ namespace SCManagement.Services.ClubService
                 Name = club.Name,
                 Modalities = GetModalities().Result.Where(m => club.ModalitiesIds.Contains(m.Id)).ToList(),
                 CreationDate = DateTime.Now,
-                AddressId = addressId,
+                //AddressId = addressId,
             };
 
             //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
@@ -76,30 +76,30 @@ namespace SCManagement.Services.ClubService
             return await _context.Club
                 .Include(c => c.Modalities)
                 .Include(c => c.Photography)
-                .Include(c => c.Address)
-                .Include(c => c.Address.County)
-                .ThenInclude(c => c.District)
-                .ThenInclude(c => c.Country)
-                .Select(s => new Club
-                {
-                    Id = s.Id,
-                    Name = s.Name,
-                    Email = s.Email,
-                    PhoneNumber = s.PhoneNumber,
-                    About = s.About,
-                    Photography = s.Photography,
-                    Modalities = s.Modalities,
-                    Address = new Address
-                    {
-                        Street = s.Address.Street,
-                        Number = s.Address.Number,
-                        ZipCode = s.Address.ZipCode,
-                        County = new County
-                        {
-                            Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-                        }
-                    }
-                })
+                //.Include(c => c.Address)
+                //.Include(c => c.Address.County)
+                //.ThenInclude(c => c.District)
+                //.ThenInclude(c => c.Country)
+                //.Select(s => new Club
+                //{
+                //    Id = s.Id,
+                //    Name = s.Name,
+                //    Email = s.Email,
+                //    PhoneNumber = s.PhoneNumber,
+                //    About = s.About,
+                //    Photography = s.Photography,
+                //    Modalities = s.Modalities,
+                //    //Address = new Address
+                //    //{
+                //    //    Street = s.Address.Street,
+                //    //    Number = s.Address.Number,
+                //    //    ZipCode = s.Address.ZipCode,
+                //    //    County = new County
+                //    //    {
+                //    //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
+                //    //    }
+                //    //}
+                //})
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -122,10 +122,10 @@ namespace SCManagement.Services.ClubService
             return await _context.Club
                .Include(c => c.Modalities)
                .Include(c => c.Photography)
-               .Include(c => c.Address)
-               .Include(c => c.Address.County)
-               .ThenInclude(c => c.District)
-               .ThenInclude(c => c.Country)
+               //.Include(c => c.Address)
+               //.Include(c => c.Address.County)
+               //.ThenInclude(c => c.District)
+               //.ThenInclude(c => c.Country)
                .Select(s =>
                new Club
                {
@@ -136,20 +136,25 @@ namespace SCManagement.Services.ClubService
                    About = s.About,
                    Photography = s.Photography,
                    Modalities = s.Modalities,
-                   Address = new Address
-                   {
-                       Street = s.Address.Street,
-                       Number = s.Address.Number,
-                       ZipCode = s.Address.ZipCode,
-                       County = new County
-                       {
-                           Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-                       }
-                   }
+                   //Address = new Address
+                   //{
+                   //    Street = s.Address.Street,
+                   //    Number = s.Address.Number,
+                   //    ZipCode = s.Address.ZipCode,
+                   //    County = new County
+                   //    {
+                   //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
+                   //    }
+                   //}
                })
                .ToListAsync();
         }
 
+        /// <summary>
+        /// Persists the changes made to a club in the database
+        /// </summary>
+        /// <param name="club"></param>
+        /// <returns>Updated Club</returns>
         public async Task<Club> UpdateClub(Club club)
         {
             _context.Club.Update(club);
@@ -589,10 +594,10 @@ namespace SCManagement.Services.ClubService
             }
         }
 
-        public void UpdateClubModalities(Club club, IEnumerable<int> ModalitiesIds)
+        public async Task UpdateClubModalities(Club club, IEnumerable<int> ModalitiesIds)
         {
             //new modalities choosed
-            List<Modality> newModalities = GetModalities().Result.Where(m => ModalitiesIds.Contains(m.Id)).ToList();
+            List<Modality> newModalities = (await GetModalities()).Where(m => ModalitiesIds.Contains(m.Id)).ToList();
 
             //remove from club modalities which are not in the new modalities list
             foreach (Modality m in club.Modalities.ToList())

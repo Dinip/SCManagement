@@ -112,8 +112,8 @@ namespace SCManagement.Controllers
                 PhoneNumber = club.PhoneNumber,
                 About = club.About,
                 CreationDate = club.CreationDate,
-                AddressId = club.AddressId,
-                Address = club.Address,
+                //AddressId = club.AddressId,
+                //Address = club.Address,
                 ModalitiesIds = ClubModalitiesIds,
                 PhotographyId = club.PhotographyId,
                 Photography = club.Photography,
@@ -133,7 +133,7 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club, int CountyId, string Street, string ZipCode, string Number)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
             if (!ModelState.IsValid) return View(club);
@@ -155,7 +155,7 @@ namespace SCManagement.Controllers
             var actualClub = await _clubService.GetClub(role.ClubId);
             if (actualClub == null) return View("CustomError", "Error_NotFound");
 
-            _clubService.UpdateClubModalities(actualClub, club.ModalitiesIds!);
+            await _clubService.UpdateClubModalities(actualClub, club.ModalitiesIds!);
 
             //updates to the settings of club
             actualClub.Name = club.Name;
@@ -165,7 +165,7 @@ namespace SCManagement.Controllers
 
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
 
-            _clubService.UpdateClubAddress((int)actualClub.AddressId, CountyId, Street, ZipCode, Number);
+            //_clubService.UpdateClubAddress((int)actualClub.AddressId, CountyId, Street, ZipCode, Number);
 
             await _clubService.UpdateClub(actualClub);
 
@@ -198,9 +198,9 @@ namespace SCManagement.Controllers
 
             public BlobDto? Photography { get; set; }
 
-            public int? AddressId { get; set; }
+            //public int? AddressId { get; set; }
 
-            public Address? Address { get; set; }
+            //public Address? Address { get; set; }
 
             [Display(Name = "Modalities")]
             [Required(ErrorMessage = "Error_Required")]
