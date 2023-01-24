@@ -1,36 +1,57 @@
 ﻿@model SCManagement.Controllers.MyClubController.TeamModel
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "CreateTeam";
 }
 
-<h1>CreateTeam</h1>
-
-<h4>Team</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="CreateTeam">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+<section class="text-center">
+    <!-- Background image -->
+    <div class="p-5 bg-image" style="
+            background-image: url('/img/baseball_stadium.jpg');
+            background-position:center;
+            height: 300px;
+            "></div>
+    <div class="container">
+        <div class="card mx-4 mx-md-5 shadow-5-strong associate-show" style="
+            margin-top: -100px;
+            background: hsla(0, 0%, 85%, 0.3);
+            background-position:center;
+            backdrop-filter: blur(30px);
+            border-radius:20px;
+            ">
+            <div class="card-body py-5 px-md-5">
+               <div class="position-absolute top-0 start-0 ps-2 pt-2">
+                    <a class="nav-link fw-bold text-black fs-4 fw-bold" asp-controller="Home" asp-action="Index">@StringLocalizer["Back"]</a>
+                </div>
+                <div class="row d-flex mt-5 justify-content-center">
+                    <form asp-action="CreateTeam">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group w-auto">
+                            <h3><strong>Create Team</strong></h3>
+                            <div class="form-group mt-3">
+                                <label asp-for="Name" class="control-label"></label>
+                                <div class="d-flex justify-content-center">
+                                    <input asp-for="Name" class="form-control w-auto" />
+                                </div>
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            <div class="form-group mt-3">
+                                <label asp-for="ModalityId" class="control-label"></label>
+                                <div class="d-flex justify-content-center">
+                                    <select asp-for="ModalityId" class="form-control w-auto" asp-items="ViewBag.Modalities"></select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group mt-3">
+                            <input type="submit" value="Create" class="btn btn-primary" />
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="ModalityId" class="control-label"></label>
-                <select asp-for="ModalityId" class ="form-control" asp-items="ViewBag.Modalities"></select>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
+</section>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
