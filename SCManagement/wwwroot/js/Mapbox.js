@@ -8,7 +8,7 @@ let map = new mapboxgl.Map({
     // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
     style: 'mapbox://styles/mapbox/streets-v12', // style URL
     zoom: 10, // starting zoom
-    center: [-77.432, 25.0306] // starting position,
+    center: [-8.8926, 38.5243] // starting position,
 });
 
 
@@ -35,7 +35,7 @@ function loadMap() {
                                 'type': 'Feature',
                                 'geometry': {
                                     'type': 'Point',
-                                    'coordinates': [-77.4144, 25.0759]
+                                    'coordinates': [-8.8926,38.5243]
                                 }
                             }
                         ]
