@@ -655,23 +655,74 @@
   <data name="SLOGAN" xml:space="preserve">
     <value>Gere o teu clube com precisão</value>
   </data>
+  <data name="Approved" xml:space="preserve">
+    <value>Aprovação</value>
+  </data>
+  <data name="associated" xml:space="preserve">
+    <value>Não tens a tua conta associada a um clube</value>
+  </data>
+  <data name="Athletes" xml:space="preserve">
+    <value>Atletas</value>
+  </data>
+  <data name="Become partner" xml:space="preserve">
+    <value>Tornar-se sócio</value>
+  </data>
   <data name="Change Email" xml:space="preserve">
     <value>Mudar email</value>
   </data>
   <data name="Change Password" xml:space="preserve">
     <value>Mudar palavra-passe</value>
   </data>
+  <data name="Choose modalities" xml:space="preserve">
+    <value>Escolha as modalidades...</value>
+  </data>
+  <data name="Club" xml:space="preserve">
+    <value>Clube</value>
+  </data>
   <data name="Clubs" xml:space="preserve">
     <value>Clubes</value>
+  </data>
+  <data name="Clubs List" xml:space="preserve">
+    <value>Lista de clubes</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="Codes" xml:space="preserve">
+    <value>Códigos</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Criar</value>
   </data>
   <data name="Create a club" xml:space="preserve">
     <value>Cria um clube</value>
   </data>
+  <data name="CreatedByUser" xml:space="preserve">
+    <value>Criado pelo utilizador</value>
+  </data>
   <data name="Dark mode" xml:space="preserve">
     <value>Modo escuro</value>
   </data>
+  <data name="Date Created" xml:space="preserve">
+    <value>Data de criação</value>
+  </data>
+  <data name="Date Expired" xml:space="preserve">
+    <value>Data de expiração</value>
+  </data>
+  <data name="Date Used" xml:space="preserve">
+    <value>Data de utilização</value>
+  </data>
+  <data name="Details" xml:space="preserve">
+    <value>Detalhes</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Editar</value>
+  </data>
   <data name="Home" xml:space="preserve">
     <value>Inicio</value>
+  </data>
+  <data name="Join a club" xml:space="preserve">
+    <value>Junta-te a um clube</value>
   </data>
   <data name="Join with code" xml:space="preserve">
     <value>Juntar-se com código</value>
@@ -679,21 +730,48 @@
   <data name="Logout" xml:space="preserve">
     <value>Terminar sessão</value>
   </data>
+  <data name="Modalities" xml:space="preserve">
+    <value>Modalidades</value>
+  </data>
   <data name="My Club" xml:space="preserve">
     <value>Meu clube</value>
+  </data>
+  <data name="MyTeams" xml:space="preserve">
+    <value>Minhas Equipas</value>
   </data>
   <data name="NotDone" xml:space="preserve">
     <value>De momento, como estamos em fase de desenvolvimento ainda não conseguimos mostrar as nossas principais funcionalidades.
 Pedimos desculpa pelo incomodo.</value>
   </data>
+  <data name="Partners" xml:space="preserve">
+    <value>Sócios</value>
+  </data>
+  <data name="Public Page" xml:space="preserve">
+    <value>Página pública</value>
+  </data>
+  <data name="Remove partner" xml:space="preserve">
+    <value>Remover sócio</value>
+  </data>
+  <data name="Role" xml:space="preserve">
+    <value>Função</value>
+  </data>
   <data name="Save" xml:space="preserve">
     <value>Salvar</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Procurar</value>
   </data>
   <data name="Search club" xml:space="preserve">
     <value>Procurar por clube</value>
   </data>
   <data name="Settings" xml:space="preserve">
     <value>Definições</value>
+  </data>
+  <data name="Teams" xml:space="preserve">
+    <value>Equipas</value>
+  </data>
+  <data name="UsedByUser" xml:space="preserve">
+    <value>Usado pelo utilizador</value>
   </data>
   <data name="Wallet" xml:space="preserve">
     <value>Conta corrente</value>
