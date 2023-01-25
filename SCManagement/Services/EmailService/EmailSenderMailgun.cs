@@ -19,6 +19,15 @@ namespace SCManagement.Services.EmailService
 
         public AuthMessageSenderOptions Options { get; } //Set with Secret Manager.
 
+        /// <summary>
+        /// Sends an email to a given email address with a given subject 
+        /// and message content using mailgun
+        /// </summary>
+        /// <param name="toEmail"></param>
+        /// <param name="subject"></param>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task SendEmailAsync(string toEmail, string subject, string message)
         {
             if (string.IsNullOrEmpty(Options.AuthKey))
@@ -53,6 +62,4 @@ namespace SCManagement.Services.EmailService
                                    : $"Failure Email to {toEmail}");
         }
     }
-
-
 }

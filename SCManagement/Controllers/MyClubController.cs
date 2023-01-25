@@ -22,6 +22,7 @@ namespace SCManagement.Controllers
     /// This class represents the MyClub Controller
     /// </summary>
     /// 
+    [Authorize]
     public class MyClubController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -82,7 +83,6 @@ namespace SCManagement.Controllers
         /// </summary>
         /// <param name="id">club id to be edited</param>
         /// <returns>Edit View</returns>
-        [Authorize]
         public async Task<IActionResult> Edit()
         {
             //get id of the user
@@ -131,7 +131,6 @@ namespace SCManagement.Controllers
         /// <param name="id">id the clube to be edited</param>
         /// <param name="club">club to be edited</param>
         /// <returns>View Index</returns>
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
@@ -217,7 +216,6 @@ namespace SCManagement.Controllers
         /// </summary>
         /// <param name="clubId"></param>
         /// <returns>view PartenersList</returns>
-        [Authorize]
         public async Task<IActionResult> PartnersList()
         {
             //get id of the user
@@ -234,7 +232,11 @@ namespace SCManagement.Controllers
             return View(await _clubService.GetClubPartners(role.ClubId));
         }
 
-        [Authorize]
+        /// <summary>
+        /// Gets the staff list of the club based on the 
+        /// selected club infered by the requester user
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> StaffList()
         {
             //get id of the user
@@ -251,7 +253,11 @@ namespace SCManagement.Controllers
             return View(await _clubService.GetClubStaff(role.ClubId));
         }
 
-        [Authorize]
+        /// <summary>
+        /// Gets the athlete list of the club based on the 
+        /// selected club infered by the requester user
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> AthletesList()
         {
             //get id of the user
@@ -268,7 +274,12 @@ namespace SCManagement.Controllers
             return View(await _clubService.GetClubAthletes(role.ClubId));
         }
 
-        [Authorize]
+        /// <summary>
+        /// Removes a user from the club
+        /// </summary>
+        /// <param name="usersRoleClubId"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveUser(int? usersRoleClubId, string? page)
@@ -302,7 +313,10 @@ namespace SCManagement.Controllers
             return RedirectToAction(page);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Creates a code to access the club (view)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> CreateCode()
         {
             //get id of the user
@@ -319,7 +333,11 @@ namespace SCManagement.Controllers
             return PartialView("_PartialCreateCode");
         }
 
-        [Authorize]
+        /// <summary>
+        /// Creates a code to access the club (post request)
+        /// </summary>
+        /// <param name="codeClub"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCode([Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
@@ -367,7 +385,12 @@ namespace SCManagement.Controllers
             public DateTime? ExpireDate { get; set; }
         }
 
-        [Authorize]
+        /// <summary>
+        /// Gets the list of codes for the club with status
+        /// </summary>
+        /// <param name="approveCode"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Codes(string? approveCode, int? code)
         {
             //get id of the user
@@ -400,13 +423,12 @@ namespace SCManagement.Controllers
             return View(await _clubService.GetCodes(role.ClubId));
         }
 
-        [Authorize]
-        public IActionResult Join(string? code)
-        {
-            return View(new CodeClub { Code = code });
-        }
-
-        [Authorize]
+        /// <summary>
+        /// Sends an email with the code to access the club
+        /// </summary>
+        /// <param name="codeId"></param>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpPost]
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SendCodeEmail(int codeId, string email)
@@ -425,7 +447,10 @@ namespace SCManagement.Controllers
             return RedirectToAction("Codes", new { id = role.ClubId });
         }
 
-        [Authorize]
+        /// <summary>
+        /// Gets the list os teams in a club
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> TeamList()
         {
             //get id of the user
@@ -442,7 +467,10 @@ namespace SCManagement.Controllers
             return View(await _teamService.GetTeams(role.ClubId));
         }
 
-        [Authorize]
+        /// <summary>
+        /// Create a new team (view)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> CreateTeam()
         {
             //get id of the user
@@ -460,11 +488,10 @@ namespace SCManagement.Controllers
         }
 
         /// <summary>
-        /// This method returns the Create View
+        /// Create a new team (post)
         /// </summary>
         /// <param name="team">Clube to be created</param>
         /// <returns>Index View</returns>
-        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateTeam([Bind("Id,Name,ModalityId")] TeamModel team)
@@ -498,7 +525,12 @@ namespace SCManagement.Controllers
             public int ModalityId { get; set; }
         }
 
-        [Authorize]
+
+        /// <summary>
+        /// Edit team view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> EditTeam(int? id)
         {
             //get id of the user
@@ -526,8 +558,12 @@ namespace SCManagement.Controllers
             return View(team);
         }
 
-
-        [Authorize]
+        /// <summary>
+        /// Saves edited team
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="team"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,ModalityId")] TeamModel team)
@@ -561,8 +597,12 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(TeamList));
         }
 
-
-        [Authorize]
+        /// <summary>
+        /// Gets the partial view with the list of athletes available
+        /// to be added to a team
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> AddTeamAthletes(int id)
         {
             //get id of the user
@@ -589,7 +629,12 @@ namespace SCManagement.Controllers
             return PartialView("_PartialAddTeamAthletes", avaliableAthletes);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Adds an athlete to a team (post)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="selectedAthletes"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTeamAthletes(int id, List<string> selectedAthletes)
@@ -615,7 +660,13 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(EditTeam), new { id = team.Id });
         }
 
-        [Authorize]
+        /// <summary>
+        /// Remove an athlete from a team
+        /// </summary>
+        /// <param name="athleteId"></param>
+        /// <param name="teamId"></param>
+        /// <param name="page"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> RemoveAtheleFromTeam(string? athleteId, int? teamId, string? page)
@@ -648,7 +699,11 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(EditTeam), new { id = team.Id });
         }
 
-        [Authorize]
+        /// <summary>
+        /// Gets the team details and athletes
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> TeamDetails(int? id)
         {
             Team team = await _teamService.GetTeam((int)id);
@@ -666,7 +721,11 @@ namespace SCManagement.Controllers
             return View(team);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Deletes a team
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteTeam(int? id)
@@ -689,10 +748,12 @@ namespace SCManagement.Controllers
             await _teamService.DeleteTeam(team);
 
             return RedirectToAction(nameof(TeamList));
-
         }
 
-        [Authorize]
+        /// <summary>
+        /// Gets the teams that an athlete is in
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> MyTeams()
         {
             //get id of the user
@@ -709,7 +770,12 @@ namespace SCManagement.Controllers
             return View(teams);
         }
 
-        [Authorize]
+        /// <summary>
+        /// Gets the user details in a partial view to be used
+        /// in a modal
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> UserDetails(string id)
         {
             if (id == null) return PartialView("_CustomErrorPartial", "Error_NotFound");

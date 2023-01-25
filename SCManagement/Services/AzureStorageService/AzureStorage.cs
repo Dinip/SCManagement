@@ -7,8 +7,6 @@ namespace SCManagement.Services.AzureStorageService
 {
     public class AzureStorage : IAzureStorage
     {
-        #region Dependency Injection / Constructor
-
         private readonly string _storageConnectionString;
         private readonly string _storageContainerName;
         private readonly string _cdnUrl;
@@ -22,8 +20,11 @@ namespace SCManagement.Services.AzureStorageService
             _logger = logger;
         }
 
-        #endregion
-
+        /// <summary>
+        /// Handles the upload of a file to Azure Blob Storage
+        /// </summary>
+        /// <param name="blob"></param>
+        /// <returns>An object with the information and url to the file</returns>
         public async Task<BlobResponseDto> UploadAsync(IFormFile blob)
         {
             // Create new upload response object that we can return to the requesting method
@@ -81,6 +82,11 @@ namespace SCManagement.Services.AzureStorageService
             return response;
         }
 
+        /// <summary>
+        /// Deletes a file from Azure Blob Storage
+        /// </summary>
+        /// <param name="FileUUID"></param>
+        /// <returns>An object with the deleted information</returns>
         public async Task<BlobResponseDto> DeleteAsync(string FileUUID)
         {
             BlobContainerClient client = new BlobContainerClient(_storageConnectionString, _storageContainerName);
@@ -102,7 +108,6 @@ namespace SCManagement.Services.AzureStorageService
 
             // Return a new BlobResponseDto to the requesting method
             return new BlobResponseDto { Error = false, Status = $"File: {FileUUID} has been successfully deleted." };
-
         }
     }
 }

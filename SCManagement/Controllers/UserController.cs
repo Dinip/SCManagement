@@ -26,6 +26,11 @@ namespace SCManagement.Controllers
         }
 
 
+        /// <summary>
+        /// Updates the selected role for the user
+        /// </summary>
+        /// <param name="usersClubRoleId"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]

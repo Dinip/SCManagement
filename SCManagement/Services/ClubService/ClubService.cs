@@ -32,7 +32,8 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to create a club
+        /// Saves the created club and assign the user to the club
+        /// with the club admin role
         /// </summary>
         /// <param name="club">club to be created</param>
         /// <param name="userId">user who created the club</param>
@@ -67,10 +68,10 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allows to get a desired club
+        /// Gets a club by its id
         /// </summary>
         /// <param name="id">club id to find</param>
-        /// <returns>A wanted club</returns>
+        /// <returns>Found club or null</returns>
         public async Task<Club?> GetClub(int id)
         {
             return await _context.Club
@@ -104,17 +105,7 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allows to get club id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns>id of the club</returns>
-        public int GetClubId(int id)
-        {
-            return _context.UsersRoleClub.Where(u => u.Id == id).FirstOrDefault().ClubId;
-        }
-
-        /// <summary>
-        /// Allows to get all clubs
+        /// Gets all clubs available
         /// </summary>
         /// <returns>All clubs</returns>
         public async Task<IEnumerable<Club>> GetClubs()
@@ -193,14 +184,15 @@ namespace SCManagement.Services.ClubService
             return _context.CodeClub.Any(c => c.Code == code);
         }
 
+
         /// <summary>
         /// Generates a code to access a club and saves it
+        /// If the code is created by a secretary user for another
+        /// secretary user, an email is sent to the club admin
+        /// to ask for approve
         /// </summary>
-        /// <param name="clubId">id of the club to generate the code</param>
-        /// <param name="creatorId">id of the person who created the code</param>
-        /// <param name="roleId">id of the role that the code will assign</param>
-        /// <param name="expireDate">expire date of the code</param>
-        /// <returns>code</returns>
+        /// <param name="codeToCreate"></param>
+        /// <returns>Created code to access the club</returns>
         public async Task<CodeClub> GenerateCode(CodeClub codeToCreate)
         {
             string code = generateCode();
@@ -240,6 +232,12 @@ namespace SCManagement.Services.ClubService
             return rolesId;
         }
 
+        /// <summary>
+        /// Gets the role of a given user in a given club
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public int GetUserRoleInClub(string userId, int clubId)
         {
             return _context.UsersRoleClub.Where(f => f.UserId == userId && f.ClubId == clubId).Select(r => r.RoleId).FirstOrDefault();
@@ -247,7 +245,7 @@ namespace SCManagement.Services.ClubService
 
 
         /// <summary>
-        /// Allow to get the admin of the club
+        /// Gets the admin user of a given club
         /// </summary>
         /// <param name="clubId">id of the club to get the admin</param>
         /// <returns>admin user of the club</returns>
@@ -256,6 +254,16 @@ namespace SCManagement.Services.ClubService
             return _context.UsersRoleClub.Where(r => r.ClubId == clubId && r.RoleId == 50).Include(r => r.User).Select(r => r.User).FirstOrDefault()!;
         }
 
+        /// <summary>
+        /// Sends an email to the club admin with a given subject and body
+        /// and replaces the values in the body with the values in the dictionary
+        /// when the email content is dinamic
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="keySubject"></param>
+        /// <param name="keyContent"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
         private async Task sendEmailToClubAdmin(int clubId, string keySubject, string keyContent, Dictionary<string, string>? values = null)
         {
             User admin = getClubAdmin(clubId);
@@ -272,14 +280,21 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to get all roles of the club
+        /// Gets all the roles available to be assigned 
+        /// to a user in a club
         /// </summary>
-        /// <returns></returns>
+        /// <returns>list of roles</returns>
         public Task<IEnumerable<RoleClub>> GetRoles()
         {
             return Task.FromResult(_context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).AsEnumerable()); ;
         }
 
+        /// <summary>
+        /// Gets all the generated codes for a given club
+        /// with the respective status
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public Task<IEnumerable<CodeClub>> GetCodes(int clubId)
         {
             return Task.FromResult(_context.CodeClub
@@ -303,6 +318,11 @@ namespace SCManagement.Services.ClubService
                 .AsEnumerable());
         }
 
+        /// <summary>
+        /// Gets a code by its id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<CodeClub?> GetCodeWithInfos(int id)
         {
             return await _context.CodeClub
@@ -329,7 +349,7 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to know if a user are in the club
+        /// Checks if a given user has any role in a given club
         /// </summary>
         /// <param name="userId">user id to be verified</param>
         /// <param name="clubId">club verifying user</param>
@@ -343,6 +363,13 @@ namespace SCManagement.Services.ClubService
             return _context.UsersRoleClub.Any(f => f.UserId == userId && f.ClubId == clubId);
         }
 
+        /// <summary>
+        /// Assigns the usage of a code to a user and performs the verifications
+        /// needed to check if the code is valid and assigns the role to the user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public async Task<KeyValuePair<bool, string>> UseCode(string userId, CodeClub code)
         {
             if (code == null)
@@ -387,7 +414,7 @@ namespace SCManagement.Services.ClubService
 
 
         /// <summary>
-        /// Allow to know if the user is a admin of the club
+        /// Given a role in a club, check if is admin
         /// </summary>
         /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is admin of the club, false if not</returns>
@@ -397,7 +424,7 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to know if the user is a secretary of the club
+        /// Given a role in a club, check if is secretary
         /// </summary>
         /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is secretary of the club, false if not</returns>
@@ -407,7 +434,7 @@ namespace SCManagement.Services.ClubService
 
         }
         /// <summary>
-        /// Allow to know if the user is a secretary of the club
+        /// Check if a give user is secreatary in a given club
         /// </summary>
         /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is secretary of the club, false if not</returns>
@@ -417,7 +444,7 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to know if the user is a manager of the club
+        /// Given a role in a club, check if is admin or secretary
         /// </summary>
         /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is manager of the club, false if not</returns>
@@ -427,17 +454,17 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to know if the user is a Trainer of the club
+        /// Given a role in a club, check if is trainer
         /// </summary>
         /// <param name="userRoleClub">role object to eval</param>
-        /// <returns>a boolean value, true is the user is Trainer of the club, false if not</returns>
+        /// <returns>a boolean value, true is the user is trainer of the club, false if not</returns>
         public bool IsClubTrainer(UsersRoleClub userRoleClub)
         {
             return userRoleClub.RoleId == 30;
         }
 
         /// <summary>
-        /// Allow to know if the user is a Staff of the club
+        /// Given a role in a club, check if is admin or secretary or trainer
         /// </summary>
         /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is Staff (admin, secretary, trainer) of the club, false if not</returns>
@@ -447,7 +474,7 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to know if the user is a Athlete of the club
+        /// Given a role in a club, check if is athlete
         /// </summary>
         /// <param name="userRoleClub">role object to eval</param>
         /// <returns>a boolean value, true is the user is a Athlete of the club, false if not</returns>
@@ -457,7 +484,8 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to know if the user is a Member of the club
+        /// Given a user and a club, check if the user is a member 
+        /// (athlete, trainer, secretary or admin)
         /// </summary>
         /// <param name="userId">id of the user</param>
         /// <param name="clubId">id of the club</param>
@@ -468,7 +496,7 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Allow to know if the user is a Member of the club
+        /// Given a user and a club, check if the user is partner
         /// </summary>
         /// <param name="userId">id of the user</param>
         /// <param name="clubId">id of the club</param>
@@ -478,6 +506,11 @@ namespace SCManagement.Services.ClubService
             return UserRolesInClub(userId, clubId).Contains(10);
         }
 
+        /// <summary>
+        /// Approve the utilization of a code (to be used by club admin)
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public bool ApproveCode(string code)
         {
             CodeClub? cc = _context.CodeClub.Where(c => c.Code == code).FirstOrDefault();
@@ -488,6 +521,13 @@ namespace SCManagement.Services.ClubService
             return true;
         }
 
+        /// <summary>
+        /// Sends a email with the access code to a user to join a club
+        /// </summary>
+        /// <param name="codeId"></param>
+        /// <param name="email"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public Task SendCodeEmail(int codeId, string email, int clubId)
         {
             CodeClub? code = GetCodeWithInfos(codeId).Result;
@@ -519,6 +559,11 @@ namespace SCManagement.Services.ClubService
             return Task.CompletedTask;
         }
 
+        /// <summary>
+        /// Gets a user by an email address
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         private User? GetUser(string email)
         {
             return _context.Users.Where(u => u.NormalizedEmail == email.ToUpper()).FirstOrDefault();
@@ -547,27 +592,53 @@ namespace SCManagement.Services.ClubService
             return r != null;
         }
 
+
+        /// <summary>
+        /// Gets all club partners (users role object with join date)
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<UsersRoleClub>> GetClubPartners(int clubId)
         {
             //when the payment module is done, this should return the status of the partner, based on the payment status
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 10).Include(r => r.User).ToListAsync();
         }
 
+        /// <summary>
+        /// Removes a user by a given role from the club assigned to that role
+        /// </summary>
+        /// <param name="userRoleClubId"></param>
+        /// <returns></returns>
         public async Task RemoveClubUser(int userRoleClubId)
         {
             _context.UsersRoleClub.Remove(await _context.UsersRoleClub.FindAsync(userRoleClubId));
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Removes a user with a role, from a club by a given userid, clubid and roleid
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         public async Task RemoveClubUser(string userId, int clubId, int roleId)
         {
             _context.UsersRoleClub.Remove(await _context.UsersRoleClub.Where(r => r.UserId == userId && r.ClubId == clubId && r.RoleId == roleId).FirstAsync());
             await _context.SaveChangesAsync();
         }
 
+
+        /// <summary>
+        /// Updates the photo for a club, can either upload a new one and
+        /// remove the old one or just the remove the photo
+        /// </summary>
+        /// <param name="club"></param>
+        /// <param name="remove"></param>
+        /// <param name="file"></param>
+        /// <returns></returns>
         public async Task UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null)
         {
-
             //new profile picture provided, delete old from storage and update club to new one
             if (file != null)
             {
@@ -584,6 +655,11 @@ namespace SCManagement.Services.ClubService
             }
         }
 
+        /// <summary>
+        /// Helper function to remove the club photo
+        /// </summary>
+        /// <param name="club"></param>
+        /// <returns></returns>
         private async Task deletePhoto(Club club)
         {
             if (club.Photography != null)
@@ -594,6 +670,13 @@ namespace SCManagement.Services.ClubService
             }
         }
 
+        /// <summary>
+        /// Updates the modalities of a given club (remove from club the ids that
+        /// are not present and add the new ones)
+        /// </summary>
+        /// <param name="club"></param>
+        /// <param name="ModalitiesIds"></param>
+        /// <returns></returns>
         public async Task UpdateClubModalities(Club club, IEnumerable<int> ModalitiesIds)
         {
             //new modalities choosed
@@ -618,46 +701,63 @@ namespace SCManagement.Services.ClubService
             }
         }
 
+        /// <summary>
+        /// Gets a user role + club by a userRoleClub id
+        /// </summary>
+        /// <param name="userRoleClubId"></param>
+        /// <returns></returns>
         public async Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId)
         {
             return await _context.UsersRoleClub.FindAsync(userRoleClubId);
         }
 
+        /// <summary>
+        /// Adds a user to a given club and role
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <param name="roleId"></param>
+        /// <returns></returns>
         public async Task AddUserToClub(string userId, int clubId, int roleId)
         {
             var a = _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
             await _context.SaveChangesAsync();
         }
 
-        public async Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number)
-        {
-            Address address = new Address
-            {
-                CountyId = countyId,
-                Street = street,
-                ZipCode = zipCode,
-                Number = number
-            };
+        //public async Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number)
+        //{
+        //    Address address = new Address
+        //    {
+        //        CountyId = countyId,
+        //        Street = street,
+        //        ZipCode = zipCode,
+        //        Number = number
+        //    };
 
-            _context.Address.Add(address);
-            await _context.SaveChangesAsync();
+        //    _context.Address.Add(address);
+        //    await _context.SaveChangesAsync();
 
-            return address.Id;
-        }
+        //    return address.Id;
+        //}
 
-        public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number)
-        {
-            Address address = _context.Address.Find(addressId);
-            address.Street = Street;
-            address.ZipCode = ZipCode;
-            address.Number = Number;
-            address.County = null;
-            address.CountyId = CountyId;
+        //public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number)
+        //{
+        //    Address address = _context.Address.Find(addressId);
+        //    address.Street = Street;
+        //    address.ZipCode = ZipCode;
+        //    address.Number = Number;
+        //    address.County = null;
+        //    address.CountyId = CountyId;
 
-            _context.Address.Update(address);
-            _context.SaveChanges();
-        }
+        //    _context.Address.Update(address);
+        //    _context.SaveChanges();
+        //}
 
+        /// <summary>
+        /// Gets all club staff (admin, secretary and trainer) (users role object with join date)
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId)
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && (u.RoleId == 30 || u.RoleId == 40 || u.RoleId == 50))
@@ -666,6 +766,11 @@ namespace SCManagement.Services.ClubService
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets all athletes of a given club (users role object with join date)
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId)
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20)
@@ -673,16 +778,24 @@ namespace SCManagement.Services.ClubService
                 .ToListAsync();
         }
 
-
+        /// <summary>
+        /// Gets all the modalities of a given club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Modality>> GetClubModalities(int clubId)
         {
             return await _context.Club.Where(c => c.Id == clubId).SelectMany(c => c.Modalities).ToListAsync();
         }
 
+        /// <summary>
+        /// Gets all athletes of a given club (users object)
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<User>> GetAthletes(int clubId)
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
-
     }
 }

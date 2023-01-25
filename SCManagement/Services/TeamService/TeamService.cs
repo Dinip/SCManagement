@@ -14,17 +14,32 @@ namespace SCManagement.Services.TeamService
             _context = context;
         }
 
+        /// <summary>
+        /// Gets a team by its id
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <returns>Found team or null</returns>
         public async Task<Team?> GetTeam(int teamId)
         {
             return await _context.Team.Include(t => t.Modality).Include(u => u.Trainer).Include(u => u.Athletes)
                 .FirstOrDefaultAsync(t => t.Id == teamId);
         }
 
+        /// <summary>
+        /// Gets all the teams for a given club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns>List of teams</returns>
         public async Task<IEnumerable<Team>> GetTeams(int clubId)
         {
             return await _context.Team.Where(t => t.ClubId == clubId).Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
         }
 
+        /// <summary>
+        /// Persists the created team to the database
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
         public async Task<Team> CreateTeam(Team team)
         {
             _context.Team.Add(team);
@@ -33,6 +48,11 @@ namespace SCManagement.Services.TeamService
             return team;
         }
 
+        /// <summary>
+        /// Updates the team in the database
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
         public async Task<Team> UpdateTeam(Team team)
         {
             _context.Team.Update(team);
@@ -40,6 +60,12 @@ namespace SCManagement.Services.TeamService
             return team;
         }
 
+        /// <summary>
+        /// Adds one or more athlete to a give team team
+        /// </summary>
+        /// <param name="teamId"></param>
+        /// <param name="atheltesId"></param>
+        /// <returns></returns>
         public async Task UpdateTeamAthletes(int teamId, IEnumerable<string> atheltesId)
         {
             var team = await _context.Team.Include(u => u.Athletes).FirstOrDefaultAsync(t => t.Id == teamId);
@@ -61,6 +87,12 @@ namespace SCManagement.Services.TeamService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Removes an athlete from a team
+        /// </summary>
+        /// <param name="team"></param>
+        /// <param name="athlete"></param>
+        /// <returns></returns>
         public async Task RemoveAthlete(Team team, User athlete)
         {
             team.Athletes.Remove(athlete);
@@ -68,17 +100,27 @@ namespace SCManagement.Services.TeamService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Removes a team from the database
+        /// </summary>
+        /// <param name="team"></param>
+        /// <returns></returns>
         public async Task DeleteTeam(Team team)
         {
             _context.Team.Remove(team);
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Get all the teams that a user belongs to
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId)
         {
             return await _context.Team.Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
                 .Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
         }
     }
-    
 }
