@@ -17,7 +17,7 @@
 
 <div class="container-fluid row justify-content-evenly">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div id="card1" class="col-md-3 col-8 card-to-dark card mt-5">
+    <div id="card1" class="col-md-3 col-8 card-to-dark card-style card mt-5">
         <div class="card-body pt-5 p-3 align-content-center justify-content-center" style="max-height: 500px;">
             <div style="text-align:center;">
                 <img id="profilePicture"
@@ -26,7 +26,7 @@
                      style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="col">
                     <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
-                    <i class="fa-solid fa-xl fa-pen-to-square row" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
+                    <i class="fa-solid fa-xl fa-pen-to-square row text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
                 </div>
                 
             </div>
@@ -34,7 +34,7 @@
         </div>
     </div>
 
-    <div id="card2" class="col-8 card-to-dark card mt-5">
+    <div id="card2" class="col-8 card-to-dark card-style card mt-5">
         <div class="card-body justify-content-between align-content-between ">
             <partial name="_StatusMessage" for="StatusMessage" />
             <form id="profile-form" method="post" enctype="multipart/form-data">
@@ -65,14 +65,14 @@
                 <hr style="margin-bottom:20px;" />
                 <div class="row">
                     <strong class="col text-to-dark">@StringLocalizer["Password"]</strong>
-                    <a class="col text-end text-black text-to-dark" asp-page="/Account/Manage/ChangePassword">@StringLocalizer["Change Password"]</a>
+                    <a class="col text-end text-to-dark" style="color:black;" asp-page="/Account/Manage/ChangePassword">@StringLocalizer["Change Password"]</a>
                 </div>
                 <hr style="margin-bottom:20px;" />
                 <div class="row">
                     <strong class="col text-to-dark">Email</strong>
                     <div class="col text-end">
                         <label class="text-to-dark" style="margin-right:20px;">@User.Identity?.Name</label>
-                        <a class="text-black text-to-dark" asp-page="/Account/Manage/Email">@StringLocalizer["Change Email"]</a>
+                        <a class="text-to-dark" style="color:black;" asp-page="/Account/Manage/Email">@StringLocalizer["Change Email"]</a>
                     </div>
                 </div>
                 <hr style="margin-bottom:20px;" />
@@ -85,13 +85,13 @@
                         </div>
                         <div class="col-10 text-end">
                             @if (!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}")){
-                                <i id="emd" class="fa-solid fa-file fa-xl" style="margin-right:20px;" onclick="toggleModal()"></i>
+                                <i id="emd" class="fa-solid fa-file fa-xl text-to-dark" style="margin-right:20px;" onclick="toggleModal()"></i>
                             }else{
-                                <span style="margin-right:20px;">No file saved!</span>
+                                <span style="margin-right:20px;" class="text-to-dark">No file saved!</span>
                             }
                             <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
                            style="color:red; cursor:pointer; margin-right:20px;" onclick="removeEMD()"></i>
-                            <i class="fa-solid fa-xl fa-pen-to-square" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
+                            <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
                         </div>
                     </div>
                     <hr style="margin-bottom:20px;" />

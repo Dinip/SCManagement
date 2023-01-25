@@ -1,13 +1,11 @@
 ﻿@inject IStringLocalizer<SharedResource> StringLocalizer
 
-
-<h1 class="text-center pt-4">@StringLocalizer["About Us"]</h1>
-
 <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
 
-<div class="container mt-4">
+<h1 class="text-center pt-4 text-to-dark">@StringLocalizer["About Us"]</h1>
+
+<div class="container mt-4 body">
     <div class="card ps-2 pe-md-2 ">
         <div class="card-body">
             <p class="text-to-dark" style="text-align:justify">
@@ -79,12 +77,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-
-
     </div>
-
-
 </div>

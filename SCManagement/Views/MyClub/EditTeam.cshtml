@@ -13,7 +13,7 @@
 </div>
 
 <div class="container-fluid ps-5 pe-5">
-    <h1 style="margin-top:130px !important;">@Html.DisplayFor(model => model.Name)</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@Html.DisplayFor(model => model.Name)</h1>
     <a asp-action="TeamList">Voltar</a>
     <hr />
     <div class="row">
@@ -43,14 +43,14 @@
     </div>
     <div class="card mt-3 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
-            <a onclick="openCreate()">Add Athlete </a>
+            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Athlete </a>
             <table id="table_id" class="display">
                 <thead>
                     <tr>
-                        <th>
+                        <th  class="text-to-dark">
                             Name
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             Age
                         </th>
                         <th></th>
@@ -62,10 +62,10 @@
                         @foreach (var item in Model.Athletes)
                         {
                             <tr onclick="openDetails('@item.Id')" style="cursor:pointer">
-                                <td>
+                                <td class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.FullName)
                                 </td>
-                                <td>
+                                <td class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.Age)
                                 </td>
                                 <td class="d-flex justify-content-end">

@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="~/lib/DataTables/datatables.css" asp-append-version="true" />
     <link rel="icon" type="image/x-icon" href="/img/icon.ico">
 </head>
-<body>
+<body class="body">
     <header>
         <nav class="navbar fixed-top navbar-expand-md navbar-light bg-white box-shadow mb-3 shadow" id="navBar">
             <div class="container-fluid">
@@ -111,11 +111,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/8b1729a957.js" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script>
-        function showMenu(){
-
-        }
-    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

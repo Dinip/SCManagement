@@ -4,19 +4,19 @@
     ViewData["Title"] = "MyTeams";
 }
 
-<h1>MyTeams</h1>
+<h1 class="text-to-dark">MyTeams</h1>
 
 
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="text-to-dark">
                 @Html.DisplayNameFor(model => model.Name)
             </th>
-            <th>
+            <th class="text-to-dark">
                 @Html.DisplayNameFor(model => model.Modality)
             </th>
-            <th>
+            <th class="text-to-dark">
                 @Html.DisplayNameFor(model => model.Trainer)
             </th>
             <th></th>
@@ -26,13 +26,13 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>
+                <td class="text-to-dark">
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                <td>
+                <td class="text-to-dark">
                     @Html.DisplayFor(modelItem => item.Modality.Name)
                 </td>
-                <td>
+                <td class="text-to-dark">
                     @Html.DisplayFor(modelItem => item.Trainer.FullName)
                 </td>
                 <td>

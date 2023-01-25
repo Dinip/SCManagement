@@ -6,7 +6,7 @@
 }
 
 <div class="container-fluid ps-5 pe-5">
-    <h1 style="margin-top:130px !important;">@StringLocalizer["Athletes"]</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Athletes"]</h1>
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
             <div id="modal" class="modal">
@@ -18,11 +18,11 @@
             </div>
             <table id="table_id" class="display">
                 <thead>
-                    <tr>
-                        <th>
+                    <tr> 
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.User)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.User.DateOfBirth)
                         </th>
                         <th></th>
@@ -31,11 +31,11 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr onclick="openDetails('@item.UserId')" style="cursor:pointer">  
-                            <td>
+                        <tr onclick="openDetails('@item.UserId')" style="cursor:pointer">
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.User.FullName)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.User.DateOfBirth)
                             </td>
                             <td class="justify-content-end d-flex">

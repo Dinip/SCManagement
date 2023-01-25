@@ -23,7 +23,7 @@
                        class="@ShowRemoveButton() align-self-end fa-solid fa-trash fa-2xl mb-3 col"
                        onclick="removePhoto()">
                     </i>
-                    <i class="fa-solid fa-2xl fa-pen-to-square ms-4 col" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
+                    <i class="fa-solid fa-2xl fa-pen-to-square ms-4 col text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
                 </div>
             </div>
         </div>
@@ -47,7 +47,7 @@
                 </div>
                 <hr style="margin-bottom:20px;" />
                 <div class="form-group w-100" style="margin-bottom:20px;">
-                    <label asp-for="ModalitiesIds" class="control-label"></label>
+                    <label asp-for="ModalitiesIds" class="control-label text-to-dark"></label>
                     <select required multiple asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>

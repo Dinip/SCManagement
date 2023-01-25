@@ -44,7 +44,7 @@
         else
         {
             <div class="text-center" style="margin-top:15%;">
-                <h1 class="display-4 mb-5">@StringLocalizer["Welcomeclub"] @Model.Name</h1>
+                <h1 class="display-4 mb-5 text-to-dark">@StringLocalizer["Welcomeclub"] @Model.Name</h1>
                 <div class="d-flex justify-content-between">
                     <a class="btn btn1 btn-primary btn-lg" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">@StringLocalizer["Public Page"]</a>
                     @if ((int)ViewBag.RoleId == 50)

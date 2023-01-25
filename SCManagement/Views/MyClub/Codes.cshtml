@@ -7,7 +7,7 @@
 
 
 <div class="container-fluid ps-5 pe-5">
-    <h1 style="margin-top:130px !important;">@StringLocalizer["Codes"]</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Codes"]</h1>
     <p>
         <button onclick="openCreate()">@StringLocalizer["Create New"]</button>
     </p>
@@ -31,28 +31,28 @@
             <table id="table_id" class="display">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Code)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.CreationDate)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.ExpireDate)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.UsedDate)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Approved)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Role)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.CreatedByUser)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.UsedByUser)
                         </th>
                         <th></th>
@@ -62,28 +62,28 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Code)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.CreationDate)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.ExpireDate)
                             </td>
-                            <td>
+                            <td class ="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.UsedDate)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Approved)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Role.RoleName)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.CreatedByUser.FullName)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.UsedByUser.FullName)
                             </td>
                             <td>
