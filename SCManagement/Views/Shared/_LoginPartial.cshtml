@@ -19,10 +19,10 @@
                 </button>
                 <ul class="dropdown-menu shadow" style="margin-top: 7px; left: -145px; width: 230px; border:none; border-radius:0;" id="Dropdown1">
                     <li class="dropdown-item" style="padding: 5px;">
-                        <a class="nav-link text-to-dark" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user?.FullName</a>
+                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user?.FullName</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
-                        <a class="nav-link text-to-dark" style="color:black;" href="#">@StringLocalizer["Wallet"]</a>
+                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" href="#">@StringLocalizer["Wallet"]</a>
                     </li>
                     <li style="padding: 5px;" class="row">
                         <div class="col-2">
@@ -42,15 +42,17 @@
                     <li class="dropdown-item" style="padding: 5px;">
                         @await Component.InvokeAsync("UserClubContext")
                     </li>
-                    <li class="dropdown-item" style="padding: 5px;">
-                        <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-lg fa-earth-americas text-to-dark"></i>
-                        <label class="col-auto">
+                    <li class="row" style="padding: 5px;">
+                        <div class="col-2 pt-2">
+                            <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-lg fa-earth-americas text-to-dark"></i>
+                        </div>
+                        <label class="col-6">
                             @await Component.InvokeAsync("CulturePicker")
                         </label>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
                         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            <button type="submit" style="color:black; text-align:left !important;" class="nav-link btn btn-link text-to-dark w-100">@StringLocalizer["Logout"]</button>
+                            <button type="submit" style="color:black; text-align:left !important;" class="nav-link btn btn-link text-to-dark w-100 dropdown-text">@StringLocalizer["Logout"]</button>
                         </form>
                     </li>
                 </ul>
@@ -73,8 +75,8 @@
                             <span class="slider round"></span>
                         </label>
                     </li>
-                    <li class="dropdown-item row d-flex" style="padding: 5px;">
-                        <div class="col-2">
+                    <li class="row d-flex align-self-center" style="padding: 5px;">
+                        <div class="col-2 pt-2">
                             <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas fa-lg text-to-dark"></i>
                         </div>
                         <div class="col">

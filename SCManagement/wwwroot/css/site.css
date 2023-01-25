@@ -222,3 +222,11 @@ input:checked + .slider:before {
     text-decoration: none;
     cursor: pointer;
 }
+
+.dropdown-menu a:hover {
+    color: black !important;
+}
+
+.dropdown-menu button:hover {
+    color: black !important;
+}
