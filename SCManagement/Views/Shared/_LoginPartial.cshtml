@@ -33,12 +33,12 @@
                         </div>
                         <div class="col-4" style="text-align:right">
                             <label class="switch">
-                                <input type="checkbox" onchange="myFunction()" id="darkToggle">
+                                <input type="checkbox" onchange="darkThemeToggle(this)" id="darkToggle">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                     </li>
-                    <li style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
+                    <li class="text-to-dark" style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
                     <li class="dropdown-item" style="padding: 5px;">
                         @await Component.InvokeAsync("UserClubContext")
                     </li>
@@ -69,7 +69,7 @@
                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg text-to-dark"></i>
                         <label class="text-to-dark">@StringLocalizer["Dark mode"]</label>
                         <label class="switch" style="margin-left: 10px;">
-                            <input type="checkbox" onchange="myFunction()" id="darkToggle">
+                            <input type="checkbox" onchange="darkThemeToggle(this)" id="darkToggle">
                             <span class="slider round"></span>
                         </label>
                     </li>

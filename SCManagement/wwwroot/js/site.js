@@ -1,4 +1,7 @@
-﻿
+﻿window.onload = () => {
+    setTheme(localStorage.getItem("theme") || "light")
+}
+
 document.getElementById("Dropdown").addEventListener('click', function (event) {
     event.stopPropagation();
 });
@@ -21,9 +24,20 @@ if (window.innerWidth <= 768) {
     dropdownM.classList.add("dropdown-menu");
 }
 
-function myFunction() {
+function darkThemeToggle(event) {
+    if (event.checked) {
+        localStorage.setItem("theme", "dark")
+        setTheme("dark")
+        return
+    }
+    localStorage.setItem("theme", "light")
+    setTheme("light")
+}
+
+function setTheme(theme) {
     let element = document.getElementById("navBar");
     let darkToggle = document.getElementById("darkToggle");
+    let darkToggle1 = document.getElementById("darkToggle1");
     let texts = document.getElementsByClassName('text-to-dark');
     let brand = document.querySelector('.navbar-brand');
     let dropdown = document.getElementsByClassName('dropdown-menu');
@@ -32,8 +46,10 @@ function myFunction() {
     let logoText = document.getElementById("logoText");
     let logoText1 = document.getElementById("logoText1");
     let modal = document.getElementsByClassName('modal-content');
-    let cardcolor;
-    if (darkToggle.checked || darkToggle1.checked) {
+
+    if (theme === "dark") {
+        darkToggle.setAttribute('checked', true)
+        darkToggle1.setAttribute('checked', true)
         element.classList.add("navbar-dark");
         element.classList.remove("navbar-light");
 
@@ -51,8 +67,8 @@ function myFunction() {
 
         brand.style.width = '158px';
 
-        
-        for (let i = 0; i < card.length; i++) { 
+
+        for (let i = 0; i < card.length; i++) {
             card[i].style.background = '#515151';
         }
         for (let i = 0; i < body.length; i++) {
@@ -65,6 +81,8 @@ function myFunction() {
         logoText.style.fill = 'white';
         logoText1.style.fill = 'white';
     } else {
+        darkToggle.setAttribute('checked', false)
+        darkToggle1.setAttribute('checked', false)
         element.classList.add("navbar-light");
         element.classList.remove("navbar-dark");
         element.classList.remove("bg-dark");
@@ -79,7 +97,7 @@ function myFunction() {
             texts[i].style.color = 'black';
         }
 
-        
+
 
         for (let i = 0; i < card.length; i++) {
             card[i].style.background = '#D9D9D9';
