@@ -48,8 +48,8 @@ function setTheme(theme) {
     let modal = document.getElementsByClassName('modal-content');
 
     if (theme === "dark") {
-        darkToggle.setAttribute('checked', true)
-        darkToggle1.setAttribute('checked', true)
+        darkToggle.checked = true
+        darkToggle1.checked = true
         element.classList.add("navbar-dark");
         element.classList.remove("navbar-light");
 
@@ -81,8 +81,8 @@ function setTheme(theme) {
         logoText.style.fill = 'white';
         logoText1.style.fill = 'white';
     } else {
-        darkToggle.setAttribute('checked', false)
-        darkToggle1.setAttribute('checked', false)
+        darkToggle.checked = false
+        darkToggle1.checked = false
         element.classList.add("navbar-light");
         element.classList.remove("navbar-dark");
         element.classList.remove("bg-dark");
