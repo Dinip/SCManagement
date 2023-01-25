@@ -505,7 +505,7 @@ namespace SCManagement.Services.ClubService
                     { "_CODE_", code.Code },
                     { "_ROLE_", code.Role.RoleName },
                     { "_CLUB_", code.Club.Name },
-                    { "_INVITER_", code.CreatedByUser.FirstName },
+                    { "_INVITER_", code.CreatedByUser.FullName },
                     { "_CALLBACK_URL_", $"{hostUrl}/Clubs/Join/?code={code.Code}" },
                     { "_PAGE_URL_", $"{hostUrl}/Clubs/Join" }
                 };
