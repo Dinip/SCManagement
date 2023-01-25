@@ -1,85 +1,72 @@
-﻿@model Club?;
+﻿@model Club;
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "My Club";
 }
 
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/Bootstrap.styles.css" asp-append-version="true" />
-</head>
-
-<body class="body d-flex align-content-center">
-    <div class="container-fluid d-flex justify-content-center w-100">
-        @if (Model == null)
-        {
-            <div class="text-center" style="margin-top:130px;">
-                <svg width="222" height="222" viewBox="0 0 222 222" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <rect width="222" height="222" fill="url(#pattern0)" fill-opacity="0.5" />
-                    <defs>
-                        <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
-                            <use xlink:href="#image0_48_226" transform="scale(0.005)" />
-                        </pattern>
-                        <image id="image0_48_226" width="200" height="200" xlink:href="data:image/png;base64,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" />
-                    </defs>
-                </svg>
-                <br />
-                <h2>@StringLocalizer["associated"]</h2>
-                <br />
-                <a type="button" class="btn btn1 text-white" asp-controller="Clubs" asp-area="" asp-action="Join">
-                    @StringLocalizer["Join a club"]
-                </a>
-                <br />
-                <a type="button" class="btn btn1 mt-3 text-white" asp-controller="Clubs" asp-area="" asp-action="Create">
-                    @StringLocalizer["Create a club"]
-                </a>
+<div class="container-fluid d-flex justify-content-center w-100">
+    @if (Model == null)
+    {
+        <div class="text-center" style="margin-top:130px;">
+            <svg width="222" height="222" viewBox="0 0 222 222" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <rect width="222" height="222" fill="url(#pattern0)" fill-opacity="0.5" />
+                <defs>
+                    <pattern id="pattern0" patternContentUnits="objectBoundingBox" width="1" height="1">
+                        <use xlink:href="#image0_48_226" transform="scale(0.005)" />
+                    </pattern>
+                    <image id="image0_48_226" width="200" height="200" xlink:href="data:image/png;base64,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" />
+                </defs>
+            </svg>
+            <br />
+            <h2>@StringLocalizer["associated"]</h2>
+            <br />
+            <a type="button" class="btn btn1 text-white" asp-controller="Clubs" asp-area="" asp-action="Join">
+                @StringLocalizer["Join a club"]
+            </a>
+            <br />
+            <a type="button" class="btn btn1 mt-3 text-white" asp-controller="Clubs" asp-area="" asp-action="Create">
+                @StringLocalizer["Create a club"]
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="text-center" style="margin-top:15%;">
+            <h1 class="display-4 mb-5 text-to-dark">@StringLocalizer["Welcomeclub"] @Model.Name</h1>
+            <div class="d-flex justify-content-between">
+                <a class="btn btn1 btn-primary btn-lg" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">@StringLocalizer["Public Page"]</a>
+                @if ((int)ViewBag.RoleId == 50)
+                {
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Edit">@StringLocalizer["Edit"]</a>
+                }
+                @if ((int)ViewBag.RoleId >= 40)
+                {
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="StaffList">Staff</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="PartnersList">@StringLocalizer["Partners"]</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Codes">@StringLocalizer["Codes"]</a>
+                }
+                @if ((int)ViewBag.RoleId >= 30)
+                {
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="AthletesList">@StringLocalizer["Athletes"]</a>
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="TeamList">@StringLocalizer["Teams"]</a>
+                }
+                @if ((int)ViewBag.RoleId == 20)
+                {
+                    <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="MyTeams">@StringLocalizer["MyTeams"]</a>
+                }
             </div>
-        }
-        else
-        {
-            <div class="text-center" style="margin-top:15%;">
-                <h1 class="display-4 mb-5 text-to-dark">@StringLocalizer["Welcomeclub"] @Model.Name</h1>
-                <div class="d-flex justify-content-between">
-                    <a class="btn btn1 btn-primary btn-lg" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">@StringLocalizer["Public Page"]</a>
-                    @if ((int)ViewBag.RoleId == 50)
-                    {
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Edit">@StringLocalizer["Edit"]</a>
-                    }
-                    @if ((int)ViewBag.RoleId >= 40)
-                    {
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="StaffList">Staff</a>
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="PartnersList">@StringLocalizer["Partners"]</a>
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="Codes">@StringLocalizer["Codes"]</a>
-                    }
-                    @if ((int)ViewBag.RoleId >= 30)
-                    {
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="AthletesList">@StringLocalizer["Athletes"]</a>
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="TeamList">@StringLocalizer["Teams"]</a>
-                    }
-                    @if ((int)ViewBag.RoleId == 20)
-                    {
-                        <a class="btn btn1 btn-primary btn-lg" asp-controller="MyClub" asp-action="MyTeams">@StringLocalizer["MyTeams"]</a>
-                    }
-                </div>
 
-            </div>
-        }
-    </div>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <style>
-        .btn1 {
-            border-radius: 10px;
-            margin-left: 20px;
-            padding: 5px 25px 5px 25px;
-            background-color: #00639A;
-            border-color: #00639A;
-        }
-    </style>
-</body>
-</html>
+        </div>
+    }
+</div>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<style>
+    .btn1 {
+        border-radius: 10px;
+        margin-left: 20px;
+        padding: 5px 25px 5px 25px;
+        background-color: #00639A;
+        border-color: #00639A;
+    }
+</style>

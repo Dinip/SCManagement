@@ -25,6 +25,7 @@ namespace SCManagement.Models
 
         
         private DateTime? dateCreated = null;
+        [Display(Name = "Modality")]
         public int ModalityId { get; set; }
         [Display(Name = "Modalities")]
         public Modality? Modality { get; set; }

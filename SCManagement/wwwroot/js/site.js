@@ -1,6 +1,7 @@
-﻿window.onload = () => {
+﻿window.addEventListener('onload', () => {
     setTheme(localStorage.getItem("theme") || "light")
-}
+})
+
 
 document.getElementById("Dropdown").addEventListener('click', function (event) {
     event.stopPropagation();
@@ -111,7 +112,7 @@ function setTheme(theme) {
             modal[i].classList.remove("bg-dark");
         }
 
-        logoText.style.fill = 'black';
-        logoText1.style.fill = 'black';
+        //logoText.style.fill = 'black';
+        //logoText1.style.fill = 'black';
     }
 }
