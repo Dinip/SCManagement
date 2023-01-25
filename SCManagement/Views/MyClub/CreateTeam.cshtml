@@ -28,18 +28,18 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group w-auto">
                             <h3><strong>Create Team</strong></h3>
-                            <div class="form-group mt-3">
-                                <label asp-for="Name" class="control-label"></label>
+                            <div class="form-floating mt-3">
                                 <div class="d-flex justify-content-center">
                                     <input asp-for="Name" class="form-control w-auto" />
                                 </div>
+                                <label asp-for="Name" class="control-label"></label>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
-                            <div class="form-group mt-3">
-                                <label asp-for="ModalityId" class="control-label"></label>
+                            <div class="form-floating mt-3">
                                 <div class="d-flex justify-content-center">
                                     <select asp-for="ModalityId" class="form-control w-auto" asp-items="ViewBag.Modalities"></select>
                                 </div>
+                                <label asp-for="ModalityId" class="control-label"></label>
                             </div>
                         </div>
                         <div class="form-group mt-3">

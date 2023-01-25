@@ -31,7 +31,8 @@ function myFunction() {
     let body = document.getElementsByClassName('body');
     let logoText = document.getElementById("logoText");
     let logoText1 = document.getElementById("logoText1");
-
+    let modal = document.getElementsByClassName('modal-content');
+    let cardcolor;
     if (darkToggle.checked || darkToggle1.checked) {
         element.classList.add("navbar-dark");
         element.classList.remove("navbar-light");
@@ -51,13 +52,15 @@ function myFunction() {
         brand.style.width = '158px';
 
         
-
-        for (let i = 0; i < card.length; i++) {
-            console.log(card.length)
+        for (let i = 0; i < card.length; i++) { 
             card[i].style.background = '#515151';
         }
         for (let i = 0; i < body.length; i++) {
             body[i].classList.add("bg-dark");
+        }
+
+        for (let i = 0; i < modal.length; i++) {
+            modal[i].classList.add("bg-dark");
         }
         logoText.style.fill = 'white';
         logoText1.style.fill = 'white';
@@ -85,6 +88,11 @@ function myFunction() {
         for (let i = 0; i < body.length; i++) {
             body[i].classList.remove("bg-dark");
         }
+
+        for (let i = 0; i < modal.length; i++) {
+            modal[i].classList.remove("bg-dark");
+        }
+
         logoText.style.fill = 'black';
         logoText1.style.fill = 'black';
     }
