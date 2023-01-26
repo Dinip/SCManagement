@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/DataTables/datatables.css" asp-append-version="true" />
     <link rel="icon" type="image/x-icon" href="/img/icon.ico">
+    <link rel="stylesheet" href="~/lib/chosen_v1.8.7/chosen.min.css">
 </head>
 <body class="body">
     <header>
@@ -36,9 +37,9 @@
                         
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <div class="dropdown nav-item">
+                            <div class="dropdown dropdown2 nav-item d-none d-md-block" id="dropdownMenuButton2">
                                 <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">@StringLocalizer["Clubs"]</a>
-                                <ul class="dropdown-menu nav-item shadow" style="margin-top: 16px; border:none; border-radius:0;">
+                                <ul class="dropdown-menu dropdown-menu2 nav-item shadow" style="margin-top: 16px; border:none; border-radius:0;">
                                     <li style="padding: 5px;">
                                         <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">@StringLocalizer["My Club"]</a>
                                     </li>
@@ -54,6 +55,27 @@
                                 </ul>
                             </div>
 
+                            <div class="dropdown d-block d-md-none nav-item">
+                                <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false" style="color:black;">
+                                    Clubs
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-full" role="menu" id="Dropdown">
+                                    <li style="padding: 5px;">
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">@StringLocalizer["My Club"]</a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index" asp-route-id="">@StringLocalizer["Search club"]</a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Join">@StringLocalizer["Join with code"] </a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Create">@StringLocalizer["Create a club"] </a>
+                                    </li>
+                                </ul>
+                            </div>
+
+
                             <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Settings">@StringLocalizer["Settings"]</a>
                         }
                         else
@@ -65,7 +87,7 @@
                             
                         <hr />
                         <div class="dropdown d-block d-md-none nav-item">
-                            <a class="nav-link" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false">
                                 More
                             </a>
                             <ul class="dropdown-menu dropdown-menu-full" role="menu" id="Dropdown">
@@ -84,7 +106,7 @@
                                     </label>
                                 </li>
                                 <li class="text-to-dark" style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
-                                <li class="dropdown-item  d-flex justify-content-center" style="padding: 5px;">
+                                <li class="dropdown-item d-flex justify-content-center" style="padding: 5px;">
                                     <div class="w-25">
                                         @await Component.InvokeAsync("UserClubContext")
                                     </div>
@@ -118,7 +140,10 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://kit.fontawesome.com/8b1729a957.js" crossorigin="anonymous"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+    <script src="/lib/chosen_v1.8.7/chosen.jquery.min.js" type="text/javascript"></script>
+    <script>
+        $(".chosen-select").chosen().css("display", "").addClass("sr-only");
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

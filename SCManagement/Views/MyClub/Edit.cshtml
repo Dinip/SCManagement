@@ -47,8 +47,7 @@
                 </div>
                 <hr style="margin-bottom:20px;" />
                 <div class="form-group w-100" style="margin-bottom:20px;">
-                    <label asp-for="ModalitiesIds" class="control-label text-to-dark"></label>
-                    <select required multiple asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.Modalities"></select>
+                    <select required multiple data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />

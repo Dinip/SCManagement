@@ -32,7 +32,7 @@
                 <div class="row d-flex mt-5 justify-content-center">
                     <div class="col-lg-6 col-12">
                         <form asp-action="Create">
-                            <h3><strong class="text-to-dark">Create Team</strong></h3>
+                            <h3><strong class="text-to-dark">@StringLocalizer["Create a club"]</strong></h3>
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                             <div class="form-floating mt-4">
                                 <input id="idName" asp-for="Name" placeholder=@StringLocalizer["Name"] class="form-control" />
@@ -63,8 +63,5 @@
         <script src="~/lib/jquery/dist/jquery.min.js"></script>
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
         <script src="/lib/chosen_v1.8.7/chosen.jquery.min.js" type="text/javascript"></script>
-        <script>
-            $(".chosen-select").chosen({ max_selected_options: 10 }).css("display", "").addClass("sr-only");
-        </script>
     }
     }

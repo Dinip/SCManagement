@@ -1,5 +1,5 @@
 ﻿@model SCManagement.Models.Team
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "EditTeam";
 }
@@ -26,8 +26,7 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-floating" style="margin-bottom:20px;">
-                    <select asp-for="ModalityId" class="form-control" asp-items="ViewBag.Modalities"></select>
-                    <label asp-for="ModalityId" class="control-label"></label>
+                    <select asp-for="ModalityId" data-placeholder=@StringLocalizer["Choose modalities"] class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalityId" class="text-danger"></span>
                 </div>
                 <div class="form-floating" style="margin-bottom:20px;">

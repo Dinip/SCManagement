@@ -89,3 +89,19 @@
         </li>
     }
 </ul>
+
+<script>
+    const dropdown = document.querySelector('.dropdown');
+    const dropdownM = document.querySelector('.dropdown-menu');
+    var elem = document.getElementById('dropdownMenuButton1');
+    var fatherElem = elem.parentNode;
+    if (window.innerWidth <= 768) {
+        fatherElem.removeChild(elem);
+
+        dropdown.classList.remove("dropdown");
+        dropdownM.classList.remove("dropdown-menu");
+    } else {
+        dropdown.classList.add("dropdown");
+        dropdownM.classList.add("dropdown-menu");
+    }
+</script>

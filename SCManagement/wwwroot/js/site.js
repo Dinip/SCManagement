@@ -1,6 +1,4 @@
-﻿
-
-setTheme(localStorage.getItem("theme") || "light")
+﻿setTheme(localStorage.getItem("theme") || "light")
 document.getElementById("Dropdown").addEventListener('click', function (event) {
     event.stopPropagation();
 });
@@ -9,19 +7,6 @@ document.getElementById("Dropdown1").addEventListener('click', function (event) 
     event.stopPropagation();
 });
 
-const dropdown2 = document.querySelector('.dropdown');
-const dropdownM = document.querySelector('.dropdown-menu');
-var elem = document.getElementById('dropdownMenuButton1');
-var fatherElem = elem.parentNode;
-if (window.innerWidth <= 768) {
-    fatherElem.removeChild(elem);
-
-    dropdown2.classList.remove("dropdown");
-    dropdownM.classList.remove("dropdown-menu");
-} else {
-    dropdown2.classList.add("dropdown");
-    dropdownM.classList.add("dropdown-menu");
-}
 
 function darkThemeToggle(event) {
     if (event.checked) {
