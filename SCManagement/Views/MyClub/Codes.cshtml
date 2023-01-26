@@ -8,9 +8,9 @@
 
 <div class="container-fluid ps-5 pe-5">
     <div id="modal" class="modal">
-        <div class="modal-content" style="margin-top:7%; margin-bottom:0;">
+        <div class="modal-content" style="margin-top:7%; margin-bottom:0; max-width:50%;">
             <span onclick="$('#modal').hide()" class="close">&times;</span>
-            <div id="modal-inner-content">
+            <div id="modal-inner-content" class="w-auto">
                 @if (ViewBag.Code != null)
                 {
                     @await Html.PartialAsync("_PartialShowCode", (CodeClub)ViewBag.Code)

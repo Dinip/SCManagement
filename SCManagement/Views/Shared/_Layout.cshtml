@@ -83,6 +83,13 @@
                                         @await Component.InvokeAsync("CulturePicker")
                                     </label>
                                 </li>
+                                <li class="text-to-dark" style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
+                                <li class="dropdown-item  d-flex justify-content-center" style="padding: 5px;">
+                                    <div class="w-25">
+                                        @await Component.InvokeAsync("UserClubContext")
+                                    </div>
+                                    
+                                </li>
                             </ul>
                         </div>
                         <hr />
