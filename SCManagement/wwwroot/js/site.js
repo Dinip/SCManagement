@@ -1,8 +1,6 @@
-﻿window.addEventListener('onload', () => {
-    setTheme(localStorage.getItem("theme") || "light")
-})
+﻿
 
-
+setTheme(localStorage.getItem("theme") || "light")
 document.getElementById("Dropdown").addEventListener('click', function (event) {
     event.stopPropagation();
 });
@@ -80,7 +78,10 @@ function setTheme(theme) {
             modal[i].classList.add("bg-dark");
         }
         logoText.style.fill = 'white';
-        logoText1.style.fill = 'white';
+        if (logoText1) {
+            logoText1.style.fill = 'white';
+        }
+        
     } else {
         darkToggle.checked = false
         darkToggle1.checked = false
@@ -111,8 +112,10 @@ function setTheme(theme) {
         for (let i = 0; i < modal.length; i++) {
             modal[i].classList.remove("bg-dark");
         }
-
-        //logoText.style.fill = 'black';
-        //logoText1.style.fill = 'black';
+       
+        logoText.style.fill = 'black';
+        if (logoText1) {
+            logoText1.style.fill = 'black';
+        }
     }
 }
