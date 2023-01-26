@@ -754,4 +754,10 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Club Selected" xml:space="preserve">
     <value>Selected Club</value>
   </data>
+  <data name="Modality" xml:space="preserve">
+    <value>Modality</value>
+  </data>
+  <data name="NotAssociatedClub" xml:space="preserve">
+    <value />
+  </data>
 </root>

@@ -885,4 +885,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Club Selected" xml:space="preserve">
     <value>Clube Selecionado</value>
   </data>
+  <data name="Modality" xml:space="preserve">
+    <value>Modalidade</value>
+  </data>
 </root>
