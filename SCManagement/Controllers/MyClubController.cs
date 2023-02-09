@@ -298,7 +298,7 @@ namespace SCManagement.Controllers
             UsersRoleClub? userRoleToBeRomoved = await _clubService.GetUserRoleClubFromId((int)usersRoleClubId);
 
             //role with specified id does not exist or is club admin (which cant be removed)
-            if (userRoleToBeRomoved == null || userRoleToBeRomoved.RoleId == 50) return RedirectToAction(page, new { id = role.ClubId });
+            if (userRoleToBeRomoved == null || userRoleToBeRomoved.RoleId == 50) return View("CustomError", "Error_Unauthorized");
 
             //if the user role to be removed does not belong to the club of the user
             //that is making the request, then return unauthorized
