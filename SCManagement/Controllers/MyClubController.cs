@@ -484,15 +484,15 @@ namespace SCManagement.Controllers
             //if its trainer will use userId
             if (_clubService.IsClubTrainer(role))
             {
-                ViewBag.IsAdmin = false;
+                ViewBag.IsManager = false;
                 ViewBag.TrainerId = userId;
             }
 
             //if its admin will send trainers IDs to selectList
-            else if (_clubService.IsClubAdmin(role))
+            else if (_clubService.IsClubManager(role))
             {
-                ViewBag.IsAdmin = true;
-                ViewBag.ClubTrainers = new SelectList(_clubService.GetClubTrainers(role.ClubId).Result, "UserId", "User.FullName");
+                ViewBag.IsManager = true;
+                ViewBag.ClubTrainers = new SelectList(await _clubService.GetClubStaff(role.ClubId), "UserId", "User.FullName");
             }
             else
             {
