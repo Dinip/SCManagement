@@ -46,5 +46,6 @@ namespace SCManagement.Services.ClubService
         public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId);
         public Task<IEnumerable<Modality>> GetClubModalities(int clubId);
         public Task<IEnumerable<User>> GetAthletes(int clubId);
+        public Task<IEnumerable<UsersRoleClub>> GetClubTrainers(int clubId);
     }
 }

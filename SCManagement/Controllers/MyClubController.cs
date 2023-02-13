@@ -462,7 +462,8 @@ namespace SCManagement.Controllers
             //check role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.IsManager = _clubService.IsClubManager(role);
+            //Only Manager or Trainer can create teams
+            ViewBag.CanCreate = (_clubService.IsClubManager(role) | _clubService.IsClubTrainer(role)) ? true : false;
 
             return View(await _teamService.GetTeams(role.ClubId));
         }
@@ -480,7 +481,23 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //check role Trainer
-            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+            //if its trainer will use userId
+            if (_clubService.IsClubTrainer(role))
+            {
+                ViewBag.IsAdmin = false;
+                ViewBag.TrainerId = userId;
+            }
+
+            //if its admin will send trainers IDs to selectList
+            else if (_clubService.IsClubAdmin(role))
+            {
+                ViewBag.IsAdmin = true;
+                ViewBag.ClubTrainers = new SelectList(_clubService.GetClubTrainers(role.ClubId).Result, "UserId", "User.FullName");
+            }
+            else
+            {
+                return View("CustomError", "Error_Unauthorized");
+            }
 
             ViewBag.Modalities = new SelectList(_clubService.GetClub(role.ClubId).Result.Modalities, "Id", "Name");
 
@@ -494,7 +511,7 @@ namespace SCManagement.Controllers
         /// <returns>Index View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateTeam([Bind("Id,Name,ModalityId")] TeamModel team)
+        public async Task<IActionResult> CreateTeam([Bind("Id,Name,ModalityId, TrainerId")] TeamModel team)
         {
             if (!ModelState.IsValid) return View(team);
 
@@ -505,9 +522,9 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //check role Trainer
-            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
 
-            await _teamService.CreateTeam(new Team { Name = team.Name, ModalityId = team.ModalityId, TrainerId = userId, ClubId = role.ClubId });
+            await _teamService.CreateTeam(new Team { Name = team.Name, ModalityId = team.ModalityId, TrainerId = team.TrainerId, ClubId = role.ClubId });
 
             return RedirectToAction(nameof(TeamList));
 
@@ -523,6 +540,10 @@ namespace SCManagement.Controllers
             [Required(ErrorMessage = "Error_Required")]
             [Display(Name = "Modality")]
             public int ModalityId { get; set; }
+
+            [Required(ErrorMessage = "Error_Required")]
+            [Display(Name = "Trainer")]
+            public string TrainerId { get; set; }
         }
 
 
