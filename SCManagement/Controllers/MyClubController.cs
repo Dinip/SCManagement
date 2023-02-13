@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
+using FluentEmail.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -14,6 +15,8 @@ using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
+using SCManagement.Services.Location;
+
 
 namespace SCManagement.Controllers
 {
@@ -29,6 +32,8 @@ namespace SCManagement.Controllers
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
+        private readonly ILocationService _locationService;
+
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -41,12 +46,14 @@ namespace SCManagement.Controllers
             UserManager<User> userManager,
             IClubService clubService,
             IUserService userService,
-            ITeamService teamService)
+            ITeamService teamService,
+            ILocationService locationService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
             _teamService = teamService;
+            _locationService = locationService;
         }
 
         /// <summary>
@@ -800,5 +807,23 @@ namespace SCManagement.Controllers
 
             return PartialView("_PartialUserDetails", user); ;
         }
+
+        public async Task<IActionResult> NewAdress()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        public  async Task<ActionResult> ReceveAddress(double CoordinateX, double CoordinateY, string ZipCode, string Street, string City, string District, string Country)
+        {
+
+            await _locationService.CreateAddress(CoordinateX, CoordinateY,ZipCode,Street, City,District, Country);
+            Console.WriteLine(await _locationService.GetAddress());
+            return Ok();
+
+        }
+
+
     }
 }
