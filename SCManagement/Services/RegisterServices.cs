@@ -33,6 +33,8 @@ namespace SCManagement.Services
                 options.SignIn.RequireConfirmedAccount = true;
             })
               .AddDefaultUI()
+              // localize identity error messages
+              .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
 
