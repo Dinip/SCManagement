@@ -532,6 +532,8 @@ namespace SCManagement.Controllers
 
         public class TeamModel
         {
+            public int Id { get; set; }
+
             [Required(ErrorMessage = "Error_Required")]
             [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
             [Display(Name = "Team Name")]
@@ -544,6 +546,23 @@ namespace SCManagement.Controllers
             [Required(ErrorMessage = "Error_Required")]
             [Display(Name = "Trainer")]
             public string TrainerId { get; set; }
+
+            public User? Trainer { get; set; }
+
+            public ICollection<User>? Athletes { get; set; }
+
+            public static TeamModel ConvertTeam(Team team)
+            {
+                return new TeamModel
+                {
+                    Id = team.Id,
+                    Name = team.Name,
+                    ModalityId = team.ModalityId,
+                    TrainerId = team.TrainerId,
+                    Trainer = team.Trainer,
+                    Athletes = team.Athletes
+                };
+            }
         }
 
 
@@ -576,7 +595,7 @@ namespace SCManagement.Controllers
 
             if (team == null) return View("CustomError", "Error_NotFound");
 
-            return View(team);
+            return View(TeamModel.ConvertTeam(team));
         }
 
         /// <summary>
@@ -587,7 +606,7 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,ModalityId")] TeamModel team)
+        public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,TrainerId,ModalityId")] TeamModel team)
         {
             //check model state
             if (!ModelState.IsValid) return View(team);
@@ -607,7 +626,6 @@ namespace SCManagement.Controllers
 
             //Check if team have modification
             if (teamToUpdate.Name == team.Name && teamToUpdate.ModalityId == team.ModalityId) return RedirectToAction(nameof(TeamList));
-
 
             teamToUpdate.Name = team.Name;
             teamToUpdate.ModalityId = team.ModalityId;

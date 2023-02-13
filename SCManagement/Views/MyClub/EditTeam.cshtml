@@ -1,4 +1,4 @@
-﻿@model SCManagement.Models.Team
+﻿@model SCManagement.Controllers.MyClubController.TeamModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "EditTeam";
@@ -20,6 +20,7 @@
             <form asp-action="EditTeam">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="TrainerId" />
                 <div class="form-floating" style="margin-bottom:20px;">
                     <input asp-for="Name" class="form-control" />
                     <label asp-for="Name" class="control-label"></label>
