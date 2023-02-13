@@ -760,4 +760,13 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="NotAssociatedClub" xml:space="preserve">
     <value />
   </data>
+  <data name="Empty" xml:space="preserve">
+    <value>No file saved!</value>
+  </data>
+  <data name="Files_Allow" xml:space="preserve">
+    <value> are allowed!</value>
+  </data>
+  <data name="Only" xml:space="preserve">
+    <value>Only</value>
+  </data>
 </root>

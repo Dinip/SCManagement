@@ -888,4 +888,13 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Modality" xml:space="preserve">
     <value>Modalidade</value>
   </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Nenhum arquivo salvo!</value>
+  </data>
+  <data name="Files_Allow" xml:space="preserve">
+    <value> são permitidos!</value>
+  </data>
+  <data name="Only" xml:space="preserve">
+    <value>Apenas</value>
+  </data>
 </root>

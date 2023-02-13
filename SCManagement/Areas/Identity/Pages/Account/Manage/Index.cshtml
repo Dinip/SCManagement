@@ -11,7 +11,7 @@
 <div id="modal" class="modal">
     <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
         <span onclick="$('#modal').hide()" class="close">&times;</span> 
-        <iframe id="frame" src="@Model.EMDUrl" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%" ></iframe>
+        <iframe id="frame" src="@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : Model.EMDUrl)" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%"></iframe>
     </div>
 </div>
 
@@ -25,7 +25,7 @@
                      class="rounded-circle col"
                      style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="col">
-                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removePhoto()"></i>
+                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removeFile('image')"></i>
                     <i class="fa-solid fa-xl fa-pen-to-square row text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
                 </div>
                 
@@ -76,25 +76,28 @@
                     </div>
                 </div>
                 <hr style="margin-bottom:20px;" />
-
-                @if ((bool)ViewData["IsAtleteInAnyClub"] != false)
+                
+                @if (Model.IsAtleteInAnyClub != false)
                 {
                     <div class="row h-auto">
                         <div class="col-2">
                             <strong class="text-to-dark">EMD</strong>
                         </div>
                         <div class="col-10 text-end">
-                            @if (!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}")){
-                                <i id="emd" class="fa-solid fa-file fa-xl text-to-dark" style="margin-right:20px;" onclick="toggleModal()"></i>
-                            }else{
-                                <span style="margin-right:20px;" class="text-to-dark">No file saved!</span>
-                            }
+                            <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" style="margin-right:20px;" onclick="toggleModal()"></i>
+
+
+
+                            <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
+                            
+
                             <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
-                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeEMD()"></i>
+                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
                             <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
                         </div>
                     </div>
                     <hr style="margin-bottom:20px;" />
+                    
                 }
                
                 
@@ -108,10 +111,10 @@
                 </button>
 
                 <div>
-                    <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/png, image/jpeg"
-                           onchange="handleUpload(this)" />
+                    <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/*"
+                           onchange="handleUpload(this, 'image')" />
                     <input id="selectedFileForEMD" asp-for="Input.FileEMD" type="file" class="form-control d-none" accept="application/pdf"
-                           onchange="handleUploadEMD(this)" />
+                           onchange="handleUpload(this, 'pdf')" />
                     <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
                     <input id="removeEMD" asp-for="Input.RemoveEMD" type="hidden" />
                 </div>
@@ -123,9 +126,14 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
-        let removePend = "@StringLocalizer["Pending_Remove"]"
-        let savePend = "@StringLocalizer["Pending_Save"]"
-        let modal = document.getElementById("modal")
+
+        const removePend = '@Html.Raw(StringLocalizer["Pending_Remove"].Value.ToString())'
+        const savePend = '@Html.Raw(StringLocalizer["Pending_Save"].Value.ToString())'
+        const only = '@Html.Raw(StringLocalizer["Only"].Value.ToString())'
+        const allow = '@Html.Raw(StringLocalizer["Files_Allow"].Value.ToString())'
+        const modal = document.getElementById("modal")
+        const placeholder = "https://cdn.scmanagement.me/public/user_placeholder.png"
+
         window.onclick = function (event) {
             if (event.target == modal) {
                 $("#modal").hide();
@@ -135,27 +143,41 @@
         function toggleModal(){
             $("#modal").show();
         }
-        
-        function removePhoto() {
-            document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
-            document.getElementById("removeImage").value = true
-            document.getElementById("selectedFile").value = ""
-            document.getElementById("btnRemoveImage").classList.add("invisible")
+
+        function removeFile(fileType) {
+            let fileElement = document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`)
+            let removeButton = document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`)
+
+            if (fileType === 'pdf') {
+                document.getElementById('emd').className = "fa-solid fa-file fa-xl text-to-dark invisible"
+                document.getElementById('emdText').textContent = removePend
+                $("#modal").hide();
+            }
+            else{
+                document.getElementById('profilePicture').src = placeholder
+            }
+            fileElement.value = ""
+            removeButton.classList.add("invisible")
+            document.getElementById(`remove${fileType === 'image' ? 'Image' : 'EMD'}`).value = true
         }
-        function removeEMD() {
-            document.getElementById("emd").text = removePend
-            document.getElementById("removeEMD").value = true
-            document.getElementById("selectedFileForEMD").value = ""
-            document.getElementById("btnRemoveEMD").classList.add("invisible")
-        }
-        function handleUpload(event){
-            document.getElementById('profilePicture').src = window.URL.createObjectURL(event.files[0])
-            document.getElementById("btnRemoveImage").classList.remove("invisible")
-        }
-        function handleUploadEMD(event) {
-            document.getElementById('emd').text = savePend
-            document.getElementById('emd').src = window.URL.createObjectURL(event.files[0])
-            document.getElementById("btnRemoveEMD").classList.remove("invisible")
+
+        function handleUpload(event, fileType) {
+            let allowedTypes = fileType === 'image' ? ['jpg', 'jpeg', 'png'] : ['pdf']
+            let selectedFile = document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`).value
+            let idxDot = selectedFile.lastIndexOf(".") + 1
+            let extFile = selectedFile.substr(idxDot, selectedFile.length).toLowerCase()
+
+            if (allowedTypes.includes(extFile)) {
+                if (fileType === 'pdf') {
+                    document.getElementById('emdText').textContent = savePend
+                    document.getElementById('emd').className = "fa-solid fa-file fa-xl text-to-dark"
+                }
+                document.getElementById(fileType === 'image' ? 'profilePicture' : 'frame').src = window.URL.createObjectURL(event.files[0])
+                document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`).classList.remove("invisible")
+            } else {
+                document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`).value = null
+                alert(only + ' ' + `${allowedTypes.join('/')}` + '' + allow); //falta traduzir
+            }
         }
     </script>
 }
