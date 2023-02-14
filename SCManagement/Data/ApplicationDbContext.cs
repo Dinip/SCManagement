@@ -103,8 +103,6 @@ namespace SCManagement.Data
             builder.Entity<User>().Navigation(e => e.ProfilePicture).AutoInclude();
             builder.Entity<Team>().HasMany(x => x.Athletes).WithMany("Teams");
         }
-
-        public DbSet<SCManagement.Services.PaymentService.Models.CreatePayment> CreatePayment { get; set; }
     }
 }
 
