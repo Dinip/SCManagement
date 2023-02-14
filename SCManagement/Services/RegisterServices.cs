@@ -10,16 +10,18 @@ using SCManagement.Middlewares;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.TeamService;
+using Azure.Identity;
+using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services
 {
     public class RegisterServices
     {
-        public static void Register(IConfiguration configuration, IServiceCollection services)
+        public static void Register(ConfigurationManager configuration, IServiceCollection services)
         {
             //to use azure key vault for secrets instead of local secrets.json or appsettings.json
             //disabled in development
-            //Configuration.AddAzureKeyVault(new Uri(Configuration["KeyVaultUri"]), new DefaultAzureCredential());
+            //configuration.AddAzureKeyVault(new Uri(configuration["KeyVaultUri"]), new DefaultAzureCredential());
 
             // Add services to the container.
             var connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -104,15 +106,17 @@ namespace SCManagement.Services
             #region email service
             //add email service, in development it uses the local smtp server from mail catcher
             //in production it will use mailgun with the api key stored in the vault
-            services.Configure<AuthMessageSenderOptions>(options => options.AuthKey = configuration["MailtrapKey"]);
-            services.AddTransient<IEmailSender, EmailSenderMailtrap>();
-            //services.AddTransient<IEmailSender, EmailSenderMailgun>();
+
+            services.Configure<AuthMessageSenderOptions>(options => options.AuthKey = configuration["MailgunKey"]);
+            //services.AddTransient<IEmailSender, EmailSenderMailtrap>();
+            services.AddTransient<IEmailSender, EmailSenderMailgun>();
             #endregion
 
             services.AddTransient<IAzureStorage, AzureStorage>();
             services.AddTransient<IUserService, SCManagement.Services.UserService.UserService>();
             services.AddTransient<IClubService, SCManagement.Services.ClubService.ClubService>();
             services.AddTransient<ITeamService, SCManagement.Services.TeamService.TeamService>();
+            services.AddTransient<IPaymentService, SCManagement.Services.PaymentService.PaymentService>();
         }
     }
 }

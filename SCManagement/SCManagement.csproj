@@ -28,6 +28,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="QRCoderNetCore" Version="1.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
     <PackageReference Include="Unidecode.NET" Version="2.1.0" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
   </ItemGroup>
@@ -43,6 +44,19 @@
 
   <ItemGroup>
     <None Include=".editorconfig" />
+    <None Include="Views\Shared\Components\Address\LocationFilter.cshtml" />
+    <None Include="Views\Shared\Components\Address\LocationSearch.cshtml" />
+    <None Include="Views\Shared\Components\CulturePicker\Default.cshtml" />
+    <None Include="Views\Shared\Components\UserClubContext\UserClubRoles.cshtml" />
+    <None Include="Views\Shared\CustomError.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\footer.cshtml" />
+    <None Include="Views\Shared\_AddressPartial.cshtml" />
+    <None Include="Views\Shared\_CustomErrorPartial.cshtml" />
+    <None Include="Views\Shared\_InfoPartial.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LoginPartial.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
   </ItemGroup>
 
 </Project>

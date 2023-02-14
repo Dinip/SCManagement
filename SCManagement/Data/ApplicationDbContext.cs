@@ -7,6 +7,7 @@ using SCManagement.Services.AzureStorageService.Models;
 using Unidecode.NET;
 using System.Reflection.Emit;
 using Microsoft.Extensions.Hosting;
+using SCManagement.Services.PaymentService.Models;
 
 namespace SCManagement.Data
 {
@@ -28,6 +29,9 @@ namespace SCManagement.Data
         public DbSet<UsersRoleClub> UsersRoleClub { get; set; }
         public DbSet<CodeClub> CodeClub { get; set; }
         public DbSet<Team> Team { get; set; }
+        public DbSet<Payment> Payment { get; set; }
+        public DbSet<Product> Product { get; set; }
+        public DbSet<Subscription> Subscription { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -99,6 +103,8 @@ namespace SCManagement.Data
             builder.Entity<User>().Navigation(e => e.ProfilePicture).AutoInclude();
             builder.Entity<Team>().HasMany(x => x.Athletes).WithMany("Teams");
         }
+
+        public DbSet<SCManagement.Services.PaymentService.Models.CreatePayment> CreatePayment { get; set; }
     }
 }
 
