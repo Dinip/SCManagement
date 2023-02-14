@@ -28,6 +28,7 @@ namespace SCManagement.Data
         public DbSet<UsersRoleClub> UsersRoleClub { get; set; }
         public DbSet<CodeClub> CodeClub { get; set; }
         public DbSet<Team> Team { get; set; }
+        public DbSet<Event> Event { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -10,6 +10,7 @@ using SCManagement.Middlewares;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.TeamService;
+using SCManagement.Services.EventService;
 
 namespace SCManagement.Services
 {
@@ -113,6 +114,7 @@ namespace SCManagement.Services
             services.AddTransient<IUserService, SCManagement.Services.UserService.UserService>();
             services.AddTransient<IClubService, SCManagement.Services.ClubService.ClubService>();
             services.AddTransient<ITeamService, SCManagement.Services.TeamService.TeamService>();
+            services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
         }
     }
 }
