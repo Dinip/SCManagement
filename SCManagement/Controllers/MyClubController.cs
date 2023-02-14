@@ -819,7 +819,7 @@ namespace SCManagement.Controllers
         {
 
             await _locationService.CreateAddress(CoordinateX, CoordinateY,ZipCode,Street, City,District, Country);
-            Console.WriteLine(await _locationService.GetAddress());
+            
             return Ok();
 
         }

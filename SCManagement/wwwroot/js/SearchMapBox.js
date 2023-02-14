@@ -23,36 +23,6 @@ map.on('load', () => {
         let address2 = JSON.stringify(event.result, null, 2);
         console.log(address2);
         address = event.result;
-        console.log("Endereço: " + address[0]);
-        //let { text, coordinates, context } = JSON.stringify(event.result, null, 2);
-        //let addressCode = context[0];
-        //let city = context[1];
-        //let district = context[2];
-        //let country = context[3];
-
-        //console.log("Endereço: " + address);
-
-        //fetch("https://localhost:7111/MyClub/ReceveAddress", method: "POST",
-        //    body: {
-        //    ZipCode: addressCode.text,
-        //    City: city.text,
-        //    District: district.text,
-        //    Country: country.text,
-        //    CoordinateX: coordinates[0],
-        //    CoordinateY: coordinates[1],
-        //    Street: text
-        //});
-
-
-        //var newAddress = JsonConvert.DeserializeObject < Address > (address);
-        //axios.post('/api/ReceveAddress', newAddress)
-        //    .then(function (response) {
-        //        console.log(response);
-        //    })
-        //    .catch(function (error) {
-        //        console.error(error);
-        //    });
-
     });
 });
 
@@ -62,16 +32,17 @@ window.onload = function () {
 
     btn.onclick = function () {
 
-        if (address != null) {
-            let { text, geometry, context } = address;
+        try {
+            if (address != null) {
 
-            let addressCode = context[0].text;
-            let city = context[1].text;
-            let district = context[2].text;
-            let country = context[3].text;
-            let coord = geometry.coordinates;
+                let { text, geometry, context } = address;
+                let addressCode = context[0].text;
+                let city = context[1].text;
+                let district = context[2].text;
+                let country = context[3].text;
+                let coord = geometry.coordinates;
 
-            
+
                 $.ajax({
                     type: 'POST',
                     url: '/MyClub/ReceveAddress',
@@ -85,55 +56,15 @@ window.onload = function () {
                         District: district,
                         Country: country,
                     },
-                    success: console.log("Bacano"),
-                    error: function (ex) {
-                        console.log('Failed to retrieve counties.' + ex);
-                    }
-                });
-            
+                   
+                }).done(function () { alert("DEU"); })
+                    .fail(function () { alert("Não deu"); });
 
-            //fetch("https://localhost:7111/MyClub/ReceveAddress", {
-            //    method: 'post',
-            //    body: {
-            //        CoordinateY: coord[1],
-            //        CoordinateX: coord[0],
-            //        ZipCode: addressCode.text,
-            //        Street: text,
-            //        City: city.text,
-            //        District: district.text,
-            //        Country: country.text,
-                    
-                    
-                    
-            //    },
-            //    headers: {
-            //        'Accept': 'application/json',
-            //        'Content-Type': 'application/json'
-            //    }
-            //}).then((response) => {
-            //    return response.json()
-            //}).then((res) => {
-            //    if (res.status === 201) {
-            //        console.log("Post successfully created!")
-            //    }
-            //}).catch((error) => {
-            //    console.log(error)
-            //})
-
+            }
+        } catch (error) {
+            alert("Terá de inserir uma localização com rua incluida");
         }
-        
 
-        //fetch("https://localhost:7111/MyClub/ReceveAddress", method: "POST",
-        //    body: {
-        //    ZipCode: addressCode.text,
-        //    City: city.text,
-        //    District: district.text,
-        //    Country: country.text,
-        //    CoordinateX: coordinates[0],
-        //    CoordinateY: coordinates[1],
-        //    Street: text
-        //});
 
-        
     }
 };
