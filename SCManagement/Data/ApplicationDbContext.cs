@@ -17,6 +17,7 @@ namespace SCManagement.Data
         {
         }
 
+        public DbSet<ClubTranslations> ClubTranslations { get; set; }
         public DbSet<Country> Country { get; set; }
         public DbSet<District> District { get; set; }
         public DbSet<County> County { get; set; }

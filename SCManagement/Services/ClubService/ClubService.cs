@@ -57,6 +57,28 @@ namespace SCManagement.Services.ClubService
             c.UsersRoleClub = roles;
 
             _context.Club.Add(c);
+
+            ClubTranslations t1 = new()
+            {
+                ClubId = c.Id,
+                PTText = "",
+                ENText = "",
+                Atribute = "About",
+            };
+
+            ClubTranslations t2 = new()
+            {
+                ClubId = c.Id,
+                PTText = "",
+                ENText = "",
+                Atribute = "TermsAndConditions",
+            };
+
+            _context.ClubTranslations.Add(t1);
+            _context.ClubTranslations.Add(t2);
+
+            c.ClubTranslations = new List<ClubTranslations> { t1, t2 };
+            
             await _context.SaveChangesAsync();
 
             return c;
@@ -74,49 +96,25 @@ namespace SCManagement.Services.ClubService
         /// <returns>Found club or null</returns>
         public async Task<Club?> GetClub(int id)
         {
-            return await _context.Club
+            Club club = await _context.Club
                 .Include(c => c.Modalities)
                 .Include(c => c.Photography)
-                //.Include(c => c.Address)
-                //.Include(c => c.Address.County)
-                //.ThenInclude(c => c.District)
-                //.ThenInclude(c => c.Country)
-                //.Select(s => new Club
-                //{
-                //    Id = s.Id,
-                //    Name = s.Name,
-                //    Email = s.Email,
-                //    PhoneNumber = s.PhoneNumber,
-                //    About = s.About,
-                //    Photography = s.Photography,
-                //    Modalities = s.Modalities,
-                //    //Address = new Address
-                //    //{
-                //    //    Street = s.Address.Street,
-                //    //    Number = s.Address.Number,
-                //    //    ZipCode = s.Address.ZipCode,
-                //    //    County = new County
-                //    //    {
-                //    //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-                //    //    }
-                //    //}
-                //})
                 .FirstOrDefaultAsync(m => m.Id == id);
-        }
 
+            await ClubTranslations(club);
+
+            return club;
+        }
+        
         /// <summary>
         /// Gets all clubs available
         /// </summary>
         /// <returns>All clubs</returns>
         public async Task<IEnumerable<Club>> GetClubs()
         {
-            return await _context.Club
+            IEnumerable<Club> clubs = await _context.Club
                .Include(c => c.Modalities)
                .Include(c => c.Photography)
-               //.Include(c => c.Address)
-               //.Include(c => c.Address.County)
-               //.ThenInclude(c => c.District)
-               //.ThenInclude(c => c.Country)
                .Select(s =>
                new Club
                {
@@ -124,23 +122,40 @@ namespace SCManagement.Services.ClubService
                    Name = s.Name,
                    Email = s.Email,
                    PhoneNumber = s.PhoneNumber,
-                   About = s.About,
-                   TermsAndConditions = s.TermsAndConditions,
                    Photography = s.Photography,
                    Modalities = s.Modalities,
-                   //Address = new Address
-                   //{
-                   //    Street = s.Address.Street,
-                   //    Number = s.Address.Number,
-                   //    ZipCode = s.Address.ZipCode,
-                   //    County = new County
-                   //    {
-                   //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-                   //    }
-                   //}
                })
                .ToListAsync();
+
+            foreach (Club club in clubs)
+            {
+                await ClubTranslations(club);
+            }
+
+            return clubs;
         }
+
+        public async Task<int> ClubTranslations(Club club)
+        {
+            ClubTranslations clubTranslationsTerms = _context.ClubTranslations.Where(c => c.ClubId == club.Id).Where(c => c.Atribute == "TermsAndConditions").FirstOrDefault();
+            ClubTranslations clubTranslationsAbout = _context.ClubTranslations.Where(c => c.ClubId == club.Id).Where(c => c.Atribute == "About").FirstOrDefault();
+
+            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+
+            if (cultureInfo.Name == "pt-PT")
+            {
+                club.TermsAndConditions = clubTranslationsTerms.PTText;
+                club.About = clubTranslationsAbout.PTText;
+            }
+            else
+            {
+                club.TermsAndConditions = clubTranslationsTerms.ENText;
+                club.About = clubTranslationsAbout.ENText;
+            }
+            
+            return await _context.SaveChangesAsync();
+        }
+
 
         /// <summary>
         /// Persists the changes made to a club in the database
@@ -797,6 +812,33 @@ namespace SCManagement.Services.ClubService
         public async Task<IEnumerable<User>> GetAthletes(int clubId)
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId)
+        {
+            return await _context.ClubTranslations.Where(c => c.ClubId == clubId).ToListAsync();
+        }
+
+        public Task UpdateClubAbout(int clubId, string AboutEN, string AboutPT)
+        {
+            ClubTranslations clubTranslations = _context.ClubTranslations.Where(c => c.ClubId == clubId).Where(c => c.Atribute == "About").FirstOrDefault();
+
+            clubTranslations.ENText = AboutEN;
+            clubTranslations.PTText = AboutPT;
+            _context.ClubTranslations.Update(clubTranslations);
+
+            return _context.SaveChangesAsync();
+        }
+
+        public Task UpdateClubTermsAndConditions(int clubId, string TermsAndConditionsEN, string TermsAndConditionsPT)
+        {
+            ClubTranslations clubTranslations = _context.ClubTranslations.Where(c => c.ClubId == clubId).Where(c => c.Atribute == "TermsAndConditions").FirstOrDefault();
+
+            clubTranslations.ENText = TermsAndConditionsEN;
+            clubTranslations.PTText = TermsAndConditionsPT;
+            _context.ClubTranslations.Update(clubTranslations);
+            
+            return _context.SaveChangesAsync();
         }
     }
 }

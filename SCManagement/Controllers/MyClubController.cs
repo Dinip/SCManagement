@@ -103,6 +103,13 @@ namespace SCManagement.Controllers
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
 
+            //get about and terms and conditions
+            var clubTranslations = await _clubService.GetClubTranslations(club.Id);
+            var about = clubTranslations.Where(c => c.Atribute.Equals("About")).FirstOrDefault();
+            var termsAndConditions = clubTranslations.Where(c => c.Atribute.Equals("TermsAndConditions")).FirstOrDefault();
+
+            ViewBag.cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+
             if (club == null) return View("CustomError", "Error_NotFound");
 
             var c = new EditModel
@@ -111,8 +118,10 @@ namespace SCManagement.Controllers
                 Name = club.Name,
                 Email = club.Email,
                 PhoneNumber = club.PhoneNumber,
-                About = club.About,
-                TermsAndConditions = club.TermsAndConditions,
+                AboutEN = about.ENText,
+                AboutPT = about.PTText,
+                TermsAndConditionsEN = termsAndConditions.ENText,
+                TermsAndConditionsPT = termsAndConditions.PTText,
                 CreationDate = club.CreationDate,
                 //AddressId = club.AddressId,
                 //Address = club.Address,
@@ -134,7 +143,7 @@ namespace SCManagement.Controllers
         /// <returns>View Index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,TermsAndConditions,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,AboutEN,AboutPT,TermsAndConditionsEN,TermsAndConditionsPT,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
             if (!ModelState.IsValid) return View(club);
@@ -162,9 +171,12 @@ namespace SCManagement.Controllers
             actualClub.Name = club.Name;
             actualClub.Email = club.Email;
             actualClub.PhoneNumber = club.PhoneNumber;
-            actualClub.About = club.About;
-            actualClub.TermsAndConditions = club.TermsAndConditions;
 
+            //update about and terms and conditions
+            await _clubService.UpdateClubAbout(actualClub.Id, club.AboutEN, club.AboutPT);
+            await _clubService.UpdateClubTermsAndConditions(actualClub.Id, club.TermsAndConditionsEN, club.TermsAndConditionsPT);
+
+            //update photo
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
 
             //_clubService.UpdateClubAddress((int)actualClub.AddressId, CountyId, Street, ZipCode, Number);
@@ -192,10 +204,16 @@ namespace SCManagement.Controllers
             public string? PhoneNumber { get; set; }
 
             [Display(Name = "About Us")]
-            public string? About { get; set; }
+            public string? AboutPT { get; set; }
+
+            [Display(Name = "About Us")]
+            public string? AboutEN { get; set; }
 
             [Display(Name = "Terms and conditions")]
-            public string? TermsAndConditions { get; set; }
+            public string? TermsAndConditionsPT { get; set; }
+
+            [Display(Name = "Terms and conditions")]
+            public string? TermsAndConditionsEN { get; set; }
 
             public DateTime CreationDate { get; set; }
 

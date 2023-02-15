@@ -36,6 +36,10 @@ namespace SCManagement.Models {
         [Display(Name = "Terms and conditions")]
         public string? TermsAndConditions { get; set; }
 
+        [NotMapped]
+        public IEnumerable<int>? IdClubTranslations { get; set; }
+        public ICollection<ClubTranslations>? ClubTranslations { get; set; }
+
         //little trick to make creation date automatically use the current date
         public DateTime CreationDate
         {

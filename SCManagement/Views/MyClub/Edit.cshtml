@@ -39,18 +39,69 @@
                     <label asp-for="Name" class="control-label"></label>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
+                
                 <hr style="margin-bottom:20px;" />
-                <div class="row form-outline" style="margin-bottom:20px;">
-                    <label asp-for="About" class="control-label"></label>
-                    <textarea asp-for="About" class="form-control" ></textarea>
-                    <span asp-validation-for="About" class="text-danger"></span>
+                <div class="About">
+                    <label asp-for="AboutEN" class="control-label"></label>
+                    <div class="language-select">
+                        <input type="button" class="lang-btn About" onclick="aboutEN()" data-lang="en" value="EN">
+                        <input type="button" class="lang-btn About" onclick="aboutPT()" data-lang="pt" value="PT">
+                    </div>
+                    @if (ViewBag.cultureInfo == "pt-PT")
+                    {
+                        <div id="AboutEN" class="row form-outline d-none" style="margin-bottom:20px; ">
+                            <textarea asp-for="AboutEN" class="form-control"></textarea>
+                            <span asp-validation-for="AboutEN" class="text-danger"></span>
+                        </div>
+                        <div id="AboutPT" class="row form-outline" style="margin-bottom:20px;">
+                            <textarea asp-for="AboutPT" class="form-control"></textarea>
+                            <span asp-validation-for="AboutPT" class="text-danger"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="AboutEN" class="row form-outline" style="margin-bottom:20px; ">
+                            <textarea asp-for="AboutEN" class="form-control"></textarea>
+                            <span asp-validation-for="AboutEN" class="text-danger"></span>
+                        </div>
+                        <div id="AboutPT" class="row form-outline d-none" style="margin-bottom:20px;">
+                            <textarea asp-for="AboutPT" class="form-control"></textarea>
+                            <span asp-validation-for="AboutPT" class="text-danger"></span>
+                        </div>
+                    }
                 </div>
+
                 <hr style="margin-bottom:20px;" />
-                <div class="row form-outline" style="margin-bottom:20px;">
-                    <label asp-for="TermsAndConditions" class="control-label"></label>
-                    <textarea asp-for="TermsAndConditions" class="form-control" ></textarea>
-                    <span asp-validation-for="TermsAndConditions" class="text-danger"></span>
+                <div class="TermsAndConditions">
+                    <label asp-for="TermsAndConditionsEN" class="control-label"></label>
+                    <div class="language-select">
+                        <input type="button" class="lang-btn About" onclick="termsAndConditionsEN()" data-lang="en" value="EN">
+                        <input type="button" class="lang-btn About" onclick="termsAndConditionsPT()" data-lang="pt" value="PT">
+                    </div>
+                    @if (ViewBag.cultureInfo == "pt-PT")
+                    {
+                        <div id="TermsAndConditionsEN" class="row form-outline d-none" style="margin-bottom:20px; ">
+                            <textarea asp-for="TermsAndConditionsEN" class="form-control"></textarea>
+                            <span asp-validation-for="TermsAndConditionsEN" class="text-danger"></span>
+                        </div>
+                        <div id="TermsAndConditionsPT" class="row form-outline" style="margin-bottom:20px;">
+                            <textarea asp-for="TermsAndConditionsPT" class="form-control"></textarea>
+                            <span asp-validation-for="TermsAndConditionsPT" class="text-danger"></span>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="TermsAndConditionsEN" class="row form-outline" style="margin-bottom:20px; ">
+                            <textarea asp-for="TermsAndConditionsEN" class="form-control"></textarea>
+                            <span asp-validation-for="TermsAndConditionsEN" class="text-danger"></span>
+                        </div>
+                        <div id="TermsAndConditionsPT" class="row form-outline d-none" style="margin-bottom:20px;">
+                            <textarea asp-for="TermsAndConditionsPT" class="form-control"></textarea>
+                            <span asp-validation-for="TermsAndConditionsPT" class="text-danger"></span>
+                        </div>
+                    }
                 </div>
+                
                 <hr style="margin-bottom:20px;" />
                 <div class="form-group w-100" style="margin-bottom:20px;">
                     <label class="control-label">@StringLocalizer["Choose modalities"]</label>
@@ -89,6 +140,26 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript">
+
+    function aboutPT(){
+        document.getElementById("AboutEN").classList.add("d-none")
+        document.getElementById("AboutPT").classList.remove("d-none")
+    }
+
+    function aboutEN(){
+        document.getElementById("AboutPT").classList.add("d-none")
+        document.getElementById("AboutEN").classList.remove("d-none")
+    }
+    
+    function termsAndConditionsPT() {
+        document.getElementById("TermsAndConditionsEN").classList.add("d-none")
+        document.getElementById("TermsAndConditionsPT").classList.remove("d-none")
+    }
+
+    function termsAndConditionsEN() {
+        document.getElementById("TermsAndConditionsPT").classList.add("d-none")
+        document.getElementById("TermsAndConditionsEN").classList.remove("d-none")
+    }
 
     function removePhoto() {
         document.getElementById("profilePicture").src = "https://cdn.scmanagement.me/public/user_placeholder.png"
