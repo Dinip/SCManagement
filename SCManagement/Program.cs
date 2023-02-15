@@ -2,12 +2,9 @@
 using SCManagement;
 using SCManagement.Middlewares;
 using SCManagement.Services;
-using SCManagement.Services.Location;
 
 var builder = WebApplication.CreateBuilder(args);
 RegisterServices.Register(builder.Configuration, builder.Services);
-
-builder.Services.AddTransient<ILocationService, LocationService>();
 
 var app = builder.Build();
 
