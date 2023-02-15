@@ -32,6 +32,7 @@ namespace SCManagement.Data
         public DbSet<Payment> Payment { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<Subscription> Subscription { get; set; }
+        public DbSet<ClubPaymentSettings> ClubPaymentSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

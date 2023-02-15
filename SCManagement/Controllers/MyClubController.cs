@@ -59,6 +59,19 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
+        public async Task<IActionResult> MissingPayment()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (role.ClubId == 0) return RedirectToAction(nameof(Index));
+
+            return View(await _clubService.GetClub(role.ClubId));
+        }
+
         /// <summary>
         /// Gets the user selected club (if any)
         /// </summary>
@@ -72,6 +85,9 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             if (role.ClubId == 0) return View();
+
+            var status = await _clubService.GetClubStatus(role.ClubId);
+            if (status != ClubStatus.Active) return RedirectToAction(nameof(MissingPayment));
 
             ViewBag.RoleId = role.RoleId;
 

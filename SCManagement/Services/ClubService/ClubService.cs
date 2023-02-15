@@ -797,10 +797,15 @@ namespace SCManagement.Services.ClubService
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
-        
+
         public async Task<IEnumerable<User>> GetClubTrainers(int clubId)
         {
-            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 30).Include(u => u.User).Select(u => u.User).ToListAsync(); 
+            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 30).Include(u => u.User).Select(u => u.User).ToListAsync();
+        }
+
+        public async Task<ClubStatus> GetClubStatus(int clubId)
+        {
+            return await _context.Club.Where(c => c.Id == clubId).Select(c => c.Status).FirstAsync();
         }
     }
 }

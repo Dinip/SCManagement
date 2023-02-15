@@ -12,6 +12,7 @@ using SCManagement.Services.UserService;
 using SCManagement.Services.TeamService;
 using Azure.Identity;
 using SCManagement.Services.PaymentService;
+using SCManagement.Services.Location;
 
 namespace SCManagement.Services
 {
@@ -127,6 +128,7 @@ namespace SCManagement.Services
             services.AddTransient<IAzureStorage, AzureStorage>();
             services.AddTransient<IUserService, SCManagement.Services.UserService.UserService>();
             services.AddTransient<IClubService, SCManagement.Services.ClubService.ClubService>();
+            services.AddTransient<ILocationService, SCManagement.Services.Location.LocationService>();
             services.AddTransient<ITeamService, SCManagement.Services.TeamService.TeamService>();
             services.AddTransient<IPaymentService, SCManagement.Services.PaymentService.PaymentService>();
             #endregion
