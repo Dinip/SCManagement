@@ -9,6 +9,14 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content">
+        </div>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
@@ -27,21 +35,21 @@
             <th>
                 @Html.DisplayNameFor(model => model.HaveRoute)
             </th>
-@*            <th>
-                @Html.DisplayNameFor(model => model.Coordinates)
-            </th>*@
             <th>
+                @Html.DisplayNameFor(model => model.MaxEventEnrolls)
+            </th>
+           <th>
                 @Html.DisplayNameFor(model => model.Club)
             </th>
-          @*  <th>
+            @*   <th>
                 @Html.DisplayNameFor(model => model.EventResultType)
             </th>*@
-            <th></th>
+            @*<th></th>*@
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -59,22 +67,58 @@
                     <a>See Route</a>
                 }
                 </td>
-         @*   <td>
-                @Html.DisplayFor(modelItem => item.Coordinates)
-            </td>*@
+           <td>
+                @Html.DisplayFor(modelItem => item.MaxEventEnrolls)
+            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Club.Name)
             </td>
             
-            <td>
+       @*     <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
                     <form asp-action="Delete">
                         <input name="Id" value="@item.Id" class="form-control" hidden />
                         <input type="submit" value="Delete"/>
                     </form>
-            </td>
+            </td>*@
         </tr>
 }
     </tbody>
 </table>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script type="text/javascript">
+    let modal = document.getElementById("modal")
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $("#modal").hide();
+        }
+    }
+
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+
+    function openDetails(id) {
+        $.ajax({
+            url: `/Events/Details/${id}`,
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
+    }
+</script>

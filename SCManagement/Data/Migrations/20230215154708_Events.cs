@@ -9,27 +9,23 @@ namespace SCManagement.Data.Migrations
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "EventId",
-                table: "AspNetUsers",
-                type: "int",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "Event",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(40)", maxLength: 40, nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Details = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Details = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsPublic = table.Column<bool>(type: "bit", nullable: false),
                     Fee = table.Column<double>(type: "float", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: true),
                     HaveRoute = table.Column<bool>(type: "bit", nullable: false),
-                    Coordinates = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Route = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MaxEventEnrolls = table.Column<int>(type: "int", nullable: false),
+                    EnroolLimitDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ClubId = table.Column<int>(type: "int", nullable: false),
                     EventResultType = table.Column<int>(type: "int", nullable: false)
                 },
@@ -45,6 +41,34 @@ namespace SCManagement.Data.Migrations
                         name: "FK_Event_Club_ClubId",
                         column: x => x.ClubId,
                         principalTable: "Club",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "EventEnroll",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EventId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    EnrollDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EnrollStatus = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_EventEnroll", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_EventEnroll_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_EventEnroll_Event_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Event",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -79,11 +103,6 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_AspNetUsers_EventId",
-                table: "AspNetUsers",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Event_ClubId",
                 table: "Event",
                 column: "ClubId");
@@ -94,6 +113,16 @@ namespace SCManagement.Data.Migrations
                 column: "LocationId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_EventEnroll_EventId",
+                table: "EventEnroll",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_EventEnroll_UserId",
+                table: "EventEnroll",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_EventResult_EventId",
                 table: "EventResult",
                 column: "EventId");
@@ -102,34 +131,18 @@ namespace SCManagement.Data.Migrations
                 name: "IX_EventResult_UserId",
                 table: "EventResult",
                 column: "UserId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_AspNetUsers_Event_EventId",
-                table: "AspNetUsers",
-                column: "EventId",
-                principalTable: "Event",
-                principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_AspNetUsers_Event_EventId",
-                table: "AspNetUsers");
+            migrationBuilder.DropTable(
+                name: "EventEnroll");
 
             migrationBuilder.DropTable(
                 name: "EventResult");
 
             migrationBuilder.DropTable(
                 name: "Event");
-
-            migrationBuilder.DropIndex(
-                name: "IX_AspNetUsers_EventId",
-                table: "AspNetUsers");
-
-            migrationBuilder.DropColumn(
-                name: "EventId",
-                table: "AspNetUsers");
         }
     }
 }

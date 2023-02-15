@@ -17,17 +17,25 @@ namespace SCManagement.Models
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
         [Display(Name = "Event Details")]
-        public string Details { get; set; }
+        public string? Details { get; set; }
         [Display(Name = "Public Event")]
         public bool IsPublic { get; set; }
         [Display(Name = "Fee")]
         public double Fee { get; set; }
         [Display(Name = "Event Location")]
+        public int? LocationId { get; set; }
         public Address? Location { get; set; }
         [Display(Name = "Event Route")]
         public bool HaveRoute { get; set; } = false;
-        public string? Coordinates { get; set; }
-        public ICollection<User>? UsersEnrooled { get; set; }
+        public string? Route { get; set; }
+        [Display(Name = "Max Enrolls")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+
+        //Fazer validação: tem de ser depois da start date e antes da end date
+        public int MaxEventEnrolls { get; set; }
+        [Display(Name = "Enrool Limit Date")]
+        public DateTime EnroolLimitDate { get; set; }
+        public ICollection<EventEnroll> UsersEnrooled { get; set; } = new List<EventEnroll>();
         public int ClubId { get; set; }
         [Display(Name = "Sponsor")]
         public Club? Club { get; set; }

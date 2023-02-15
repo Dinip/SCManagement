@@ -10,7 +10,10 @@ namespace SCManagement.Services.EventService
         public Task<Event> CreateEvent(Event myEvent);
         public Task<Event> UpdateEvent(Event myEvent);
         public Task DeleteEvent(Event myEvent);
-        
+        public Task<EventEnroll> CreateEventEnroll(EventEnroll enroll);
+        public Task<EventEnroll> GetEnroll(int eventId, string userId);
+        public Task CancelEventEnroll(EventEnroll enroll);
+
 
     }
 }

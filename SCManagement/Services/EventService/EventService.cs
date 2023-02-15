@@ -1,11 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
-using SCManagement.Data.Migrations;
 using SCManagement.Models;
 
 namespace SCManagement.Services.EventService
 {
-    public class EventService: IEventService
+    public class EventService : IEventService
     {
         private readonly ApplicationDbContext _context;
 
@@ -49,7 +48,27 @@ namespace SCManagement.Services.EventService
             await _context.SaveChangesAsync();
             return myEvent;
         }
+
+        public async Task<EventEnroll> CreateEventEnroll(EventEnroll enroll)
+        {
+            _context.EventEnroll.Add(enroll);
+            await _context.SaveChangesAsync();
+            return enroll;
+        }
+
+        public async Task<EventEnroll> GetEnroll(int eventId, string userId)
+        {
+            return await _context.EventEnroll.Where(e => e.EventId == eventId && e.UserId == userId).Include(e => e.User).FirstOrDefaultAsync();
+        }
+
+        public async Task CancelEventEnroll(EventEnroll enroll)
+        {
+            _context.EventEnroll.Remove(enroll);
+            await _context.SaveChangesAsync();
+        }
     }
-    
+
+
+
 }
 

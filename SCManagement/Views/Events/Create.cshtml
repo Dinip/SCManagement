@@ -19,18 +19,24 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
+                <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
                 <span asp-validation-for="StartDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
+                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()"/>
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="EnroolLimitDate" class="control-label"></label>
+                <input asp-for="EnroolLimitDate" class="form-control" />
+                <span asp-validation-for="EnroolLimitDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label class="control-label">Evento de 1 dia</label>
-                @*Fazer o JS para esta CB*@
-                <input type="checkbox" class="form-control" />
+                @*Criar CheckBox input*@
+                <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()"/>
+                
             </div>
             <div class="form-group">
                 <label asp-for="Details" class="control-label"></label>
@@ -46,6 +52,11 @@
                 <label asp-for="Fee" class="control-label"></label>
                 <input asp-for="Fee" class="form-control" value="0" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaxEventEnrolls" class="control-label"></label>
+                <input asp-for="MaxEventEnrolls" class="form-control" value="0" />
+                <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -71,3 +82,34 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+<script>
+        function ApplySameDate() {
+            var startDateTime = document.getElementById("startDateTime");
+            var endDateTime = document.getElementById("endDateTime");
+            var sameDay = document.getElementById("SameDay");
+            if (startDateTime.value != "") {
+                if (startDateTime.value == endDateTime.value) {
+                    sameDay.checked = true;
+                }else{
+                    endDateTime.value = startDateTime.value;
+                    sameDay.checked = true;
+                }
+            }else{
+                sameDay.checked = false;
+            }
+        }
+
+        function HaveDiferentDate()
+        {
+            var startDateTime = document.getElementById("startDateTime");
+            var endDateTime = document.getElementById("endDateTime");
+            var sameDay = document.getElementById("SameDay");
+            if (startDateTime.value == endDateTime.value) {
+                sameDay.checked = true;
+            }else{
+                sameDay.checked = false;
+            }
+        }
+
+</script>

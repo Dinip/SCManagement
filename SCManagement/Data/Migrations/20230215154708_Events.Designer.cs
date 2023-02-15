@@ -12,7 +12,7 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230214160406_Events")]
+    [Migration("20230215154708_Events")]
     partial class Events
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -2752,14 +2752,13 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("ClubId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Coordinates")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Details")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("EnroolLimitDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("EventResultType")
@@ -2777,8 +2776,15 @@ namespace SCManagement.Data.Migrations
                     b.Property<int?>("LocationId")
                         .HasColumnType("int");
 
+                    b.Property<int>("MaxEventEnrolls")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasMaxLength(40)
+                        .HasColumnType("nvarchar(40)");
+
+                    b.Property<string>("Route")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
@@ -2791,6 +2797,36 @@ namespace SCManagement.Data.Migrations
                     b.HasIndex("LocationId");
 
                     b.ToTable("Event");
+                });
+
+            modelBuilder.Entity("SCManagement.Models.EventEnroll", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("EnrollDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("EnrollStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EventId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("EventId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("EventEnroll");
                 });
 
             modelBuilder.Entity("SCManagement.Models.EventResult", b =>
@@ -3004,9 +3040,6 @@ namespace SCManagement.Data.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("EventId")
-                        .HasColumnType("int");
-
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -3066,8 +3099,6 @@ namespace SCManagement.Data.Migrations
                     b.HasIndex("AddressId");
 
                     b.HasIndex("EMDId");
-
-                    b.HasIndex("EventId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
@@ -3322,6 +3353,25 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("Location");
                 });
 
+            modelBuilder.Entity("SCManagement.Models.EventEnroll", b =>
+                {
+                    b.HasOne("SCManagement.Models.Event", "Event")
+                        .WithMany("UsersEnrooled")
+                        .HasForeignKey("EventId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SCManagement.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Event");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SCManagement.Models.EventResult", b =>
                 {
                     b.HasOne("SCManagement.Models.Event", "Event")
@@ -3377,10 +3427,6 @@ namespace SCManagement.Data.Migrations
                     b.HasOne("SCManagement.Services.AzureStorageService.Models.BlobDto", "EMD")
                         .WithMany()
                         .HasForeignKey("EMDId");
-
-                    b.HasOne("SCManagement.Models.Event", null)
-                        .WithMany("UsersEnrooled")
-                        .HasForeignKey("EventId");
 
                     b.HasOne("SCManagement.Services.AzureStorageService.Models.BlobDto", "ProfilePicture")
                         .WithMany()
