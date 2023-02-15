@@ -58,10 +58,12 @@ window.onload = function () {
                         Country: country,
                     },
                    
-                }).done(function () {
-                    console.log("Sucessosssssssssss")
-                    alert("Sucesso");
+                }).done(function (response) {
+                    console.log("Sucess")
                     btn.disabled = true;
+                    var clubId = response;
+                    window.location.href = window.location.href = '/MyClub/Edit/' + clubId;;
+                        
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.log("Erro: " + textStatus + ", " + errorThrown);
                     console.log("Resposta do servidor: " + jqXHR.responseText);

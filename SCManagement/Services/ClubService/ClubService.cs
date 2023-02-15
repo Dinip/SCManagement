@@ -793,10 +793,11 @@ namespace SCManagement.Services.ClubService
         /// </summary>
         /// <param name="addressId"></param>
         /// <returns></returns>
-        public async Task<string> GetAddressString(int addressId)
+        public async Task<string> GetAddressString(int? addressId)
         {
-            Address ad = await _context.Address.FindAsync(addressId);
-            if (ad == null) return "";
+            if (addressId == null) return "";
+
+            Address? ad = await _context.Address.FindAsync(addressId);
             return ad.Street + ", " + ad.City + ", " + ad.District + "," + ad.Country + ", " + ad.ZipCode;
         }
 

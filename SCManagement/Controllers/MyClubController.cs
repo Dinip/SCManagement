@@ -4,7 +4,6 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.Linq;
-using FluentEmail.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,6 +16,7 @@ using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.Location;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Address = SCManagement.Models.Address;
 
 namespace SCManagement.Controllers
 {
@@ -110,8 +110,9 @@ namespace SCManagement.Controllers
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
 
-            //get Address        
-            ViewBag.Address = await _clubService.GetAddressString((int)club.AddressId);
+            //get Address
+            ViewBag.Address = await _clubService.GetAddressString(club.AddressId);
+            
 
             if (club == null) return View("CustomError", "Error_NotFound");
 
@@ -143,7 +144,7 @@ namespace SCManagement.Controllers
         /// <returns>View Index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,AddressId,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
             if (!ModelState.IsValid) return View(club);
@@ -175,7 +176,7 @@ namespace SCManagement.Controllers
 
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
 
-            //_clubService.UpdateClubAddress((int)actualClub.AddressId, CountyId, Street, ZipCode, Number);
+            //_clubService.UpdateClubAddress
 
             await _clubService.UpdateClub(actualClub);
 
@@ -852,15 +853,12 @@ namespace SCManagement.Controllers
             {
                 // update Address
                 _clubService.UpdateClubAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, (int)clubAddresId);
-                return Json(clubAddresId);
+                return Json(club.Id);
             } 
             
             //create address
-            var resCreate = await _clubService.CreateAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, club.Id);
-            return Json(resCreate);
-
+            await _clubService.CreateAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, club.Id);
+            return Json(club.Id);
         }
-
-
     }
 }
