@@ -110,6 +110,9 @@ namespace SCManagement.Controllers
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
 
+            //get Address        
+            ViewBag.Address = await _clubService.GetAddressString((int)club.AddressId);
+
             if (club == null) return View("CustomError", "Error_NotFound");
 
             var c = new EditModel

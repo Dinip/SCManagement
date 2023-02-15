@@ -789,6 +789,18 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
+        /// Gets the address of a given club
+        /// </summary>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
+        public async Task<string> GetAddressString(int addressId)
+        {
+            Address ad = await _context.Address.FindAsync(addressId);
+            if (ad == null) return "";
+            return ad.Street + ", " + ad.City + ", " + ad.District + "," + ad.Country + ", " + ad.ZipCode;
+        }
+
+        /// <summary>
         /// Gets all club staff (admin, secretary and trainer) (users role object with join date)
         /// </summary>
         /// <param name="clubId"></param>
@@ -832,5 +844,6 @@ namespace SCManagement.Services.ClubService
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
+
     }
 }
