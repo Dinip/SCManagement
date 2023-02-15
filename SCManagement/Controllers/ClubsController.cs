@@ -106,7 +106,7 @@ namespace SCManagement.Controllers
             }
 
             //get Address        
-            ViewBag.Address = await _clubService.GetAddressString((int)club.AddressId);
+            ViewBag.Address = await _clubService.GetAddressString(club.AddressId);
 
             return View("Details", club);
         }
