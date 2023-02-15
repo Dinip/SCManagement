@@ -109,11 +109,7 @@ namespace SCManagement.Controllers
 
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
-
-            //get Address
-            ViewBag.Address = await _clubService.GetAddressString(club.AddressId);
-            
-
+        
             if (club == null) return View("CustomError", "Error_NotFound");
 
             var c = new EditModel
@@ -124,8 +120,7 @@ namespace SCManagement.Controllers
                 PhoneNumber = club.PhoneNumber,
                 About = club.About,
                 CreationDate = club.CreationDate,
-                //AddressId = club.AddressId,
-                //Address = club.Address,
+                Address = club.Address,
                 ModalitiesIds = ClubModalitiesIds,
                 PhotographyId = club.PhotographyId,
                 Photography = club.Photography,
@@ -209,9 +204,7 @@ namespace SCManagement.Controllers
 
             public BlobDto? Photography { get; set; }
 
-            //public int? AddressId { get; set; }
-
-            //public Address? Address { get; set; }
+            public Address? Address { get; set; }
 
             [Display(Name = "Modalities")]
             [Required(ErrorMessage = "Error_Required")]
@@ -812,9 +805,8 @@ namespace SCManagement.Controllers
             return PartialView("_PartialUserDetails", user); ;
         }
 
-        public IActionResult NewAdress()
+        public IActionResult NewAddress()
         {
-
             return View();
         }
 
@@ -831,7 +823,7 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> ReceveAddress(double CoordinateX, double CoordinateY, string ZipCode, string Street, string City, string District, string Country)
+        public async Task<IActionResult> ReceiveAddress(double CoordinateX, double CoordinateY, string ZipCode, string Street, string City, string District, string Country)
         {
             //get id of the user
             string userId = getUserIdFromAuthedUser();

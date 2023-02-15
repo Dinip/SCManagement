@@ -105,9 +105,6 @@ namespace SCManagement.Controllers
                 ViewBag.btnValue = "Become partner";
             }
 
-            //get Address        
-            ViewBag.Address = await _clubService.GetAddressString(club.AddressId);
-
             return View("Details", club);
         }
 

@@ -64,10 +64,16 @@
                 </div>
                 <hr style="margin-bottom:20px;" />
 
-                <p style="color:black">@ViewBag.Address</p>
-                
+                @if (Model.Address != null)
+                {
+                    <p>@Model.Address.Street</p>
+                    <p>@Model.Address.City</p>
+                    <p>@Model.Address.Country</p>
+                    <p>@Model.Address.ZipCode</p>
+                }
+
                 <div class="row form-floating" style="margin-bottom:20px;">
-                    <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="MyClub" asp-area="" asp-action="NewAdress">!!!Novo Endereço!!!</a>
+                    <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="MyClub" asp-action="NewAddress">!!!Novo Endereço!!!</a>
 
                 </div>
                 <hr style="margin-bottom:20px;" />
@@ -83,7 +89,7 @@
 
 
     </div>
-    
+
 </div>
 
 

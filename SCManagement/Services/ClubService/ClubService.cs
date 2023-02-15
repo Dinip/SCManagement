@@ -77,30 +77,7 @@ namespace SCManagement.Services.ClubService
             return await _context.Club
                 .Include(c => c.Modalities)
                 .Include(c => c.Photography)
-                //.Include(c => c.Address)
-                //.Include(c => c.Address.County)
-                //.ThenInclude(c => c.District)
-                //.ThenInclude(c => c.Country)
-                //.Select(s => new Club
-                //{
-                //    Id = s.Id,
-                //    Name = s.Name,
-                //    Email = s.Email,
-                //    PhoneNumber = s.PhoneNumber,
-                //    About = s.About,
-                //    Photography = s.Photography,
-                //    Modalities = s.Modalities,
-                //    //Address = new Address
-                //    //{
-                //    //    Street = s.Address.Street,
-                //    //    Number = s.Address.Number,
-                //    //    ZipCode = s.Address.ZipCode,
-                //    //    County = new County
-                //    //    {
-                //    //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-                //    //    }
-                //    //}
-                //})
+                .Include(c => c.Address)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -113,10 +90,7 @@ namespace SCManagement.Services.ClubService
             return await _context.Club
                .Include(c => c.Modalities)
                .Include(c => c.Photography)
-               //.Include(c => c.Address)
-               //.Include(c => c.Address.County)
-               //.ThenInclude(c => c.District)
-               //.ThenInclude(c => c.Country)
+               .Include(c => c.Address)
                .Select(s =>
                new Club
                {
@@ -786,19 +760,6 @@ namespace SCManagement.Services.ClubService
             _context.Address.Update(ad);
             _context.SaveChanges();
 
-        }
-
-        /// <summary>
-        /// Gets the address of a given club
-        /// </summary>
-        /// <param name="addressId"></param>
-        /// <returns></returns>
-        public async Task<string> GetAddressString(int? addressId)
-        {
-            if (addressId == null) return "";
-
-            Address? ad = await _context.Address.FindAsync(addressId);
-            return ad.Street + ", " + ad.City + ", " + ad.District + "," + ad.Country + ", " + ad.ZipCode;
         }
 
         /// <summary>

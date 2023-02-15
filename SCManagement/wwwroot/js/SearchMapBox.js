@@ -46,7 +46,7 @@ window.onload = function () {
 
                 $.ajax({
                     type: 'POST',
-                    url: '/MyClub/ReceveAddress',
+                    url: '/MyClub/ReceiveAddress',
                     dataType: 'json',
                     data: {
                         CoordinateY: coord[1],
