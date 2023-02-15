@@ -40,31 +40,6 @@ namespace SCManagement.Services.Location
                 .Select(s => new County { Id = s.Id, Name = $"{s.Name}, {s.District!.Name}, {s.District.Country!.Name}" })
                 .ToListAsync();
         }
-
-        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country)
-        {
-            //Create a new Address
-            Address ad = new Address
-            {
-                CoordinateX = CoordinateX,
-                CoordinateY = CoordinateY,
-                ZipCode = ZipCode,
-                Street = Street,
-                City = City,
-                District = District,
-                Country = Country
-            };
-        
-            _context.Address.Add(ad);
-            await _context.SaveChangesAsync();
-
-            return ad;
-        }
-
-        public async Task<IEnumerable<Address>> GetAddress()
-        {
-            return await _context.Address.ToListAsync();
-        }
        
     }
 }

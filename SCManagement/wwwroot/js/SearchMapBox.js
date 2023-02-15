@@ -9,7 +9,9 @@ const map = new mapboxgl.Map({
 
 const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
-    mapboxgl: mapboxgl
+    mapboxgl: mapboxgl,
+    types: 'address',
+    layers: ['address']
 });
 
 map.addControl(geocoder, 'top-left');
@@ -42,7 +44,6 @@ window.onload = function () {
                 let country = context[3].text;
                 let coord = geometry.coordinates;
 
-
                 $.ajax({
                     type: 'POST',
                     url: '/MyClub/ReceveAddress',
@@ -57,14 +58,17 @@ window.onload = function () {
                         Country: country,
                     },
                    
-                }).done(function () { alert("DEU"); })
-                    .fail(function () { alert("Não deu"); });
-
+                }).done(function () {
+                    console.log("Sucessosssssssssss")
+                    alert("Sucesso");
+                    btn.disabled = true;
+                }).fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log("Erro: " + textStatus + ", " + errorThrown);
+                    console.log("Resposta do servidor: " + jqXHR.responseText);
+                });
             }
         } catch (error) {
             alert("Terá de inserir uma localização com rua incluida");
         }
-
-
     }
 };

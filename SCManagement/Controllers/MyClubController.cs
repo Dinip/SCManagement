@@ -16,7 +16,7 @@ using SCManagement.Services.ClubService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.Location;
-
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace SCManagement.Controllers
 {
@@ -808,19 +808,53 @@ namespace SCManagement.Controllers
             return PartialView("_PartialUserDetails", user); ;
         }
 
-        public async Task<IActionResult> NewAdress()
+        public IActionResult NewAdress()
         {
 
             return View();
         }
 
+        /// <summary>
+        /// Allow to create a address to the club or update
+        /// </summary>
+        /// <param name="CoordinateX"></param>
+        /// <param name="CoordinateY"></param>
+        /// <param name="ZipCode"></param>
+        /// <param name="Street"></param>
+        /// <param name="City"></param>
+        /// <param name="District"></param>
+        /// <param name="Country"></param>
+        /// <returns></returns>
         [HttpPost]
-        public  async Task<ActionResult> ReceveAddress(double CoordinateX, double CoordinateY, string ZipCode, string Street, string City, string District, string Country)
+        [Authorize]
+        public async Task<IActionResult> ReceveAddress(double CoordinateX, double CoordinateY, string ZipCode, string Street, string City, string District, string Country)
         {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
 
-            await _locationService.CreateAddress(CoordinateX, CoordinateY,ZipCode,Street, City,District, Country);
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check if the user is a admin of the club
+            if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
+
+            //get the club
+            var club = await _clubService.GetClub(role.ClubId);
+
+            if (club == null) return NotFound();
+
+            var clubAddresId = club.AddressId;
+
+            if (clubAddresId != null) 
+            {
+                // update Address
+                _clubService.UpdateClubAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, (int)clubAddresId);
+                return Json(clubAddresId);
+            } 
             
-            return Ok();
+            //create address
+            var resCreate = await _clubService.CreateAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, club.Id);
+            return Json(resCreate);
 
         }
 
