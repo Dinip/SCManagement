@@ -178,10 +178,22 @@ namespace SCManagement.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("CountyId")
-                        .HasColumnType("int");
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Number")
+                    b.Property<double>("CoordinateX")
+                        .HasColumnType("float");
+
+                    b.Property<double>("CoordinateY")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("District")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Street")
@@ -192,8 +204,6 @@ namespace SCManagement.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("CountyId");
 
                     b.ToTable("Address");
                 });
@@ -3282,17 +3292,6 @@ namespace SCManagement.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SCManagement.Models.Address", b =>
-                {
-                    b.HasOne("SCManagement.Models.County", "County")
-                        .WithMany()
-                        .HasForeignKey("CountyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("County");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Club", b =>

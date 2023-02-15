@@ -77,30 +77,7 @@ namespace SCManagement.Services.ClubService
             return await _context.Club
                 .Include(c => c.Modalities)
                 .Include(c => c.Photography)
-                //.Include(c => c.Address)
-                //.Include(c => c.Address.County)
-                //.ThenInclude(c => c.District)
-                //.ThenInclude(c => c.Country)
-                //.Select(s => new Club
-                //{
-                //    Id = s.Id,
-                //    Name = s.Name,
-                //    Email = s.Email,
-                //    PhoneNumber = s.PhoneNumber,
-                //    About = s.About,
-                //    Photography = s.Photography,
-                //    Modalities = s.Modalities,
-                //    //Address = new Address
-                //    //{
-                //    //    Street = s.Address.Street,
-                //    //    Number = s.Address.Number,
-                //    //    ZipCode = s.Address.ZipCode,
-                //    //    County = new County
-                //    //    {
-                //    //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-                //    //    }
-                //    //}
-                //})
+                .Include(c => c.Address)
                 .FirstOrDefaultAsync(m => m.Id == id);
         }
 
@@ -113,10 +90,7 @@ namespace SCManagement.Services.ClubService
             return await _context.Club
                .Include(c => c.Modalities)
                .Include(c => c.Photography)
-               //.Include(c => c.Address)
-               //.Include(c => c.Address.County)
-               //.ThenInclude(c => c.District)
-               //.ThenInclude(c => c.Country)
+               .Include(c => c.Address)
                .Select(s =>
                new Club
                {
@@ -724,34 +698,69 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
         }
 
-        //public async Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number)
-        //{
-        //    Address address = new Address
-        //    {
-        //        CountyId = countyId,
-        //        Street = street,
-        //        ZipCode = zipCode,
-        //        Number = number
-        //    };
+        /// <summary>
+        /// Create a Address to the club
+        /// </summary>
+        /// <param name="CoordinateX"></param>
+        /// <param name="CoordinateY"></param>
+        /// <param name="ZipCode"></param>
+        /// <param name="Street"></param>
+        /// <param name="City"></param>
+        /// <param name="District"></param>
+        /// <param name="Country"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
+        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country,int clubId)
+        {
+            //Create a new Address
+            Address ad = new Address
+            {
+                CoordinateX = CoordinateX,
+                CoordinateY = CoordinateY,
+                ZipCode = ZipCode,
+                Street = Street,
+                City = City,
+                District = District,
+                Country = Country
+            };
 
-        //    _context.Address.Add(address);
-        //    await _context.SaveChangesAsync();
+            _context.Address.Add(ad);
+            await _context.SaveChangesAsync();
 
-        //    return address.Id;
-        //}
+            //Add the address to the club
+            Club club = await _context.Club.FindAsync(clubId);
+            club.Address = ad;
+            await _context.SaveChangesAsync();
 
-        //public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number)
-        //{
-        //    Address address = _context.Address.Find(addressId);
-        //    address.Street = Street;
-        //    address.ZipCode = ZipCode;
-        //    address.Number = Number;
-        //    address.County = null;
-        //    address.CountyId = CountyId;
+            return ad;
+        }
 
-        //    _context.Address.Update(address);
-        //    _context.SaveChanges();
-        //}
+        /// <summary>
+        /// Updates the address of a given club
+        /// </summary>
+        /// <param name="CoordinateX"></param>
+        /// <param name="CoordinateY"></param>
+        /// <param name="ZipCode"></param>
+        /// <param name="Street"></param>
+        /// <param name="City"></param>
+        /// <param name="District"></param>
+        /// <param name="Country"></param>
+        /// <param name="addressId"></param>
+        public void UpdateClubAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int addressId)
+        {
+            //Update the address
+            Address ad = _context.Address.Find(addressId);
+            ad.CoordinateX = CoordinateX;
+            ad.CoordinateY = CoordinateY;
+            ad.ZipCode = ZipCode;
+            ad.Street = Street;
+            ad.City = City;
+            ad.District = District;
+            ad.Country = Country;
+            _context.Address.Update(ad);
+            _context.SaveChanges();
+
+        }
 
         /// <summary>
         /// Gets all club staff (admin, secretary and trainer) (users role object with join date)

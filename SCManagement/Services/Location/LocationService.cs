@@ -40,5 +40,6 @@ namespace SCManagement.Services.Location
                 .Select(s => new County { Id = s.Id, Name = $"{s.Name}, {s.District!.Name}, {s.District.Country!.Name}" })
                 .ToListAsync();
         }
+       
     }
 }

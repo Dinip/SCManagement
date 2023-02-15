@@ -14,6 +14,9 @@ using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
+using SCManagement.Services.Location;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Address = SCManagement.Models.Address;
 
 namespace SCManagement.Controllers
 {
@@ -29,6 +32,8 @@ namespace SCManagement.Controllers
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
+        private readonly ILocationService _locationService;
+
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -41,12 +46,14 @@ namespace SCManagement.Controllers
             UserManager<User> userManager,
             IClubService clubService,
             IUserService userService,
-            ITeamService teamService)
+            ITeamService teamService,
+            ILocationService locationService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
             _teamService = teamService;
+            _locationService = locationService;
         }
 
         /// <summary>
@@ -102,7 +109,7 @@ namespace SCManagement.Controllers
 
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
-
+        
             if (club == null) return View("CustomError", "Error_NotFound");
 
             var c = new EditModel
@@ -113,8 +120,7 @@ namespace SCManagement.Controllers
                 PhoneNumber = club.PhoneNumber,
                 About = club.About,
                 CreationDate = club.CreationDate,
-                //AddressId = club.AddressId,
-                //Address = club.Address,
+                Address = club.Address,
                 ModalitiesIds = ClubModalitiesIds,
                 PhotographyId = club.PhotographyId,
                 Photography = club.Photography,
@@ -133,7 +139,7 @@ namespace SCManagement.Controllers
         /// <returns>View Index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,AddressId,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
             if (!ModelState.IsValid) return View(club);
@@ -165,7 +171,7 @@ namespace SCManagement.Controllers
 
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
 
-            //_clubService.UpdateClubAddress((int)actualClub.AddressId, CountyId, Street, ZipCode, Number);
+            //_clubService.UpdateClubAddress
 
             await _clubService.UpdateClub(actualClub);
 
@@ -198,9 +204,7 @@ namespace SCManagement.Controllers
 
             public BlobDto? Photography { get; set; }
 
-            //public int? AddressId { get; set; }
-
-            //public Address? Address { get; set; }
+            public Address? Address { get; set; }
 
             [Display(Name = "Modalities")]
             [Required(ErrorMessage = "Error_Required")]
@@ -838,6 +842,54 @@ namespace SCManagement.Controllers
             if (userRoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
             return PartialView("_PartialUserDetails", user); ;
+        }
+
+        public IActionResult NewAddress()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Allow to create a address to the club or update
+        /// </summary>
+        /// <param name="CoordinateX"></param>
+        /// <param name="CoordinateY"></param>
+        /// <param name="ZipCode"></param>
+        /// <param name="Street"></param>
+        /// <param name="City"></param>
+        /// <param name="District"></param>
+        /// <param name="Country"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> ReceiveAddress(double CoordinateX, double CoordinateY, string ZipCode, string Street, string City, string District, string Country)
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //check if the user is a admin of the club
+            if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
+
+            //get the club
+            var club = await _clubService.GetClub(role.ClubId);
+
+            if (club == null) return NotFound();
+
+            var clubAddresId = club.AddressId;
+
+            if (clubAddresId != null) 
+            {
+                // update Address
+                _clubService.UpdateClubAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, (int)clubAddresId);
+                return Json(club.Id);
+            } 
+            
+            //create address
+            await _clubService.CreateAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, club.Id);
+            return Json(club.Id);
         }
     }
 }

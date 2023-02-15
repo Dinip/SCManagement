@@ -40,12 +40,12 @@ namespace SCManagement.Services.ClubService
         public Task RemoveClubUser(string userId, int clubId, int roleId);
         public Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId);
         public Task AddUserToClub(string userId, int clubId, int roleId);
-        //public Task<int> GetAddressAsync(int countyId, string street, string zipCode, string number);
-        //public void UpdateClubAddress(int addressId, int CountyId, string Street, string ZipCode, string Number);
         public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId);
         public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId);
         public Task<IEnumerable<Modality>> GetClubModalities(int clubId);
         public Task<IEnumerable<User>> GetAthletes(int clubId);
         public Task<IEnumerable<User>> GetClubTrainers(int clubId);
+        public Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int clubId);
+        public void UpdateClubAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int addressId);
     }
 }

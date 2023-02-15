@@ -63,6 +63,20 @@
                     <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />
+
+                @if (Model.Address != null)
+                {
+                    <p>@Model.Address.Street</p>
+                    <p>@Model.Address.City</p>
+                    <p>@Model.Address.Country</p>
+                    <p>@Model.Address.ZipCode</p>
+                }
+
+                <div class="row form-floating" style="margin-bottom:20px;">
+                    <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="MyClub" asp-action="NewAddress">!!!Novo Endereço!!!</a>
+
+                </div>
+                <hr style="margin-bottom:20px;" />
                 <div class="row form-floating">
                     <input type="submit" value=@StringLocalizer["Save"] class="btn btn-primary mt-2 w-100" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                 </div>
@@ -75,7 +89,7 @@
 
 
     </div>
-    
+
 </div>
 
 
