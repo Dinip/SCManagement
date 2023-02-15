@@ -14,18 +14,18 @@
     {
         <li>
             <div class="dropdown d-none d-md-block">
-                <button class="btn fa-2xl shadow-none text-to-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                <button class="btn fa-2xl shadow-none text-to-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title="Personal info">
                     <img src="@pfpUri" class="rounded-circle" style="width: 45px; height: 45px;" />
                 </button>
                 <ul class="dropdown-menu shadow" style="margin-top: 7px; left: -145px; width: 230px; border:none; border-radius:0;" id="Dropdown1">
                     <li class="dropdown-item" style="padding: 5px;">
-                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">@user?.FullName</a>
+                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title="Profile">@user?.FullName</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
-                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Payment" asp-action="Index">@StringLocalizer["Wallet"]</a>
+                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Payment" asp-action="Index" title="Your payments">@StringLocalizer["Wallet"]</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
-                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Subscription" asp-action="Index">@StringLocalizer["Subscriptions"]</a>
+                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Subscription" asp-action="Index" title="Your subscriptions">@StringLocalizer["Subscriptions"]</a>
                     </li>
                     <li style="padding: 5px;" class="row">
                         <div class="col-2">
@@ -34,18 +34,18 @@
                         <div class="col-6">
                             <label class="text-to-dark col" style="font-size: 0.8vw;">@StringLocalizer["Dark mode"]</label>
                         </div>
-                        <div class="col-4" style="text-align:right">
-                            <label class="switch">
+                        <div class="col-4" style="text-align:right" title="Change theme">
+                            <label class="switch" >
                                 <input type="checkbox" onchange="darkThemeToggle(this)" id="darkToggle">
                                 <span class="slider round"></span>
                             </label>
                         </div>
                     </li>
                     <li class="text-to-dark" style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
-                    <li class="dropdown-item" style="padding: 5px;">
+                    <li class="dropdown-item" style="padding: 5px;" title="Change club">
                         @await Component.InvokeAsync("UserClubContext")
                     </li>
-                    <li class="row" style="padding: 5px;">
+                    <li class="row" style="padding: 5px;" title="Change language">
                         <div class="col-2 pt-2">
                             <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-lg fa-earth-americas text-to-dark"></i>
                         </div>
@@ -68,9 +68,9 @@
         <a type="button" class="btn btn-primary signin ms-2 ms-md-3 mt-2 mt-md-0" id="navbarSupportedContent1" asp-area="Identity" asp-page="/Account/Login">@StringLocalizer["Sign in"]</a>
         <li>
             <div class="dropdown d-none d-md-block">
-                <button class="btn fa-solid fa-user fa-2xl shadow-none text-to-dark mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>
+                <button class="btn fa-solid fa-user fa-2xl shadow-none text-to-dark mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"   title="Additional tools"></button>
                 <ul class="dropdown-menu shadow" style="margin-top: 7px; left: -145px; width: 300px; border:none; border-radius:0;" id="Dropdown1">
-                    <li style="padding: 5px; margin-top:10px;">
+                    <li style="padding: 5px; margin-top:10px;" title="Change theme">
                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg text-to-dark"></i>
                         <label class="text-to-dark">@StringLocalizer["Dark mode"]</label>
                         <label class="switch" style="margin-left: 10px;">
@@ -78,7 +78,7 @@
                             <span class="slider round"></span>
                         </label>
                     </li>
-                    <li class="row d-flex align-self-center" style="padding: 5px;">
+                    <li class="row d-flex align-self-center" style="padding: 5px;" title="Change language">
                         <div class="col-2 pt-2">
                             <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas fa-lg text-to-dark"></i>
                         </div>
@@ -92,7 +92,6 @@
         </li>
     }
 </ul>
-
 <script>
     const dropdown = document.querySelector('.dropdown');
     const dropdownM = document.querySelector('.dropdown-menu');

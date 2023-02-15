@@ -40,7 +40,7 @@
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
                             <div class="form-group mt-3">
-                                <select multiple required data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select w-100" asp-items="ViewBag.modalities"></select>
+                                <select multiple required data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select w-100" asp-items="ViewBag.modalities" title="Choose your team's modalities"></select>
                                 <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                             </div>
 

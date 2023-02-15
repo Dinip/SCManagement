@@ -49,7 +49,7 @@
                                 <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "invisible")">
                                     <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
                                     <input name="page" value="StaffList" class="form-control" hidden />
-                                    <input type="submit" value="Remove staff" class="btn btn-danger" />
+                                    <input type="submit" value="Remove staff" class="btn btn-danger" title="Remove Staff member"/>
                                 </form>
                             </td>
                         </tr>

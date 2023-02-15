@@ -50,35 +50,40 @@
                                 <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
                                 <!-- 2 column grid layout with text inputs for the first and last names -->
                                 <div class="row">
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control" placeholder=@StringLocalizer["First Name"] />
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input asp-for="Input.FirstName" type="text" id="form3Example1" class="form-control" />
+                                            <label asp-for="Input.FirstName" class="form-label"></label>
                                             <span asp-validation-for="Input.FirstName" class="text-danger"></span>
                                         </div>
                                     </div>
-                                    <div class="col-md-6 mb-4">
-                                        <div class="form-outline">
-                                            <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" placeholder=@StringLocalizer["Last Name"] />
+                                    <div class="col-md-6 mb-3">
+                                        <div class="form-floating">
+                                            <input asp-for="Input.LastName" type="text" id="form3Example2" class="form-control" />
+                                            <label asp-for="Input.LastName" class="form-label"></label>
                                             <span asp-validation-for="Input.LastName" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
 
                                 <!-- Email input -->
-                                <div class="mb-4 form-outline">
-                                    <input asp-for="Input.Email" type="email" id="form3Example3" class="form-control" placeholder="Email" />
+                                <div class="mb-3 form-floating ">
+                                    <input asp-for="Input.Email" type="email" id="form3Example3" class="form-control" aria-required="true" />
+                                    <label asp-for="Input.Email" class="form-label"></label>
                                     <span asp-validation-for="Input.Email" class="text-danger"></span>
                                 </div>
 
                                 <!-- Password input -->
-                                <div class="mb-4 form-outline">
-                                    <input asp-for="Input.Password" type="password" id="form3Example4" class="form-control" placeholder=@StringLocalizer["Password"] />
-                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                <div class="mb-3 form-floating" title="The password must be at least 6 and at max 100 characters long, including uppercase and lowercase letters, symbols and numbers.">
+                                    <input asp-for="Input.Password" id="form3Example4" class="form-control" aria-required="true" />
+                                    <label asp-for="Input.Password" class="form-label"></label>
+                                    <span asp-validation-for="Input.Password" class="text-danger row"></span>
                                 </div>
 
                                 <!-- Confirm Password input -->
-                                <div class="mb-4 form-outline">
-                                    <input asp-for="Input.ConfirmPassword" type="password" id="form3Example4" class="form-control" placeholder=@StringLocalizer["Confirm password"] />
+                                <div class="mb-3 form-floating">
+                                    <input asp-for="Input.ConfirmPassword" type="password" id="form3Example4" class="form-control" aria-required="true" />
+                                    <label asp-for="Input.ConfirmPassword" class="form-label"></label>
                                     <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
                                 </div>
 
@@ -96,7 +101,7 @@
                                 <p>
                                     @foreach (var provider in Model.ExternalLogins)
                                     {
-                                        <button type="submit" class="btn fa-brands fa-@provider.Name.ToLower()" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account"></button>
+                                        <button type="submit" class="btn fa-brands fa-@provider.Name.ToLower()" name="provider" value="@provider.Name"   title="Log in using your @provider.DisplayName account"></button>
                                     }
 
                                 </p>
@@ -109,6 +114,13 @@
     </section>
     <!-- Section: Design Block -->
     <script src="https://kit.fontawesome.com/8b1729a957.js" crossorigin="anonymous"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(function () {
+            $("[data-toggle='tooltip']").tooltip(options)
+        });
+    </script>
 </body>
 </html>
 

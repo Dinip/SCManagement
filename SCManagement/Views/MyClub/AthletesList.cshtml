@@ -42,7 +42,7 @@
                                 <form asp-action="RemoveUser" class="@(ViewBag.UserIsManager ? "": "invisible")">
                                     <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
                                     <input name="page" value="AthletesList" class="form-control" hidden />
-                                    <input type="submit" value="Remove athlete" class="btn btn-danger" />
+                                    <input type="submit" value="Remove athlete" class="btn btn-danger" title="Remove athlete"/>
                                 </form>
                             </td>
                         </tr>

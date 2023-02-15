@@ -45,11 +45,11 @@
                             }
                             @if (ViewBag.TrainerId != null)
                             {
-                                <input hidden asp-for="TrainerId" value=@ViewBag.TrainerId />
+                                <input hidden asp-for="TrainerId" value=@ViewBag.TrainerId title="Choose the team trainer"/>
                             }
                             <div class="form-floating mt-3">
                                 <div class="d-flex justify-content-center">
-                                    <select asp-for="ModalityId" data-placeholder=@StringLocalizer["Choose modalities"] class="form-control chosen-select w-25" asp-items="ViewBag.Modalities"></select>
+                                    <select asp-for="ModalityId" data-placeholder=@StringLocalizer["Choose modalities"] class="form-control chosen-select w-25" asp-items="ViewBag.Modalities" title="Choose your team's modalitie"></select>
                                 </div>
                             </div>
                         </div>

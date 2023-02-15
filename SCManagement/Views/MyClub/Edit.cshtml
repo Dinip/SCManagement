@@ -17,13 +17,18 @@
                      class="rounded-circle row"
                      style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="row d-flex mt-5">
-                    <i id="btnRemoveImage"
-                       type="button"
-                       style="color:red"
-                       class="@ShowRemoveButton() align-self-end fa-solid fa-trash fa-2xl mb-3 col"
-                       onclick="removePhoto()">
+                    <i  id="btnRemoveImage"
+                        type="button"
+                        style="color:red"
+                        class="@ShowRemoveButton() align-self-end fa-solid fa-trash fa-2xl mb-3 col"
+                        onclick="removePhoto()"
+                        title="Remove your foto">
                     </i>
-                    <i class="fa-solid fa-2xl fa-pen-to-square ms-4 col text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
+                    <i  class="fa-solid fa-2xl fa-pen-to-square ms-4 col text-to-dark" 
+                        onclick="document.getElementById('selectedFile').click()" 
+                        style="cursor:pointer;"
+                        title="Pick a new foto from your files">
+                    </i>
                 </div>
             </div>
         </div>
@@ -46,8 +51,8 @@
                     <span asp-validation-for="About" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />
-                <div class="form-group w-100" style="margin-bottom:20px;">
-                    <select required multiple data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
+                <div class="form-group w-100" style="margin-bottom:20px;" >
+                    <select required multiple data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" title="Choose your club modalities" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />
