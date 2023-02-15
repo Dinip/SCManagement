@@ -674,7 +674,7 @@
     <value>Mudar palavra-passe</value>
   </data>
   <data name="Choose modalities" xml:space="preserve">
-    <value>Escolha as modalidades...</value>
+    <value>Escolha as modalidades</value>
   </data>
   <data name="Club" xml:space="preserve">
     <value>Clube</value>
@@ -887,5 +887,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   </data>
   <data name="Modality" xml:space="preserve">
     <value>Modalidade</value>
+  </data>
+  <data name="Terms and conditions" xml:space="preserve">
+    <value>Termos e condições</value>
   </data>
 </root>

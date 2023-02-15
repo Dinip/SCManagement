@@ -40,14 +40,21 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />
-                <div class="row form-floating" style="margin-bottom:20px;">
-                    <input asp-for="About" class="form-control" />
+                <div class="row form-outline" style="margin-bottom:20px;">
                     <label asp-for="About" class="control-label"></label>
+                    <textarea asp-for="About" class="form-control" ></textarea>
                     <span asp-validation-for="About" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />
+                <div class="row form-outline" style="margin-bottom:20px;">
+                    <label asp-for="TermsAndConditions" class="control-label"></label>
+                    <textarea asp-for="TermsAndConditions" class="form-control" ></textarea>
+                    <span asp-validation-for="TermsAndConditions" class="text-danger"></span>
+                </div>
+                <hr style="margin-bottom:20px;" />
                 <div class="form-group w-100" style="margin-bottom:20px;">
-                    <select required multiple data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
+                    <label class="control-label">@StringLocalizer["Choose modalities"]</label>
+                    <select required multiple asp-for="ModalitiesIds" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />

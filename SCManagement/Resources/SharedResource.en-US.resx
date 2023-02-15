@@ -543,7 +543,7 @@
     <value>Change Password</value>
   </data>
   <data name="Choose modalities" xml:space="preserve">
-    <value>Choose modalities...</value>
+    <value>Choose modalities</value>
   </data>
   <data name="Club" xml:space="preserve">
     <value>Club</value>
@@ -759,5 +759,8 @@ I have experience in the area and I am very focused on my goals.</value>
   </data>
   <data name="NotAssociatedClub" xml:space="preserve">
     <value />
+  </data>
+  <data name="Terms and conditions" xml:space="preserve">
+    <value>Terms and conditions</value>
   </data>
 </root>

@@ -33,6 +33,8 @@ namespace SCManagement.Models {
         [Display(Name = "About Us")]
         public string? About { get; set; }
 
+        [Display(Name = "Terms and conditions")]
+        public string? TermsAndConditions { get; set; }
 
         //little trick to make creation date automatically use the current date
         public DateTime CreationDate

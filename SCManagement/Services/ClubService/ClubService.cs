@@ -125,6 +125,7 @@ namespace SCManagement.Services.ClubService
                    Email = s.Email,
                    PhoneNumber = s.PhoneNumber,
                    About = s.About,
+                   TermsAndConditions = s.TermsAndConditions,
                    Photography = s.Photography,
                    Modalities = s.Modalities,
                    //Address = new Address

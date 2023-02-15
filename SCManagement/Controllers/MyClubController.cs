@@ -112,6 +112,7 @@ namespace SCManagement.Controllers
                 Email = club.Email,
                 PhoneNumber = club.PhoneNumber,
                 About = club.About,
+                TermsAndConditions = club.TermsAndConditions,
                 CreationDate = club.CreationDate,
                 //AddressId = club.AddressId,
                 //Address = club.Address,
@@ -133,7 +134,7 @@ namespace SCManagement.Controllers
         /// <returns>View Index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,TermsAndConditions,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
             if (!ModelState.IsValid) return View(club);
@@ -162,6 +163,7 @@ namespace SCManagement.Controllers
             actualClub.Email = club.Email;
             actualClub.PhoneNumber = club.PhoneNumber;
             actualClub.About = club.About;
+            actualClub.TermsAndConditions = club.TermsAndConditions;
 
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
 
@@ -191,6 +193,9 @@ namespace SCManagement.Controllers
 
             [Display(Name = "About Us")]
             public string? About { get; set; }
+
+            [Display(Name = "Terms and conditions")]
+            public string? TermsAndConditions { get; set; }
 
             public DateTime CreationDate { get; set; }
 
