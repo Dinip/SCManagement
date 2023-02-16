@@ -13,6 +13,9 @@ namespace SCManagement.Services.EventService
         public Task<EventEnroll> CreateEventEnroll(EventEnroll enroll);
         public Task<EventEnroll> GetEnroll(int eventId, string userId);
         public Task CancelEventEnroll(EventEnroll enroll);
+        public Task<Address> CreateEventAddress(Address address);
+        public Task<Address> UpdateEventAddress(int locationId, Address address);
+      
 
 
     }

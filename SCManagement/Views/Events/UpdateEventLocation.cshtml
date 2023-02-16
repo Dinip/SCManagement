@@ -1,0 +1,35 @@
+﻿@model SCManagement.Models.Event
+
+
+@{
+    ViewData["Title"] = "Event Location";
+}
+
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
+
+<style>
+    .mapboxgl-canvas-container {
+        height: 100vh;
+    }
+
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+</style>
+
+<div class="card card-to-dark col-12 m-4 mt-4 me-4" style="min-height:600px;">
+    <div class="card-body">
+        <div id='map'></div>
+        <input hidden id="lblEventId" value="@Model.Id"></input>
+        <script src="~/js/SearchMapBoxEvents.js" asp-append-version="true"></script>
+    </div>
+</div>
+
+<input type="button" id="btnSave" value="Salvar" class="btn btn-primary mt-2 w-100" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />

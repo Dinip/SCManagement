@@ -152,9 +152,9 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
     {
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
         <form asp-action="Delete">
             <input name="Id" value="@Model?.Id" class="form-control" hidden />
             <input type="submit" value="Delete" />

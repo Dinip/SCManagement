@@ -1,6 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentEmail.Core.Models;
+using System.IO;
+using System.Reflection.Emit;
+using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
+using Address = SCManagement.Models.Address;
 
 namespace SCManagement.Services.EventService
 {
@@ -66,6 +70,31 @@ namespace SCManagement.Services.EventService
             _context.EventEnroll.Remove(enroll);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Address> CreateEventAddress(Address address)
+        {
+            _context.Address.Add(address);
+            await _context.SaveChangesAsync();
+            return address;
+        }
+        public async Task<Address> UpdateEventAddress(int locationId, Address address)
+        {
+            Address ad = _context.Address.Find(locationId);
+            ad.CoordinateX = address.CoordinateX;
+            ad.CoordinateY = address.CoordinateY;
+            ad.ZipCode = address.ZipCode;
+            ad.Street = address.Street;
+            ad.City = address.City;
+            ad.District = address.District;
+            ad.Country = address.Country;
+
+            _context.Address.Update(ad);
+            await _context.SaveChangesAsync();
+            return address;
+        }
+
+
+
     }
 
 
