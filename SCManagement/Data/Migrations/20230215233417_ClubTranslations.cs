@@ -15,8 +15,8 @@ namespace SCManagement.Data.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClubId = table.Column<int>(type: "int", nullable: false),
-                    PTText = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ENText = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    value = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Atribute = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

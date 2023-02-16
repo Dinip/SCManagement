@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Drawing;
@@ -9,22 +10,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using NuGet.Packaging;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
 
-namespace SCManagement.Controllers
-{
+namespace SCManagement.Controllers {
 
     /// <summary>
     /// This class represents the MyClub Controller
     /// </summary>
     /// 
     [Authorize]
-    public class MyClubController : Controller
-    {
+    public class MyClubController : Controller {
         private readonly UserManager<User> _userManager;
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
@@ -102,26 +102,23 @@ namespace SCManagement.Controllers
 
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
-
-            //get about and terms and conditions
-            var clubTranslations = await _clubService.GetClubTranslations(club.Id);
-            var about = clubTranslations.Where(c => c.Atribute.Equals("About")).FirstOrDefault();
-            var termsAndConditions = clubTranslations.Where(c => c.Atribute.Equals("TermsAndConditions")).FirstOrDefault();
-
-            ViewBag.cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
 
             if (club == null) return View("CustomError", "Error_NotFound");
 
+            ICollection<ClubTranslations> About = club.ClubTranslations.Where(c => c.Atribute == "About").ToList();
+            ICollection<ClubTranslations> Terms = club.ClubTranslations.Where(c => c.Atribute == "TermsAndConditions").ToList();
+
+            
             var c = new EditModel
             {
                 Id = club.Id,
                 Name = club.Name,
                 Email = club.Email,
                 PhoneNumber = club.PhoneNumber,
-                AboutEN = about.ENText,
-                AboutPT = about.PTText,
-                TermsAndConditionsEN = termsAndConditions.ENText,
-                TermsAndConditionsPT = termsAndConditions.PTText,
+                ClubTranslationsAbout = About,
+                ClubTranslationsTerms = Terms,
                 CreationDate = club.CreationDate,
                 //AddressId = club.AddressId,
                 //Address = club.Address,
@@ -143,9 +140,12 @@ namespace SCManagement.Controllers
         /// <returns>View Index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,AboutEN,AboutPT,TermsAndConditionsEN,TermsAndConditionsPT,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,ClubTranslationsAbout,ClubTranslationsTerms,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
+            ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", club.ModalitiesIds);
+            ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             if (!ModelState.IsValid) return View(club);
 
             //get id of the user
@@ -172,9 +172,19 @@ namespace SCManagement.Controllers
             actualClub.Email = club.Email;
             actualClub.PhoneNumber = club.PhoneNumber;
 
-            //update about and terms and conditions
-            await _clubService.UpdateClubAbout(actualClub.Id, club.AboutEN, club.AboutPT);
-            await _clubService.UpdateClubTermsAndConditions(actualClub.Id, club.TermsAndConditionsEN, club.TermsAndConditionsPT);
+            //update translations
+            ICollection<ClubTranslations> clubTranslations = new List<ClubTranslations>(club.ClubTranslationsAbout);
+            clubTranslations.AddRange(club.ClubTranslationsTerms);
+
+            foreach (var translations in clubTranslations)
+            {
+                var f = actualClub.ClubTranslations.FirstOrDefault(c => c.Id == translations.Id);
+                if (f != null)
+                {
+                    f.value = translations.value;
+                }
+            }
+            
 
             //update photo
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
@@ -186,8 +196,7 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public class EditModel
-        {
+        public class EditModel {
             public int Id { get; set; }
 
             [Required(ErrorMessage = "Error_Required")]
@@ -203,17 +212,8 @@ namespace SCManagement.Controllers
             [Display(Name = "Phone number")]
             public string? PhoneNumber { get; set; }
 
-            [Display(Name = "About Us")]
-            public string? AboutPT { get; set; }
-
-            [Display(Name = "About Us")]
-            public string? AboutEN { get; set; }
-
-            [Display(Name = "Terms and conditions")]
-            public string? TermsAndConditionsPT { get; set; }
-
-            [Display(Name = "Terms and conditions")]
-            public string? TermsAndConditionsEN { get; set; }
+            public ICollection<ClubTranslations>? ClubTranslationsAbout { get; set; }
+            public ICollection<ClubTranslations>? ClubTranslationsTerms { get; set; }
 
             public DateTime CreationDate { get; set; }
 
@@ -397,8 +397,7 @@ namespace SCManagement.Controllers
             return RedirectToAction("Codes", new { code = generatedCode.Id });
         }
 
-        public class CreateCodeModel
-        {
+        public class CreateCodeModel {
             [Required(ErrorMessage = "Error_Required")]
             [Display(Name = "Role")]
             public int RoleId { get; set; }
@@ -536,8 +535,7 @@ namespace SCManagement.Controllers
 
         }
 
-        public class TeamModel
-        {
+        public class TeamModel {
             [Required(ErrorMessage = "Error_Required")]
             [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
             [Display(Name = "Team Name")]

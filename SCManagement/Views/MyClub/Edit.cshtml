@@ -7,6 +7,12 @@
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
+<style>
+    .selected {
+        background-color: red;
+    }
+</style>
+
 
 <div class="container-fluid row justify-content-evenly">
     <div id="card1" class="col-md-3 col-8 card-to-dark card mt-5">
@@ -32,76 +38,42 @@
     <div id="card2" class="col-8  card-to-dark card mt-5">
         <div class="card-body justify-content-between align-content-between ">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <form asp-action="Edit" enctype="multipart/form-data">
+            <form id="myform" asp-action="Edit" enctype="multipart/form-data">
                 <input type="hidden" asp-for="Id" />
                 <div class="row form-floating" style="margin-bottom:20px;">
                     <input asp-for="Name" class="form-control" />
                     <label asp-for="Name" class="control-label"></label>
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
-                
+
                 <hr style="margin-bottom:20px;" />
                 <div class="About">
-                    <label asp-for="AboutEN" class="control-label"></label>
+                    <label class="control-label">@StringLocalizer["About"]</label>
                     <div class="language-select">
-                        <input type="button" class="lang-btn About" onclick="aboutEN()" data-lang="en" value="EN">
-                        <input type="button" class="lang-btn About" onclick="aboutPT()" data-lang="pt" value="PT">
+                        @foreach (CultureInfo lang in ViewBag.Languages)
+                        {
+                                <input type="button" class="lang-btn lang-btn-about" id="btn-about-@lang.Name" onclick="toggleLang('@lang.Name','about')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
+                        }
+                        <input type="button" class="lang-btn" onclick="translateFn('about')" value="trans" />
+
                     </div>
-                    @if (ViewBag.cultureInfo == "pt-PT")
-                    {
-                        <div id="AboutEN" class="row form-outline d-none" style="margin-bottom:20px; ">
-                            <textarea asp-for="AboutEN" class="form-control"></textarea>
-                            <span asp-validation-for="AboutEN" class="text-danger"></span>
-                        </div>
-                        <div id="AboutPT" class="row form-outline" style="margin-bottom:20px;">
-                            <textarea asp-for="AboutPT" class="form-control"></textarea>
-                            <span asp-validation-for="AboutPT" class="text-danger"></span>
-                        </div>
-                    }
-                    else
-                    {
-                        <div id="AboutEN" class="row form-outline" style="margin-bottom:20px; ">
-                            <textarea asp-for="AboutEN" class="form-control"></textarea>
-                            <span asp-validation-for="AboutEN" class="text-danger"></span>
-                        </div>
-                        <div id="AboutPT" class="row form-outline d-none" style="margin-bottom:20px;">
-                            <textarea asp-for="AboutPT" class="form-control"></textarea>
-                            <span asp-validation-for="AboutPT" class="text-danger"></span>
-                        </div>
-                    }
+                    @Html.EditorFor(x => x.ClubTranslationsAbout)
                 </div>
 
                 <hr style="margin-bottom:20px;" />
                 <div class="TermsAndConditions">
-                    <label asp-for="TermsAndConditionsEN" class="control-label"></label>
+                    <label class="control-label">@StringLocalizer["Terms and conditions"]</label>
                     <div class="language-select">
-                        <input type="button" class="lang-btn About" onclick="termsAndConditionsEN()" data-lang="en" value="EN">
-                        <input type="button" class="lang-btn About" onclick="termsAndConditionsPT()" data-lang="pt" value="PT">
+                        @foreach (CultureInfo lang in ViewBag.Languages)
+                        {
+                            <input type="button" class="lang-btn lang-btn-termsandconditions" id="btn-termsandconditions-@lang.Name" onclick="toggleLang('@lang.Name','termsandconditions')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
+                        }
+                        <input type="button" class="lang-btn" onclick="translateFn('termsandconditions')" value="trans" />
+
                     </div>
-                    @if (ViewBag.cultureInfo == "pt-PT")
-                    {
-                        <div id="TermsAndConditionsEN" class="row form-outline d-none" style="margin-bottom:20px; ">
-                            <textarea asp-for="TermsAndConditionsEN" class="form-control"></textarea>
-                            <span asp-validation-for="TermsAndConditionsEN" class="text-danger"></span>
-                        </div>
-                        <div id="TermsAndConditionsPT" class="row form-outline" style="margin-bottom:20px;">
-                            <textarea asp-for="TermsAndConditionsPT" class="form-control"></textarea>
-                            <span asp-validation-for="TermsAndConditionsPT" class="text-danger"></span>
-                        </div>
-                    }
-                    else
-                    {
-                        <div id="TermsAndConditionsEN" class="row form-outline" style="margin-bottom:20px; ">
-                            <textarea asp-for="TermsAndConditionsEN" class="form-control"></textarea>
-                            <span asp-validation-for="TermsAndConditionsEN" class="text-danger"></span>
-                        </div>
-                        <div id="TermsAndConditionsPT" class="row form-outline d-none" style="margin-bottom:20px;">
-                            <textarea asp-for="TermsAndConditionsPT" class="form-control"></textarea>
-                            <span asp-validation-for="TermsAndConditionsPT" class="text-danger"></span>
-                        </div>
-                    }
+                    @Html.EditorFor(x => x.ClubTranslationsTerms)
                 </div>
-                
+
                 <hr style="margin-bottom:20px;" />
                 <div class="form-group w-100" style="margin-bottom:20px;">
                     <label class="control-label">@StringLocalizer["Choose modalities"]</label>
@@ -133,7 +105,7 @@
 
 
     </div>
-    
+
 </div>
 
 
@@ -141,24 +113,78 @@
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript">
 
-    function aboutPT(){
-        document.getElementById("AboutEN").classList.add("d-none")
-        document.getElementById("AboutPT").classList.remove("d-none")
+    function toggleLang(lang, elemento) {
+
+        const btns = document.querySelectorAll(`input.lang-btn-${elemento}`)
+        for (let bt of btns) {
+            bt.getAttribute("id") == `btn-${elemento}-${lang}` ? bt.classList.add("selected") : bt.classList.remove("selected")
+        }
+
+        const textareas = document.querySelectorAll(`div.${elemento}-lang`)
+        for (let ta of textareas) {
+            ta.getAttribute("id") == `${elemento}-${lang}` ? ta.classList.remove("d-none") : ta.classList.add("d-none")
+        }
     }
 
-    function aboutEN(){
-        document.getElementById("AboutPT").classList.add("d-none")
-        document.getElementById("AboutEN").classList.remove("d-none")
+    //translate("about")
+    function translateFn(elemento) {
+        const textareas = document.querySelectorAll(`div.${elemento}-lang > textarea`)
+        const selectedLang = document.querySelectorAll(`input.selected.lang-btn-${elemento}`)[0].getAttribute("data-lang")
+        const selectedContent = document.querySelectorAll(`div#${elemento}-${selectedLang} > textarea`)[0]
+
+        for (let ta of textareas) {
+            if (ta.value == "" && ta.getAttribute("data-lang") != selectedLang) {
+                getTranslation(ta ,selectedContent.value, selectedLang, ta.getAttribute("data-lang"))
+            }
+        }
     }
     
-    function termsAndConditionsPT() {
-        document.getElementById("TermsAndConditionsEN").classList.add("d-none")
-        document.getElementById("TermsAndConditionsPT").classList.remove("d-none")
+    $('#myform').on('submit', async function () {
+        await translateFn('about')
+        await translateFn('termsandconditions')
+
+        return true;
+    })
+
+    function getTranslation(ta, content, fromLang, toLang) {
+        return new Promise((resolve, reject) => {
+            //ajax
+            //return do texto traduzido do pedido
+            $.ajax({
+                type: 'GET',
+                url: '/Translation/Translation',
+                data:
+                {
+                    content: content,
+                    fromLang: fromLang,
+                    toLang: toLang
+                },
+            }).done(function (response) {
+                console.log("Sucess")
+                console.log(response)
+                const arr = response.split('"')
+                const toLang2words = toLang.split('-')[0]
+
+                for (var i = 0; i < arr.length; i++) {
+                    if (arr[i] == toLang2words) {
+                        ta.value = arr[i - 4]
+                    }
+                }
+                resolve()
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("Erro: " + textStatus + ", " + errorThrown)
+                console.log("Resposta do servidor: " + jqXHR.responseText)
+                reject(errorThrown)
+            })
+        })
     }
 
-    function termsAndConditionsEN() {
-        document.getElementById("TermsAndConditionsPT").classList.add("d-none")
-        document.getElementById("TermsAndConditionsEN").classList.remove("d-none")
+
+
+    window.onload = function () {
+        const culture = "@ViewBag.CultureInfo"
+        toggleLang(culture, "about")
+        toggleLang(culture, "termsandconditions")
     }
 
     function removePhoto() {

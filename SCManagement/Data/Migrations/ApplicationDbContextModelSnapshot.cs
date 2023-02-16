@@ -258,10 +258,10 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("ClubId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ENText")
+                    b.Property<string>("Language")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PTText")
+                    b.Property<string>("value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

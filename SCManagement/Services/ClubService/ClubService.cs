@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
@@ -58,27 +59,37 @@ namespace SCManagement.Services.ClubService
 
             _context.Club.Add(c);
 
-            ClubTranslations t1 = new()
+            List<CultureInfo> cultures = new List<CultureInfo> { new("en-US"), new("pt-PT") };
+
+            List <ClubTranslations> translations = new List<ClubTranslations>();
+
+            foreach (CultureInfo culture in cultures)
             {
-                ClubId = c.Id,
-                PTText = "",
-                ENText = "",
-                Atribute = "About",
-            };
+                ClubTranslations t1 = new()
+                {
+                    ClubId = c.Id,
+                    value = "",
+                    Language = culture.Name,
+                    Atribute = "About",
+                };
 
-            ClubTranslations t2 = new()
-            {
-                ClubId = c.Id,
-                PTText = "",
-                ENText = "",
-                Atribute = "TermsAndConditions",
-            };
+                ClubTranslations t2 = new()
+                {
+                    ClubId = c.Id,
+                    value = "",
+                    Language = culture.Name,
+                    Atribute = "TermsAndConditions",
+                };
 
-            _context.ClubTranslations.Add(t1);
-            _context.ClubTranslations.Add(t2);
+                _context.ClubTranslations.Add(t1);
+                _context.ClubTranslations.Add(t2);
 
-            c.ClubTranslations = new List<ClubTranslations> { t1, t2 };
-            
+                translations.Add(t1);
+                translations.Add(t2);
+            }
+
+            c.ClubTranslations = new List<ClubTranslations>(translations);
+
             await _context.SaveChangesAsync();
 
             return c;
@@ -99,6 +110,7 @@ namespace SCManagement.Services.ClubService
             Club club = await _context.Club
                 .Include(c => c.Modalities)
                 .Include(c => c.Photography)
+                .Include(c => c.ClubTranslations)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             await ClubTranslations(club);
@@ -131,28 +143,19 @@ namespace SCManagement.Services.ClubService
             {
                 await ClubTranslations(club);
             }
-
+            
             return clubs;
         }
 
         public async Task<int> ClubTranslations(Club club)
         {
-            ClubTranslations clubTranslationsTerms = _context.ClubTranslations.Where(c => c.ClubId == club.Id).Where(c => c.Atribute == "TermsAndConditions").FirstOrDefault();
-            ClubTranslations clubTranslationsAbout = _context.ClubTranslations.Where(c => c.ClubId == club.Id).Where(c => c.Atribute == "About").FirstOrDefault();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ClubTranslations clubTranslationsTerms = _context.ClubTranslations.Where(c => c.ClubId == club.Id && c.Language == cultureInfo && c.Atribute == "TermsAndConditions").FirstOrDefault();
+            ClubTranslations clubTranslationsAbout = _context.ClubTranslations.Where(c => c.ClubId == club.Id && c.Language == cultureInfo && c.Atribute == "About").FirstOrDefault();
 
-            CultureInfo cultureInfo = Thread.CurrentThread.CurrentCulture;
+            club.TermsAndConditions = clubTranslationsTerms.value;
+            club.About = clubTranslationsAbout.value;
 
-            if (cultureInfo.Name == "pt-PT")
-            {
-                club.TermsAndConditions = clubTranslationsTerms.PTText;
-                club.About = clubTranslationsAbout.PTText;
-            }
-            else
-            {
-                club.TermsAndConditions = clubTranslationsTerms.ENText;
-                club.About = clubTranslationsAbout.ENText;
-            }
-            
             return await _context.SaveChangesAsync();
         }
 
@@ -819,26 +822,6 @@ namespace SCManagement.Services.ClubService
             return await _context.ClubTranslations.Where(c => c.ClubId == clubId).ToListAsync();
         }
 
-        public Task UpdateClubAbout(int clubId, string AboutEN, string AboutPT)
-        {
-            ClubTranslations clubTranslations = _context.ClubTranslations.Where(c => c.ClubId == clubId).Where(c => c.Atribute == "About").FirstOrDefault();
-
-            clubTranslations.ENText = AboutEN;
-            clubTranslations.PTText = AboutPT;
-            _context.ClubTranslations.Update(clubTranslations);
-
-            return _context.SaveChangesAsync();
-        }
-
-        public Task UpdateClubTermsAndConditions(int clubId, string TermsAndConditionsEN, string TermsAndConditionsPT)
-        {
-            ClubTranslations clubTranslations = _context.ClubTranslations.Where(c => c.ClubId == clubId).Where(c => c.Atribute == "TermsAndConditions").FirstOrDefault();
-
-            clubTranslations.ENText = TermsAndConditionsEN;
-            clubTranslations.PTText = TermsAndConditionsPT;
-            _context.ClubTranslations.Update(clubTranslations);
-            
-            return _context.SaveChangesAsync();
-        }
+        
     }
 }

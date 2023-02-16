@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\MyClub\EditorTemplates\ClubTranslationsAbout.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Views\Clubs\Details.cshtml~RF98922a.TMP" />
   </ItemGroup>
 
@@ -32,6 +36,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.11" />
     <PackageReference Include="QRCoderNetCore" Version="1.0.0" />
+    <PackageReference Include="System.Net.Http.Json" Version="7.0.0" />
     <PackageReference Include="Unidecode.NET" Version="2.1.0" />
     <PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
   </ItemGroup>
@@ -47,6 +52,10 @@
 
   <ItemGroup>
     <None Include=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\TranslationService\" />
   </ItemGroup>
 
 </Project>

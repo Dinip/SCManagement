@@ -8,9 +8,13 @@
 
         public Club? Club { get; set; }
         
-        public string? PTText { get; set; }
+        //public string? PTText { get; set; }
         
-        public string? ENText { get; set; }
+        //public string? ENText { get; set; }
+
+        public string? Language { get; set; }
+
+        public string? value { get; set; }
         
         public string? Atribute { get; set; }
     }

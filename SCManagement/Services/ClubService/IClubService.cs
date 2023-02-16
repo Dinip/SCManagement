@@ -1,13 +1,11 @@
 ﻿
 using SCManagement.Models;
 
-namespace SCManagement.Services.ClubService
-{
+namespace SCManagement.Services.ClubService {
     /// <summary>
     /// club service interface
     /// </summary>
-    public interface IClubService
-    {
+    public interface IClubService {
         public Task<IEnumerable<Club>> GetClubs();
         public Task<Club?> GetClub(int id);
         public Task<Club> CreateClub(Club club, string userId);
@@ -48,8 +46,5 @@ namespace SCManagement.Services.ClubService
         public Task<IEnumerable<User>> GetAthletes(int clubId);
 
         public Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId);
-        public Task UpdateClubAbout(int clubId, string AboutEN, string AboutPT);
-        public Task UpdateClubTermsAndConditions(int clubId, string TermsAndConditionsEN, string TermsAndConditionsPT);
-        public Task<int> ClubTranslations(Club club);
     }
 }
