@@ -1,59 +1,77 @@
-﻿window.onload = (event) => {
-    loadMap();
+﻿
+mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
+
+window.onload = (event) => {
+    navigator.geolocation.getCurrentPosition(function (position) {
+        loadMap(position);
+    });
+
+    $.ajax({
+        type: 'GET',
+        url: '/Clubs/EXEMPLO'
+    }).done(function (response) {
+        console.log("Sucess");
+        console.log(response);
+        loadMap(response);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Erro: " + textStatus + ", " + errorThrown);
+        console.log("Resposta do servidor: " + jqXHR.responseText);
+    });
 };
 
-mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
-let map = new mapboxgl.Map({
-    container: 'map', // container ID
-    // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-    style: 'mapbox://styles/mapbox/streets-v12', // style URL
-    zoom: 10, // starting zoom
-    center: [-8.8926, 38.5243] // starting position,
-});
 
+function loadMap(coordinates) {
+    let map = new mapboxgl.Map({
+        container: 'map', // container ID
+        style: 'mapbox://styles/mapbox/streets-v12',
+        zoom: 10,
+        center: [-8.8926, 38.5243]
+    });
 
-function loadMap() {
+    // Usa a API de Geolocalização para obter as coordenadas do utilizador
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            // Define o centro do mapa para a posição do utilizador
+            map.setCenter([position.coords.longitude, position.coords.latitude]);
+        }, (error) => {
+            console.log(error);
+        });
+    }
+
+    const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        marker: false
+    });
+
+    map.addControl(geocoder, 'top-left');
+
+    // adiciona um marcador na localização atual do utilizador
+    //navigator.geolocation.getCurrentPosition(function (position) {
+    //    var marker = new mapboxgl.Marker()
+    //        .setLngLat([position.coords.longitude, position.coords.latitude])
+    //        .addTo(map);
+    //});
 
     map.on('load', () => {
         map.resize();
-        // Load an image from an external URL.
-        map.loadImage(
-            'https://docs.mapbox.com/mapbox-gl-js/assets/cat.png',
-            (error, image) => {
-                if (error) throw error;
+        var coords = coordinates;
+        Object.keys(coords).forEach(function (key) {
+            console.log(coords[key]);
+            console.log(coords[key].coordinateX);
+            new mapboxgl.Marker()
+                .setLngLat([coords[key].coordinateX, coords[key].coordinateY])
+                .addTo(map);
+        });
 
-                // Add the image to the map style.
-                map.addImage('cat', image);
-
-                // Add a data source containing one point feature.
-                map.addSource('point', {
-                    'type': 'geojson',
-                    'data': {
-                        'type': 'FeatureCollection',
-                        'features': [
-                            {
-                                'type': 'Feature',
-                                'geometry': {
-                                    'type': 'Point',
-                                    'coordinates': [-8.8926,38.5243]
-                                }
-                            }
-                        ]
-                    }
-                });
-
-                // Add a layer to use the image to represent the data.
-                map.addLayer({
-                    'id': 'points',
-                    'type': 'symbol',
-                    'source': 'point', // reference the data source
-                    'layout': {
-                        'icon-image': 'cat', // reference the image
-                        'icon-size': 0.25
-                    }
-                });
-            }
-        );
+        //coordinates.forEach(coord => {
+        //    console.log("AQUI1");
+        //    console.log(coord.CoordinateX);
+        //    console.log("AQUI2");
+        //    console.log(coord.CoordinateY);
+        //    new mapboxgl.Marker()
+        //        .setLngLat([coord.CoordinateX, coord.CoordinateY])
+        //        .addTo(map);
+        //});
     });
 }
-

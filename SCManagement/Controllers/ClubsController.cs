@@ -57,6 +57,11 @@ namespace SCManagement.Controllers
             return View(await _clubService.GetClubs());
         }
 
+        public async Task<IActionResult> EXEMPLO()
+        {
+            return Json(await _clubService.GetAllCoordinates());
+        }
+
         /// <summary>
         /// Force redirect from /Clubs/Details/id to /Clubs/id
         /// </summary>

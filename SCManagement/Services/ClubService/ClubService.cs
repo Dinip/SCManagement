@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using System.Text.Json;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
@@ -710,7 +712,7 @@ namespace SCManagement.Services.ClubService
         /// <param name="Country"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
-        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country,int clubId)
+        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int clubId)
         {
             //Create a new Address
             Address ad = new Address
@@ -762,6 +764,40 @@ namespace SCManagement.Services.ClubService
 
         }
 
+        //Get all address
+        //public async Task<IEnumerable<(double, double)>> GetAllCoordinates()
+        //{
+        //    var coordinates = await _context.Club
+        //   .Where(c => c.Address != null)
+        //   .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY })
+        //   .ToListAsync();
+
+        //    return coordinates.Select(c => (c.CoordinateX, c.CoordinateY));
+
+        //}
+
+        public async Task<IEnumerable<object>> GetAllCoordinates()
+        {
+            var coordinates = await _context.Club
+               .Where(c => c.Address != null)
+               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY })
+               .ToListAsync();
+
+            return coordinates;
+        }
+        //return JsonSerializer.Serialize(coordinates);
+
+
+
+
+
+        //public async Task<IEnumerable<double>> GetAllCoordinatesOfTheClubs()
+        //{
+        //    return (IEnumerable<double>)await _context.Club.Include(c => c.Address).Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY }).ToListAsync();
+
+
+        //}
+
         /// <summary>
         /// Gets all club staff (admin, secretary and trainer) (users role object with join date)
         /// </summary>
@@ -806,10 +842,10 @@ namespace SCManagement.Services.ClubService
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
-        
+
         public async Task<IEnumerable<User>> GetClubTrainers(int clubId)
         {
-            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 30).Include(u => u.User).Select(u => u.User).ToListAsync(); 
+            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 30).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
     }
 }
