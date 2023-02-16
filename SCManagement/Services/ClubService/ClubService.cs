@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Threading.Tasks;
+using FluentEmail.Core.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
@@ -7,6 +8,7 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.Location;
+using Address = SCManagement.Models.Address;
 
 namespace SCManagement.Services.ClubService
 {
@@ -712,18 +714,18 @@ namespace SCManagement.Services.ClubService
         /// <param name="Country"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
-        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int clubId)
+        public async Task<Address> CreateAddress(Address address, int clubId)
         {
             //Create a new Address
             Address ad = new Address
             {
-                CoordinateX = CoordinateX,
-                CoordinateY = CoordinateY,
-                ZipCode = ZipCode,
-                Street = Street,
-                City = City,
-                District = District,
-                Country = Country
+                CoordinateX = address.CoordinateX,
+                CoordinateY = address.CoordinateY,
+                ZipCode = address.ZipCode,
+                Street = address.Street,
+                City = address.City,
+                District = address.District,
+                Country = address.Country
             };
 
             _context.Address.Add(ad);
@@ -748,55 +750,35 @@ namespace SCManagement.Services.ClubService
         /// <param name="District"></param>
         /// <param name="Country"></param>
         /// <param name="addressId"></param>
-        public void UpdateClubAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int addressId)
+        public void UpdateClubAddress(Address address, int addressId)
         {
             //Update the address
             Address ad = _context.Address.Find(addressId);
-            ad.CoordinateX = CoordinateX;
-            ad.CoordinateY = CoordinateY;
-            ad.ZipCode = ZipCode;
-            ad.Street = Street;
-            ad.City = City;
-            ad.District = District;
-            ad.Country = Country;
+            ad.CoordinateX = address.CoordinateX;
+            ad.CoordinateY = address.CoordinateY;
+            ad.ZipCode = address.ZipCode;
+            ad.Street = address.Street;
+            ad.City = address.City;
+            ad.District = address.District;
+            ad.Country = address.Country;
             _context.Address.Update(ad);
             _context.SaveChanges();
 
         }
 
-        //Get all address
-        //public async Task<IEnumerable<(double, double)>> GetAllCoordinates()
-        //{
-        //    var coordinates = await _context.Club
-        //   .Where(c => c.Address != null)
-        //   .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY })
-        //   .ToListAsync();
-
-        //    return coordinates.Select(c => (c.CoordinateX, c.CoordinateY));
-
-        //}
-
+        /// <summary>
+        /// Get coordinates of the clubs and a name
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<object>> GetAllCoordinates()
         {
             var coordinates = await _context.Club
                .Where(c => c.Address != null)
-               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY })
+               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY, Name= c.Name })
                .ToListAsync();
 
             return coordinates;
         }
-        //return JsonSerializer.Serialize(coordinates);
-
-
-
-
-
-        //public async Task<IEnumerable<double>> GetAllCoordinatesOfTheClubs()
-        //{
-        //    return (IEnumerable<double>)await _context.Club.Include(c => c.Address).Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY }).ToListAsync();
-
-
-        //}
 
         /// <summary>
         /// Gets all club staff (admin, secretary and trainer) (users role object with join date)

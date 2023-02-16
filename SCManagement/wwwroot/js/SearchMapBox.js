@@ -49,13 +49,16 @@ window.onload = function () {
                     url: '/MyClub/ReceiveAddress',
                     dataType: 'json',
                     data: {
-                        CoordinateY: coord[1],
-                        CoordinateX: coord[0],
-                        ZipCode: addressCode,
-                        Street: text,
-                        City: city,
-                        District: district,
-                        Country: country,
+                        Address:
+                        {
+                            CoordinateY: coord[1],
+                            CoordinateX: coord[0],
+                            ZipCode: addressCode,
+                            Street: text,
+                            City: city,
+                            District: district,
+                            Country: country,
+                        }
                     },
                    
                 }).done(function (response) {

@@ -57,7 +57,11 @@ namespace SCManagement.Controllers
             return View(await _clubService.GetClubs());
         }
 
-        public async Task<IActionResult> EXEMPLO()
+        /// <summary>
+        /// this method alow to send to mapbox coordinates of the clubs
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> CoordsMarkers()
         {
             return Json(await _clubService.GetAllCoordinates());
         }
