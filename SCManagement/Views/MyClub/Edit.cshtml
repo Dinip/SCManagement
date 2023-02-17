@@ -48,7 +48,7 @@
 
                 <hr style="margin-bottom:20px;" />
                 <div class="About">
-                    <label class="control-label">@StringLocalizer["About"]</label>
+                    <label class="control-label">@StringLocalizer["About Us"]</label>
                     <div class="language-select">
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
@@ -153,7 +153,6 @@
                 },
             }).done(function (response) {
                 console.log("Sucess")
-                console.log(response)
                 ta.value = response[0].translations[0].text
                 
             }).fail(function (jqXHR, textStatus, errorThrown) {
