@@ -48,5 +48,6 @@ namespace SCManagement.Services.ClubService
         public Task<Address> CreateAddress(Address address, int clubId);
         public void UpdateClubAddress(Address address, int addressId);
         public Task<IEnumerable<object>> GetAllCoordinates();
+        public Task<IEnumerable<Club>> SearchNameClubs(string? name);
     }
 }

@@ -1,0 +1,30 @@
+﻿@model IEnumerable<SCManagement.Models.Club>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+<div class="overflow-auto mt-4" style="max-height:400px;">
+    <div id="search-results-partial">
+        @foreach (var item in Model)
+        {
+            <div class="card card-to-dark shadow-sm mt-2">
+                <div class="card-body d-flex justify-content-between">
+                    <div class="col-4">
+                        <h3 style="font-size: 2vw;" class="text-to-dark">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </h3>
+                        <p style="white-space: nowrap;
+                                        overflow: hidden;
+                                        text-overflow: ellipsis;">
+                            @Html.DisplayFor(modelItem => item.About)
+                        </p>
+                        <p>
+                            <a asp-route-id="@item.Id">@StringLocalizer["Details"]</a>
+                        </p>
+                    </div>
+                    <div class="col-4 d-flex justify-content-center align-items-center">
+                        <img src="@(item?.Photography?.Uri ?? "https://cdn.scmanagement.me/public/user_placeholder.png")" crossorigin="anonymous" class="rounded-circle" style="height: 100px; object-fit:cover; aspect-ratio:1;" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -776,9 +776,24 @@ namespace SCManagement.Services.ClubService
                .Where(c => c.Address != null)
                .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY, Name= c.Name })
                .ToListAsync();
-
+            
             return coordinates;
         }
+
+        /// <summary>
+        /// Get the clubs that user search for
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Club>> SearchNameClubs(string? name) 
+        {
+            //get all clubs
+            if (name == null) return await _context.Club.ToListAsync();
+
+            //get clubs with the name that user search
+            return await _context.Club.Where(c => c.Name.Contains(name)).ToListAsync();
+        }
+
 
         /// <summary>
         /// Gets all club staff (admin, secretary and trainer) (users role object with join date)
