@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Drawing;
@@ -9,10 +10,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using NuGet.Packaging;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.TeamService;
+using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.Location;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -34,6 +37,7 @@ namespace SCManagement.Controllers
         private readonly ITeamService _teamService;
         private readonly ILocationService _locationService;
 
+        private readonly ITranslationService _translationService;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -47,13 +51,15 @@ namespace SCManagement.Controllers
             IClubService clubService,
             IUserService userService,
             ITeamService teamService,
-            ILocationService locationService)
+            ILocationService locationService,
+            ITranslationService translationService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
             _teamService = teamService;
             _locationService = locationService;
+            _translationService = translationService;
         }
 
         /// <summary>
@@ -109,8 +115,14 @@ namespace SCManagement.Controllers
 
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
-        
+
+            ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
+
             if (club == null) return View("CustomError", "Error_NotFound");
+
+            ICollection<ClubTranslations> About = club.ClubTranslations.Where(c => c.Atribute == "About").ToList();
+            ICollection<ClubTranslations> Terms = club.ClubTranslations.Where(c => c.Atribute == "TermsAndConditions").ToList();
 
             var c = new EditModel
             {
@@ -118,7 +130,8 @@ namespace SCManagement.Controllers
                 Name = club.Name,
                 Email = club.Email,
                 PhoneNumber = club.PhoneNumber,
-                About = club.About,
+                ClubTranslationsAbout = About,
+                ClubTranslationsTerms = Terms,
                 CreationDate = club.CreationDate,
                 Address = club.Address,
                 ModalitiesIds = ClubModalitiesIds,
@@ -139,9 +152,12 @@ namespace SCManagement.Controllers
         /// <returns>View Index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,AddressId,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,ClubTranslationsAbout,ClubTranslationsTerms,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
+            ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", club.ModalitiesIds);
+            ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             if (!ModelState.IsValid) return View(club);
 
             //get id of the user
@@ -167,11 +183,25 @@ namespace SCManagement.Controllers
             actualClub.Name = club.Name;
             actualClub.Email = club.Email;
             actualClub.PhoneNumber = club.PhoneNumber;
-            actualClub.About = club.About;
 
+            //update translations
+            ICollection<ClubTranslations> clubTranslationsFromFrontend = new List<ClubTranslations>(club.ClubTranslationsAbout);
+            clubTranslationsFromFrontend.AddRange(club.ClubTranslationsTerms);
+
+            await _translationService.Translate(club.ClubTranslationsAbout);
+            await _translationService.Translate(club.ClubTranslationsTerms);
+
+            foreach (var translations in clubTranslationsFromFrontend)
+            {
+                var f = actualClub.ClubTranslations.FirstOrDefault(c => c.Id == translations.Id);
+                if (f != null)
+                {
+                    f.Value = translations.Value;
+                }
+            }
+
+            //update photo
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
-
-            //_clubService.UpdateClubAddress
 
             await _clubService.UpdateClub(actualClub);
 
@@ -195,8 +225,8 @@ namespace SCManagement.Controllers
             [Display(Name = "Phone number")]
             public string? PhoneNumber { get; set; }
 
-            [Display(Name = "About Us")]
-            public string? About { get; set; }
+            public ICollection<ClubTranslations>? ClubTranslationsAbout { get; set; }
+            public ICollection<ClubTranslations>? ClubTranslationsTerms { get; set; }
 
             public DateTime CreationDate { get; set; }
 
@@ -880,13 +910,13 @@ namespace SCManagement.Controllers
 
             var clubAddresId = club.AddressId;
 
-            if (clubAddresId != null) 
+            if (clubAddresId != null)
             {
                 // update Address
                 _clubService.UpdateClubAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, (int)clubAddresId);
                 return Json(club.Id);
-            } 
-            
+            }
+
             //create address
             await _clubService.CreateAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, club.Id);
             return Json(club.Id);

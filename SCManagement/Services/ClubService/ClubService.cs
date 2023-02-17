@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using System.Diagnostics;
+using System.Globalization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
@@ -57,6 +59,38 @@ namespace SCManagement.Services.ClubService
             c.UsersRoleClub = roles;
 
             _context.Club.Add(c);
+
+            List<CultureInfo> cultures = new List<CultureInfo> { new("en-US"), new("pt-PT") };
+
+            List<ClubTranslations> translations = new List<ClubTranslations>();
+
+            foreach (CultureInfo culture in cultures)
+            {
+                ClubTranslations t1 = new()
+                {
+                    ClubId = c.Id,
+                    Value = "",
+                    Language = culture.Name,
+                    Atribute = "About",
+                };
+
+                ClubTranslations t2 = new()
+                {
+                    ClubId = c.Id,
+                    Value = "",
+                    Language = culture.Name,
+                    Atribute = "TermsAndConditions",
+                };
+
+                _context.ClubTranslations.Add(t1);
+                _context.ClubTranslations.Add(t2);
+
+                translations.Add(t1);
+                translations.Add(t2);
+            }
+
+            c.ClubTranslations = new List<ClubTranslations>(translations);
+
             await _context.SaveChangesAsync();
 
             return c;
@@ -74,11 +108,16 @@ namespace SCManagement.Services.ClubService
         /// <returns>Found club or null</returns>
         public async Task<Club?> GetClub(int id)
         {
-            return await _context.Club
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            var club = await _context.Club
                 .Include(c => c.Modalities)
                 .Include(c => c.Photography)
                 .Include(c => c.Address)
+                .Include(c => c.ClubTranslations)
                 .FirstOrDefaultAsync(m => m.Id == id);
+            club.About = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "About")?.Value;
+            club.TermsAndConditions = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "TermsAndConditions")?.Value;
+            return club;
         }
 
         /// <summary>
@@ -87,10 +126,12 @@ namespace SCManagement.Services.ClubService
         /// <returns>All clubs</returns>
         public async Task<IEnumerable<Club>> GetClubs()
         {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             return await _context.Club
                .Include(c => c.Modalities)
                .Include(c => c.Photography)
                .Include(c => c.Address)
+               .Include(c => c.ClubTranslations)
                .Select(s =>
                new Club
                {
@@ -98,19 +139,12 @@ namespace SCManagement.Services.ClubService
                    Name = s.Name,
                    Email = s.Email,
                    PhoneNumber = s.PhoneNumber,
-                   About = s.About,
+                   PhotographyId = s.PhotographyId,
                    Photography = s.Photography,
+                   AddressId = s.AddressId,
+                   Address = s.Address,
                    Modalities = s.Modalities,
-                   //Address = new Address
-                   //{
-                   //    Street = s.Address.Street,
-                   //    Number = s.Address.Number,
-                   //    ZipCode = s.Address.ZipCode,
-                   //    County = new County
-                   //    {
-                   //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-                   //    }
-                   //}
+                   About = s.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "About").Value,
                })
                .ToListAsync();
         }
@@ -710,7 +744,7 @@ namespace SCManagement.Services.ClubService
         /// <param name="Country"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
-        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country,int clubId)
+        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int clubId)
         {
             //Create a new Address
             Address ad = new Address
@@ -806,10 +840,15 @@ namespace SCManagement.Services.ClubService
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
-        
+
         public async Task<IEnumerable<User>> GetClubTrainers(int clubId)
         {
-            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 30).Include(u => u.User).Select(u => u.User).ToListAsync(); 
+            return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 30).Include(u => u.User).Select(u => u.User).ToListAsync();
+        }
+
+        public async Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId)
+        {
+            return await _context.ClubTranslations.Where(c => c.ClubId == clubId).ToListAsync();
         }
     }
 }

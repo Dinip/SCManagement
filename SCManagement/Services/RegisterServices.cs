@@ -13,6 +13,7 @@ using SCManagement.Services.TeamService;
 using Azure.Identity;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.EventService;
+using SCManagement.Services.TranslationService;
 
 namespace SCManagement.Services
 {
@@ -133,6 +134,7 @@ namespace SCManagement.Services
             services.AddTransient<ITeamService, SCManagement.Services.TeamService.TeamService>();
             services.AddTransient<IPaymentService, SCManagement.Services.PaymentService.PaymentService>();
             services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
+            services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
             #endregion
         }
     }
