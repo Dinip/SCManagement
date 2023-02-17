@@ -62,6 +62,8 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
 
         public string EMDUrl { get; set; }
 
+        public bool IsAtleteInAnyClub { get; set; }
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -106,9 +108,6 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             public IFormFile? FileEMD { get; set; }
             public bool RemoveImage { get; set; } = false;
             public bool RemoveEMD { get; set; } = false;
-
-            //public int? AddressId { get; set; }
-            //public Address? Address { get; set; }
         }
 
         private async Task LoadAsync(User user)
@@ -118,8 +117,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             var userWithPFP = await _context.Users.Include(u => u.ProfilePicture).FirstOrDefaultAsync(u => u.Id == user.Id);
             var userWithEMD = await _context.Users.Include(u => u.EMD).FirstOrDefaultAsync(u => u.Id == user.Id);
 
-            ViewData["IsAtleteInAnyClub"] = await _userService.IsAtleteInAnyClub(user.Id);
-
+            IsAtleteInAnyClub = await _userService.IsAtleteInAnyClub(user.Id);
             Username = userName;
             ProfilePictureUrl = userWithPFP.ProfilePicture == null ? "https://cdn.scmanagement.me/public/user_placeholder.png" : userWithPFP.ProfilePicture.Uri;
             EMDUrl = userWithEMD.EMD == null ? _stringLocalizer["Pending_Add"] : userWithEMD.EMD.Uri;
@@ -130,8 +128,8 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 LastName = user.LastName,
                 PhoneNumber = phoneNumber,
                 DateOfBirth = user.DateOfBirth,
-                Email = user.Email
-            };
+                Email = user.Email,
+        };
         }
 
         public async Task<IActionResult> OnGetAsync()

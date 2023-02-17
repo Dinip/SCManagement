@@ -888,4 +888,100 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Modality" xml:space="preserve">
     <value>Modalidade</value>
   </data>
+  <data name="ConcurrencyFailure" xml:space="preserve">
+    <value>Falha de simultaneidade.</value>
+  </data>
+  <data name="Confirm new password" xml:space="preserve">
+    <value>Confirmação da nova password</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Password atual</value>
+  </data>
+  <data name="DefaultldentityError" xml:space="preserve">
+    <value>Erro no sistema Identity.</value>
+  </data>
+  <data name="DuplicateEmaiI" xml:space="preserve">
+    <value>O e-mail '{O}' já existe.</value>
+  </data>
+  <data name="DuplicateRoleName" xml:space="preserve">
+    <value>O nome da função '{O}' já existe.</value>
+  </data>
+  <data name="DuplicateUserName" xml:space="preserve">
+    <value>O nome de utilizador '{O}' já existe.</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>Nenhum arquivo salvo!</value>
+  </data>
+  <data name="Error_password_do_not_match" xml:space="preserve">
+    <value>A nova password e a password de confirmação não correspondem.</value>
+  </data>
+  <data name="Files_Allow" xml:space="preserve">
+    <value> são permitidos!</value>
+  </data>
+  <data name="InvalidEmaiI" xml:space="preserve">
+    <value>O e-mail '{O} é inválido.</value>
+  </data>
+  <data name="InvalidRoleName" xml:space="preserve">
+    <value>O nome da função '{O}' é inválido.</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Token inválido.</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>O nome de utilizador '{O}' é inválido.</value>
+  </data>
+  <data name="Invalid_Login" xml:space="preserve">
+    <value>Tentativa de login inválida.</value>
+  </data>
+  <data name="Load_User" xml:space="preserve">
+    <value>Não foi possível carregar o utilizador com ID</value>
+  </data>
+  <data name="LoginAlreadyAssociated" xml:space="preserve">
+    <value>Um login eterno já está associado a esta conta</value>
+  </data>
+  <data name="New password" xml:space="preserve">
+    <value>Nova password</value>
+  </data>
+  <data name="Only" xml:space="preserve">
+    <value>Apenas</value>
+  </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>A password fornecida não corresponde à sua password salva</value>
+  </data>
+  <data name="PasswordRequiresDigit" xml:space="preserve">
+    <value>A password deve conter dígitos (O - 9)</value>
+  </data>
+  <data name="PasswordRequiresLower" xml:space="preserve">
+    <value>A password deve conter letras minúsculas (a - z)</value>
+  </data>
+  <data name="PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value>A password deve conter caracteres não alfanuméricos (! + . - ? ...)</value>
+  </data>
+  <data name="PasswordRequiresUniqueChars" xml:space="preserve">
+    <value>A password deve conter caracteres únicos '{O}'.</value>
+  </data>
+  <data name="PasswordRequiresUpper" xml:space="preserve">
+    <value>A password deve conter letras maiúsculas (A - Z)</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>A password deve ter pelo menos '{O}' caracteres.</value>
+  </data>
+  <data name="RecoveryCodeRedemptionFailed" xml:space="preserve">
+    <value>O código de recuperação não foi utilizado.</value>
+  </data>
+  <data name="Update password" xml:space="preserve">
+    <value>Atualizar password</value>
+  </data>
+  <data name="UserAlreadyHasPassword" xml:space="preserve">
+    <value>O utilizador já possui uma password.</value>
+  </data>
+  <data name="UserAlreadylnRole" xml:space="preserve">
+    <value>O utilizador já está na função '{O}'.</value>
+  </data>
+  <data name="UserLockoutNotEnabled" xml:space="preserve">
+    <value>O bloqueio de utilizador não está habilitado.</value>
+  </data>
+  <data name="UserNotlnRole" xml:space="preserve">
+    <value>O utilizador não está na função '{O}'.</value>
+  </data>
 </root>

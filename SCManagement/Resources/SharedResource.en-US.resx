@@ -760,4 +760,100 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="NotAssociatedClub" xml:space="preserve">
     <value />
   </data>
+  <data name="ConcurrencyFailure" xml:space="preserve">
+    <value>Concurrency failure.</value>
+  </data>
+  <data name="Confirm new password" xml:space="preserve">
+    <value>Confirm new password</value>
+  </data>
+  <data name="Current password" xml:space="preserve">
+    <value>Current password</value>
+  </data>
+  <data name="DefaultldentityError" xml:space="preserve">
+    <value>Identity system error.</value>
+  </data>
+  <data name="DuplicateEmaiI" xml:space="preserve">
+    <value>Email '{O}' already exists.</value>
+  </data>
+  <data name="DuplicateRoleName" xml:space="preserve">
+    <value>Role name '{O}' already exists.</value>
+  </data>
+  <data name="DuplicateUserName" xml:space="preserve">
+    <value>User name '{O}' already exists.</value>
+  </data>
+  <data name="Empty" xml:space="preserve">
+    <value>No file saved!</value>
+  </data>
+  <data name="Error_password_do_not_match" xml:space="preserve">
+    <value>The new password and confirmation password do not match.</value>
+  </data>
+  <data name="Files_Allow" xml:space="preserve">
+    <value> are allowed!</value>
+  </data>
+  <data name="InvalidEmaiI" xml:space="preserve">
+    <value>Email '{O} is invalid.</value>
+  </data>
+  <data name="InvalidRoleName" xml:space="preserve">
+    <value>Role name  '{O}' is invalid.</value>
+  </data>
+  <data name="InvalidToken" xml:space="preserve">
+    <value>Invalid token.</value>
+  </data>
+  <data name="InvalidUserName" xml:space="preserve">
+    <value>User name '{O}' is invalid.</value>
+  </data>
+  <data name="Invalid_Login" xml:space="preserve">
+    <value>Invalid login attempt.</value>
+  </data>
+  <data name="Load_User" xml:space="preserve">
+    <value>Unable to load user with ID</value>
+  </data>
+  <data name="LoginAlreadyAssociated" xml:space="preserve">
+    <value>An eternal login is already associated with this account</value>
+  </data>
+  <data name="New password" xml:space="preserve">
+    <value>New password</value>
+  </data>
+  <data name="Only" xml:space="preserve">
+    <value>Only</value>
+  </data>
+  <data name="PasswordMismatch" xml:space="preserve">
+    <value>The provided password dosen't match your saved password</value>
+  </data>
+  <data name="PasswordRequiresDigit" xml:space="preserve">
+    <value>The password must contain digits (O - 9)</value>
+  </data>
+  <data name="PasswordRequiresLower" xml:space="preserve">
+    <value>The password must contain lower case letters (a - z)</value>
+  </data>
+  <data name="PasswordRequiresNonAlphanumeric" xml:space="preserve">
+    <value>The password must contain non-alphanumeric characters (! + . - ? ...)</value>
+  </data>
+  <data name="PasswordRequiresUniqueChars" xml:space="preserve">
+    <value>The password must contain '{O}' unique chracters.</value>
+  </data>
+  <data name="PasswordRequiresUpper" xml:space="preserve">
+    <value>The password must contain upper case letters (A - Z)</value>
+  </data>
+  <data name="PasswordTooShort" xml:space="preserve">
+    <value>The password must be at least '{O}' character long.</value>
+  </data>
+  <data name="RecoveryCodeRedemptionFailed" xml:space="preserve">
+    <value>Recovery code was not redeemed.</value>
+  </data>
+  <data name="Update password" xml:space="preserve">
+    <value>Update password</value>
+  </data>
+  <data name="UserAlreadyHasPassword" xml:space="preserve">
+    <value>User already has a password.</value>
+  </data>
+  <data name="UserAlreadylnRole" xml:space="preserve">
+    <value>The user is already in '{O}' role.</value>
+  </data>
+  <data name="UserLockoutNotEnabled" xml:space="preserve">
+    <value>User lockout is not enabled.</value>
+  </data>
+  <data name="UserNotlnRole" xml:space="preserve">
+    <value>User is not in '{O}' role.</value>
+  </data>
 </root>
