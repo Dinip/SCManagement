@@ -4,7 +4,7 @@
 
 namespace SCManagement.Data.Migrations
 {
-    public partial class ClubTranslations : Migration
+    public partial class ClubTranslation : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -16,7 +16,7 @@ namespace SCManagement.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ClubId = table.Column<int>(type: "int", nullable: false),
                     Language = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    value = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Atribute = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>

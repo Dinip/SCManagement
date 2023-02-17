@@ -138,20 +138,12 @@
             }
         }
     }
-    
-    $('#myform').on('submit', async function () {
-        await translateFn('about')
-        await translateFn('termsandconditions')
-
-        return true;
-    })
 
     function getTranslation(ta, content, fromLang, toLang) {
-        return new Promise((resolve, reject) => {
             //ajax
             //return do texto traduzido do pedido
             $.ajax({
-                type: 'GET',
+                type: 'Post',
                 url: '/Translation/Translation',
                 data:
                 {
@@ -162,21 +154,12 @@
             }).done(function (response) {
                 console.log("Sucess")
                 console.log(response)
-                const arr = response.split('"')
-                const toLang2words = toLang.split('-')[0]
-
-                for (var i = 0; i < arr.length; i++) {
-                    if (arr[i] == toLang2words) {
-                        ta.value = arr[i - 4]
-                    }
-                }
-                resolve()
+                ta.value = response[0].translations[0].text
+                
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("Erro: " + textStatus + ", " + errorThrown)
                 console.log("Resposta do servidor: " + jqXHR.responseText)
-                reject(errorThrown)
             })
-        })
     }
 
 

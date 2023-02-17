@@ -261,7 +261,7 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("Language")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("value")
+                    b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

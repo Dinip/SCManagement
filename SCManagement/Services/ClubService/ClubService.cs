@@ -68,7 +68,7 @@ namespace SCManagement.Services.ClubService
                 ClubTranslations t1 = new()
                 {
                     ClubId = c.Id,
-                    value = "",
+                    Value = "",
                     Language = culture.Name,
                     Atribute = "About",
                 };
@@ -76,7 +76,7 @@ namespace SCManagement.Services.ClubService
                 ClubTranslations t2 = new()
                 {
                     ClubId = c.Id,
-                    value = "",
+                    Value = "",
                     Language = culture.Name,
                     Atribute = "TermsAndConditions",
                 };
@@ -153,8 +153,8 @@ namespace SCManagement.Services.ClubService
             ClubTranslations clubTranslationsTerms = _context.ClubTranslations.Where(c => c.ClubId == club.Id && c.Language == cultureInfo && c.Atribute == "TermsAndConditions").FirstOrDefault();
             ClubTranslations clubTranslationsAbout = _context.ClubTranslations.Where(c => c.ClubId == club.Id && c.Language == cultureInfo && c.Atribute == "About").FirstOrDefault();
 
-            club.TermsAndConditions = clubTranslationsTerms.value;
-            club.About = clubTranslationsAbout.value;
+            club.TermsAndConditions = clubTranslationsTerms.Value;
+            club.About = clubTranslationsAbout.Value;
 
             return await _context.SaveChangesAsync();
         }

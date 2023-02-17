@@ -12,8 +12,8 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230215233417_ClubTranslations")]
-    partial class ClubTranslations
+    [Migration("20230216193746_ClubTranslation")]
+    partial class ClubTranslation
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -263,7 +263,7 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("Language")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("value")
+                    b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");

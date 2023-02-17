@@ -54,8 +54,4 @@
     <None Include=".editorconfig" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\TranslationService\" />
-  </ItemGroup>
-
 </Project>

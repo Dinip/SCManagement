@@ -15,6 +15,7 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.TeamService;
+using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers {
@@ -29,6 +30,7 @@ namespace SCManagement.Controllers {
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
+        private readonly ITranslationService _translationService;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -41,12 +43,14 @@ namespace SCManagement.Controllers {
             UserManager<User> userManager,
             IClubService clubService,
             IUserService userService,
-            ITeamService teamService)
+            ITeamService teamService,
+            ITranslationService translationService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
             _teamService = teamService;
+            _translationService = translationService;
         }
 
         /// <summary>
@@ -176,12 +180,15 @@ namespace SCManagement.Controllers {
             ICollection<ClubTranslations> clubTranslations = new List<ClubTranslations>(club.ClubTranslationsAbout);
             clubTranslations.AddRange(club.ClubTranslationsTerms);
 
+            _translationService.Translate(club.ClubTranslationsAbout);
+            _translationService.Translate(club.ClubTranslationsTerms);
+
             foreach (var translations in clubTranslations)
             {
                 var f = actualClub.ClubTranslations.FirstOrDefault(c => c.Id == translations.Id);
                 if (f != null)
                 {
-                    f.value = translations.value;
+                    f.Value = translations.Value;
                 }
             }
             
