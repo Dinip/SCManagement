@@ -22,7 +22,10 @@ map.on('load', () => {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection
     geocoder.on('result', (event) => {
+        var address2 = JSON.stringify(event.result, null, 2);
+        console.log(address2);
         address = event.result;
+        
     });
 });
 
@@ -60,10 +63,8 @@ window.onload = function () {
                     },
                    
                 }).done(function (response) {
-                    console.log("Sucess")
                     btn.disabled = true;
-                    var clubId = response;
-                    window.location.href = window.location.href = '/MyClub/Edit/' + clubId;
+                    window.location.href = response.url;
                         
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.log("Erro: " + textStatus + ", " + errorThrown);

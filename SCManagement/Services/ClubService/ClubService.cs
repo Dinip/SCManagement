@@ -95,27 +95,6 @@ namespace SCManagement.Services.ClubService
                .Include(c => c.Modalities)
                .Include(c => c.Photography)
                .Include(c => c.Address)
-               //.Select(s =>
-               //new Club
-               //{
-               //    Id = s.Id,
-               //    Name = s.Name,
-               //    Email = s.Email,
-               //    PhoneNumber = s.PhoneNumber,
-               //    About = s.About,
-               //    Photography = s.Photography,
-               //    Modalities = s.Modalities,
-               //    //Address = new Address
-               //    //{
-               //    //    Street = s.Address.Street,
-               //    //    Number = s.Address.Number,
-               //    //    ZipCode = s.Address.ZipCode,
-               //    //    County = new County
-               //    //    {
-               //    //        Name = $"{s.Address.County.Name}, {s.Address.County.District!.Name}, {s.Address.County.District.Country!.Name}"
-               //    //    }
-               //    //}
-               //})
                .ToListAsync();
         }
 

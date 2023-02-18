@@ -171,8 +171,6 @@ namespace SCManagement.Controllers
 
             await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
 
-            //_clubService.UpdateClubAddress
-
             await _clubService.UpdateClub(actualClub);
 
             return RedirectToAction(nameof(Index));
@@ -884,12 +882,12 @@ namespace SCManagement.Controllers
             {
                 // update Address
                 _clubService.UpdateClubAddress(address, (int)clubAddresId);
-                return Json(club.Id);
+                return Json(new { url = Url.Action("Edit", "MyClub", new { id = club.Id }) });
             } 
             
             //create address
             await _clubService.CreateAddress(address, club.Id);
-            return Json(club.Id);
+            return Json(new { url = Url.Action("Edit", "MyClub", new { id = club.Id }) });
         }
     }
 }
