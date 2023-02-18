@@ -29,8 +29,9 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? subId)
         {
+            ViewBag.SubId = subId;
             return View(await _paymentService.GetSubscriptions(getUserIdFromAuthedUser()));
         }
 
@@ -42,6 +43,36 @@ namespace SCManagement.Controllers
             if (sub == null || sub.UserId != getUserIdFromAuthedUser()) return PartialView("_CustomErrorPartial", "Error_NotFound");
 
             return PartialView("_DetailsPartial", sub);
+        }
+
+        public async Task<IActionResult> UpdateAutoRenew(int? id)
+        {
+            if (id == null) return PartialView();
+
+            var sub = await _paymentService.GetSubscription((int)id);
+            if (sub == null) return PartialView();
+
+            if (sub.AutoRenew)
+            {
+                await _paymentService.CancelAutoSubscription(sub.Id);
+            }
+            else
+            {
+                await _paymentService.SetSubscriptionToAuto(sub.Id);
+            }
+
+            return RedirectToAction("Index", new { subId = sub.Id });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Cancel(int? id)
+        {
+            var sub = await _paymentService.GetSubscription((int)id);
+            if (sub == null || sub.UserId != getUserIdFromAuthedUser()) return Json(new { status = "not ok" });
+
+            await _paymentService.CancelSubscription(sub.Id);
+
+            return Json(new { status = "ok" });
         }
     }
 }

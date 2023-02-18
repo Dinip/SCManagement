@@ -4,10 +4,16 @@
 
 namespace SCManagement.Data.Migrations
 {
-    public partial class ClubPayment : Migration
+    public partial class ClubPayments : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.AddColumn<int>(
+                name: "ClubId",
+                table: "Subscription",
+                type: "int",
+                nullable: true);
+
             migrationBuilder.AddColumn<int>(
                 name: "AthleteSlots",
                 table: "Product",
@@ -20,12 +26,6 @@ namespace SCManagement.Data.Migrations
                 type: "int",
                 nullable: false,
                 defaultValue: 0);
-
-            migrationBuilder.AddColumn<int>(
-                name: "SubscriptionId",
-                table: "Club",
-                type: "int",
-                nullable: true);
 
             migrationBuilder.CreateTable(
                 name: "ClubPaymentSettings",
@@ -50,30 +50,36 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Club_SubscriptionId",
-                table: "Club",
-                column: "SubscriptionId");
+                name: "IX_Subscription_ClubId",
+                table: "Subscription",
+                column: "ClubId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Club_Subscription_SubscriptionId",
-                table: "Club",
-                column: "SubscriptionId",
-                principalTable: "Subscription",
+                name: "FK_Subscription_Club_ClubId",
+                table: "Subscription",
+                column: "ClubId",
+                principalTable: "Club",
                 principalColumn: "Id");
+
+            migrationBuilder.Sql("INSERT INTO ClubPaymentSettings (ClubPaymentSettingsId, RequestSecret) SELECT Id, LOWER(NEWID()) FROM dbo.Club");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Club_Subscription_SubscriptionId",
-                table: "Club");
+                name: "FK_Subscription_Club_ClubId",
+                table: "Subscription");
 
             migrationBuilder.DropTable(
                 name: "ClubPaymentSettings");
 
             migrationBuilder.DropIndex(
-                name: "IX_Club_SubscriptionId",
-                table: "Club");
+                name: "IX_Subscription_ClubId",
+                table: "Subscription");
+
+            migrationBuilder.DropColumn(
+                name: "ClubId",
+                table: "Subscription");
 
             migrationBuilder.DropColumn(
                 name: "AthleteSlots",
@@ -81,10 +87,6 @@ namespace SCManagement.Data.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Status",
-                table: "Club");
-
-            migrationBuilder.DropColumn(
-                name: "SubscriptionId",
                 table: "Club");
         }
     }

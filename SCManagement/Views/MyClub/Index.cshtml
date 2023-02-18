@@ -40,11 +40,14 @@
             <div>
                 <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id">@StringLocalizer["Public Page"]</a>
             </div>
-            
+
             @if ((int)ViewBag.RoleId == 50)
             {
                 <div>
-                <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="Edit">@StringLocalizer["Edit"]</a>
+                    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="Edit">@StringLocalizer["Edit"]</a>
+                </div>
+                <div>
+                    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="PaymentSettings">@StringLocalizer["PaymentSettings"]</a>
                 </div>
             }
             @if ((int)ViewBag.RoleId >= 40)
@@ -53,7 +56,7 @@
                     <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="StaffList">Staff</a>
                 </div>
                 <div>
-                <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="PartnersList">@StringLocalizer["Partners"]</a>
+                    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="PartnersList">@StringLocalizer["Partners"]</a>
                 </div>
                 <div>
                     <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="Codes">@StringLocalizer["Codes"]</a>
@@ -71,12 +74,12 @@
             @if ((int)ViewBag.RoleId == 20)
             {
                 <div>
-                <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="MyTeams">@StringLocalizer["MyTeams"]</a>
+                    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="MyClub" asp-action="MyTeams">@StringLocalizer["MyTeams"]</a>
                 </div>
             }
         </div>
 
-        
+
     }
 </div>
 <script src="~/js/site.js" asp-append-version="true"></script>

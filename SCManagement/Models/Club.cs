@@ -73,9 +73,6 @@ namespace SCManagement.Models
         public ClubPaymentSettings? ClubPaymentSettings { get; set; }
 
         public ClubStatus Status { get; set; } = ClubStatus.Waiting_Payment;
-
-        public int? SubscriptionId { get; set; }
-        public Subscription? Subscription { get; set; }
     }
 
     public enum ClubStatus : int

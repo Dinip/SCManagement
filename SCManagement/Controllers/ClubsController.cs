@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,7 +9,10 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.PaymentService;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.UserService;
+using Xunit.Abstractions;
 
 namespace SCManagement.Controllers
 {
@@ -21,6 +26,7 @@ namespace SCManagement.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
+        private readonly IPaymentService _paymentService;
 
         /// <summary>
         /// This is the constructor of the Clubs Controller
@@ -28,14 +34,17 @@ namespace SCManagement.Controllers
         /// <param name="userManager"></param>
         /// <param name="clubService"></param>
         /// <param name="userService"></param>
+        /// <param name="paymentService"></param>
         public ClubsController(
             UserManager<User> userManager,
             IClubService clubService,
-            IUserService userService)
+            IUserService userService,
+            IPaymentService paymentService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
+            _paymentService = paymentService;
         }
 
         /// <summary>
@@ -114,44 +123,70 @@ namespace SCManagement.Controllers
         /// </summary>
         /// <returns>Create View</returns>
         [Authorize]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Modalities = new SelectList(_clubService.GetModalities().Result, "Id", "Name");
+            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
 
-            //Address address = new Address();
+            ViewBag.Plans = await _paymentService.GetClubSubscriptions();
 
-            //Club club = new Club
-            //{
-            //    Address = address
-            //};
-
-            return View(new Club());
+            return View(new CreateClubModel());
         }
 
+        public class CreateClubModel
+        {
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(60, ErrorMessage = "Error_Length", MinimumLength = 2)]
+            [Display(Name = "Club Name")]
+            public string Name { get; set; }
+
+            [Display(Name = "Modalities")]
+            [Required(ErrorMessage = "Error_Required")]
+            public IEnumerable<int>? ModalitiesIds { get; set; }
+
+
+            [Display(Name = "Plan")]
+            [Required(ErrorMessage = "Error_Required")]
+            public int PlanId { get; set; }
+        }
 
         /// <summary>
         /// This method returns the Create View
         /// </summary>
-        /// <param name="club">Clube to be created</param>
+        /// <param name="clubInput">Clube to be created</param>
         /// <returns>Index View</returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,ModalitiesIds")] Club club)
+        public async Task<IActionResult> Create([Bind("Name,ModalitiesIds,PlanId")] CreateClubModel clubInput)
         {
-            if (!ModelState.IsValid) return View();
+            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
 
-            //get the address
-            //int addressId = await _clubService.GetAddressAsync(CountyId, Street, ZipCode, Number);
+            var clubSubProducts = await _paymentService.GetClubSubscriptions();
+            ViewBag.Plans = clubSubProducts;
+
+            if (!ModelState.IsValid) return View(clubInput);
 
             //get id of the user
             string userId = getUserIdFromAuthedUser();
 
-            Club createdClub = await _clubService.CreateClub(club, userId);
+            Club c = new Club
+            {
+                Name = clubInput.Name,
+                Modalities = (await _clubService.GetModalities()).Where(m => clubInput.ModalitiesIds.Contains(m.Id)).ToList(),
+            };
+
+            if (!clubSubProducts.Any(s => s.Id == clubInput.PlanId))
+            {
+                return View(clubInput);
+            }
+
+            Club createdClub = await _clubService.CreateClub(c, userId);
+
+            await _paymentService.SubscribeClubToPlan(createdClub.Id, userId, clubInput.PlanId);
 
             await _userService.UpdateSelectedRole(userId, createdClub.UsersRoleClub!.First().Id);
 
-            return RedirectToAction("Index", "MyClub");
+            return RedirectToAction("Index", "Subscription");
         }
 
         /// <summary>

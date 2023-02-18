@@ -28,6 +28,9 @@ namespace SCManagement.Services.PaymentService.Models
                 return string.IsNullOrEmpty(CardInfoData) ? null : JsonConvert.DeserializeObject<CardInfo>(CardInfoData);
             }
         }
+        public int? ClubId { get; set; }
+        public Club? Club { get; set; }
+        public string? ConfigUrl { get; set; }
 
         public static string ConvertFrequency(SubscriptionFrequency? frequency)
         {
@@ -47,7 +50,7 @@ namespace SCManagement.Services.PaymentService.Models
             if (status == "active") return SubscriptionStatus.Active;
             return SubscriptionStatus.Canceled;
         }
-        
+
         public static TimeSpan AddTime(SubscriptionFrequency? frequency)
         {
             if (frequency == SubscriptionFrequency.Daily) return TimeSpan.FromDays(1);
@@ -75,6 +78,7 @@ namespace SCManagement.Services.PaymentService.Models
         Waiting = 1,
         Pending = 2,
         Active = 3,
-        Canceled = 4
+        Canceled = 4,
+        Pending_Cancel = 5
     }
 }

@@ -12,8 +12,10 @@ using Newtonsoft.Json;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
+using static SCManagement.Controllers.PaymentController;
 
 namespace SCManagement.Controllers
 {
@@ -854,6 +856,45 @@ namespace SCManagement.Controllers
             if (userRoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
             return PartialView("_PartialUserDetails", user); ;
+        }
+
+        public async Task<IActionResult> PaymentSettings()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is staff
+            if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = sf.ToString() }, "Id", "Name");
+
+            var settings = await _clubService.GetClubPaymentSettings(role.ClubId);
+
+            return View(settings);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PaymentSettings(ClubPaymentSettings paymentSettings)
+        {
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = sf.ToString() }, "Id", "Name");
+
+            if (!ModelState.IsValid) return View(paymentSettings);
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is staff
+            if (!_clubService.IsClubAdmin(role) || paymentSettings.ClubPaymentSettingsId != role.ClubId) return View("CustomError", "Error_Unauthorized");
+
+            var updated = await _clubService.UpdateClubPaymentSettings(paymentSettings);
+
+            return View(updated);
         }
     }
 }

@@ -12,7 +12,7 @@ namespace SCManagement.Services.PaymentService.Models
         public Product Product { get; set; }
         public float Value { get; set; }
         public string? PhoneNumber { get; set; }
-        public PaymentMethod PaymentMethod { get; set; }
+        public PaymentMethod? PaymentMethod { get; set; }
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Pending;
         //little trick to make creation date automatically use the current date
         private DateTime? dateCreated = null;
@@ -55,8 +55,8 @@ namespace SCManagement.Services.PaymentService.Models
 
         public static string ConvertMethod(PaymentMethod paymentMethod)
         {
-            if (paymentMethod == PaymentMethod.MbWay) return "mbw";
-            if (paymentMethod == PaymentMethod.Reference) return "mb";
+            if (paymentMethod == Models.PaymentMethod.MbWay) return "mbw";
+            if (paymentMethod == Models.PaymentMethod.Reference) return "mb";
             return "cc";
         }
     }

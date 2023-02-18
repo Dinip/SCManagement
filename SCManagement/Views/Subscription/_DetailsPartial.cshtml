@@ -73,8 +73,47 @@
                 @Html.DisplayFor(model => model.CardInfo.ExpirationDate)
             </dd>
         }
+        @if (!Model.AutoRenew)
+        {
+            <div>
+                Your subscription is set to manual renew! You can enable auto renew and set a credit/debit card
+                to enable it, or go to your <a asp-action="Index" asp-controller="Payment">payments page</a>
+                to pay manually.
+            </div>
+        }
+        else if (Model.AutoRenew && Model.Status == SCManagement.Services.PaymentService.Models.SubscriptionStatus.Waiting)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ConfigUrl)
+            </dt>
+            <dd class="col-sm-10">
+                <a href="@Model.ConfigUrl">@Model.ConfigUrl</a>
+            </dd>
+        }
     </dl>
 </div>
 <div>
-    <a asp-action="Cancel" asp-route-id="@Model?.Id">Cancel (NOT DONE)</a>
+    @if (Model.Product.ProductType == SCManagement.Services.PaymentService.Models.ProductType.ClubSubscription)
+    {
+        <a asp-action="UpdatePlan" asp-route-id="@Model.Id">Update Plan (NOT DONE)</a>
+    }
+    <a asp-action="UpdateAutoRenew" asp-route-id="@Model.Id">@(Model.AutoRenew ? "Disable AutoRenew" : "Enable AutoRenew")</a>
+    <button onclick="cancelSub(@Model.Id)">Cancel (NOT DONE)</button>
 </div>
+
+<script>
+    const cancelSub = (id) => {
+        const res = confirm("Are you sure that you want to cancel the subscription? It will be canceled at the end of the payment cycle")
+        if (res) {
+            $.ajax({
+                url: `/Subscription/Cancel`,
+                data: { id },
+                type: 'POST',
+                async: true,
+                success: function (result) {
+                    window.location = `https://${window.location.host}/Subscription`
+                }
+            });
+        }
+    }
+</script>

@@ -12,8 +12,8 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230215160946_ClubPayment")]
-    partial class ClubPayment
+    [Migration("20230216151550_SubscriptionUrl")]
+    partial class SubscriptionUrl
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -237,16 +237,11 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SubscriptionId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("AddressId");
 
                     b.HasIndex("PhotographyId");
-
-                    b.HasIndex("SubscriptionId");
 
                     b.ToTable("Club");
                 });
@@ -3205,6 +3200,12 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("CardInfoData")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConfigUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
@@ -3234,6 +3235,8 @@ namespace SCManagement.Data.Migrations
                         .HasColumnType("real");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
 
                     b.HasIndex("ProductId");
 
@@ -3344,15 +3347,9 @@ namespace SCManagement.Data.Migrations
                         .WithMany()
                         .HasForeignKey("PhotographyId");
 
-                    b.HasOne("SCManagement.Services.PaymentService.Models.Subscription", "Subscription")
-                        .WithMany()
-                        .HasForeignKey("SubscriptionId");
-
                     b.Navigation("Address");
 
                     b.Navigation("Photography");
-
-                    b.Navigation("Subscription");
                 });
 
             modelBuilder.Entity("SCManagement.Models.ClubPaymentSettings", b =>
@@ -3526,6 +3523,10 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Services.PaymentService.Models.Subscription", b =>
                 {
+                    b.HasOne("SCManagement.Models.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId");
+
                     b.HasOne("SCManagement.Services.PaymentService.Models.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -3537,6 +3538,8 @@ namespace SCManagement.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Club");
 
                     b.Navigation("Product");
 

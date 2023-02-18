@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SCManagement.Data;
@@ -46,7 +47,7 @@ namespace SCManagement.Services.PaymentService
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        private async Task<EasypayResponse?> SubscriptionApiRequest(CreatePayment paymentInput, Product product, User user, DateTime startTime)
+        private async Task<EasypayResponse?> SubscriptionApiRequest(Product product, User user, DateTime startTime)
         {
             var result = await _httpClient.PostAsJsonAsync("https://api.test.easypay.pt/2.0/subscription", new
             {
@@ -64,7 +65,7 @@ namespace SCManagement.Services.PaymentService
                 {
                     name = user!.FullName,
                     email = user!.Email,
-                    phone = paymentInput.PhoneNumber ?? user.PhoneNumber ?? ""
+                    phone = user.PhoneNumber ?? ""
                 }
             });
 
@@ -112,7 +113,6 @@ namespace SCManagement.Services.PaymentService
         {
             //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
 
-            string guid = Guid.NewGuid().ToString();
             var product = await GetProduct(paymentInput.ProductId);
             if (product == null) return null;
 
@@ -120,27 +120,9 @@ namespace SCManagement.Services.PaymentService
 
             var timeNowPlus2Min = DateTime.Now.AddMinutes(2);
 
-            var content = await SubscriptionApiRequest(paymentInput, product, user, timeNowPlus2Min);
+            //var content = await SubscriptionApiRequest(paymentInput, product, user, timeNowPlus2Min);
+            var content = new EasypayResponse();
             if (content == null) return null;
-
-            //var cardInfo = await _context.CardInfo.FirstOrDefaultAsync(f =>
-            //    f.UserId == userId &&
-            //    f.LastFourDigits == content.method.last_four &&
-            //    f.Type == content.method.type &&
-            //    f.ExpirationDate == content.method.expiration_date
-            //);
-
-            //if (cardInfo == null)
-            //{
-            //    cardInfo = new CardInfo
-            //    {
-            //        LastFourDigits = content.method.last_four,
-            //        Type = content.method.type,
-            //        ExpirationDate = content.method.expiration_date,
-            //        UserId = userId
-            //    };
-            //    _context.CardInfo.Add(cardInfo);
-            //}
 
             var sub = new Subscription
             {
@@ -192,7 +174,7 @@ namespace SCManagement.Services.PaymentService
                 sub = new Subscription
                 {
                     StartTime = DateTime.Now,
-                    NextTime = DateTime.Now.AddMonths(1),
+                    NextTime = DateTime.Now.Add(Subscription.AddTime(product.Frequency)),
                     Value = product.Value,
                     Status = SubscriptionStatus.Active,
                     ProductId = paymentInput.ProductId,
@@ -290,6 +272,20 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
+        private async Task<bool> subscriptionChangelApiRequest(string id)
+        {
+            var result = await _httpClient.DeleteAsync($"https://api.test.easypay.pt/2.0/subscription/{id}");
+
+            if (!result.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Error in subscriptionChangelApiRequest");
+                Console.WriteLine(result.Content.ReadAsStringAsync().Result);
+                return false;
+            }
+
+            return true;
+        }
+
 
         private string? buildCardInfo(EasypayResponse info)
         {
@@ -320,6 +316,17 @@ namespace SCManagement.Services.PaymentService
             if (payment.PaymentStatus == PaymentStatus.Paid) payment.PayedAt = DateTime.Now;
 
             payment.CardInfoData = buildCardInfo(info);
+
+            if (payment.SubscriptionId != null)
+            {
+                var subscription = await _context.Subscription.FindAsync(payment.SubscriptionId);
+                if (subscription != null)
+                {
+                    subscription.Status = SubscriptionStatus.Active;
+                    subscription.NextTime = DateTime.Now.Add(Subscription.AddTime(subscription.Frequency)).Date.Add(new TimeSpan(1, 0, 0));
+                    _context.Subscription.Update(subscription);
+                }
+            }
 
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();
@@ -375,12 +382,167 @@ namespace SCManagement.Services.PaymentService
                 _context.Payment.Update(payment);
             }
 
-            subscription.NextTime = DateTime.Now.Add(Subscription.AddTime(subscription.Frequency));
+            subscription.NextTime = DateTime.Now.Add(Subscription.AddTime(subscription.Frequency)).Date.Add(new TimeSpan(1, 0, 0));
             subscription.CardInfoData = buildCardInfo(info);
             subscription.Status = Subscription.ConvertStatus(info.method.status);
 
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetClubSubscriptions()
+        {
+            return await _context.Product
+                .Where(p => p.ProductType == ProductType.ClubSubscription && p.Enabled)
+                .OrderBy(p => p.AthleteSlots)
+                .ToListAsync();
+        }
+
+        public async Task<Subscription> SubscribeClubToPlan(int clubId, string userId, int planId)
+        {
+            var product = await GetProduct(planId);
+            if (product == null || product.ProductType != ProductType.ClubSubscription)
+            {
+                product = (await GetClubSubscriptions()).OrderBy(f => f.Value).First();
+            }
+
+            DateTime now = DateTime.Now;
+
+            var sub = new Subscription
+            {
+                StartTime = now,
+                NextTime = now,
+                Value = product.Value,
+                Status = SubscriptionStatus.Waiting,
+                ProductId = product.Id,
+                UserId = userId,
+                AutoRenew = false,
+                Frequency = product.Frequency.Value,
+                ClubId = clubId
+            };
+
+            _context.Subscription.Add(sub);
+
+            return sub;
+        }
+
+
+        public async Task<Subscription?> SetSubscriptionToAuto(int subId)
+        {
+            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
+
+            var subscription = await _context.Subscription.Include(s => s.Product).Include(s => s.User).FirstOrDefaultAsync(s => s.Id == subId);
+            if (subscription == null) return null;
+
+            var startTime = DateTime.Now.AddMinutes(1);
+            if (subscription.NextTime.Date != DateTime.Now.Date)
+            {
+                startTime = subscription.NextTime;
+            }
+
+            var content = await SubscriptionApiRequest(subscription.Product!, subscription.User!, startTime);
+            if (content == null) return null;
+
+            subscription.AutoRenew = true;
+            subscription.SubscriptionKey = content.id;
+            subscription.Status = SubscriptionStatus.Waiting;
+            subscription.ConfigUrl = content.method.url;
+
+            _context.Subscription.Update(subscription);
+
+            var payment = await _context.Payment.FirstOrDefaultAsync(p => p.SubscriptionId == subscription.Id && p.PaymentStatus != PaymentStatus.Paid);
+            if (payment != null)
+            {
+                payment.PaymentMethod = PaymentMethod.CreditCard;
+                _context.Payment.Update(payment);
+            }
+            await _context.SaveChangesAsync();
+            return subscription;
+        }
+
+        public async Task<Subscription?> CancelAutoSubscription(int subId)
+        {
+            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
+
+            var subscription = await _context.Subscription.Include(s => s.Product).Include(s => s.User).FirstOrDefaultAsync(s => s.Id == subId);
+            if (subscription == null || string.IsNullOrEmpty(subscription.SubscriptionKey)) return null;
+
+            var success = await subscriptionChangelApiRequest(subscription.SubscriptionKey!);
+
+            if (!success) return null;
+
+            subscription.AutoRenew = false;
+            subscription.SubscriptionKey = null;
+            subscription.ConfigUrl = null;
+            subscription.Status = SubscriptionStatus.Active;
+            subscription.CardInfoData = null;
+
+            //when removing a auto sub, check next payment is in the same day
+            //and if so, create a payment object
+            if (DateTime.Now.Date == subscription.NextTime.Date)
+            {
+                subscription.Status = SubscriptionStatus.Pending;
+                var payment = new Payment
+                {
+                    ProductId = subscription.Product.Id,
+                    Value = subscription.Product.Value,
+                    PaymentMethod = null,
+                    PaymentStatus = PaymentStatus.Pending,
+                    UserId = subscription.UserId,
+                    PaymentKey = Guid.NewGuid().ToString(),
+                    SubscriptionId = subscription.Id,
+                };
+                _context.Payment.Add(payment);
+            }
+
+            _context.Subscription.Update(subscription);
+            await _context.SaveChangesAsync();
+            return subscription;
+        }
+
+        public async Task CancelSubscription(int id)
+        {
+            var subscription = await _context.Subscription.FirstOrDefaultAsync(s => s.Id == id);
+            if (subscription == null) return;
+
+
+            //cancel easypay subscription
+            if (!string.IsNullOrEmpty(subscription.SubscriptionKey))
+            {
+                var success = await subscriptionChangelApiRequest(subscription.SubscriptionKey!);
+                if (success)
+                {
+                    subscription.AutoRenew = false;
+                    subscription.SubscriptionKey = null;
+                    subscription.CardInfoData = null;
+                }
+            }
+
+            //cancel pending payments
+            var payments = await _context.Payment.Where(p => p.SubscriptionId == id && p.PaymentStatus == PaymentStatus.Pending).ToListAsync();
+            if (payments.Any())
+            {
+                payments.ForEach(p => p.PaymentStatus = PaymentStatus.Canceled);
+                _context.Update(payments);
+            }
+
+            subscription.Status = subscription.NextTime.Date <= DateTime.Now.Date ? SubscriptionStatus.Canceled : SubscriptionStatus.Pending_Cancel;
+            subscription.EndTime = subscription.NextTime.Date <= DateTime.Now.Date ? DateTime.Now : subscription.NextTime;
+
+            if (subscription.ClubId != null)
+            {
+                var club = await _context.Club.FindAsync(subscription.ClubId);
+                if (club != null)
+                {
+                    club.EndDate = subscription.EndTime;
+                    club.Status = subscription.Status == SubscriptionStatus.Canceled ? ClubStatus.Suspended : ClubStatus.Active;
+                    _context.Update(club);
+                }
+            }
+
+            _context.Subscription.Update(subscription);
+            await _context.SaveChangesAsync();
+            return;
         }
     }
 }
