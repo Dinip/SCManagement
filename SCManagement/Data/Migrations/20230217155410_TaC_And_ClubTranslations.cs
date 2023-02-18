@@ -45,7 +45,7 @@ namespace SCManagement.Data.Migrations
             migrationBuilder.Sql("INSERT INTO ClubTranslations (ClubId, Language, Value, Atribute) SELECT Id, 'en-US', '', 'TermsAndConditions' FROM dbo.Club");
 
             migrationBuilder.Sql("INSERT INTO ClubTranslations (ClubId, Language, Value, Atribute) SELECT Id, 'pt-PT', '', 'About' FROM dbo.Club");
-            migrationBuilder.Sql("INSERT INTO ClubTranslations (ClubId, Language, Value, Atribute) SELECT Id, 'en-US', '', 'About' FROM dbo.Club")
+            migrationBuilder.Sql("INSERT INTO ClubTranslations (ClubId, Language, Value, Atribute) SELECT Id, 'en-US', '', 'About' FROM dbo.Club");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
