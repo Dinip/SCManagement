@@ -9,8 +9,6 @@ window.onload = (event) => {
             type: 'GET',
             url: '/Clubs/CoordsMarkers'
         }).done(function (response) {
-            console.log("Sucess");
-            console.log(response);
             if (userCoordinates) {
                 loadMap(userCoordinates, response);
             } else {
@@ -25,8 +23,16 @@ window.onload = (event) => {
    
 };
 
+var map;
+
+function flyToClub(coordX,coordY) {
+    if (coordX != '' && coordY != '') {
+        map.flyTo({ center: [coordX, coordY], zoom: 14 });
+    }   
+}
+
 function loadMap(userCoordinates, markersCoordinates) {
-    let map = new mapboxgl.Map({
+    map = new mapboxgl.Map({
         container: 'map', // container ID
         style: 'mapbox://styles/mapbox/streets-v12',
         zoom: 10,
@@ -36,7 +42,8 @@ function loadMap(userCoordinates, markersCoordinates) {
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
-        marker: false
+        marker: false,
+        placeholder: 'Digite um endereço ou localização'
     });
 
     if (userCoordinates) {

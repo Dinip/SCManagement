@@ -30,7 +30,7 @@
                     </span>
                 </div>
                 
-                @await Html.PartialAsync("_PartialSearchClub")
+                @await Html.PartialAsync("_PartialSearchClub",Model)
 
             </div>
         </div>
@@ -77,14 +77,12 @@
             }
         });
 
-
         function search(term) {
             $.ajax({
                 type: 'GET',
                 url: '/Clubs/SearchNameClubs',
                 data: { name: term },
             }).done(function (data) {
-                //console.log("DEUUUU");
                 $('#search-results-partial').html(data);
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("Erro: " + textStatus + ", " + errorThrown);
