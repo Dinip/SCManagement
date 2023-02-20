@@ -18,7 +18,8 @@
                             @Html.DisplayFor(modelItem => item.About)
                         </p>
                         <p>
-                            <a asp-route-id="@item.Id">@StringLocalizer["Details"]</a>
+                            
+                            <a asp-route-id="@item.Id" asp-action="Details">@StringLocalizer["Details"]</a>
                         </p>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">

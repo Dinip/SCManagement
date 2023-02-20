@@ -2,25 +2,30 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
 
 window.onload = (event) => {
-    let userCoordinates;
+    let defaultCoords = { coords: { longitude: -8.8926, latitude: 38.5243 } };
+
+    $.ajax({
+        type: 'GET',
+        url: '/Clubs/CoordsMarkers'
+    }).done(function (response) {
+        loadMap(defaultCoords, response);
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Erro: " + textStatus + ", " + errorThrown);
+        console.log("Resposta do servidor: " + jqXHR.responseText);
+    });
+
     navigator.geolocation.getCurrentPosition(function (position) {
-        userCoordinates = position;
+        let userCoordinates = position;
         $.ajax({
             type: 'GET',
             url: '/Clubs/CoordsMarkers'
         }).done(function (response) {
-            if (userCoordinates) {
-                loadMap(userCoordinates, response);
-            } else {
-                loadMap(response);
-            }
+            loadMap(userCoordinates, response);
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log("Erro: " + textStatus + ", " + errorThrown);
             console.log("Resposta do servidor: " + jqXHR.responseText);
         });
     });
-
-   
 };
 
 var map;
