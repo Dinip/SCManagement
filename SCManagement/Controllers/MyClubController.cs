@@ -1,10 +1,5 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Data;
-using System.Drawing;
-using System.Drawing.Imaging;
-using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +13,6 @@ using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.Location;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Address = SCManagement.Models.Address;
 
 namespace SCManagement.Controllers
 {
@@ -891,7 +884,6 @@ namespace SCManagement.Controllers
         /// <param name="Country"></param>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> ReceiveAddress(Address address)
         {
             //get id of the user
@@ -913,7 +905,7 @@ namespace SCManagement.Controllers
             if (clubAddresId != null)
             {
                 // update Address
-                _clubService.UpdateClubAddress(address, (int)clubAddresId);
+                await _clubService.UpdateClubAddress(address, (int)clubAddresId);
                 return Json(new { url = Url.Action("Edit", "MyClub") });
             }
 
