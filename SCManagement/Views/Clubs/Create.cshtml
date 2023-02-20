@@ -51,7 +51,7 @@
                                 {
                                     <div>
                                         <input type="radio" asp-for="PlanId" id="plan-@plan.Id" value="@plan.Id" />
-                                        <label class="card-cc" for="plan-@plan.Id">@plan.Name - @plan.Value€</label>
+                                        <label class="card-cc" for="plan-@plan.Id">@plan.Name - @plan.Value€/@StringLocalizer[@plan.Frequency.ToString()]</label>
                                     </div>
                                 }
                                 <span asp-validation-for="PlanId" class="text-danger"></span>

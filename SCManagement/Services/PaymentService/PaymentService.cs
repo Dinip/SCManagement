@@ -228,6 +228,7 @@ namespace SCManagement.Services.PaymentService
         {
             return await _context.Subscription
                 .Include(s => s.Product)
+                .Include(s => s.Club)
                 .Where(s => s.UserId == userId)
                 .OrderByDescending(s => s.NextTime)
                 .ToListAsync();
@@ -237,6 +238,7 @@ namespace SCManagement.Services.PaymentService
         {
             return await _context.Subscription
                 .Include(s => s.Product)
+                .Include(s => s.Club)
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
@@ -272,13 +274,13 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
-        private async Task<bool> subscriptionChangelApiRequest(string id)
+        private async Task<bool> deleteSubscriptionId(string id)
         {
             var result = await _httpClient.DeleteAsync($"https://api.test.easypay.pt/2.0/subscription/{id}");
 
             if (!result.IsSuccessStatusCode)
             {
-                Console.WriteLine("Error in subscriptionChangelApiRequest");
+                Console.WriteLine("Error in deleteSubscriptionId");
                 Console.WriteLine(result.Content.ReadAsStringAsync().Result);
                 return false;
             }
@@ -390,7 +392,7 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Product>> GetClubSubscriptions()
+        public async Task<IEnumerable<Product>> GetClubSubscriptionPlans()
         {
             return await _context.Product
                 .Where(p => p.ProductType == ProductType.ClubSubscription && p.Enabled)
@@ -403,7 +405,7 @@ namespace SCManagement.Services.PaymentService
             var product = await GetProduct(planId);
             if (product == null || product.ProductType != ProductType.ClubSubscription)
             {
-                product = (await GetClubSubscriptions()).OrderBy(f => f.Value).First();
+                product = (await GetClubSubscriptionPlans()).OrderBy(f => f.Value).First();
             }
 
             DateTime now = DateTime.Now;
@@ -422,6 +424,21 @@ namespace SCManagement.Services.PaymentService
             };
 
             _context.Subscription.Add(sub);
+            await _context.SaveChangesAsync();
+
+            var pay = new Payment
+            {
+                ProductId = product.Id,
+                Value = product.Value,
+                CreatedAt = now,
+                PaymentStatus = PaymentStatus.Pending,
+                UserId = userId,
+                SubscriptionId = sub.Id,
+                PaymentKey = Guid.NewGuid().ToString(),
+            };
+
+            _context.Payment.Add(pay);
+            await _context.SaveChangesAsync();
 
             return sub;
         }
@@ -467,7 +484,7 @@ namespace SCManagement.Services.PaymentService
             var subscription = await _context.Subscription.Include(s => s.Product).Include(s => s.User).FirstOrDefaultAsync(s => s.Id == subId);
             if (subscription == null || string.IsNullOrEmpty(subscription.SubscriptionKey)) return null;
 
-            var success = await subscriptionChangelApiRequest(subscription.SubscriptionKey!);
+            var success = await deleteSubscriptionId(subscription.SubscriptionKey!);
 
             if (!success) return null;
 
@@ -509,7 +526,7 @@ namespace SCManagement.Services.PaymentService
             //cancel easypay subscription
             if (!string.IsNullOrEmpty(subscription.SubscriptionKey))
             {
-                var success = await subscriptionChangelApiRequest(subscription.SubscriptionKey!);
+                var success = await deleteSubscriptionId(subscription.SubscriptionKey!);
                 if (success)
                 {
                     subscription.AutoRenew = false;
@@ -543,6 +560,75 @@ namespace SCManagement.Services.PaymentService
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
             return;
+        }
+
+
+        private async Task<bool> updateSubscription(string id, float newValue)
+        {
+            var result = await _httpClient.PatchAsJsonAsync($"https://api.test.easypay.pt/2.0/subscription/{id}", new
+            {
+                value = newValue
+            });
+
+            if (!result.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Error in updateSubscription");
+                Console.WriteLine(result.Content.ReadAsStringAsync().Result);
+                return false;
+            }
+
+            return true;
+        }
+
+
+        public async Task UpgradeClubPlan(int subId, int newPlanId)
+        {
+            var subscription = await GetSubscription(subId);
+            if (subscription == null)
+            {
+                throw new Exception("Error_NotFound");
+            }
+
+            var product = await GetProduct(newPlanId);
+            if (product == null || product.ProductType != ProductType.ClubSubscription || !product.Enabled)
+            {
+                throw new Exception("Error_InvalidProduct");
+            }
+
+            var athletes = await _context.UsersRoleClub.Where(u => u.ClubId == subscription.ClubId && u.RoleId == 20).CountAsync();
+            if (athletes > product.AthleteSlots)
+            {
+                throw new Exception("Não pode alterar para um plano com menos atletas que o número de atletas do clube");
+            }
+
+
+            if (subscription.AutoRenew)
+            {
+                var res = await updateSubscription(subscription.SubscriptionKey, product.Value);
+                if (!res)
+                {
+                    throw new Exception("Error updating subscription value");
+                }
+            }
+
+            subscription.ProductId = newPlanId;
+            subscription.Value = product.Value;
+            subscription.Frequency = product.Frequency.Value;
+
+            //find a pending payment in the last 3 days and update it to the new value and product
+            var payment = await _context.Payment.FirstOrDefaultAsync(p =>
+                p.SubscriptionId == subscription.Id && p.PaymentStatus == PaymentStatus.Pending && p.CreatedAt.Date >= DateTime.Now.Date.AddDays(-3)
+            );
+
+            if (payment != null)
+            {
+                payment.Value = product.Value;
+                payment.ProductId = newPlanId;
+                _context.Payment.Update(payment);
+            }
+
+            _context.Subscription.Update(subscription);
+            await _context.SaveChangesAsync();
         }
     }
 }

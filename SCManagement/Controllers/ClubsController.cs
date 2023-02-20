@@ -127,7 +127,7 @@ namespace SCManagement.Controllers
         {
             ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
 
-            ViewBag.Plans = await _paymentService.GetClubSubscriptions();
+            ViewBag.Plans = await _paymentService.GetClubSubscriptionPlans();
 
             return View(new CreateClubModel());
         }
@@ -161,7 +161,7 @@ namespace SCManagement.Controllers
         {
             ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
 
-            var clubSubProducts = await _paymentService.GetClubSubscriptions();
+            var clubSubProducts = await _paymentService.GetClubSubscriptionPlans();
             ViewBag.Plans = clubSubProducts;
 
             if (!ModelState.IsValid) return View(clubInput);

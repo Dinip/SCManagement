@@ -2,6 +2,9 @@
 
 <div>
     <h4>Subscription for @Model.Product.Name</h4>
+
+    <div style="color:red;" id="error"></div>
+
     <hr />
     <dl class="row">
         <dt class="col-sm-2">
@@ -52,6 +55,21 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Frequency)
         </dd>
+        @if (Model.ClubId != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Club.Name)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Club.Name)
+            </dd>
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.Product.AthleteSlots)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.Product.AthleteSlots)
+            </dd>
+        }
         @if (Model.CardInfo != null)
         {
             <dt class="col-sm-2">
@@ -95,10 +113,10 @@
 <div>
     @if (Model.Product.ProductType == SCManagement.Services.PaymentService.Models.ProductType.ClubSubscription)
     {
-        <a asp-action="UpdatePlan" asp-route-id="@Model.Id">Update Plan (NOT DONE)</a>
+        <button onclick="updatePlanPick(@Model.Id)">Update Plan</button>
     }
-    <a asp-action="UpdateAutoRenew" asp-route-id="@Model.Id">@(Model.AutoRenew ? "Disable AutoRenew" : "Enable AutoRenew")</a>
-    <button onclick="cancelSub(@Model.Id)">Cancel (NOT DONE)</button>
+    <button onclick="updateAutoRenew(@Model.Id, '@Model.AutoRenew')">@(Model.AutoRenew ? "Disable AutoRenew" : "Enable AutoRenew")</button>
+    <button onclick="cancelSub(@Model.Id)">Cancel</button>
 </div>
 
 <script>
@@ -109,11 +127,43 @@
                 url: `/Subscription/Cancel`,
                 data: { id },
                 type: 'POST',
-                async: true,
+                async: false,
                 success: function (result) {
-                    window.location = `https://${window.location.host}/Subscription`
+                    window.location = '/Subscription'
                 }
             });
         }
+    }
+
+    const updateAutoRenew = (id, enabled) => {
+        let res = null
+        if (enabled == "True") {
+            res = confirm("Are you sure that you want to cancel the auto renewal for that subscription?")
+        } else {
+            res = confirm("Are you sure that you want to enable the auto renewal for that subscription?")
+        }
+        if (res) {
+            $.ajax({
+                url: `/Subscription/UpdateAutoRenew`,
+                data: { id },
+                type: 'POST',
+                async: false,
+                success: function (result) {
+                    window.location = '/Subscription'
+                }
+            });
+        }
+    }
+
+    function updatePlanPick(id) {
+        $.ajax({
+            url: `/Subscription/PlansPartial/${id}`,
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
     }
 </script>
