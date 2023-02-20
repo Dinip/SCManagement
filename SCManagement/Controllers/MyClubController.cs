@@ -36,7 +36,6 @@ namespace SCManagement.Controllers
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
         private readonly ILocationService _locationService;
-
         private readonly ITranslationService _translationService;
 
         /// <summary>
@@ -110,6 +109,8 @@ namespace SCManagement.Controllers
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
 
+            if (club == null) return View("CustomError", "Error_NotFound");
+
             //get ids of the modalities of the club
             List<int> ClubModalitiesIds = club.Modalities!.Select(m => m.Id).ToList();
 
@@ -119,7 +120,6 @@ namespace SCManagement.Controllers
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
 
-            if (club == null) return View("CustomError", "Error_NotFound");
 
             ICollection<ClubTranslations> About = club.ClubTranslations.Where(c => c.Atribute == "About").ToList();
             ICollection<ClubTranslations> Terms = club.ClubTranslations.Where(c => c.Atribute == "TermsAndConditions").ToList();
