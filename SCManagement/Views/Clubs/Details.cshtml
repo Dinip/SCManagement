@@ -65,7 +65,13 @@
                     <div class="col-2">
                         @*<i class="fa-solid fa-phone text-to-dark"></i>*@
                     </div>
-                    <p>@ViewBag.Address</p>
+                    @if (Model.Address != null)
+                    {
+                        <p>@Model.Address.Street</p>
+                        <p>@Model.Address.City</p>
+                        <p>@Model.Address.Country</p>
+                        <p>@Model.Address.ZipCode</p>
+                    }
                 </div>
             </div>
         </div>

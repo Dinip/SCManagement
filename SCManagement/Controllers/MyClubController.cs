@@ -892,7 +892,7 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> ReceiveAddress(double CoordinateX, double CoordinateY, string ZipCode, string Street, string City, string District, string Country)
+        public async Task<IActionResult> ReceiveAddress(Address address)
         {
             //get id of the user
             string userId = getUserIdFromAuthedUser();
@@ -913,13 +913,13 @@ namespace SCManagement.Controllers
             if (clubAddresId != null)
             {
                 // update Address
-                _clubService.UpdateClubAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, (int)clubAddresId);
-                return Json(club.Id);
+                _clubService.UpdateClubAddress(address, (int)clubAddresId);
+                return Json(new { url = Url.Action("Edit", "MyClub") });
             }
 
             //create address
-            await _clubService.CreateAddress(CoordinateX, CoordinateY, ZipCode, Street, City, District, Country, club.Id);
-            return Json(club.Id);
+            await _clubService.CreateAddress(address, club.Id);
+            return Json(new { url = Url.Action("Edit", "MyClub") });
         }
     }
 }

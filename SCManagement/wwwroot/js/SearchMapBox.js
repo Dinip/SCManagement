@@ -22,9 +22,10 @@ map.on('load', () => {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection
     geocoder.on('result', (event) => {
-        let address2 = JSON.stringify(event.result, null, 2);
+        var address2 = JSON.stringify(event.result, null, 2);
         console.log(address2);
         address = event.result;
+        
     });
 });
 
@@ -49,20 +50,21 @@ window.onload = function () {
                     url: '/MyClub/ReceiveAddress',
                     dataType: 'json',
                     data: {
-                        CoordinateY: coord[1],
-                        CoordinateX: coord[0],
-                        ZipCode: addressCode,
-                        Street: text,
-                        City: city,
-                        District: district,
-                        Country: country,
+                        Address:
+                        {
+                            CoordinateY: coord[1],
+                            CoordinateX: coord[0],
+                            ZipCode: addressCode,
+                            Street: text,
+                            City: city,
+                            District: district,
+                            Country: country,
+                        }
                     },
                    
                 }).done(function (response) {
-                    console.log("Sucess")
                     btn.disabled = true;
-                    var clubId = response;
-                    window.location.href = window.location.href = '/MyClub/Edit/' + clubId;;
+                    window.location.href = response.url;
                         
                 }).fail(function (jqXHR, textStatus, errorThrown) {
                     console.log("Erro: " + textStatus + ", " + errorThrown);

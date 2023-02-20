@@ -58,6 +58,26 @@ namespace SCManagement.Controllers
         }
 
         /// <summary>
+        /// this method alow to send to mapbox coordinates of the clubs
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> CoordsMarkers()
+        {
+            return Json(await _clubService.GetAllCoordinates());
+        }
+
+        /// <summary>
+        /// this method allow to send the results of a search to a list of cards with clubs
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<IActionResult> SearchNameClubs(string name)
+        {
+            var matchingClubs = await _clubService.SearchNameClubs(name);
+            return PartialView("_PartialSearchClub", matchingClubs);
+        }
+
+        /// <summary>
         /// Force redirect from /Clubs/Details/id to /Clubs/id
         /// </summary>
         /// <param name="id">id of the club</param>

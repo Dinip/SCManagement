@@ -1,5 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
+using System.Text.Json;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
@@ -744,18 +746,18 @@ namespace SCManagement.Services.ClubService
         /// <param name="Country"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
-        public async Task<Address> CreateAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int clubId)
+        public async Task<Address> CreateAddress(Address address, int clubId)
         {
             //Create a new Address
             Address ad = new Address
             {
-                CoordinateX = CoordinateX,
-                CoordinateY = CoordinateY,
-                ZipCode = ZipCode,
-                Street = Street,
-                City = City,
-                District = District,
-                Country = Country
+                CoordinateX = address.CoordinateX,
+                CoordinateY = address.CoordinateY,
+                ZipCode = address.ZipCode,
+                Street = address.Street,
+                City = address.City,
+                District = address.District,
+                Country = address.Country
             };
 
             _context.Address.Add(ad);
@@ -780,21 +782,49 @@ namespace SCManagement.Services.ClubService
         /// <param name="District"></param>
         /// <param name="Country"></param>
         /// <param name="addressId"></param>
-        public void UpdateClubAddress(double CoordinateX, double CoordinateY, string? ZipCode, string Street, string City, string District, string Country, int addressId)
+        public async Task UpdateClubAddress(Address address, int addressId)
         {
             //Update the address
-            Address ad = _context.Address.Find(addressId);
-            ad.CoordinateX = CoordinateX;
-            ad.CoordinateY = CoordinateY;
-            ad.ZipCode = ZipCode;
-            ad.Street = Street;
-            ad.City = City;
-            ad.District = District;
-            ad.Country = Country;
+            Address ad = await _context.Address.FindAsync(addressId);
+            ad.CoordinateX = address.CoordinateX;
+            ad.CoordinateY = address.CoordinateY;
+            ad.ZipCode = address.ZipCode;
+            ad.Street = address.Street;
+            ad.City = address.City;
+            ad.District = address.District;
+            ad.Country = address.Country;
             _context.Address.Update(ad);
-            _context.SaveChanges();
-
+            await _context.SaveChangesAsync();
         }
+
+        /// <summary>
+        /// Get coordinates of the clubs and a name
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<object>> GetAllCoordinates()
+        {
+            var coordinates = await _context.Club
+               .Where(c => c.AddressId != null)
+               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY, Name = c.Name })
+               .ToListAsync();
+
+            return coordinates;
+        }
+
+        /// <summary>
+        /// Get the clubs that user search for
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Club>> SearchNameClubs(string? name)
+        {
+            //get all clubs
+            if (name == null) return await _context.Club.ToListAsync();
+
+            //get clubs with the name that user search
+            return await _context.Club.Where(c => c.Name.Contains(name)).Include(c => c.Address).ToListAsync();
+        }
+
 
         /// <summary>
         /// Gets all club staff (admin, secretary and trainer) (users role object with join date)
