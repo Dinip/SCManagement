@@ -339,7 +339,7 @@ namespace SCManagement.Controllers
             if (userRoleToBeRomoved.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
 
             //prevent users that arent club admin from removing club secretary (or higher)
-            if (userRoleToBeRomoved.RoleId >= 40 && role.RoleId < 50) return View("CustomError", "Error_NotFound");
+            if (userRoleToBeRomoved.RoleId >= 40 && role.RoleId < 50) return View("CustomError", "Error_Unauthorized");
 
             //remove a user(role) from a club
             await _clubService.RemoveClubUser(userRoleToBeRomoved.Id);
@@ -619,10 +619,10 @@ namespace SCManagement.Controllers
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
 
+            if (club == null) return View("CustomError", "Error_NotFound");
+
             //viewbag that have the modalities of the club
             ViewBag.Modalities = new SelectList(await _clubService.GetClubModalities(club.Id), "Id", "Name");
-
-            if (club == null) return View("CustomError", "Error_NotFound");
 
             //get the team
             var team = await _teamService.GetTeam((int)id);
@@ -753,7 +753,6 @@ namespace SCManagement.Controllers
             //get the user selected role
             var role = await _userService.GetSelectedRole(userId);
 
-
             //check user role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
@@ -763,6 +762,8 @@ namespace SCManagement.Controllers
 
             //check if athlete is on team
             Team team = await _teamService.GetTeam((int)teamId);
+
+            if (team == null) return View("CustomError", "Error_NotFound");
 
             //check if are using this service its good ??
             if (!team.Athletes.Contains(athleteToRemove)) return View("CustomError", "Error_NotFound");

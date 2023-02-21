@@ -1,6 +1,7 @@
 ﻿using FakeItEasy;
 using FakeItEasy.Creation;
 using FluentAssertions;
+using FluentEmail.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,16 +22,6 @@ using static SCManagement.Controllers.MyClubController;
 
 namespace SCManagement.Tests.Controller
 {
-    public class UsersRoleClubFakeOptionsBuilder : FakeOptionsBuilder<UsersRoleClub>
-    {
-        protected override void BuildOptions(IFakeOptions<UsersRoleClub> options)
-        {
-            options.ConfigureFake(fake =>
-            {
-                fake.ClubId = 1;
-            });
-        }
-    }
 
     public class ClubFakeOptionsBuilder : FakeOptionsBuilder<Club>
     {
@@ -89,9 +80,8 @@ namespace SCManagement.Tests.Controller
         public async Task MyClubController_Index_ReturnsSuccess()
         {
             // Arrange
-            var userId = "1";
-            var role = A.Fake<UsersRoleClub>();
-            A.CallTo(() => _userService.GetSelectedRole(userId)).Returns(role);
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
 
             // Act
             var result = await _controller.Index();
@@ -101,7 +91,21 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_Edit_ReturnsErrorRole()
+        public async Task MyClubController_Index_ClubIdEqualsZero()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 0 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+
+            // Act
+            var result = await _controller.Index();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task MyClubController_Edit_ReturnsIsNotClubAdmin()
         {
             // Arrange
             var role = A.Fake<UsersRoleClub>();
@@ -148,13 +152,14 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<ViewResult>();
+
         }
 
         [Fact]
         public async Task MyClubController_Edit_Post_ReturnsSuccess()
         {
             // Arrange
-            var role = A.Fake<UsersRoleClub>();
+            var role = new UsersRoleClub { ClubId = 1 };
             var clube = A.Fake<EditModel>();
             var club = A.Fake<Club>();
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -166,6 +171,58 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task MyClubController_Edit_Post_ReturnsIsNotClubAdmin()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var clube = A.Fake<EditModel>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.Edit(clube);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_Edit_Post_ReturnsRoleDiffClub()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 1 };
+            var clube = new EditModel { Id = 2 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _controller.Edit(clube);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_Edit_Post_ReturnsActualClubEqualsNull()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 1 };
+            var clube = new EditModel { Id = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(Task.FromResult<Club>(null));
+
+            // Act
+            var result = await _controller.Edit(clube);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
         }
 
         [Fact]
@@ -182,6 +239,20 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_PartnersList_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.PartnersList();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
         public async Task MyClubController_StaffList_ReturnsSuccess()
         {
             // Arrange
@@ -195,6 +266,20 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_StaffList_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.StaffList();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
         public async Task MyClubController_AthletesList_ReturnsSuccess()
         {
             // Arrange
@@ -205,6 +290,20 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task MyClubController_AthletesList_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.AthletesList();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -225,6 +324,110 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_RemoveUser_ReturnsUsersRoleClubIdNull()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.RemoveUser(null, "AthletesList");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveUser_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.RemoveUser(1, "AthletesList");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+        
+        [Fact]
+        public async Task MyClubController_RemoveUser_ReturnsUserRoleToBeRomovedNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetUserRoleClubFromId(A<int>._)).Returns(Task.FromResult<UsersRoleClub>(null));
+
+
+            // Act
+            var result = await _controller.RemoveUser(1, "AthletesList");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveUser_ReturnsUserRoleToBeRomovedIsClubAdmin()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var userRoleToBeRomoved = new UsersRoleClub { RoleId = 50 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetUserRoleClubFromId(A<int>._)).Returns(userRoleToBeRomoved);
+
+
+            // Act
+            var result = await _controller.RemoveUser(1, "AthletesList");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveUser_ReturnsUserRoleToBeRomovedDiffClubId()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 4 };
+            var userRoleToBeRomoved = new UsersRoleClub { ClubId = 3 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetUserRoleClubFromId(A<int>._)).Returns(userRoleToBeRomoved);
+
+
+            // Act
+            var result = await _controller.RemoveUser(1, "AthletesList");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveUser_ReturnsPreventRemove()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 40 };
+            var userRoleToBeRomoved = new UsersRoleClub { RoleId = 40 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetUserRoleClubFromId(A<int>._)).Returns(userRoleToBeRomoved);
+
+
+            // Act
+            var result = await _controller.RemoveUser(1, "AthletesList");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
         public async Task MyClubController_CreateCode_ReturnsSuccess()
         {
             // Arrange
@@ -235,7 +438,22 @@ namespace SCManagement.Tests.Controller
             var result = await _controller.CreateCode();
 
             // Assert
-            result.Should().BeOfType<PartialViewResult>();
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_PartialCreateCode");
+        }
+
+        [Fact]
+        public async Task MyClubController_CreateCode_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+            // Act
+            var result = await _controller.CreateCode();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -256,6 +474,22 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_CreateCode_Post_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+            
+            // Act
+            var result = await _controller.CreateCode(A.Fake<CreateCodeModel>());
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
         public async Task MyClubController_Codes_ReturnsSuccess()
         {
             // Arrange
@@ -268,6 +502,22 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task MyClubController_Codes_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.Codes("code", 1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -286,6 +536,22 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_SendCodeEmail_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.SendCodeEmail(1, "a@gmail.com");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
         public async Task MyClubController_TeamList_ReturnsSuccess()
         {
             // Arrange
@@ -298,6 +564,22 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task MyClubController_TeamList_ReturnsIsNotClubManager()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.TeamList();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -316,6 +598,23 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_CreateTeam_ReturnsError()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.CreateTeam();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
         public async Task MyClubController_CreateTeam_Post_ReturnsSuccess()
         {
             // Arrange
@@ -329,6 +628,23 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("TeamList");
+        }
+
+        [Fact]
+        public async Task MyClubController_CreateTeam_Post_ReturnsIsNotClubTrainerAndIsNotClubAdmin()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.CreateTeam(A.Fake<TeamModel>());
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -351,6 +667,58 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_EditTeam_ReturnsIsNotClubStaff()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.EditTeam(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_EditTeam_ReturnsClubNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(Task.FromResult<Club>(null));
+
+            // Act
+            var result = await _controller.EditTeam(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_EditTeam_ReturnsTeamNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var clube = A.Fake<Club>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(clube);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(Task.FromResult<Team>(null));
+
+            // Act
+            var result = await _controller.EditTeam(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
         public async Task MyClubController_EditTeam_Post_ReturnsSuccess()
         {
             // Arrange
@@ -364,6 +732,58 @@ namespace SCManagement.Tests.Controller
 
             // Act
             var result = await _controller.EditTeam(1, new TeamModel { ModalityId = 2 });
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("TeamList");
+        }
+
+        [Fact]
+        public async Task MyClubController_EditTeam_Post_ReturnsIsNotClubStaff()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.EditTeam(1, new TeamModel { ModalityId = 2 });
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_EditTeam_Post_ReturnsTeamNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(Task.FromResult<Team>(null));
+
+            // Act
+            var result = await _controller.EditTeam(1, new TeamModel { ModalityId = 2 });
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_EditTeam_Post_ReturnsNoUpdate()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var clube = A.Fake<Club>();
+            var team = new Team { ModalityId = 1 , Name = "teste" };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(clube);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
+
+            // Act
+            var result = await _controller.EditTeam(1, new TeamModel { ModalityId = 1, Name = "teste" });
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("TeamList");
@@ -390,6 +810,58 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_AddTeamAthletes_ReturnsIsNotClubStaff()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.AddTeamAthletes(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_AddTeamAthletes_ReturnsTeamNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(Task.FromResult<Team>(null));
+
+            // Act
+            var result = await _controller.AddTeamAthletes(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_AddTeamAthletes_ReturnsIsNotTeamTrainer()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var team = new Team { TrainerId = "1"};
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _controller.AddTeamAthletes(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
         public async Task MyClubController_AddTeamAthletes_Post_ReturnsSuccess()
         {
             // Arrange
@@ -406,6 +878,58 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("EditTeam");
+        }
+
+        [Fact]
+        public async Task MyClubController_AddTeamAthletes_Post_ReturnsIsNotClubStaff()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.AddTeamAthletes(1, new List<string>());
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_AddTeamAthletes_Post_ReturnsTeamNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(Task.FromResult<Team>(null));
+
+            // Act
+            var result = await _controller.AddTeamAthletes(1, new List<string>());
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_AddTeamAthletes_Post_ReturnsIsNotTeamTrainer()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var team = new Team { TrainerId = "1"};
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _controller.AddTeamAthletes(1, new List<string>());
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -428,6 +952,104 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task MyClubController_RemoveAtheleFromTeam_Post_ReturnsAthleteIdNull()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.RemoveAtheleFromTeam(null, 1, "Team");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveAtheleFromTeam_Post_ReturnsTeamIdNull()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.RemoveAtheleFromTeam("andre", null, "page1");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveAtheleFromTeam_Post_ReturnsIsNotClubStaff()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.RemoveAtheleFromTeam("andre", 1, "Team");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveAtheleFromTeam_Post_ReturnsAthleteToRemoveNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _userService.GetUser(A<string>._)).Returns(Task.FromResult<User>(null));
+
+            // Act
+            var result = await _controller.RemoveAtheleFromTeam("andre", 1, "Team");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveAtheleFromTeam_Post_ReturnsTeamNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var user = A.Fake<User>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _userService.GetUser(A<string>._)).Returns(user);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(Task.FromResult<Team>(null));
+
+            // Act
+            var result = await _controller.RemoveAtheleFromTeam("andre", 1, "Team");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_RemoveAtheleFromTeam_Post_ReturnsAthleteToRemoveNotInAthletes()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var user = A.Fake<User>();
+            var team = new Team { ModalityId = 1, TrainerId = "", Athletes = new List<User>() };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _userService.GetUser(A<string>._)).Returns(user);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
+
+            // Act
+            var result = await _controller.RemoveAtheleFromTeam("andre", 1, "Team");
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
         public async Task MyClubController_TeamDetails_ReturnsSuccess()
         {
             // Arrange
@@ -437,12 +1059,100 @@ namespace SCManagement.Tests.Controller
             A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
             A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
 
-
             // Act
             var result = await _controller.TeamDetails(1);
 
             // Assert
             result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task MyClubController_TeamDetails_ReturnsTeamNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(Task.FromResult<Team>(null));
+
+
+            // Act
+            var result = await _controller.TeamDetails(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_TeamDetails_ReturnsIsNotClubMember()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var team = new Team { ModalityId = 1, TrainerId = "", Athletes = new List<User>() };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._,A<int>._)).Returns(false);
+
+            // Act
+            var result = await _controller.TeamDetails(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_DeleteTeam_Post_ReturnsIsNotTeamTrainer()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var team = new Team { ModalityId = 1, TrainerId = "1", Athletes = new List<User>() };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
+
+            // Act
+            var result = await _controller.DeleteTeam(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_DeleteTeam_Post_ReturnsTeamNull()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(Task.FromResult<Team>(null));
+
+
+            // Act
+            var result = await _controller.DeleteTeam(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_DeleteTeam_Post_ReturnsIsNotClubStaff()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            var team = new Team { ModalityId = 1, TrainerId = "", Athletes = new List<User>() };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _teamService.GetTeam(A<int>._)).Returns(team);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.DeleteTeam(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -481,6 +1191,209 @@ namespace SCManagement.Tests.Controller
             // Assert
             result.Should().BeOfType<ViewResult>();
         }
+
+        [Fact]
+        public async Task MyClubController_MyTeams_ReturnsIsNotClubAthlete()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.MyTeams();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+
+        [Fact]
+        public async Task MyClubController_UserDetails_ReturnsIdNull()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.UserDetails(null);
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_CustomErrorPartial");
+            result.Should().BeOfType<PartialViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_UserDetails_ReturnsUserIsNotClubMember()
+        {
+            // Arrange
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(false);
+
+            // Act
+            var result = await _controller.UserDetails("1");
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_CustomErrorPartial");
+            result.Should().BeOfType<PartialViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_UserDetails_ReturnsAthleteIsNotClubMember()
+        {
+            // Arrange
+            var id = "1";
+            var role = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubMember(id, A<int>._)).Returns(false);
+
+            // Act
+            var result = await _controller.UserDetails(id);
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_CustomErrorPartial");
+            result.Should().BeOfType<PartialViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_UserDetails_ReturnsUserNull()
+        {
+            // Arrange
+            var id = "1";
+            var role = new UsersRoleClub { RoleId = 1};
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubMember(id, A<int>._)).Returns(true);
+            A.CallTo(() => _userService.GetUser(A<string>._)).Returns(Task.FromResult<User>(null));
+
+            // Act
+            var result = await _controller.UserDetails(id);
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_CustomErrorPartial");
+            result.Should().BeOfType<PartialViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_UserDetails_ReturnsUserRoleIdHigher()
+        {
+            // Arrange
+            var id = "1";
+            var role = new UsersRoleClub { RoleId = 1 };
+            var user = A.Fake<User>();
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubMember(id, A<int>._)).Returns(true);
+            A.CallTo(() => _userService.GetUser(A<string>._)).Returns(user);
+            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(2);
+
+            // Act
+            var result = await _controller.UserDetails(id);
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_CustomErrorPartial");
+            result.Should().BeOfType<PartialViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_UserDetails_ReturnsSuccess()
+        {
+            // Arrange
+            var id = "1";
+            var role = new UsersRoleClub { RoleId = 2 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubMember(id, A<int>._)).Returns(true);
+            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(1);
+
+            // Act
+            var result = await _controller.UserDetails(id);
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_PartialUserDetails");
+        }
+
+        [Fact]
+        public void MyClubController_NewAddress_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = _controller.NewAddress();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        //[Fact]
+        //public async Task MyClubController_ReceiveAddress_Post_ReturnsCreate()
+        //{
+        //    // Arrange
+        //    var role = new UsersRoleClub { RoleId = 2 };
+        //    var club = A.Fake<Club>();
+        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+        //    A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+
+
+        //    // Act
+        //    var result = await _controller.ReceiveAddress(2.0,1.0,"22-00","Rua","Lisboa", "Lisboa","Portugal");
+
+        //    // Assert
+        //    result.Should().BeOfType<JsonResult>();
+        //}
+
+        //[Fact]
+        //public async Task MyClubController_ReceiveAddress_Post_ReturnsUpdate() 
+        //{
+        //    // Arrange
+        //    var role = new UsersRoleClub { RoleId = 2 };
+        //    var club = new Club { AddressId = 1};
+        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+        //    A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+
+        //    // Act
+        //    var result = await _controller.ReceiveAddress(2.0, 1.0, "22-00", "Rua", "Lisboa", "Lisboa", "Portugal");
+
+        //    // Assert
+        //    result.Should().BeOfType<JsonResult>();
+        //}
+
+        //[Fact]
+        //public async Task MyClubController_ReceiveAddress_Post_ReturnsIsNotClubAdmin()
+        //{
+        //    // Arrange
+        //    var role = new UsersRoleClub { RoleId = 2 };
+        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(false);
+
+        //    // Act
+        //    var result = await _controller.ReceiveAddress(2.0, 1.0, "22-00", "Rua", "Lisboa", "Lisboa", "Portugal");
+
+        //    // Assert
+        //    result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+        //    result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        //}
+
+        //[Fact]
+        //public async Task MyClubController_ReceiveAddress_Post_ReturnsClubNull()
+        //{
+        //    // Arrange
+        //    var role = new UsersRoleClub { RoleId = 2 };
+        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+        //    A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(Task.FromResult<Club>(null));
+
+        //    // Act
+        //    var result = await _controller.ReceiveAddress(2.0, 1.0, "22-00", "Rua", "Lisboa", "Lisboa", "Portugal");
+
+        //    // Assert
+        //    result.Should().BeOfType<NotFoundResult>();
+        //    //result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+        //    //result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        //}
 
 
     }

@@ -44,12 +44,11 @@ namespace SCManagement.Tests.Controller
         public void ClubsController_Detail_ReturnsSuccess()
         {
             // Arrange
-            var id = 1;
             var club = A.Fake<Club>();
-            A.CallTo(() => _clubService.GetClub(id)).Returns(club);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
 
             // Act
-            var result = _controller.Details(id);
+            var result = _controller.Details(1);
 
             // Assert
             result.Should().BeAssignableTo<IActionResult>();
@@ -59,12 +58,11 @@ namespace SCManagement.Tests.Controller
         public async Task ClubsController_Index_Details_ReturnsSuccess()
         {
             // Arrange
-            var id = 1;
             var club = A.Fake<Club>();
-            A.CallTo(() => _clubService.GetClub(id)).Returns(club);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
             
             // Act
-            var result = await _controller.Index(id);
+            var result = await _controller.Index(1);
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("Details");
@@ -72,14 +70,13 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task ClubsController_Index_Details_ReturnsError()
+        public async Task ClubsController_Index_Details_ReturnsClubNull()
         {
             // Arrange
-            var id = 1;
-            A.CallTo(() => _clubService.GetClub(id)).Returns(Task.FromResult<Club>(null));
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(Task.FromResult<Club>(null));
 
             // Act
-            var result = await _controller.Index(id);
+            var result = await _controller.Index(1);
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
@@ -101,69 +98,40 @@ namespace SCManagement.Tests.Controller
 
         //rever este teste pois não está muito bom
         [Fact]
-        public void ClubsController_CreatePost_ReturnsSuccess()
-        {
-            //string userId = "fake_user_id";
-            //Club clubToCreate = new Club { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 } , UsersRoleClub = new List<UsersRoleClub> { new UsersRoleClub { Id = 1 } } };
-            //var createdClub = new Club
-            //{
-            //    Id = 123,
-            //    UsersRoleClub = new List<UsersRoleClub>
-            //    {
-            //        new UsersRoleClub { Id = 1, UserId = userId, RoleId = 50, JoinDate = DateTime.Now }
-            //    }
-            //};
-
-            //// Set up the mock service to return the created club
-            //A.CallTo(() => _clubService.CreateClub(clubToCreate, userId)).Returns(createdClub);
-
-            //// Update the selected role for the user
-            //await _userService.UpdateSelectedRole(userId, createdClub.UsersRoleClub!.First().Id);
-
-            //// Act
-            //var result = await _controller.Create(clubToCreate);
-
-            //// Assert
-            //result.Should().BeOfType<RedirectToActionResult>()
-            //    .Which.ControllerName.Should().Be("MyClub");
-            //result.As<RedirectToActionResult>().ActionName.Should().Be("Index");
-
-            //A.CallTo(() => _clubService.CreateClub(clubToCreate, userId)).MustHaveHappenedOnceExactly();
-            //A.CallTo(() => _userService.UpdateSelectedRole(userId, A<int>._)).MustHaveHappenedOnceExactly();
-
-            // Arrange
-
-            string userId = "fake_user_id";
-            Club createdClub = new Club { Id = 123 };
-
-            A.CallTo(() => _clubService.CreateClub(A<Club>._, userId)).Returns(createdClub);
-
-            Club clubToCreate = new Club { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 } };
-
-            // Act
-            var result = _controller.Create(clubToCreate);
-
-            // Assert
-            result.Should().BeOfType<Task<IActionResult>>();
-        }
-
-        [Fact]
-        public async Task ClubsController_Associate_ReturnsSuccess()
+        public async Task ClubsController_Create_Post_ReturnsSuccess()
         {
             // Arrange
-            var id = 1;
-            var club = A.Fake<Club>();
-            A.CallTo(() => _clubService.GetClub(id)).Returns(club);
+            var createdClub = new Club
+            {
+                Id = 123,
+                UsersRoleClub = new List<UsersRoleClub>() { new UsersRoleClub { Id = 1} },
+            };
+            var clubToCreate = new Club { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 } };
+            A.CallTo(() => _clubService.CreateClub(A<Club>._, A<string>._)).Returns(createdClub);
 
             // Act
-            var result = await _controller.Associate(id);
+            var result = await _controller.Create(clubToCreate);
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
         }
 
         [Fact]
-        public async Task ClubsController_Associate_ReturnsError()
+        public async Task ClubsController_Associate_ReturnsSuccess()
+        {
+            // Arrange
+            var club = A.Fake<Club>();
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+
+            // Act
+            var result = await _controller.Associate(1);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task ClubsController_Associate_ReturnsIdNull()
         {
             // Arrange
 
@@ -173,28 +141,31 @@ namespace SCManagement.Tests.Controller
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
 
+
+        [Fact]
+        public async Task ClubsController_Associate_ReturnsClubNull()
+        {
             // Arrange
-            var id = 1;
             var club = A.Fake<Club>();
-            A.CallTo(() => _clubService.GetClub(id)).Returns(Task.FromResult<Club>(null));
-
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(Task.FromResult<Club>(null));
+            
             // Act
-            result = await _controller.Associate(id);
+            var result = await _controller.Associate(1);
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
         }
-
+        
         [Fact]
         public void ClubsController_JoinGet_ReturnsSuccess()
         {
             // Arrange
-            string code = "code";
 
             // Act
-            var result =  _controller.Join(code);
+            var result =  _controller.Join("code");
 
             // Assert
             result.Should().BeAssignableTo<IActionResult>();
@@ -205,17 +176,30 @@ namespace SCManagement.Tests.Controller
         public async Task ClubsController_JoinPost_ReturnsSuccess()
         {
             // Arrange
-            var userId = "1";
-            CodeClub codeClub = A.Fake<CodeClub>();
+            var codeClub = A.Fake<CodeClub>();
+            var joined = new KeyValuePair<bool, string>(true, "Success");
+            A.CallTo(() => _clubService.UseCode(A<string>._, A<CodeClub>._)).Returns(joined);
 
-            A.CallTo(() => _clubService.UseCode(userId, codeClub)).ReturnsLazily((KeyValuePair<bool, string> p) => p);
+            // Act
+            var result = await _controller.Join(codeClub);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task ClubsController_JoinPost_ReturnsFail()
+        {
+            // Arrange
+            var codeClub = A.Fake<CodeClub>();
+            var joined = new KeyValuePair<bool, string>(false, "Code_NotFound");
+            A.CallTo(() => _clubService.UseCode(A<string>._, A<CodeClub>._)).Returns(joined);
 
             // Act
             var result = await _controller.Join(codeClub);
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("Join");
-
         }
     }
 }
