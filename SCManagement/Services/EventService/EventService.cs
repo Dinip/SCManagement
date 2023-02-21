@@ -49,6 +49,12 @@ namespace SCManagement.Services.EventService
             return myEvent;
         }
 
+        public async Task UpdateEventPath(string coordinates, Event ev)
+        {
+            ev.Route = coordinates;
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<EventEnroll> CreateEventEnroll(EventEnroll enroll)
         {
             _context.EventEnroll.Add(enroll);
