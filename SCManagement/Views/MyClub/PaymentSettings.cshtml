@@ -1,0 +1,57 @@
+﻿@model SCManagement.Models.ClubPaymentSettings
+
+@{
+    ViewData["Title"] = "PaymentSettings";
+}
+
+<h1>ClubPaymentSettings</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="PaymentSettings">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ClubPaymentSettingsId" />
+            <div class="form-group">
+                <label asp-for="AccountId" class="control-label"></label>
+                <input asp-for="AccountId" class="form-control" />
+                <span asp-validation-for="AccountId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="AccountKey" class="control-label"></label>
+                <input asp-for="AccountKey" class="form-control" />
+                <span asp-validation-for="AccountKey" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RequestSecret" class="control-label"></label>
+                <input disabled asp-for="RequestSecret" class="form-control" />
+                <span asp-validation-for="RequestSecret" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuotaFrequency" class="control-label"></label>
+                <select asp-for="QuotaFrequency" class="form-control" asp-items="ViewBag.Frequency"></select>
+                <span asp-validation-for="QuotaFrequency" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="QuotaFee" class="control-label"></label>
+                <input type="number" step="0.01" asp-for="QuotaFee" class="form-control" />
+                <span asp-validation-for="QuotaFee" class="text-danger"></span>
+            </div>
+
+            <div>
+                If you update the Quota Fee or Frequency, all the current partners will
+                be notified of the change and will be asked to accept the new fee or 
+                it will auto cancel at the end of their current one.
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

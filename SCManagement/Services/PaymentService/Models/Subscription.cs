@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
 using SCManagement.Models;
 
@@ -7,20 +8,42 @@ namespace SCManagement.Services.PaymentService.Models
     public class Subscription
     {
         public int Id { get; set; }
+
+        [Display(Name = "Start Date")]
         public DateTime StartTime { get; set; }
+
+        [Display(Name = "Next Payment Date")]
         public DateTime NextTime { get; set; }
+
+        [Display(Name = "End Date")]
         public DateTime? EndTime { get; set; }
+
+        [Display(Name = "Value")]
         public float Value { get; set; }
+
         public int ProductId { get; set; }
+
+        [Display(Name = "Product")]
         public Product? Product { get; set; }
+        
         public string UserId { get; set; }
+        
         public User? User { get; set; }
+
+        [Display(Name = "Auto Renew")]
         public bool AutoRenew { get; set; } = false;
+
+        [Display(Name = "Subscription Frequency")]
         public SubscriptionFrequency Frequency { get; set; }
+
+        [Display(Name = "Subscription Status")]
         public SubscriptionStatus Status { get; set; } = SubscriptionStatus.Pending;
         public string? SubscriptionKey { get; set; }
+
         public string? CardInfoData { get; set; }
+
         [NotMapped]
+        [Display(Name = "Card Info")]
         public CardInfo? CardInfo
         {
             get
@@ -28,6 +51,14 @@ namespace SCManagement.Services.PaymentService.Models
                 return string.IsNullOrEmpty(CardInfoData) ? null : JsonConvert.DeserializeObject<CardInfo>(CardInfoData);
             }
         }
+
+        public int? ClubId { get; set; }
+
+        [Display(Name = "Club")]
+        public Club? Club { get; set; }
+
+        [Display(Name = "Url")]
+        public string? ConfigUrl { get; set; }
 
         public static string ConvertFrequency(SubscriptionFrequency? frequency)
         {
@@ -47,7 +78,7 @@ namespace SCManagement.Services.PaymentService.Models
             if (status == "active") return SubscriptionStatus.Active;
             return SubscriptionStatus.Canceled;
         }
-        
+
         public static TimeSpan AddTime(SubscriptionFrequency? frequency)
         {
             if (frequency == SubscriptionFrequency.Daily) return TimeSpan.FromDays(1);
@@ -75,6 +106,7 @@ namespace SCManagement.Services.PaymentService.Models
         Waiting = 1,
         Pending = 2,
         Active = 3,
-        Canceled = 4
+        Canceled = 4,
+        Pending_Cancel = 5
     }
 }

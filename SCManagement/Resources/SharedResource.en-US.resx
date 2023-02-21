@@ -856,4 +856,188 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="UserNotlnRole" xml:space="preserve">
     <value>User is not in '{0}' role.</value>
   </data>
+  <data name="Email_ClubFees" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+  &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+  &lt;title&gt;Club Quota Change&lt;/title&gt;
+  &lt;meta name="description" content="Reset Password Email Template."&gt;
+  &lt;style type="text/css"&gt;
+    a:hover {
+      text-decoration: underline !important;
+    }
+  &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+  &lt;!--100% body table--&gt;
+  &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+    style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+    &lt;tr&gt;
+      &lt;td&gt;
+        &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+          align="center" cellpadding="0" cellspacing="0"&gt;
+          &lt;tr&gt;
+            &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt; &lt;img
+                  width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo" alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+          &lt;tr&gt;
+            &lt;td&gt;
+              &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="padding:0 35px;"&gt;
+                    &lt;h1 style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                      Club Quota Change&lt;/h1&gt; &lt;span
+                      style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                    &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;The club _CLUB_ recently updated their quota values. The quota now
+                      is _PRICE_ payed _FREQUENCY_. This will only affect you in your next payment cycle. If you have auto renew, it will be renewed
+                    with the new values in mind or you can go to your &lt;a href="_SUBSCRIPTION_"&gt;subscription page&lt;/a&gt; and cancel it now and it will remain active
+                  until the end of the cycle.&lt;/p&gt; 
+                  &lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                  &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                &lt;/tr&gt;
+              &lt;/table&gt;
+            &lt;/td&gt;
+          &lt;tr&gt;
+            &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+          &lt;/tr&gt;
+        &lt;/table&gt;
+      &lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Weekly" xml:space="preserve">
+    <value>Weekly</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Yearly" xml:space="preserve">
+    <value>Yearly</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Monthly" xml:space="preserve">
+    <value>Monthly</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Quarterly" xml:space="preserve">
+    <value>Quarterly</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Semiannually" xml:space="preserve">
+    <value>Semiannually</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Subject_ClubFees" xml:space="preserve">
+    <value>Club fee update</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Subscriptions" xml:space="preserve">
+    <value>Subscriptions</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Daily" xml:space="preserve">
+    <value>Daily</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Athlete Slots" xml:space="preserve">
+    <value>Athlete Slots</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Auto Renew" xml:space="preserve">
+    <value>Auto Renew</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Card Info" xml:space="preserve">
+    <value>Card Info</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Created At" xml:space="preserve">
+    <value>Created At</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="End Date" xml:space="preserve">
+    <value>End Date</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Is Subscription" xml:space="preserve">
+    <value>Is Subscription</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Multibanco Entity" xml:space="preserve">
+    <value>Multibanco Entity</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Multibanco Reference" xml:space="preserve">
+    <value>Multibanco Reference</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Next Payment Date" xml:space="preserve">
+    <value>Next Payment Date</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Payed At" xml:space="preserve">
+    <value>Payed At</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Payment Method" xml:space="preserve">
+    <value>Payment Method</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Payment Status" xml:space="preserve">
+    <value>Payment Status</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Plan" xml:space="preserve">
+    <value>Plan</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Plans" xml:space="preserve">
+    <value>Plans</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Product" xml:space="preserve">
+    <value>Product</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Product Type" xml:space="preserve">
+    <value>Product Type</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Start Date" xml:space="preserve">
+    <value>Start Date</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Subscription" xml:space="preserve">
+    <value>Subscription</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Subscription Frequency" xml:space="preserve">
+    <value>Subscription Frequency</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Subscription Status" xml:space="preserve">
+    <value>Subscription Status</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
+  <data name="Value" xml:space="preserve">
+    <value>Value</value>
+    <comment>21-02-2023_payments</comment>
+  </data>
 </root>

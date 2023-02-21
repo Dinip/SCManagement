@@ -49,5 +49,8 @@ namespace SCManagement.Services.ClubService
         public Task UpdateClubAddress(Address address, int addressId);
         public Task<IEnumerable<object>> GetAllCoordinates();
         public Task<IEnumerable<Club>> SearchNameClubs(string? name);
+        public Task<ClubStatus> GetClubStatus(int clubId);
+        public Task<ClubPaymentSettings> GetClubPaymentSettings(int clubId);
+        public Task<ClubPaymentSettings> UpdateClubPaymentSettings(ClubPaymentSettings settings);
     }
 }

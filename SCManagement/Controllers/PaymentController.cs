@@ -4,7 +4,6 @@ using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.PaymentService;
 using Microsoft.AspNetCore.Identity;
 using SCManagement.Models;
-using Microsoft.AspNetCore.SignalR;
 
 namespace SCManagement.Controllers
 {
@@ -55,7 +54,7 @@ namespace SCManagement.Controllers
             string verifyCode = Request.Headers["x-easypay-code"];
             Console.WriteLine(verifyCode);
             Console.WriteLine(notification);
-            
+
             if (verifyCode != "admin123") return BadRequest(); //change to secret later
 
 
@@ -79,8 +78,9 @@ namespace SCManagement.Controllers
             return Ok();
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? payId)
         {
+            ViewBag.PayId = payId;
             return View(await _paymentService.GetPayments(getUserIdFromAuthedUser()));
         }
 

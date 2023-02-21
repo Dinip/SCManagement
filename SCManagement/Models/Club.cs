@@ -6,14 +6,17 @@ using Microsoft.Build.Framework;
 using Microsoft.EntityFrameworkCore;
 using Org.BouncyCastle.Utilities;
 using SCManagement.Services.AzureStorageService.Models;
+using SCManagement.Services.PaymentService.Models;
 using Xunit.Abstractions;
 using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
-namespace SCManagement.Models {
+namespace SCManagement.Models
+{
     /// <summary>
     /// This class represents a Club
     /// </summary>
-    public class Club {
+    public class Club
+    {
 
         public int Id { get; set; }
 
@@ -70,5 +73,17 @@ namespace SCManagement.Models {
         [Display(Name = "Modalities")]
         [Required(ErrorMessage = "Error_Required")]
         public IEnumerable<int>? ModalitiesIds { get; set; }
+
+        public ClubPaymentSettings? ClubPaymentSettings { get; set; }
+
+        public ClubStatus Status { get; set; } = ClubStatus.Waiting_Payment;
+    }
+
+    public enum ClubStatus : int
+    {
+        Waiting_Payment = 1,
+        Active = 2,
+        Suspended = 3,
+        Deleted = 4
     }
 }

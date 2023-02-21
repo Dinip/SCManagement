@@ -68,6 +68,11 @@
 </table>
 
 <script type="text/javascript">
+    window.onload = () => {
+        const id = "@ViewBag.PayId";
+        if (id != "") openDetails(id)
+    }
+
     let modal = document.getElementById("modal");
 
     window.onclick = function (event) {

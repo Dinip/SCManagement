@@ -35,6 +35,7 @@ namespace SCManagement.Data
         public DbSet<Subscription> Subscription { get; set; }
         public DbSet<Event> Event { get; set; }
         public DbSet<EventEnroll> EventEnroll { get; set; }
+        public DbSet<ClubPaymentSettings> ClubPaymentSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

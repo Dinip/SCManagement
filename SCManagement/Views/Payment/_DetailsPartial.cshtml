@@ -99,7 +99,7 @@
         }
         @if(Model.SubscriptionId != null)
         {
-            <a asp-controller="Subscription" asp-action="Index">Go to subscriptions page</a>
+            <a href="/Subscription?subId=@Model.SubscriptionId" asp->Go to subscription</a>
         }
     </dl>
 </div>

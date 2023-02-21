@@ -9,6 +9,7 @@ using NuGet.Packaging;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
@@ -65,6 +66,19 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
+        public async Task<IActionResult> MissingPayment()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (role.ClubId == 0) return RedirectToAction(nameof(Index));
+
+            return View(await _clubService.GetClub(role.ClubId));
+        }
+
         /// <summary>
         /// Gets the user selected club (if any)
         /// </summary>
@@ -78,6 +92,10 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             if (role.ClubId == 0) return View();
+
+            //check for payment disabled for now
+            //var status = await _clubService.GetClubStatus(role.ClubId);
+            //if (status != ClubStatus.Active) return RedirectToAction(nameof(MissingPayment));
 
             ViewBag.RoleId = role.RoleId;
 
@@ -912,6 +930,45 @@ namespace SCManagement.Controllers
             //create address
             await _clubService.CreateAddress(address, club.Id);
             return Json(new { url = Url.Action("Edit", "MyClub") });
+        }
+
+        public async Task<IActionResult> PaymentSettings()
+        {
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is staff
+            if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = sf.ToString() }, "Id", "Name");
+
+            var settings = await _clubService.GetClubPaymentSettings(role.ClubId);
+
+            return View(settings);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PaymentSettings(ClubPaymentSettings paymentSettings)
+        {
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = sf.ToString() }, "Id", "Name");
+
+            if (!ModelState.IsValid) return View(paymentSettings);
+
+            //get id of the user
+            string userId = getUserIdFromAuthedUser();
+
+            //get the user selected role
+            var role = await _userService.GetSelectedRole(userId);
+
+            //Check if is staff
+            if (!_clubService.IsClubAdmin(role) || paymentSettings.ClubPaymentSettingsId != role.ClubId) return View("CustomError", "Error_Unauthorized");
+
+            var updated = await _clubService.UpdateClubPaymentSettings(paymentSettings);
+
+            return View(updated);
         }
     }
 }

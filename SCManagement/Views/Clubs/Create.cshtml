@@ -1,4 +1,4 @@
-﻿@model SCManagement.Models.Club
+﻿@model SCManagement.Controllers.ClubsController.CreateClubModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "Create";
@@ -34,14 +34,27 @@
                         <form asp-action="Create">
                             <h3><strong class="text-to-dark">@StringLocalizer["Create a club"]</strong></h3>
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
                             <div class="form-floating mt-4">
                                 <input id="idName" asp-for="Name" placeholder=@StringLocalizer["Name"] class="form-control" />
                                 <label asp-for="Name" class="control-label"></label>
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
+
                             <div class="form-group mt-3">
-                                <select multiple required data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select w-100" asp-items="ViewBag.modalities"></select>
+                                <select multiple required data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select w-100" asp-items="ViewBag.Modalities"></select>
                                 <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
+                            </div>
+
+                            <div class="flex-row">
+                                @foreach (var plan in ViewBag.Plans)
+                                {
+                                    <div>
+                                        <input type="radio" asp-for="PlanId" id="plan-@plan.Id" value="@plan.Id" />
+                                        <label class="card-cc" for="plan-@plan.Id">@plan.Name - @plan.Value€/@StringLocalizer[@plan.Frequency.ToString()]</label>
+                                    </div>
+                                }
+                                <span asp-validation-for="PlanId" class="text-danger"></span>
                             </div>
 
                             @*<partial name="_AddressPartial" model="Model.Address" />*@

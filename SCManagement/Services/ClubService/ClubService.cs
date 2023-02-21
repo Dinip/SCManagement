@@ -44,23 +44,13 @@ namespace SCManagement.Services.ClubService
         /// <returns>A new club</returns>
         public async Task<Club> CreateClub(Club club, string userId)
         {
-            //Create a new club
-            Club c = new Club
-            {
-                Name = club.Name,
-                Modalities = GetModalities().Result.Where(m => club.ModalitiesIds.Contains(m.Id)).ToList(),
-                CreationDate = DateTime.Now,
-                //AddressId = addressId,
-            };
-
             //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
             List<UsersRoleClub> roles = new();
 
             //add a role whit the user that create the club
             roles.Add(new UsersRoleClub { UserId = userId, RoleId = 50, JoinDate = DateTime.Now });
-            c.UsersRoleClub = roles;
-
-            _context.Club.Add(c);
+            club.UsersRoleClub = roles;
+            club.ClubPaymentSettings = new ClubPaymentSettings();
 
             List<CultureInfo> cultures = new List<CultureInfo> { new("en-US"), new("pt-PT") };
 
@@ -70,7 +60,7 @@ namespace SCManagement.Services.ClubService
             {
                 ClubTranslations t1 = new()
                 {
-                    ClubId = c.Id,
+                    ClubId = club.Id,
                     Value = "",
                     Language = culture.Name,
                     Atribute = "About",
@@ -78,7 +68,7 @@ namespace SCManagement.Services.ClubService
 
                 ClubTranslations t2 = new()
                 {
-                    ClubId = c.Id,
+                    ClubId = club.Id,
                     Value = "",
                     Language = culture.Name,
                     Atribute = "TermsAndConditions",
@@ -91,11 +81,12 @@ namespace SCManagement.Services.ClubService
                 translations.Add(t2);
             }
 
-            c.ClubTranslations = new List<ClubTranslations>(translations);
+            club.ClubTranslations = new List<ClubTranslations>(translations);
 
+            _context.Club.Add(club);
             await _context.SaveChangesAsync();
 
-            return c;
+            return club;
         }
 
         public Task<Club> DeleteClub(int id)
@@ -879,6 +870,66 @@ namespace SCManagement.Services.ClubService
         public async Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId)
         {
             return await _context.ClubTranslations.Where(c => c.ClubId == clubId).ToListAsync();
+        }
+
+        public async Task<ClubStatus> GetClubStatus(int clubId)
+        {
+            return await _context.Club.Where(c => c.Id == clubId).Select(c => c.Status).FirstAsync();
+        }
+
+        public async Task<ClubPaymentSettings> GetClubPaymentSettings(int clubId)
+        {
+            return await _context.ClubPaymentSettings.FirstAsync(c => c.ClubPaymentSettingsId == clubId);
+        }
+
+        public async Task<ClubPaymentSettings> UpdateClubPaymentSettings(ClubPaymentSettings settings)
+        {
+            var currentSettings = await GetClubPaymentSettings(settings.ClubPaymentSettingsId);
+            currentSettings.AccountId = settings.AccountId;
+            currentSettings.AccountKey = settings.AccountKey;
+
+            //check if quota settings where updated and notify users
+            if ((currentSettings.QuotaFrequency != settings.QuotaFrequency) || (currentSettings.QuotaFee != settings.QuotaFee))
+            {
+                currentSettings.QuotaFrequency = settings.QuotaFrequency;
+                currentSettings.QuotaFee = settings.QuotaFee;
+                await notifyPartnersQuotaChange(currentSettings.ClubPaymentSettingsId, settings);
+            }
+
+            _context.ClubPaymentSettings.Update(currentSettings);
+            await _context.SaveChangesAsync();
+            return currentSettings;
+        }
+
+        private async Task notifyPartnersQuotaChange(int clubId, ClubPaymentSettings settings)
+        {
+            var partners = await GetClubPartners(clubId);
+            var club = await GetClub(clubId);
+
+            string hostUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}";
+
+            foreach (var partner in partners)
+            {
+                string lang = partner.User.Language;
+
+                string emailBody = _sharedResource.Get("Email_ClubFees", lang);
+
+                Dictionary<string, string> values = new Dictionary<string, string>
+                {
+                    { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.Value.ToString(), lang) },
+                    { "_PRICE_", $"{settings.QuotaFee.ToString()}€"},
+                    { "_CLUB_", club.Name },
+                    { "_SUBSCRIPTION_", $"{hostUrl}/Subscription"},
+                };
+
+                foreach (KeyValuePair<string, string> entry in values)
+                {
+                    emailBody = emailBody.Replace(entry.Key, entry.Value);
+                }
+
+                await _emailSender.SendEmailAsync(partner.User.Email, _sharedResource.Get("Subject_ClubFees", lang), emailBody);
+            }
+            return;
         }
     }
 }
