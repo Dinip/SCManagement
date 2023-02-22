@@ -4,6 +4,7 @@ using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.PaymentService;
 using Microsoft.AspNetCore.Identity;
 using SCManagement.Models;
+using System.Text.RegularExpressions;
 
 namespace SCManagement.Controllers
 {
@@ -80,47 +81,30 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> Index(string? payId)
         {
+            ViewBag.Error = TempData["Error"];
             ViewBag.PayId = payId;
             return View(await _paymentService.GetPayments(getUserIdFromAuthedUser()));
         }
 
-        //public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,About,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
-
-        public async Task<IActionResult> CreatePayment(int? productId)
-        {
-            //check if has product id in query and if exists
-            if (productId == null) return View("CustomError", "Error_No_Product");
-            var product = await _paymentService.GetProduct((int)productId);
-            if (product == null) return View("CustomError", "Error_NotFound");
-
-            //payment methods to viewbag with name and id
-            ViewBag.PaymentMethods = from PaymentMethod pm in Enum.GetValues(typeof(PaymentMethod)) select new IdNameModel { Id = (int)pm, Name = pm.ToString() };
-
-            return View(new CreatePayment { ProductId = product.Id, Product = product });
-        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreatePayment([Bind("ProductId,PaymentMethod,PhoneNumber,AutoRenew")] CreatePayment payment)
+        public async Task<IActionResult> PaySinglePayment([Bind("Id,PaymentMethod,PhoneNumber")] PayPayment inputPayment)
         {
-
-            if (!ModelState.IsValid) return RedirectToAction("CreatePayment", new { productId = payment.ProductId });
-
-            var userId = getUserIdFromAuthedUser();
-            Payment? paymentResponse;
-
-            if (payment.AutoRenew)
+            if (!ModelState.IsValid) return RedirectToAction("Index", new { payId = inputPayment.Id });
+            var rg = new Regex("[0-9]{9}");
+            if (inputPayment.PaymentMethod == PaymentMethod.MbWay && (inputPayment.PhoneNumber == null || !rg.IsMatch(inputPayment.PhoneNumber)))
             {
-                paymentResponse = await _paymentService.CreateSubscriptionPayment(payment, userId);
-            }
-            else
-            {
-                paymentResponse = await _paymentService.CreatePayment(payment, userId);
+                TempData["Error"] = "MbWay requires phone number";
+                return RedirectToAction("Index", new { payId = inputPayment.Id });
             }
 
+            var payment = await _paymentService.PaySinglePayment(inputPayment);
+            if (payment != null)
+            {
+                return RedirectToAction(nameof(Index), new { payId = payment.Id });
+            }
 
-            //view de resultado de pagamento, em espera se for mbway, com referencia se for MB ou
-            //abrir nova janela se for cartao??
             return RedirectToAction(nameof(Index));
         }
 
@@ -140,6 +124,8 @@ namespace SCManagement.Controllers
 
             var payment = await _paymentService.GetPayment((int)id);
             if (payment == null || payment.UserId != getUserIdFromAuthedUser()) return PartialView("_CustomErrorPartial", "Error_NotFound");
+
+            ViewBag.PaymentMethods = from PaymentMethod pm in Enum.GetValues(typeof(PaymentMethod)) select new IdNameModel { Id = (int)pm, Name = pm.ToString() };
 
             return PartialView("_DetailsPartial", payment);
         }

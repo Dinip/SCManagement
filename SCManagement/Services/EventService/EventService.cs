@@ -56,7 +56,7 @@ namespace SCManagement.Services.EventService
             return enroll;
         }
 
-        public async Task<EventEnroll> GetEnroll(int eventId, string userId)
+        public async Task<EventEnroll?> GetEnroll(int eventId, string userId)
         {
             return await _context.EventEnroll.Where(e => e.EventId == eventId && e.UserId == userId).Include(e => e.User).FirstOrDefaultAsync();
         }

@@ -24,23 +24,23 @@
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()"/>
+                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EnroolLimitDate" class="control-label"></label>
-                <input asp-for="EnroolLimitDate" class="form-control" />
-                <span asp-validation-for="EnroolLimitDate" class="text-danger"></span>
+                <label asp-for="EnrollLimitDate" class="control-label"></label>
+                <input asp-for="EnrollLimitDate" class="form-control" />
+                <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label class="control-label">Evento de 1 dia</label>
                 @*Criar CheckBox input*@
-                <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()"/>
-                
+                <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
+
             </div>
             <div class="form-group">
                 <label asp-for="Details" class="control-label"></label>
-                <input asp-for="Details" class="form-control" />
+                <textarea asp-for="Details" class="form-control"></textarea>
                 <span asp-validation-for="Details" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -50,12 +50,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="Fee" class="control-label"></label>
-                <input asp-for="Fee" class="form-control" value="0" />
+                <input type="number" step="0.01" min="0" asp-for="Fee" class="form-control" value="0" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>
-                <input asp-for="MaxEventEnrolls" class="form-control" value="0" />
+                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" class="form-control" value="0" />
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
@@ -80,36 +80,37 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
 
 <script>
-        function ApplySameDate() {
-            var startDateTime = document.getElementById("startDateTime");
-            var endDateTime = document.getElementById("endDateTime");
-            var sameDay = document.getElementById("SameDay");
-            if (startDateTime.value != "") {
-                if (startDateTime.value == endDateTime.value) {
-                    sameDay.checked = true;
-                }else{
-                    endDateTime.value = startDateTime.value;
-                    sameDay.checked = true;
-                }
-            }else{
-                sameDay.checked = false;
-            }
-        }
-
-        function HaveDiferentDate()
-        {
-            var startDateTime = document.getElementById("startDateTime");
-            var endDateTime = document.getElementById("endDateTime");
-            var sameDay = document.getElementById("SameDay");
+    function ApplySameDate() {
+        var startDateTime = document.getElementById("startDateTime");
+        var endDateTime = document.getElementById("endDateTime");
+        var sameDay = document.getElementById("SameDay");
+        if (startDateTime.value != "") {
             if (startDateTime.value == endDateTime.value) {
                 sameDay.checked = true;
-            }else{
-                sameDay.checked = false;
+            } else {
+                endDateTime.value = startDateTime.value;
+                sameDay.checked = true;
             }
+        } else {
+            sameDay.checked = false;
         }
+    }
+
+    function HaveDiferentDate() {
+        var startDateTime = document.getElementById("startDateTime");
+        var endDateTime = document.getElementById("endDateTime");
+        var sameDay = document.getElementById("SameDay");
+        if (startDateTime.value == endDateTime.value) {
+            sameDay.checked = true;
+        } else {
+            sameDay.checked = false;
+        }
+    }
 
 </script>

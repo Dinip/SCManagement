@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SCManagement.Data;
 
@@ -11,9 +12,10 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230221172434_test")]
+    partial class test
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ModalitiesId");
 
-                    b.ToTable("ClubModality", (string)null);
+                    b.ToTable("ClubModality");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -205,7 +207,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address", (string)null);
+                    b.ToTable("Address");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Club", b =>
@@ -254,7 +256,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("PhotographyId");
 
-                    b.ToTable("Club", (string)null);
+                    b.ToTable("Club");
                 });
 
             modelBuilder.Entity("SCManagement.Models.ClubPaymentSettings", b =>
@@ -280,7 +282,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("ClubPaymentSettingsId");
 
-                    b.ToTable("ClubPaymentSettings", (string)null);
+                    b.ToTable("ClubPaymentSettings");
                 });
 
             modelBuilder.Entity("SCManagement.Models.ClubTranslations", b =>
@@ -307,7 +309,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("ClubTranslations", (string)null);
+                    b.ToTable("ClubTranslations");
                 });
 
             modelBuilder.Entity("SCManagement.Models.CodeClub", b =>
@@ -361,7 +363,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UsedByUserId");
 
-                    b.ToTable("CodeClub", (string)null);
+                    b.ToTable("CodeClub");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Country", b =>
@@ -382,7 +384,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Country", (string)null);
+                    b.ToTable("Country");
 
                     b.HasData(
                         new
@@ -416,7 +418,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("County", (string)null);
+                    b.ToTable("County");
 
                     b.HasData(
                         new
@@ -2600,7 +2602,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("District", (string)null);
+                    b.ToTable("District");
 
                     b.HasData(
                         new
@@ -2863,7 +2865,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Event", (string)null);
+                    b.ToTable("Event");
                 });
 
             modelBuilder.Entity("SCManagement.Models.EventEnroll", b =>
@@ -2893,7 +2895,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EventEnroll", (string)null);
+                    b.ToTable("EventEnroll");
                 });
 
             modelBuilder.Entity("SCManagement.Models.EventResult", b =>
@@ -2926,7 +2928,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("EventResult", (string)null);
+                    b.ToTable("EventResult");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Modality", b =>
@@ -2943,7 +2945,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Modality", (string)null);
+                    b.ToTable("Modality");
 
                     b.HasData(
                         new
@@ -3012,7 +3014,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RoleClub", (string)null);
+                    b.ToTable("RoleClub");
 
                     b.HasData(
                         new
@@ -3076,7 +3078,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("TrainerId");
 
-                    b.ToTable("Team", (string)null);
+                    b.ToTable("Team");
                 });
 
             modelBuilder.Entity("SCManagement.Models.User", b =>
@@ -3212,7 +3214,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UsersRoleClub", (string)null);
+                    b.ToTable("UsersRoleClub");
                 });
 
             modelBuilder.Entity("SCManagement.Services.AzureStorageService.Models.BlobDto", b =>
@@ -3238,7 +3240,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("BlobDto", (string)null);
+                    b.ToTable("BlobDto");
                 });
 
             modelBuilder.Entity("SCManagement.Services.PaymentService.Models.Payment", b =>
@@ -3299,7 +3301,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Payment", (string)null);
+                    b.ToTable("Payment");
                 });
 
             modelBuilder.Entity("SCManagement.Services.PaymentService.Models.Product", b =>
@@ -3342,7 +3344,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ClubId");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("SCManagement.Services.PaymentService.Models.Subscription", b =>
@@ -3401,7 +3403,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Subscription", (string)null);
+                    b.ToTable("Subscription");
                 });
 
             modelBuilder.Entity("TeamUser", b =>
@@ -3416,7 +3418,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("TeamsId");
 
-                    b.ToTable("TeamUser", (string)null);
+                    b.ToTable("TeamUser");
                 });
 
             modelBuilder.Entity("ClubModality", b =>

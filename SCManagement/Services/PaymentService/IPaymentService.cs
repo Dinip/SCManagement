@@ -7,7 +7,6 @@ namespace SCManagement.Services.PaymentService
     {
         public Task<IEnumerable<Payment>> GetPayments(string userId);
         public Task<Product?> GetProduct(int id);
-        public Task<Payment?> CreatePayment(CreatePayment paymentInput, string userId);
         public Task UpdatePaymentFromWebhook(PaymentWebhook data);
 
         public Task WebhookHandleSinglePayment(PaymentWebhookGeneric data);
@@ -15,7 +14,7 @@ namespace SCManagement.Services.PaymentService
         public Task WebhookHandleSubscriptionPayment(PaymentWebhookGeneric data);
 
         public Task<Payment?> GetPayment(int id);
-        public Task<Payment?> CreateSubscriptionPayment(CreatePayment paymentInput, string userId);
+        public Task<Payment?> CreateSubscriptionPayment(PayPayment paymentInput, string userId);
         public Task<IEnumerable<Subscription>> GetSubscriptions(string userId);
         public Task<Subscription?> GetSubscription(int id);
 
@@ -27,5 +26,11 @@ namespace SCManagement.Services.PaymentService
 
         public Task CancelSubscription(int id);
         public Task UpgradeClubPlan(int subId, int newPlanId);
+
+        public Task CreateProductEvent(Event myEvent);
+        public Task UpdateProductEvent(Event myEvent);
+
+        public Task<Payment?> CreateEventPayment(EventEnroll enroll);
+        public Task<Payment?> PaySinglePayment(PayPayment paymentInput);
     }
 }

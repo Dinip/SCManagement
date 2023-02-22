@@ -7,6 +7,7 @@ using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.EventService;
+using SCManagement.Services.PaymentService;
 using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers
@@ -18,14 +19,23 @@ namespace SCManagement.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
         private readonly IClubService _clubService;
+        private readonly IPaymentService _paymentService;
 
-        public EventsController(ApplicationDbContext context, IEventService eventService, IUserService userService, UserManager<User> userManager, IClubService clubService)
+        public EventsController(
+            ApplicationDbContext context,
+            IEventService eventService,
+            IUserService userService,
+            UserManager<User> userManager,
+            IClubService clubService,
+            IPaymentService paymentService
+            )
         {
             _context = context;
             _eventService = eventService;
             _userService = userService;
             _userManager = userManager;
             _clubService = clubService;
+            _paymentService = paymentService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -48,7 +58,6 @@ namespace SCManagement.Controllers
             }
 
             events.OrderBy(e => e.StartDate);
-
 
             return View(events);
         }
@@ -89,21 +98,11 @@ namespace SCManagement.Controllers
             if (enroll != null)
             {
                 ViewBag.IsEnrolled = true;
-
-                if (enroll.EnrollStatus == EnrollPaymentStatus.Valid)
-                {
-                    ViewBag.IsPaid = true;
-                }
-                else
-                {
-                    ViewBag.IsPaid = false;
-                }
-
+                ViewBag.IsPaid = enroll.EnrollStatus == EnrollPaymentStatus.Valid;
             }
             else
             {
                 ViewBag.IsEnrolled = false;
-
             }
 
             return PartialView("_PartialEventDetails", myEvent); ;
@@ -139,7 +138,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute, EnroolLimitDate, EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute, EnrollLimitDate, EventResultType, MaxEventEnrolls")] EventModel myEvent)
         {
             if (ModelState.IsValid)
             {
@@ -156,7 +155,7 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_Unauthorized");
                 }
 
-                await _eventService.CreateEvent(new Event
+                var createdEvent = await _eventService.CreateEvent(new Event
                 {
                     Id = myEvent.Id,
                     Name = myEvent.Name,
@@ -167,10 +166,15 @@ namespace SCManagement.Controllers
                     Fee = myEvent.Fee,
                     HaveRoute = myEvent.HaveRoute,
                     EventResultType = myEvent.EventResultType,
-                    EnroolLimitDate = myEvent.EnroolLimitDate,
+                    EnrollLimitDate = myEvent.EnrollLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
                     ClubId = role.ClubId
                 });
+
+                if (myEvent.Fee > 0)
+                {
+                    await _paymentService.CreateProductEvent(createdEvent);
+                }
 
                 return RedirectToAction(nameof(Index));
             }
@@ -189,10 +193,10 @@ namespace SCManagement.Controllers
             public string Name { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
-            public DateTime EnroolLimitDate { get; set; }
+            public DateTime EnrollLimitDate { get; set; }
             public string? Details { get; set; }
             public bool IsPublic { get; set; }
-            public double Fee { get; set; }
+            public float Fee { get; set; }
             public bool HaveRoute { get; set; }
             public Event.ResultType EventResultType { get; set; }
             public int MaxEventEnrolls { get; set; }
@@ -227,11 +231,11 @@ namespace SCManagement.Controllers
 
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,EnroolLimitDate,EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,EnrollLimitDate,EventResultType, MaxEventEnrolls")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -240,17 +244,13 @@ namespace SCManagement.Controllers
 
             if (ModelState.IsValid)
             {
-
                 //check if user is staff of the club that owns the event
                 var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-                if (!_clubService.IsClubStaff(role))
-                {
-                    return View("CustomError", "Error_Unauthorized");
-                }
+                if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
                 var eventToUpdate = await _eventService.GetEvent(id);
-                if (eventToUpdate == null)
-                    return NotFound();
+                if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
+
                 eventToUpdate.Name = myEvent.Name;
                 eventToUpdate.StartDate = myEvent.StartDate;
                 eventToUpdate.EndDate = myEvent.EndDate;
@@ -259,11 +259,13 @@ namespace SCManagement.Controllers
                 eventToUpdate.Fee = myEvent.Fee;
                 eventToUpdate.HaveRoute = myEvent.HaveRoute;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
-                eventToUpdate.EnroolLimitDate = myEvent.EnroolLimitDate;
+                eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
 
-
                 await _eventService.UpdateEvent(eventToUpdate);
+
+                await _paymentService.UpdateProductEvent(eventToUpdate);
+
                 return RedirectToAction(nameof(Index));
             }
 
@@ -302,26 +304,18 @@ namespace SCManagement.Controllers
         [Authorize]
         public async Task<IActionResult> EventEnrollment(int id)
         {
-            var eventToEnroll = await _eventService.GetEvent((int)id);
+            var eventToEnroll = await _eventService.GetEvent(id);
 
             if (eventToEnroll == null) return View("CustomError", "Error_NotFound");
 
             var userId = getUserIdFromAuthedUser();
 
-
             var role = await _userService.GetSelectedRole(userId);
 
             //check if event is public
-            if (!eventToEnroll.IsPublic)
+            if (!eventToEnroll.IsPublic && (role == null || role.ClubId != eventToEnroll.ClubId))
             {
-                if (role == null)
-                {
-                    return View("CustomError", "Error_Unauthorized");
-                }
-                if (role.ClubId != eventToEnroll.ClubId)
-                {
-                    return View("CustomError", "Error_Unauthorized");
-                }
+                return View("CustomError", "Error_Unauthorized");
             }
 
             //check if user is already enrolled
@@ -336,17 +330,21 @@ namespace SCManagement.Controllers
                 EventId = id,
                 UserId = userId,
                 EnrollDate = DateTime.Now,
-                EnrollStatus = EnrollPaymentStatus.Pending
+                EnrollStatus = eventToEnroll.Fee != 0 ? EnrollPaymentStatus.Pending : EnrollPaymentStatus.Valid
             });
 
             //update event enroll users list
-            eventToEnroll.UsersEnrooled.Add(enroll);
+            eventToEnroll.UsersEnrolled.Add(enroll);
 
             await _eventService.UpdateEvent(eventToEnroll);
+            var pay = await _paymentService.CreateEventPayment(enroll);
+
+            if (pay != null) return RedirectToAction("Index", "Payment", new { payId = pay.Id });
+
             return RedirectToAction(nameof(Index));
         }
 
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -373,8 +371,7 @@ namespace SCManagement.Controllers
             if (enrollRoRemove.EnrollStatus != EnrollPaymentStatus.Pending) return View("CustomError", "Error_Unauthorized");
 
             var removeCode = RemoveUserFromEnrollList(myEvent, userId);
-            if (removeCode == -1) return NotFound();
-
+            if (removeCode == -1) return View("CustomError", "Error_NotFound");
 
             await _eventService.CancelEventEnroll(enrollRoRemove);
             return RedirectToAction(nameof(Index));
@@ -382,11 +379,11 @@ namespace SCManagement.Controllers
 
         private int RemoveUserFromEnrollList(Event myEvent, string userId)
         {
-            var enrollToRemove = myEvent.UsersEnrooled.Where(u => u.UserId == userId).FirstOrDefault();
+            var enrollToRemove = myEvent.UsersEnrolled.Where(u => u.UserId == userId).FirstOrDefault();
 
             if (enrollToRemove == null) return -1;
 
-            myEvent.UsersEnrooled.Remove(enrollToRemove);
+            myEvent.UsersEnrolled.Remove(enrollToRemove);
             return 0;
         }
 

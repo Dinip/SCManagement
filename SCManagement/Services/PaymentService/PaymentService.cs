@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SCManagement.Data;
@@ -79,17 +80,17 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
-        private async Task<EasypayResponse?> SinglePaymentApiRequest(CreatePayment paymentInput, Product product, User user)
+        private async Task<EasypayResponse?> SinglePaymentApiRequest(Payment paymentInput, User user)
         {
             var result = await _httpClient.PostAsJsonAsync("https://api.test.easypay.pt/2.0/single", new
             {
                 type = "sale",
                 currency = "EUR",
-                value = product.Value,
-                method = Payment.ConvertMethod(paymentInput.PaymentMethod),
+                value = paymentInput.Value,
+                method = Payment.ConvertMethod(paymentInput.PaymentMethod.Value),
                 capture = new
                 {
-                    descriptive = product.Name
+                    descriptive = paymentInput.Product.Name
                 },
                 customer = new
                 {
@@ -109,102 +110,50 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
-        public async Task<Payment?> CreateSubscriptionPayment(CreatePayment paymentInput, string userId)
+        public async Task<Payment?> CreateSubscriptionPayment(PayPayment paymentInput, string userId)
         {
-            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
+            ////verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
 
-            var product = await GetProduct(paymentInput.ProductId);
-            if (product == null) return null;
+            //var product = await GetProduct(paymentInput.ProductId);
+            //if (product == null) return null;
 
-            var user = await _context.Users.FindAsync(userId);
+            //var user = await _context.Users.FindAsync(userId);
 
-            var timeNowPlus2Min = DateTime.Now.AddMinutes(2);
+            //var timeNowPlus2Min = DateTime.Now.AddMinutes(2);
 
-            //var content = await SubscriptionApiRequest(paymentInput, product, user, timeNowPlus2Min);
-            var content = new EasypayResponse();
-            if (content == null) return null;
+            ////var content = await SubscriptionApiRequest(paymentInput, product, user, timeNowPlus2Min);
+            //var content = new EasypayResponse();
+            //if (content == null) return null;
 
-            var sub = new Subscription
-            {
-                StartTime = DateTime.Now,
-                NextTime = DateTime.Now.Add(Subscription.AddTime(product.Frequency)),
-                Value = product.Value,
-                ProductId = paymentInput.ProductId,
-                UserId = userId,
-                AutoRenew = true,
-                Frequency = product.Frequency.Value,
-                SubscriptionKey = content.id,
-            };
-            _context.Subscription.Add(sub);
-            await _context.SaveChangesAsync();
+            //var sub = new Subscription
+            //{
+            //    StartTime = DateTime.Now,
+            //    NextTime = DateTime.Now.Add(Subscription.AddTime(product.Frequency)),
+            //    Value = product.Value,
+            //    ProductId = paymentInput.ProductId,
+            //    UserId = userId,
+            //    AutoRenew = true,
+            //    Frequency = product.Frequency.Value,
+            //    SubscriptionKey = content.id,
+            //};
+            //_context.Subscription.Add(sub);
+            //await _context.SaveChangesAsync();
 
-            var payment = new Payment
-            {
-                ProductId = paymentInput.ProductId,
-                Value = product.Value,
-                PaymentMethod = paymentInput.PaymentMethod,
-                PaymentStatus = PaymentStatus.Pending,
-                UserId = userId,
-                PaymentKey = content.id,
-                Url = content.method.url,
-                PhoneNumber = paymentInput.PaymentMethod == PaymentMethod.MbWay ? paymentInput.PhoneNumber : null,
-                SubscriptionId = sub.Id,
-            };
-            _context.Payment.Add(payment);
-            await _context.SaveChangesAsync();
-            return payment;
-        }
-
-        public async Task<Payment?> CreatePayment(CreatePayment paymentInput, string userId)
-        {
-            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
-
-            var product = await GetProduct(paymentInput.ProductId);
-            if (product == null) return null;
-
-            var user = await _context.Users.FindAsync(userId);
-
-            var content = await SinglePaymentApiRequest(paymentInput, product, user);
-            if (content == null) return null;
-
-            Subscription? sub = null;
-
-            if (product.IsSubscription)
-            {
-                sub = new Subscription
-                {
-                    StartTime = DateTime.Now,
-                    NextTime = DateTime.Now.Add(Subscription.AddTime(product.Frequency)),
-                    Value = product.Value,
-                    Status = SubscriptionStatus.Active,
-                    ProductId = paymentInput.ProductId,
-                    UserId = userId,
-                    AutoRenew = false,
-                    Frequency = product.Frequency.Value,
-                    CardInfoData = buildCardInfo(content)
-                };
-                _context.Subscription.Add(sub);
-                await _context.SaveChangesAsync();
-            }
-
-            var payment = new Payment
-            {
-                ProductId = paymentInput.ProductId,
-                Value = product.Value,
-                PaymentMethod = paymentInput.PaymentMethod,
-                PaymentStatus = PaymentStatus.Pending,
-                UserId = userId,
-                PaymentKey = content.id,
-                MbEntity = content.method.entity,
-                MbReference = content.method.reference,
-                Url = content.method.url,
-                PhoneNumber = paymentInput.PaymentMethod == PaymentMethod.MbWay ? paymentInput.PhoneNumber : null,
-                SubscriptionId = sub?.Id,
-                CardInfoData = buildCardInfo(content)
-            };
-            _context.Payment.Add(payment);
-            await _context.SaveChangesAsync();
-            return payment;
+            //var payment = new Payment
+            //{
+            //    ProductId = paymentInput.ProductId,
+            //    Value = product.Value,
+            //    PaymentMethod = paymentInput.PaymentMethod,
+            //    PaymentStatus = PaymentStatus.Pending,
+            //    UserId = userId,
+            //    PaymentKey = content.id,
+            //    Url = content.method.url,
+            //    PhoneNumber = paymentInput.PaymentMethod == PaymentMethod.MbWay ? paymentInput.PhoneNumber : null,
+            //    SubscriptionId = sub.Id,
+            //};
+            //_context.Payment.Add(payment);
+            //await _context.SaveChangesAsync();
+            return null;
         }
 
         public async Task UpdatePaymentFromWebhook(PaymentWebhook data)
@@ -308,7 +257,7 @@ namespace SCManagement.Services.PaymentService
 
         public async Task WebhookHandleSinglePayment(PaymentWebhookGeneric data)
         {
-            var payment = await _context.Payment.FirstOrDefaultAsync(p => p.PaymentKey == data.id);
+            var payment = await _context.Payment.Include(p => p.Product).FirstOrDefaultAsync(p => p.PaymentKey == data.id);
             if (payment == null) return;
 
             var info = await singlePaymentIdApiRequest(data.id);
@@ -330,8 +279,20 @@ namespace SCManagement.Services.PaymentService
                 }
             }
 
+            if (payment.PaymentStatus == PaymentStatus.Paid && payment.Product.ProductType == ProductType.Event)
+            {
+                await updateEventEnroll((int)payment.Product.OriginalId, payment.UserId);
+            }
+
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();
+        }
+
+        private async Task updateEventEnroll(int eventId, string userId)
+        {
+            var enroll = await _context.EventEnroll.FirstOrDefaultAsync(e => e.UserId == userId && e.EventId == eventId);
+            enroll.EnrollStatus = EnrollPaymentStatus.Valid;
+            _context.Update(enroll);
         }
 
         public async Task WebhookHandleSubscriptionCreate(PaymentWebhookGeneric data)
@@ -629,6 +590,102 @@ namespace SCManagement.Services.PaymentService
 
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task CreateProductEvent(Event myEvent)
+        {
+            _context.Product.Add(new Product
+            {
+                ClubId = myEvent.ClubId,
+                IsSubscription = false,
+                Enabled = true,
+                Name = myEvent.Name,
+                OriginalId = myEvent.Id,
+                ProductType = ProductType.Event,
+                Value = myEvent.Fee
+            });
+
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task UpdateProductEvent(Event myEvent)
+        {
+            var oldProduct = await _context.Product.Where(p => p.OriginalId == myEvent.Id && p.ClubId == myEvent.ClubId && p.ProductType == ProductType.Event).FirstOrDefaultAsync();
+
+            if (oldProduct == null)
+            {
+                _context.Product.Add(new Product
+                {
+                    ClubId = myEvent.ClubId,
+                    IsSubscription = false,
+                    Enabled = true,
+                    Name = myEvent.Name,
+                    OriginalId = myEvent.Id,
+                    ProductType = ProductType.Event,
+                    Value = myEvent.Fee
+                });
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+            if (oldProduct != null && myEvent.Fee == 0)
+            {
+                _context.Product.Remove(oldProduct);
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+            oldProduct.Value = myEvent.Fee;
+            _context.Update(oldProduct);
+
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<Payment?> CreateEventPayment(EventEnroll enroll)
+        {
+            var product = await _context.Product.Where(p => p.ProductType == ProductType.Event && p.OriginalId == enroll.EventId).FirstOrDefaultAsync();
+            if (product == null) return null;
+
+            var pay = new Payment
+            {
+                ProductId = product.Id,
+                UserId = enroll.UserId,
+                Value = product.Value,
+                PaymentKey = Guid.NewGuid().ToString(),
+            };
+
+            _context.Payment.Add(pay);
+            await _context.SaveChangesAsync();
+
+            return pay;
+        }
+
+        public async Task<Payment?> PaySinglePayment(PayPayment paymentInput)
+        {
+            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
+
+            var payment = await GetPayment(paymentInput.Id);
+            if (payment == null) return null;
+
+            payment.PaymentMethod = paymentInput.PaymentMethod;
+            payment.PhoneNumber = paymentInput.PhoneNumber;
+
+            var user = await _context.Users.FirstAsync(u => u.Id == payment.UserId);
+
+            var content = await SinglePaymentApiRequest(payment, user);
+            if (content == null) return null;
+
+            payment.PaymentKey = content.id;
+            payment.MbEntity = content.method.entity;
+            payment.MbReference = content.method.reference;
+            payment.Url = content.method.url;
+            payment.PaymentStatus = PaymentStatus.Pending;
+
+            _context.Payment.Update(payment);
+            await _context.SaveChangesAsync();
+            return payment;
         }
     }
 }

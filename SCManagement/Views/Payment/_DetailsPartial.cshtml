@@ -1,8 +1,67 @@
 ﻿@model SCManagement.Services.PaymentService.Models.Payment
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+<style>
+    .cc-selector input {
+        margin: 0;
+        padding: 0;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    .creditcard {
+        background-image: url(https://cdn.scmanagement.me/public/visamc_nobg.png);
+    }
+
+    .mbway {
+        background-image: url(https://cdn.scmanagement.me/public/mbway_nobg.png);
+    }
+
+    .reference {
+        background-image: url(https://cdn.scmanagement.me/public/mb_nobg.png);
+    }
+
+    .cc-selector input:active + .card-cc {
+        opacity: .9;
+    }
+
+    .cc-selector input:checked + .card-cc {
+        -webkit-filter: none;
+        -moz-filter: none;
+        filter: none;
+    }
+
+    .card-cc {
+        cursor: pointer;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        display: inline-block;
+        width: 100px;
+        height: 70px;
+        -webkit-transition: all 100ms ease-in;
+        -moz-transition: all 100ms ease-in;
+        transition: all 100ms ease-in;
+        -webkit-filter: brightness(1.8) grayscale(0.9) opacity(.7);
+        -moz-filter: brightness(1.8) grayscale(0.9) opacity(.7);
+        filter: brightness(1.8) grayscale(0.9) opacity(.7);
+    }
+
+        .card-cc:hover {
+            -webkit-filter: brightness(1.2) opacity(.9);
+            -moz-filter: brightness(1.2) opacity(.9);
+            filter: brightness(1.2) opacity(.9);
+        }
+
+</style>
 
 <div>
     <h4>Payment</h4>
     <hr />
+
+    <div style="color:red;" id="error"></div>
+
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Product)
@@ -40,66 +99,76 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.PayedAt)
         </dd>
+
         @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
         {
-            <dt class="col-sm-2">
+                <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.MbEntity)
-            </dt>
-            <dd class="col-sm-10">
+                </dt>
+                <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.MbEntity)
-            </dd>
-            <dt class="col-sm-2">
+                </dd>
+                <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.MbReference)
-            </dt>
-            <dd class="col-sm-10">
+                </dt>
+                <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.MbReference)
-            </dd>
+                </dd>
         }
+
         @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
         {
-            <dt class="col-sm-2">
+                <dt class="col-sm-2">
                 @Html.DisplayNameFor(model => model.PhoneNumber)
-            </dt>
-            <dd class="col-sm-10">
+                </dt>
+                <dd class="col-sm-10">
                 @Html.DisplayFor(model => model.PhoneNumber)
-            </dd>
+                </dd>
         }
+
         @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
         {
             @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
             {
-                <dt class="col-sm-2">
+                        <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.Url)
-                </dt>
-                <dd class="col-sm-10">
-                    <a href="@Model.Url">Click here to pay</a>
-                </dd>
+                        </dt>
+                        <dd class="col-sm-10">
+                            <a href="@Model.Url">Click here to pay</a>
+                        </dd>
             }
             else
             {
-                <dt class="col-sm-2">
+                        <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)
-                </dt>
-                <dd class="col-sm-10">
+                        </dt>
+                        <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.CardInfo.LastFourDigits)
-                </dd>
-                <dt class="col-sm-2">
+                        </dd>
+                        <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.CardInfo.Type)
-                </dt>
-                <dd class="col-sm-10">
+                        </dt>
+                        <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.CardInfo.Type)
-                </dd>
-                <dt class="col-sm-2">
+                        </dd>
+                        <dt class="col-sm-2">
                     @Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)
-                </dt>
-                <dd class="col-sm-10">
+                        </dt>
+                        <dd class="col-sm-10">
                     @Html.DisplayFor(model => model.CardInfo.ExpirationDate)
-                </dd>
+                        </dd>
             }
         }
-        @if(Model.SubscriptionId != null)
+
+        @if (Model.SubscriptionId != null)
         {
-            <a href="/Subscription?subId=@Model.SubscriptionId" asp->Go to subscription</a>
+                <a href="/Subscription?subId=@Model.SubscriptionId" asp->Go to subscription</a>
+        }
+
+        @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
+        {
+            @await Html.PartialAsync("_PaymentPartial", new SCManagement.Services.PaymentService.Models.PayPayment {Id = Model.Id})
         }
     </dl>
 </div>
+

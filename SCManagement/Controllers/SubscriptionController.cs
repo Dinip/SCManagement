@@ -125,7 +125,7 @@ namespace SCManagement.Controllers
                 plan.Enabled = (plan.AthleteSlots < athletes || plan.Id == sub.ProductId);
             }
 
-            return PartialView("_PartialPlans", new UpgradePlan
+            return PartialView("_PlansPartial", new UpgradePlan
             {
                 SubscriptionId = sub.Id,
                 PlanId = sub.ProductId,

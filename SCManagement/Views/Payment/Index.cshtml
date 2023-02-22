@@ -8,7 +8,7 @@
 
 <div id="modal" class="modal">
     <div class="modal-content" style="margin-top:7%; margin-bottom:0;">
-        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <span onclick="closeModal()" class="close">&times;</span>
         <div id="modal-inner-content"></div>
     </div>
 </div>
@@ -34,13 +34,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.PayedAt)
             </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
                 <td>
                     @Html.DisplayFor(modelItem => item.Product.Name)
                 </td>
@@ -59,9 +58,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.PayedAt)
                 </td>
-                <td>
-                    <button onclick="openDetails(@item.Id)">Details</button>
-                </td>
             </tr>
         }
     </tbody>
@@ -71,6 +67,13 @@
     window.onload = () => {
         const id = "@ViewBag.PayId";
         if (id != "") openDetails(id)
+    }
+
+    const closeModal = () => {
+        $("#modal").hide();
+        const url = new URL(window.location);
+        url.search = '';
+        window.history.pushState(null, '', url.toString());
     }
 
     let modal = document.getElementById("modal");
@@ -99,6 +102,7 @@
             success: function (result) {
                 $("#modal-inner-content").html(result);
                 $("#modal").show();
+                $("#error").text("@ViewBag.Error");
             }
         });
     }
