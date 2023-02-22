@@ -23,8 +23,7 @@ namespace SCManagement.Services.ClubService
             IEmailSender emailSender,
             IHttpContextAccessor httpContext,
             SharedResourceService sharedResource,
-            IAzureStorage azureStorage,
-            ILocationService locationService)
+            IAzureStorage azureStorage)
         {
             _context = context;
             _emailSender = emailSender;
@@ -115,8 +114,13 @@ namespace SCManagement.Services.ClubService
                 .Include(c => c.Address)
                 .Include(c => c.ClubTranslations)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            club.About = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "About")?.Value;
-            club.TermsAndConditions = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "TermsAndConditions")?.Value;
+
+            if (club != null)
+            {
+                club.About = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "About")?.Value;
+                club.TermsAndConditions = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "TermsAndConditions")?.Value;
+            }
+            
             return club;
         }
 
@@ -233,7 +237,7 @@ namespace SCManagement.Services.ClubService
         /// <param name="userId">that club's user id</param>
         /// <param name="clubId">club id viewing user roles</param>
         /// <returns>user role list</returns>
-        public List<int> UserRolesInClub(string userId, int clubId)
+        private List<int> UserRolesInClub(string userId, int clubId)
         {
             List<int> rolesId = new List<int>();
             rolesId.AddRange(_context.UsersRoleClub.Where(f => f.UserId == userId && f.ClubId == clubId).Select(r => r.RoleId).ToList());
@@ -294,7 +298,7 @@ namespace SCManagement.Services.ClubService
         /// <returns>list of roles</returns>
         public Task<IEnumerable<RoleClub>> GetRoles()
         {
-            return Task.FromResult(_context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).AsEnumerable()); ;
+            return Task.FromResult(_context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).AsEnumerable());
         }
 
         /// <summary>
@@ -448,7 +452,7 @@ namespace SCManagement.Services.ClubService
         /// <returns>a boolean value, true is the user is secretary of the club, false if not</returns>
         public bool IsClubSecretary(string userId, int clubId)
         {
-            return UserRolesInClub(userId, clubId).Any(r => r >= 20);
+            return UserRolesInClub(userId, clubId).Any(r => r == 40);
         }
 
         /// <summary>
@@ -728,7 +732,7 @@ namespace SCManagement.Services.ClubService
         /// <returns></returns>
         public async Task AddUserToClub(string userId, int clubId, int roleId)
         {
-            var a = _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
+            _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
             await _context.SaveChangesAsync();
         }
 
