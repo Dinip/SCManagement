@@ -4,7 +4,7 @@
 
 namespace SCManagement.Data.Migrations
 {
-    public partial class test : Migration
+    public partial class EventFix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

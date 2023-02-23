@@ -12,8 +12,8 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230221172434_test")]
-    partial class test
+    [Migration("20230221172434_EventFix")]
+    partial class EventFix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
