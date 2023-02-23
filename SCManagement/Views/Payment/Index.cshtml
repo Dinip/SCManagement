@@ -4,8 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Payments</h1>
-
 <div id="modal" class="modal">
     <div class="modal-content" style="margin-top:7%; margin-bottom:0;">
         <span onclick="$('#modal').hide()" class="close">&times;</span>
@@ -13,60 +11,70 @@
     </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentMethod)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PaymentStatus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CreatedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PayedAt)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Product.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Value)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentMethod)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PaymentStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedAt)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PayedAt)
-                </td>
-                <td>
-                    <button onclick="openDetails(@item.Id)">Details</button>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">Wallet</h1>
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <table id="table_id"" class="display">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Product.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Value)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentMethod)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PaymentStatus)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.CreatedAt)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PayedAt)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Product.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Value)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentMethod)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PaymentStatus)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CreatedAt)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PayedAt)
+                            </td>
+                            <td>
+                                <button onclick="openDetails(@item.Id)">Details</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
     let modal = document.getElementById("modal");
 
