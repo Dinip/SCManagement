@@ -1040,4 +1040,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Value</value>
     <comment>21-02-2023_payments</comment>
   </data>
+  <data name="PaymentSettings" xml:space="preserve">
+    <value>Payment Settings</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
 </root>

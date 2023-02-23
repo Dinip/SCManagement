@@ -110,62 +110,6 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
-        public async Task<Payment?> CreateSubscriptionPayment(PayPayment paymentInput, string userId)
-        {
-            ////verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
-
-            //var product = await GetProduct(paymentInput.ProductId);
-            //if (product == null) return null;
-
-            //var user = await _context.Users.FindAsync(userId);
-
-            //var timeNowPlus2Min = DateTime.Now.AddMinutes(2);
-
-            ////var content = await SubscriptionApiRequest(paymentInput, product, user, timeNowPlus2Min);
-            //var content = new EasypayResponse();
-            //if (content == null) return null;
-
-            //var sub = new Subscription
-            //{
-            //    StartTime = DateTime.Now,
-            //    NextTime = DateTime.Now.Add(Subscription.AddTime(product.Frequency)),
-            //    Value = product.Value,
-            //    ProductId = paymentInput.ProductId,
-            //    UserId = userId,
-            //    AutoRenew = true,
-            //    Frequency = product.Frequency.Value,
-            //    SubscriptionKey = content.id,
-            //};
-            //_context.Subscription.Add(sub);
-            //await _context.SaveChangesAsync();
-
-            //var payment = new Payment
-            //{
-            //    ProductId = paymentInput.ProductId,
-            //    Value = product.Value,
-            //    PaymentMethod = paymentInput.PaymentMethod,
-            //    PaymentStatus = PaymentStatus.Pending,
-            //    UserId = userId,
-            //    PaymentKey = content.id,
-            //    Url = content.method.url,
-            //    PhoneNumber = paymentInput.PaymentMethod == PaymentMethod.MbWay ? paymentInput.PhoneNumber : null,
-            //    SubscriptionId = sub.Id,
-            //};
-            //_context.Payment.Add(payment);
-            //await _context.SaveChangesAsync();
-            return null;
-        }
-
-        public async Task UpdatePaymentFromWebhook(PaymentWebhook data)
-        {
-            var payment = await _context.Payment.FirstOrDefaultAsync(f => f.PaymentKey == data.key);
-            if (payment == null) return;
-            payment.PayedAt = DateTime.Now;
-            payment.PaymentStatus = data.value >= payment.Value ? PaymentStatus.Paid : PaymentStatus.Pending;
-            _context.Payment.Update(payment);
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<Payment?> GetPayment(int id)
         {
             return await _context.Payment

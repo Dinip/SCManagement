@@ -32,22 +32,6 @@ namespace SCManagement.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        [Route("api/Payment/Webhook")]
-        public async Task<IActionResult> Webhook([FromBody] PaymentWebhook notification)
-        {
-            //check if security code is present in the request, otherwise reject it
-            string verifyCode = Request.Headers["x-easypay-code"];
-            if (verifyCode != "admin123") return BadRequest(); //change to secret later
-
-            //await _paymentService.UpdatePaymentFromWebhook(notification);
-            //Console.WriteLine(verifyCode);
-            //Console.WriteLine(notification);
-            Console.WriteLine("Normal hook");
-            return Ok();
-        }
-
-        [AllowAnonymous]
-        [HttpPost]
         [Route("api/Payment/WebhookGeneric")]
         public async Task<IActionResult> WebhookGeneric([FromBody] PaymentWebhookGeneric notification)
         {
@@ -106,16 +90,6 @@ namespace SCManagement.Controllers
             }
 
             return RedirectToAction(nameof(Index));
-        }
-
-        public async Task<IActionResult> PaymentStatus(int? id)
-        {
-            if (id == null) return View("CustomError", "Error_No_Payment");
-
-            var payment = await _paymentService.GetPayment((int)id);
-            if (payment == null || payment.UserId != getUserIdFromAuthedUser()) return View("CustomError", "Error_NotFound");
-
-            return View(payment);
         }
 
         public async Task<IActionResult> Details(int? id)

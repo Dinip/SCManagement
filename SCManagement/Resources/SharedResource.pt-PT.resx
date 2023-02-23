@@ -1168,4 +1168,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Valor</value>
     <comment>21-02-2023_payments</comment>
   </data>
+  <data name="PaymentSettings" xml:space="preserve">
+    <value>Definições de pagamentos</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
 </root>

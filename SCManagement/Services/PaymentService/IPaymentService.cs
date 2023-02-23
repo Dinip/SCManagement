@@ -6,26 +6,24 @@ namespace SCManagement.Services.PaymentService
     public interface IPaymentService
     {
         public Task<IEnumerable<Payment>> GetPayments(string userId);
+        public Task<Payment?> GetPayment(int id);
+
         public Task<Product?> GetProduct(int id);
-        public Task UpdatePaymentFromWebhook(PaymentWebhook data);
 
         public Task WebhookHandleSinglePayment(PaymentWebhookGeneric data);
         public Task WebhookHandleSubscriptionCreate(PaymentWebhookGeneric data);
         public Task WebhookHandleSubscriptionPayment(PaymentWebhookGeneric data);
 
-        public Task<Payment?> GetPayment(int id);
-        public Task<Payment?> CreateSubscriptionPayment(PayPayment paymentInput, string userId);
         public Task<IEnumerable<Subscription>> GetSubscriptions(string userId);
         public Task<Subscription?> GetSubscription(int id);
 
         public Task<IEnumerable<Product>> GetClubSubscriptionPlans();
         public Task<Subscription> SubscribeClubToPlan(int clubId, string userId, int planId);
+        public Task UpgradeClubPlan(int subId, int newPlanId);
 
         public Task<Subscription?> SetSubscriptionToAuto(int subId);
         public Task<Subscription?> CancelAutoSubscription(int subId);
-
         public Task CancelSubscription(int id);
-        public Task UpgradeClubPlan(int subId, int newPlanId);
 
         public Task CreateProductEvent(Event myEvent);
         public Task UpdateProductEvent(Event myEvent);
