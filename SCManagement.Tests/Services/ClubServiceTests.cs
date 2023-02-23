@@ -2,11 +2,6 @@
 using SCManagement.Data;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using FakeItEasy;
 using Microsoft.EntityFrameworkCore;
@@ -14,7 +9,6 @@ using SCManagement.Services.ClubService;
 using SCManagement.Models;
 using FluentAssertions;
 using System.Data;
-using System.Reflection.Metadata;
 using SCManagement.Services.AzureStorageService.Models;
 
 namespace SCManagement.Tests.Services
@@ -43,7 +37,7 @@ namespace SCManagement.Tests.Services
         private async Task<ApplicationDbContext> GetDbContext()
         {
             var options = new DbContextOptionsBuilder<ApplicationDbContext>()
-                .UseInMemoryDatabase(databaseName: "SCManagement")
+                .UseInMemoryDatabase(databaseName: "SCManagementClub")
                 .Options;
 
             var context = new ApplicationDbContext(options);
@@ -88,13 +82,13 @@ namespace SCManagement.Tests.Services
 
                     if (i == 10)
                     {
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = $"Test 2", RoleId = 40 });
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = $"Test 3", RoleId = 10 });
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = $"Test 4", RoleId = 10 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = $"Test 1", RoleId = 10 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = $"Test 2", RoleId = 20 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = $"Test 3", RoleId = 30 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = $"Test 4", RoleId = 40 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 40 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 10 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 10 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 1", RoleId = 10 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 20 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 30 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 40 });
                     }
 
                     await context.SaveChangesAsync();
