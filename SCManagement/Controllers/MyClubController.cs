@@ -867,6 +867,10 @@ namespace SCManagement.Controllers
             return PartialView("_PartialUserDetails", user); ;
         }
 
+        /// <summary>
+        /// Return a view
+        /// </summary>
+        /// <returns></returns>
         public IActionResult NewAddress()
         {
             return View();

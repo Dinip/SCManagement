@@ -14,8 +14,5 @@ namespace SCManagement.Services.EventService
         public Task<EventEnroll> GetEnroll(int eventId, string userId);
         public Task CancelEventEnroll(EventEnroll enroll);
 
-        public Task UpdateEventPath(string coordinates, Event ev);
-
-
     }
 }

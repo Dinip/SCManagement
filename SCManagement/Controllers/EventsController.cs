@@ -139,7 +139,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute, EnroolLimitDate, EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route, EnroolLimitDate, EventResultType, MaxEventEnrolls")] EventModel myEvent)
         {
             if (ModelState.IsValid)
             {
@@ -166,6 +166,7 @@ namespace SCManagement.Controllers
                     IsPublic = myEvent.IsPublic,
                     Fee = myEvent.Fee,
                     HaveRoute = myEvent.HaveRoute,
+                    Route = myEvent.Route,
                     EventResultType = myEvent.EventResultType,
                     EnroolLimitDate = myEvent.EnroolLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
@@ -194,6 +195,7 @@ namespace SCManagement.Controllers
             public bool IsPublic { get; set; }
             public double Fee { get; set; }
             public bool HaveRoute { get; set; }
+            public string? Route { get; set; }
             public Event.ResultType EventResultType { get; set; }
             public int MaxEventEnrolls { get; set; }
 
@@ -390,50 +392,11 @@ namespace SCManagement.Controllers
             return 0;
         }
         
-        public async Task<IActionResult> PathMapBox(Event eve)
+        public async Task<IActionResult> PathInfoMapBox(int id)
         {
-            return View(eve);
+            var ev = await _eventService.GetEvent(id);
+            return View("PathInfoMapBox", ev);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> ReceivePath(string coordinates, string profile, Event evnt)
-        {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-            
-            //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
-
-            //check if the user is a admin of the club
-            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
-
-            //if (club == null) return NotFound();
-
-            //var clubAddresId = club.AddressId;
-
-            //var ev = await _eventService.GetEvent(evnt);
-
-            if (evnt == null) return NotFound();
-
-            //var evnId = ev.Id;
-
-            //if (evnId != null)
-            //{
-                // update Address
-                await _eventService.UpdateEventPath(coordinates, evnt);
-                return Json(new { url = Url.Action("Create", "Events") });
-            //}
-
-            ////create address
-            //await _clubService.CreateAddress(address, club.Id);
-            //return Json(/*new { url = Url.Action("Edit", "MyClub") }*/ User);
-
-            //return Json() 
-        
-        
-        }
-            
-        
 
     }
 }
