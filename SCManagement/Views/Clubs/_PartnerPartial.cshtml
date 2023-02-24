@@ -1,0 +1,44 @@
+﻿@model ClubPaymentSettings
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+<div>
+    <div style="color:red;" id="error"></div>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QuotaFee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.QuotaFee)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.QuotaFrequency)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.QuotaFrequency)
+        </dd>
+    </dl>
+
+    @if (ViewBag.AlreadyPartner == true)
+    {
+        <div>@StringLocalizer["You are already a partner of this club"]</div>
+    }
+    else if (ViewBag.IsClubMember == true)
+    {
+        <div>@StringLocalizer["You are already part of the club with a role"]</div>
+    }
+    else
+    {
+        <form asp-action="Associate">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input id="Id" value="@Model.ClubPaymentSettingsId" hidden />
+            <div class="form-group mt-3">
+                <input type="submit" value="Become partner" class="btn btn-primary" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+            </div>
+        </form>
+    }
+</div>
+
+<script>
+</script>

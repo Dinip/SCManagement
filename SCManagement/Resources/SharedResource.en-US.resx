@@ -1044,4 +1044,36 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Payment Settings</value>
     <comment>23-02-2023_payments</comment>
   </data>
+  <data name="CallbackUrl" xml:space="preserve">
+    <value>Payment notification url</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Error_CallbackUrl" xml:space="preserve">
+    <value>Payment notification url on easypay dashboard is wrong or missing. Fix it first to save this settings.</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Error_InvalidCredentials" xml:space="preserve">
+    <value>Inserted credentials are invalid. Fix it first to save this settings.</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Disclaimer_ClubePayments" xml:space="preserve">
+    <value>If you update the Quota value or frequency, all the current partners will be notified of the change. It will only take effect at the end of their billing cycle.</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Notification Secret" xml:space="preserve">
+    <value>Secret de notificações</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Quota Payment Frequency" xml:space="preserve">
+    <value>Quota Payment Frequency</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Quota Value" xml:space="preserve">
+    <value>Quota Value</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Valid Credentials" xml:space="preserve">
+    <value>Valid Credentials</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
 </root>

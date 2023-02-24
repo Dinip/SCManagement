@@ -14,6 +14,7 @@ using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.Location;
+using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Controllers
 {
@@ -29,9 +30,8 @@ namespace SCManagement.Controllers
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
-        private readonly ILocationService _locationService;
-
         private readonly ITranslationService _translationService;
+        private readonly IPaymentService _paymentService;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -40,20 +40,22 @@ namespace SCManagement.Controllers
         /// <param name="clubService"></param>
         /// <param name="userService"></param>
         /// <param name="teamService"></param>
+        /// <param name="translationService"></param>
+        /// <param name="paymentService"></param>
         public MyClubController(
             UserManager<User> userManager,
             IClubService clubService,
             IUserService userService,
             ITeamService teamService,
-            ILocationService locationService,
-            ITranslationService translationService)
+            ITranslationService translationService,
+            IPaymentService paymentService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
             _teamService = teamService;
-            _locationService = locationService;
             _translationService = translationService;
+            _paymentService = paymentService;
         }
 
         /// <summary>
@@ -966,7 +968,19 @@ namespace SCManagement.Controllers
             //Check if is staff
             if (!_clubService.IsClubAdmin(role) || paymentSettings.ClubPaymentSettingsId != role.ClubId) return View("CustomError", "Error_Unauthorized");
 
+            try
+            {
+                await _paymentService.TestAccount(paymentSettings.AccountId ?? "", paymentSettings.AccountKey ?? "");
+                paymentSettings.ValidCredentials = true;
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Error = ex.Message;
+                return View(paymentSettings);
+            }
+
             var updated = await _clubService.UpdateClubPaymentSettings(paymentSettings);
+            await _paymentService.UpdateProductClubMembership(updated);
 
             return View(updated);
         }

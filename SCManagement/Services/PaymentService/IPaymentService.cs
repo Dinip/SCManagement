@@ -30,5 +30,11 @@ namespace SCManagement.Services.PaymentService
 
         public Task<Payment?> CreateEventPayment(EventEnroll enroll);
         public Task<Payment?> PaySinglePayment(PayPayment paymentInput);
+
+        public Task UpdateProductClubMembership(ClubPaymentSettings clubPaymentSettings);
+        public Task TestAccount(string id, string key);
+
+        public Task<Subscription> CreateMembershipSubscription(UsersRoleClub partner);
+        public Task<Subscription?> GetMembershipSubscription(string userId, int clubId);
     }
 }

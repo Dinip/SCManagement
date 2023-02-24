@@ -24,9 +24,11 @@
                             @Html.DisplayNameFor(model => model.User)
                         </th>
                         <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.JoinDate)
                         </th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,14 +39,10 @@
                                 @Html.DisplayFor(modelItem => item.User.FullName)
                             </td>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.JoinDate)
+                                @StringLocalizer[item.Status.Value.ToString()]
                             </td>
                             <td class="text-to-dark">
-                                <form asp-action="RemoveUser">
-                                    <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
-                                    <input name="page" value="PartnersList" class="form-control" hidden />
-                                    <input type="submit" value="@StringLocalizer["Remove partner"]" class="btn btn-danger" />
-                                </form>
+                                @Html.DisplayFor(modelItem => item.JoinDate)
                             </td>
                         </tr>
                     }

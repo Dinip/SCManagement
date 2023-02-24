@@ -1,10 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SCManagement.Models {
+namespace SCManagement.Models
+{
     /// <summary>
     /// This class represents a User Role Club
     /// </summary>
-    public class UsersRoleClub {
+    public class UsersRoleClub
+    {
         public int Id { get; set; }
 
         public int ClubId { get; set; }
@@ -16,8 +18,10 @@ namespace SCManagement.Models {
         public User? User { get; set; }
 
         public int RoleId { get; set; }
+
         [Display(Name = "Role")]
         public RoleClub? Role { get; set; }
+
         //little trick to make creation date automatically use the current date
         [Display(Name = "JoinDate")]
         public DateTime? JoinDate
@@ -34,5 +38,15 @@ namespace SCManagement.Models {
         private DateTime? dateJoined = null;
 
         public bool Selected { get; set; } = false;
+
+        public UserRoleStatus? Status { get; set; }
+    }
+
+    public enum UserRoleStatus : int
+    {
+        Active = 1,
+        Pending_Payment = 2,
+        Pending_Cancel = 3,
+        Canceled = 4
     }
 }

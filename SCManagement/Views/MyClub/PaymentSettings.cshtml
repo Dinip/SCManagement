@@ -1,4 +1,6 @@
 ﻿@model SCManagement.Models.ClubPaymentSettings
+@inject IStringLocalizer<SharedResource> StringLocalizer
+@inject IHtmlLocalizer<SharedResource> HtmlLocalizer
 
 @{
     ViewData["Title"] = "PaymentSettings";
@@ -9,6 +11,8 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <div id="callback"></div>
+
         <form asp-action="PaymentSettings">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ClubPaymentSettingsId" />
@@ -24,7 +28,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="RequestSecret" class="control-label"></label>
-                <input disabled asp-for="RequestSecret" class="form-control" />
+                <input readonly asp-for="RequestSecret" class="form-control" />
                 <span asp-validation-for="RequestSecret" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -39,19 +43,27 @@
             </div>
 
             <div>
-                If you update the Quota Fee or Frequency, all the current partners will
-                be notified of the change and will be asked to accept the new fee or 
-                it will auto cancel at the end of their current one.
+                @HtmlLocalizer["Disclaimer_ClubePayments"]
             </div>
 
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
+        @if (!string.IsNullOrEmpty(ViewBag.Error))
+        {
+            <div style="color:red;">@StringLocalizer[ViewBag.Error]</div>
+        }
     </div>
 </div>
 
 <div>
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script>
+    window.onload = () => {
+        document.getElementById("callback").textContent = `@HtmlLocalizer["CallbackUrl"]: https://${window.location.host}/api/Payment/WebhookGeneric`
+    }
+</script>
 

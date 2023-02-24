@@ -112,22 +112,14 @@ namespace SCManagement.Controllers
 
             string userId = getUserIdFromAuthedUser();
 
-            //if the user has a role in the club, cant be partner
-            if (_clubService.IsClubMember(userId, club.Id))
+            bool isPartner = _clubService.IsClubPartner(userId, club.Id);
+            ViewBag.AlreadyPartner = isPartner;
+            if (isPartner)
             {
-                ViewBag.btnValue = "Become partner";
-                ViewBag.btnClasses = "disabled";
+                var sub = await _paymentService.GetMembershipSubscription(userId, club.Id);
+                ViewBag.SubId = sub?.Id ?? 0;
             }
-            //Is the user already a member? so stop being
-            else if (_clubService.IsClubPartner(userId, club.Id))
-            {
-                ViewBag.btnValue = "Remove partner";
-            }
-            //the user is not yet a member, so he becomes one(user without roles in the club)
-            else
-            {
-                ViewBag.btnValue = "Become partner";
-            }
+            ViewBag.IsClubMember = _clubService.IsClubMember(userId, club.Id);
 
             return View("Details", club);
         }
@@ -212,26 +204,23 @@ namespace SCManagement.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Associate(int? id)
+        public async Task<IActionResult> Associate(int? Id)
         {
-            if (id == null) return View("CustomError", "Error_NotFound");
+            if (Id == null) return View("CustomError", "Error_NotFound");
 
             string userId = getUserIdFromAuthedUser();
-            Club? club = await _clubService.GetClub((int)id);
+            Club? club = await _clubService.GetClub((int)Id);
             if (club == null) return View("CustomError", "Error_NotFound");
 
-            if (_clubService.IsClubPartner(userId, club.Id))
-            {
-                //remove a user from a club
-                await _clubService.RemoveClubUser(userId, club.Id, 10);
-            }
-            else if (!_clubService.IsClubMember(userId, club.Id))
+            if (!_clubService.IsClubMember(userId, club.Id) || !_clubService.IsClubPartner(userId, club.Id))
             {
                 //add a associate to the club
-                await _clubService.AddUserToClub(userId, club.Id, 10);
+                var role = await _clubService.AddPartnerToClub(userId, club.Id, UserRoleStatus.Pending_Payment);
+                var sub = await _paymentService.CreateMembershipSubscription(role);
+                return RedirectToAction("Index", "Subscription", new { subId = sub.Id });
             }
 
-            return RedirectToAction("Index", new { id });
+            return RedirectToAction("Index", new { Id });
         }
 
         [Authorize]

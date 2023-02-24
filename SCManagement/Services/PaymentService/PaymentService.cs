@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Xml;
+﻿using System.Numerics;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SCManagement.Data;
@@ -135,6 +133,13 @@ namespace SCManagement.Services.PaymentService
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        public async Task<Subscription?> GetMembershipSubscription(string userId, int clubId)
+        {
+            return await _context.Subscription
+                .Include(s => s.Product)
+                .FirstOrDefaultAsync(s => s.UserId == userId && s.ClubId == clubId && s.Product.ProductType == ProductType.ClubMembership);
+        }
+
         //fazer uma funçao que recebe a key do pagamento / subscricao, vai buscar
         //a info da entitade, verifica de quem é o produto (clube ou sistema) e
         //vai buscar as api keys do clube ou do sistema e define no httpclient
@@ -223,20 +228,56 @@ namespace SCManagement.Services.PaymentService
                 }
             }
 
-            if (payment.PaymentStatus == PaymentStatus.Paid && payment.Product.ProductType == ProductType.Event)
+            if (payment.Product.ProductType == ProductType.Event && payment.PaymentStatus == PaymentStatus.Paid)
             {
-                await updateEventEnroll((int)payment.Product.OriginalId, payment.UserId);
+                await updateEventEnroll((int)payment.Product.OriginalId, payment.UserId, EnrollPaymentStatus.Valid);
+            }
+
+            if (payment.Product.ProductType == ProductType.ClubSubscription && payment.PaymentStatus == PaymentStatus.Paid)
+            {
+                await updateClubSubStatus((int)payment.Product.ClubId, ClubStatus.Active);
+            }
+
+            if (payment.Product.ProductType == ProductType.ClubMembership && payment.PaymentStatus == PaymentStatus.Paid)
+            {
+                await updateClubMembershipStatus((int)payment.Product.ClubId, payment.UserId, UserRoleStatus.Active);
             }
 
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();
         }
 
-        private async Task updateEventEnroll(int eventId, string userId)
+        private async Task updateEventEnroll(int eventId, string userId, EnrollPaymentStatus status)
         {
-            var enroll = await _context.EventEnroll.FirstOrDefaultAsync(e => e.UserId == userId && e.EventId == eventId);
-            enroll.EnrollStatus = EnrollPaymentStatus.Valid;
-            _context.Update(enroll);
+            var enroll = await _context.EventEnroll.FirstAsync(e => e.UserId == userId && e.EventId == eventId);
+            enroll.EnrollStatus = status;
+            _context.EventEnroll.Update(enroll);
+        }
+
+        private async Task updateClubSubStatus(int clubId, ClubStatus status, DateTime? endDate = null)
+        {
+            var club = await _context.Club.FirstAsync(e => e.Id == clubId);
+            club.Status = status;
+            if (endDate != null)
+            {
+                club.EndDate = endDate;
+            }
+            _context.Club.Update(club);
+        }
+
+        private async Task updateClubMembershipStatus(int clubId, string userId, UserRoleStatus status)
+        {
+            if (status == UserRoleStatus.Canceled)
+            {
+                var role = await _context.UsersRoleClub.FirstAsync(e => e.ClubId == clubId && e.UserId == userId && e.RoleId == 10);
+                _context.UsersRoleClub.Remove(role);
+            }
+            else
+            {
+                var role = await _context.UsersRoleClub.FirstAsync(e => e.ClubId == clubId && e.UserId == userId && e.RoleId == 10);
+                role.Status = status;
+                _context.UsersRoleClub.Update(role);
+            }
         }
 
         public async Task WebhookHandleSubscriptionCreate(PaymentWebhookGeneric data)
@@ -256,7 +297,7 @@ namespace SCManagement.Services.PaymentService
 
         public async Task WebhookHandleSubscriptionPayment(PaymentWebhookGeneric data)
         {
-            var subscription = await _context.Subscription.FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
+            var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
             if (subscription == null) return;
 
             var info = await subscriptionPaymentIdApiRequest(data.id);
@@ -292,6 +333,16 @@ namespace SCManagement.Services.PaymentService
             subscription.NextTime = DateTime.Now.Add(Subscription.AddTime(subscription.Frequency)).Date.Add(new TimeSpan(1, 0, 0));
             subscription.CardInfoData = buildCardInfo(info);
             subscription.Status = Subscription.ConvertStatus(info.method.status);
+
+            if (subscription.Product.ProductType == ProductType.ClubSubscription)
+            {
+                await updateClubSubStatus((int)subscription.Product.ClubId, ClubStatus.Active);
+            }
+
+            if (subscription.Product.ProductType == ProductType.ClubMembership)
+            {
+                await updateClubMembershipStatus((int)subscription.Product.ClubId, subscription.UserId, UserRoleStatus.Active);
+            }
 
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
@@ -424,7 +475,7 @@ namespace SCManagement.Services.PaymentService
 
         public async Task CancelSubscription(int id)
         {
-            var subscription = await _context.Subscription.FirstOrDefaultAsync(s => s.Id == id);
+            var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.Id == id);
             if (subscription == null) return;
 
 
@@ -451,15 +502,15 @@ namespace SCManagement.Services.PaymentService
             subscription.Status = subscription.NextTime.Date <= DateTime.Now.Date ? SubscriptionStatus.Canceled : SubscriptionStatus.Pending_Cancel;
             subscription.EndTime = subscription.NextTime.Date <= DateTime.Now.Date ? DateTime.Now : subscription.NextTime;
 
-            if (subscription.ClubId != null)
+
+            if (subscription.Product.ProductType == ProductType.ClubSubscription)
             {
-                var club = await _context.Club.FindAsync(subscription.ClubId);
-                if (club != null)
-                {
-                    club.EndDate = subscription.EndTime;
-                    club.Status = subscription.Status == SubscriptionStatus.Canceled ? ClubStatus.Suspended : ClubStatus.Active;
-                    _context.Update(club);
-                }
+                await updateClubSubStatus((int)subscription.ClubId, subscription.Status == SubscriptionStatus.Canceled ? ClubStatus.Suspended : ClubStatus.Active);
+            }
+
+            if (subscription.Product.ProductType == ProductType.ClubMembership)
+            {
+                await updateClubMembershipStatus((int)subscription.Product.ClubId, subscription.UserId, subscription.Status == SubscriptionStatus.Canceled ? UserRoleStatus.Canceled : UserRoleStatus.Pending_Cancel);
             }
 
             _context.Subscription.Update(subscription);
@@ -630,6 +681,107 @@ namespace SCManagement.Services.PaymentService
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();
             return payment;
+        }
+
+        public async Task UpdateProductClubMembership(ClubPaymentSettings clubPaymentSettings)
+        {
+            var oldProduct = await _context.Product.Where(p => p.ClubId == clubPaymentSettings.ClubPaymentSettingsId && p.ProductType == ProductType.ClubMembership).FirstOrDefaultAsync();
+
+            if (oldProduct == null)
+            {
+                _context.Product.Add(new Product
+                {
+                    ClubId = clubPaymentSettings.ClubPaymentSettingsId,
+                    IsSubscription = true,
+                    Enabled = true,
+                    ProductType = ProductType.ClubMembership,
+                    Value = clubPaymentSettings.QuotaFee,
+                    Frequency = clubPaymentSettings.QuotaFrequency,
+                    Name = "Club Quota"
+                });
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+            oldProduct.Value = clubPaymentSettings.QuotaFee;
+            oldProduct.Frequency = clubPaymentSettings.QuotaFrequency;
+            _context.Update(oldProduct);
+
+            await _context.SaveChangesAsync();
+
+        }
+
+        private async Task<EasypayConfigResponse?> easypayConfigRequest(string id, string key)
+        {
+            _httpClient.DefaultRequestHeaders.Remove("AccountId");
+            _httpClient.DefaultRequestHeaders.Remove("ApiKey");
+            _httpClient.DefaultRequestHeaders.Add("AccountId", id);
+            _httpClient.DefaultRequestHeaders.Add("ApiKey", key);
+
+            var result = await _httpClient.GetAsync("https://api.test.easypay.pt/2.0/config");
+
+            if (!result.IsSuccessStatusCode)
+            {
+                Console.WriteLine("Error in EasypayConfigRequest");
+                Console.WriteLine(result.Content.ReadAsStringAsync().Result);
+                return null;
+            }
+
+            return await result.Content.ReadFromJsonAsync<EasypayConfigResponse>();
+        }
+
+        public async Task TestAccount(string id, string key)
+        {
+            var result = await easypayConfigRequest(id, key);
+
+            if (result == null)
+            {
+                throw new Exception("Error_InvalidCredentials");
+            }
+
+            if (string.IsNullOrEmpty(result.generic) || !result.generic.ToLower().EndsWith("scmanagement.me/api/payment/webhookgeneric"))
+            {
+                throw new Exception("Error_CallbackUrl");
+            }
+        }
+
+        public async Task<Subscription> CreateMembershipSubscription(UsersRoleClub partner)
+        {
+            var product = await _context.Product.FirstAsync(p => p.ProductType == ProductType.ClubMembership && p.ClubId == partner.ClubId);
+
+            DateTime now = DateTime.Now;
+
+            var sub = new Subscription
+            {
+                StartTime = now,
+                NextTime = now,
+                Value = product.Value,
+                Status = SubscriptionStatus.Waiting,
+                ProductId = product.Id,
+                UserId = partner.UserId,
+                AutoRenew = false,
+                Frequency = product.Frequency.Value,
+                ClubId = partner.ClubId,
+            };
+
+            _context.Subscription.Add(sub);
+            await _context.SaveChangesAsync();
+
+            var pay = new Payment
+            {
+                ProductId = product.Id,
+                Value = product.Value,
+                CreatedAt = now,
+                PaymentStatus = PaymentStatus.Pending,
+                UserId = partner.UserId,
+                SubscriptionId = sub.Id,
+                PaymentKey = Guid.NewGuid().ToString(),
+            };
+
+            _context.Payment.Add(pay);
+            await _context.SaveChangesAsync();
+
+            return sub;
         }
     }
 }

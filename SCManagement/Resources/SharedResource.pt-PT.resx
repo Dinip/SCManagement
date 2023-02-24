@@ -1172,4 +1172,44 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Definições de pagamentos</value>
     <comment>23-02-2023_payments</comment>
   </data>
+  <data name="CallbackUrl" xml:space="preserve">
+    <value>Url de notificações de pagamento</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Error_CallbackUrl" xml:space="preserve">
+    <value>O url de notificações no painel de controlo da easypay está errado ou é inválido. Corrige para poderes guardar estas definições.</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Error_InvalidCredentials" xml:space="preserve">
+    <value>As credenciais inseridas são inválidas. Corrige para poderes guardar estas definições.</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Account Id" xml:space="preserve">
+    <value>Id da conta</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Account Key" xml:space="preserve">
+    <value>Chave da conta</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Disclaimer_ClubePayments" xml:space="preserve">
+    <value>Se atualizares a frequência de pagamento da quota ou o valor da mesma, todos os teus sócios atuais serão notificados da alteração. Apenas terá feito quando o ciclo de pagamento atual acabar.</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Notification Secret" xml:space="preserve">
+    <value>Secret de notificações</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Quota Payment Frequency" xml:space="preserve">
+    <value>Frequência da quota</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Quota Value" xml:space="preserve">
+    <value>Valor da quota</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
+  <data name="Valid Credentials" xml:space="preserve">
+    <value>Credenciais válidas</value>
+    <comment>23-02-2023_payments</comment>
+  </data>
 </root>

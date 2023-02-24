@@ -45,10 +45,11 @@ namespace SCManagement.Services.ClubService
         public async Task<Club> CreateClub(Club club, string userId)
         {
             //with this implementation, the user can only create 1 club (1 user per clube atm, might change later)
-            List<UsersRoleClub> roles = new();
-
-            //add a role whit the user that create the club
-            roles.Add(new UsersRoleClub { UserId = userId, RoleId = 50, JoinDate = DateTime.Now });
+            List<UsersRoleClub> roles = new()
+            {
+                //add a role whit the user that create the club
+                new UsersRoleClub { UserId = userId, RoleId = 50, JoinDate = DateTime.Now }
+            };
             club.UsersRoleClub = roles;
             club.ClubPaymentSettings = new ClubPaymentSettings();
 
@@ -107,6 +108,7 @@ namespace SCManagement.Services.ClubService
                 .Include(c => c.Photography)
                 .Include(c => c.Address)
                 .Include(c => c.ClubTranslations)
+                .Include(c => c.ClubPaymentSettings)
                 .FirstOrDefaultAsync(m => m.Id == id);
             club.About = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "About")?.Value;
             club.TermsAndConditions = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "TermsAndConditions")?.Value;
@@ -617,20 +619,6 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Removes a user with a role, from a club by a given userid, clubid and roleid
-        /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="clubId"></param>
-        /// <param name="roleId"></param>
-        /// <returns></returns>
-        public async Task RemoveClubUser(string userId, int clubId, int roleId)
-        {
-            _context.UsersRoleClub.Remove(await _context.UsersRoleClub.Where(r => r.UserId == userId && r.ClubId == clubId && r.RoleId == roleId).FirstAsync());
-            await _context.SaveChangesAsync();
-        }
-
-
-        /// <summary>
         /// Updates the photo for a club, can either upload a new one and
         /// remove the old one or just the remove the photo
         /// </summary>
@@ -713,16 +701,18 @@ namespace SCManagement.Services.ClubService
         }
 
         /// <summary>
-        /// Adds a user to a given club and role
+        /// Adds a user to a given club as partner (default pending payment)
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="clubId"></param>
-        /// <param name="roleId"></param>
+        /// <param name="status"></param>
         /// <returns></returns>
-        public async Task AddUserToClub(string userId, int clubId, int roleId)
+        public async Task<UsersRoleClub> AddPartnerToClub(string userId, int clubId, UserRoleStatus status = UserRoleStatus.Pending_Payment)
         {
-            var a = _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = roleId, JoinDate = DateTime.Now });
+            var role = new UsersRoleClub { UserId = userId, ClubId = clubId, RoleId = 10, JoinDate = DateTime.Now, Status = status };
+            _context.UsersRoleClub.Add(role);
             await _context.SaveChangesAsync();
+            return role;
         }
 
         /// <summary>
@@ -887,6 +877,7 @@ namespace SCManagement.Services.ClubService
             var currentSettings = await GetClubPaymentSettings(settings.ClubPaymentSettingsId);
             currentSettings.AccountId = settings.AccountId;
             currentSettings.AccountKey = settings.AccountKey;
+            currentSettings.ValidCredentials = settings.ValidCredentials;
 
             //check if quota settings where updated and notify users
             if ((currentSettings.QuotaFrequency != settings.QuotaFrequency) || (currentSettings.QuotaFee != settings.QuotaFee))
@@ -916,7 +907,7 @@ namespace SCManagement.Services.ClubService
 
                 Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.Value.ToString(), lang) },
+                    { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.ToString(), lang) },
                     { "_PRICE_", $"{settings.QuotaFee.ToString()}€"},
                     { "_CLUB_", club.Name },
                     { "_SUBSCRIPTION_", $"{hostUrl}/Subscription"},

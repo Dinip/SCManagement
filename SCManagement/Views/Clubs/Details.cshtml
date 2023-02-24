@@ -5,6 +5,14 @@
     ViewData["Title"] = "Details";
 }
 
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content">
+        </div>
+    </div>
+</div>
+
 <div>
     <div class="container-fluid m-0 pb-5 pt-2 " id="colorthiefobj" style=" height:30%;">
         <div class="row mt-5">
@@ -24,11 +32,28 @@
     <div class="container d-flex" style="margin-top:-30px;">
         <div class="card col me-5 shadow" style="border-radius:20px;">
             <div class="card-body" style="border-radius:20px;">
-                <div class="row text-end">
-                    <form asp-action="Associate">
-                        <input asp-for="Id" class="form-control" hidden />
-                        <input type="submit" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn me-5 mt-2 btn-primary @ViewBag.btnClasses" value="@StringLocalizer[ViewBag.btnValue]"></input>
-                    </form>
+                <div class="row justify-content-end">
+                    @if (ViewBag.AlreadyPartner == false && ViewBag.IsClubMember == false)
+                    {
+                        <form asp-action="Associate">
+                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                            <input name="Id" value="@Model.Id" hidden />
+                            <div class="form-group mt-3">
+                                <input type="submit"
+                                       value="@StringLocalizer["Become partner"] (@Model.ClubPaymentSettings.QuotaFee€/@StringLocalizer[Model.ClubPaymentSettings.QuotaFrequency.ToString()])"
+                                       class="btn btn-primary"
+                                       style="border-radius: 10px; background-color: #00639A; border-color: #00639A; float:right;" />
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <a href="/Subscription?subId=@ViewBag.SubId"
+                           class="btn btn-primary mt-3"
+                           style="max-width:fit-content; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right: calc(var(--bs-gutter-x) * .5);">
+                            @StringLocalizer["Already Partner"] (@Model.ClubPaymentSettings.QuotaFee€/@StringLocalizer[Model.ClubPaymentSettings.QuotaFrequency.ToString()])
+                        </a>
+                    }
                 </div>
                 <div class="row">
                     <div class="col-3 ms-4"><h3 class="text-to-dark">@StringLocalizer["About Us"]:</h3></div>
@@ -76,7 +101,7 @@
             </div>
         </div>
     </div>
-    
+
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
@@ -98,9 +123,21 @@
 
         // Use the new color as background for body
         document.getElementById('colorthiefobj').style.background = 'linear-gradient(0deg, rgb(0,0,0) 0%, rgb(' + color + ') 100%)';
-        
+
     };
-    
+
+    function openBeMember(id) {
+        $.ajax({
+            url: '/Clubs/PartnerPartial/@Model.Id',
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
+    }
+
     if (window.history.replaceState) {
         window.history.replaceState(null, null, "/Clubs/" + "@Model.Id");
     }

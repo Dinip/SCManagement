@@ -38,7 +38,7 @@ namespace SCManagement.Services.PaymentService.Models
     public enum ProductType : int
     {
         Event = 1,
-        ClubQuota = 2,
+        ClubMembership = 2,
         ClubSubscription = 3
     }
 }
