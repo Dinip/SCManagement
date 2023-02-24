@@ -4,91 +4,104 @@
     ViewData["Title"] = "Subscriptions";
 }
 
-<h1>Subscriptions</h1>
 
 <div id="modal" class="modal">
-    <div class="modal-content" style="margin-top:7%; margin-bottom:0;">
+    <div class="modal-content w-50" style="margin-top:7%; margin-bottom:0;">
         <span onclick="closeModal()" class="close">&times;</span>
         <div id="modal-inner-content"></div>
     </div>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.StartTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.NextTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Value)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AutoRenew)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Frequency)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
-                <td>
-                    @Html.DisplayFor(modelItem => item.StartTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.NextTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.EndTime)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Value)€
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                @if (item.Club != null)
-                {
-                    <td>
-                        @item.Product.Name (@item.Club.Name)
-                    </td>
-                }
-                else
-                {
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Product.Name)
-                    </td>
-                }
-                <td>
-                    @Html.DisplayFor(modelItem => item.AutoRenew)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Frequency)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">Subscriptions</h1>
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.NextTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndTime)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Value)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Product)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AutoRenew)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Frequency)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.NextTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Value)€
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Status)
+                            </td>
+                            @if (item.Club != null)
+                            {
+                                <td>
+                                    @item.Product.Name (@item.Club.Name)
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Product.Name)
+                                </td>
+                            }
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AutoRenew)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Frequency)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
     window.onload = () => {
         const id = "@ViewBag.SubId";
         if (id != "") openDetails(id)
     }
+
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable();
+    });
 
     const closeModal = () => {
         $("#modal").hide();

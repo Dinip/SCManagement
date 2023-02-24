@@ -62,113 +62,85 @@
 
     <div style="color:red;" id="error"></div>
 
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Value)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Value)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentMethod)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PaymentMethod)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PaymentStatus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PaymentStatus)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CreatedAt)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PayedAt)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PayedAt)
-        </dd>
-
-        @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
-        {
-                <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MbEntity)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MbEntity)
-                </dd>
-                <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.MbReference)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.MbReference)
-                </dd>
-        }
-
-        @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
-        {
-                <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.PhoneNumber)
-                </dt>
-                <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.PhoneNumber)
-                </dd>
-        }
-
-        @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
-        {
-            @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
-            {
-                        <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Url)
-                        </dt>
-                        <dd class="col-sm-10">
-                            <a href="@Model.Url">Click here to pay</a>
-                        </dd>
-            }
-            else
-            {
-                        <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)
-                        </dt>
-                        <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.CardInfo.LastFourDigits)
-                        </dd>
-                        <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.CardInfo.Type)
-                        </dt>
-                        <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.CardInfo.Type)
-                        </dd>
-                        <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)
-                        </dt>
-                        <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.CardInfo.ExpirationDate)
-                        </dd>
-            }
-        }
-
-        @if (Model.SubscriptionId != null)
-        {
-                <a href="/Subscription?subId=@Model.SubscriptionId" asp->Go to subscription</a>
-        }
-
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Product)</th>
+                <th>@Html.DisplayNameFor(model => model.Value)</th>
+                <th>@Html.DisplayNameFor(model => model.PaymentMethod)</th>
+                <th>@Html.DisplayNameFor(model => model.PaymentStatus)</th>
+                <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                <th>@Html.DisplayNameFor(model => model.PayedAt)</th>
+                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
+                {
+                    <th>@Html.DisplayNameFor(model => model.MbEntity)</th>
+                    <th>@Html.DisplayNameFor(model => model.MbReference)</th>
+                }
+                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
+                {
+                    <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                }
+                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
+                {
+                    @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
+                    {
+                        <th>@Html.DisplayNameFor(model => model.Url)</th>
+                    }
+                    else
+                    {
+                        <th>@Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)</th>
+                        <th>@Html.DisplayNameFor(model => model.CardInfo.Type)</th>
+                        <th>@Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)</th>
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>@Html.DisplayFor(model => model.Product.Name)</td>
+                <td>@Html.DisplayFor(model => model.Value)</td>
+                <td>@Html.DisplayFor(model => model.PaymentMethod)</td>
+                <td>@Html.DisplayFor(model => model.PaymentStatus)</td>
+                <td>@Html.DisplayFor(model => model.CreatedAt)</td>
+                <td>@Html.DisplayFor(model => model.PayedAt)</td>
+                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
+                {
+                    <td>@Html.DisplayFor(model => model.MbEntity)</td>
+                    <td>@Html.DisplayFor(model => model.MbReference)</td>
+                }
+                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
+                {
+                    <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+                }
+                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
+                {
+                    @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
+                    {
+                        <td>@Html.DisplayFor(model => model.Url)</td>
+                        <td><a href="@Model.Url">Click here to pay</a></td>
+                    }
+                    else
+                    {
+                        <td>@Html.DisplayFor(model => model.CardInfo.LastFourDigits)</td>
+                        <td>@Html.DisplayFor(model => model.CardInfo.Type)</td>
+                        <td>@Html.DisplayFor(model => model.CardInfo.ExpirationDate)</td>
+                    }
+                }
+            </tr>
+        </tbody>
+    </table>
+    @if (Model.SubscriptionId != null)
+    {
+        <div class="mb-3 mt-4">
+            <a href="/Subscription?subId=@Model.SubscriptionId" style="color:white; text-decoration:none; border-radius: 10px; padding:10px; background-color: #00639A; border-color: #00639A;" asp->Go to subscription</a>
+        </div>
+    }
+    <div class="mt-3">
         @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
         {
             @await Html.PartialAsync("_PaymentPartial", new SCManagement.Services.PaymentService.Models.PayPayment {Id = Model.Id})
         }
-    </dl>
+    </div>
 </div>
+
 
