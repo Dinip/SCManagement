@@ -33,7 +33,7 @@
         <div class="card col me-5 shadow" style="border-radius:20px;">
             <div class="card-body" style="border-radius:20px;">
                 <div class="row justify-content-end">
-                    @if (ViewBag.AlreadyPartner == false && ViewBag.IsClubMember == false)
+                    @if (ViewBag.AlreadyPartner == false)
                     {
                         <form asp-action="Associate">
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -41,7 +41,7 @@
                             <div class="form-group mt-3">
                                 <input type="submit"
                                        value="@StringLocalizer["Become partner"] (@Model.ClubPaymentSettings.QuotaFee€/@StringLocalizer[Model.ClubPaymentSettings.QuotaFrequency.ToString()])"
-                                       class="btn btn-primary"
+                                       class="btn btn-primary @(ViewBag.IsClubMember == true ? "disabled": "")"
                                        style="border-radius: 10px; background-color: #00639A; border-color: #00639A; float:right;" />
                             </div>
                         </form>
