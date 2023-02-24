@@ -57,11 +57,11 @@
                 </div>
                 <div class="row">
                     <div class="col-3 ms-4"><h3 class="text-to-dark">@StringLocalizer["About Us"]:</h3></div>
-                    <div class="col-8 mt-1"><span class="text-to-dark">@Html.DisplayFor(model => model.About)</span></div>
+                    <div class="col-8 mt-1"><span class="text-to-dark">@Html.DisplayFor(model => model.ClubTranslations.FirstOrDefault(c => c.Atribute == "About").Value)</span></div>
                 </div>
                 <div class="row">
                     <div class="col-3 ms-4"><h3 class="text-to-dark">@StringLocalizer["Terms and conditions"]:</h3></div>
-                    <div class="col-8 mt-1"><span class="text-to-dark">@Html.DisplayFor(model => model.TermsAndConditions)</span></div>
+                    <div class="col-8 mt-1"><span class="text-to-dark">@Html.DisplayFor(model => model.ClubTranslations.FirstOrDefault(c => c.Atribute == "TermsAndConditions").Value)</span></div>
                 </div>
                 <div class="row mt-5 mb-5">
                     <div class="col-3 ms-4"><h3 class="text-to-dark">@StringLocalizer["Modalities"]:</h3></div>
