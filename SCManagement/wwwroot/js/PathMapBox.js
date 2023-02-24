@@ -165,25 +165,20 @@ const x = 0;
 // Draw the Map Matching route as a new layer on the map
 function addRoute(coords) {
     // If a route is already loaded, remove it
-    console.log(coords);
     if (map.getSource('trace')) {
         let aux
+
         if (draw.getAll().features[1] === undefined) {
             aux = draw.getAll().features[0];
         } else {
             aux = draw.getAll().features[1];
+            draw.delete(draw.getAll().features[0].id);
         }
-       
-       
-      
-        let updatedGeoJSONData =
-        {
-            "type": "FeatureCollection",
-            "features": [aux]
-        };
-        draw.getAll().features = [aux];
 
-        map.getSource("trace").setData(updatedGeoJSONData);
+        map.getSource("trace").setData({
+            "type": "FeatureCollection",
+            "features": aux
+        });
 
         map.removeLayer("tracee");
         map.removeSource("tracee");
@@ -206,7 +201,8 @@ function addRoute(coords) {
                 'line-color': '#03AA46',
                 'line-width': 8,
                 'line-opacity': 0.8
-            }
+            },
+
         });
 
     } else {
