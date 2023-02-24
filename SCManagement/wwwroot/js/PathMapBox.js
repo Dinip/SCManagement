@@ -19,8 +19,7 @@ const ev = document.getElementById("ev");
 const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
 
 
-
-var response = "";
+//var response = "";
 var newCoords = "";
 var profile = "";
 
@@ -107,8 +106,6 @@ let draw = new MapboxDraw({
 // Add the draw tool to the map
 map.addControl(draw);
 
-
-
 // Add create, update, or delete actions
 map.on('draw.create', updateRoute);
 map.on('draw.update', updateRoute);
@@ -120,8 +117,6 @@ function updateRoute() {
     const data = draw.getAll();
 
     btnSave.classList.remove("d-none");
-
-    //removeRoute(); // Overwrite any existing layers
 
     const profile = 'walking'; // Set the profile
 
@@ -160,7 +155,6 @@ async function getMatch(coordinates, radius, profile) {
     addRoute(coords);
 }
 
-const x = 0;
 
 // Draw the Map Matching route as a new layer on the map
 function addRoute(coords) {

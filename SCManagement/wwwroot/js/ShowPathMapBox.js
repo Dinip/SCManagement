@@ -12,13 +12,7 @@ const map = new mapboxgl.Map({
 
 const layerList = document.getElementById('menu');
 const inputs = layerList.getElementsByTagName('input');
-/*const btnSave = document.getElementById('save-button');*/
 const path = document.getElementById("path");
-console.log(path);
-//var response = "";
-//var newCoords = "";
-//var profile = "";
-
 
 
 for (const input of inputs) {
@@ -29,13 +23,12 @@ for (const input of inputs) {
 }
 
 
-
 map.on('load', function () {
+    map.resize();
     if (path.value != null) {
-        console.log(path.value);
         getMatch(path.value);
     } else {
-        console.log("fdsfsdfsdfsdfsdfsdfsdf");
+        console.log("erro");
     }
 });
 
@@ -43,21 +36,19 @@ map.on('load', function () {
 // Make a Map Matching request
 async function getMatch(coordinates) {
     const profile = 'walking';
-    const coordenadasString = coordinates;
-    const coordenadasArrayString = coordenadasString.split(';');
-    const coordenadasArray = coordenadasArrayString.map(coordenada => {
-        const [longitude, latitude] = coordenada.split(',');
+    const coordsString = coordinates;
+    const coordsArrayString = coordsString.split(';');
+    const coodrsArray = coordsArrayString.map(coord => {
+        const [longitude, latitude] = coord.split(',');
         return [parseFloat(longitude), parseFloat(latitude)];
     });
-    console.log(coordenadasArray);
-    console.log(coordenadasArrayString);
+
     // Set the radius for each coordinate pair to 50 meters
-    const radius = coordenadasArray.map(() => 50);
-    console.log(radius);
+    const radius = coodrsArray.map(() => 50);
 
     // Separate the radiuses with semicolons
     const radiuses = radius.join(';');
-    console.log(radiuses);
+
     // Create the query
     const query = await fetch(
         `https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&steps=true&access_token=${mapboxgl.accessToken}`,
@@ -73,17 +64,15 @@ async function getMatch(coordinates) {
         return;
     }
     const coords = response.matchings[0].geometry;
-    console.log("ALALLLAL" + coords);
+
     // Draw the route on the map
     addRoute(coords);
-    /*getInstructions(response.matchings[0]);*/
 }
 
 
 // Draw the Map Matching route as a new layer on the map
 function addRoute(coords) {
     
-
     // If a route is already loaded, remove it
     if (map.getSource('route')) {
         map.removeLayer('route');
