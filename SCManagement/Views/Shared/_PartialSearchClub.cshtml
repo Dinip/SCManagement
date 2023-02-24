@@ -15,7 +15,7 @@
                         <p style="white-space: nowrap;
                                         overflow: hidden;
                                         text-overflow: ellipsis;">
-                            @Html.DisplayFor(modelItem => item.About)
+                            @Html.DisplayFor(modelItem => item.ClubTranslations.FirstOrDefault(c => c.Atribute == "About").Value)
                         </p>
                         <p>
                             

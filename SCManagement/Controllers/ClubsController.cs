@@ -104,6 +104,8 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
+            club.ClubTranslations = (ICollection<ClubTranslations>?) await _clubService.GetClubTranslations(id);
+
             //If the club does not have an image, one is placed by default.
             if (club.Photography == null)
             {

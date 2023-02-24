@@ -32,12 +32,7 @@ namespace SCManagement.Models
         [Phone]
         [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
-
-        [Display(Name = "About Us")]
-        public string? About { get; set; }
-
-        [Display(Name = "Terms and conditions")]
-        public string? TermsAndConditions { get; set; }
+        
         public ICollection<ClubTranslations>? ClubTranslations { get; set; }
 
         //little trick to make creation date automatically use the current date

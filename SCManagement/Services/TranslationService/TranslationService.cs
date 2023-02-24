@@ -17,28 +17,25 @@ namespace SCManagement.Services.TranslationService
         public TranslationService(ApplicationDbContext context, IConfiguration configuration)
         {
             SubscriptionKey = configuration["TranslatorAPIKey"];
-            Region = configuration["TranslatorrLocation"];
+            Region = configuration["TranslatorLocation"];
             Endpoint = configuration["TranslatorAPIEndpoint"];
             _context = context;
         }
 
-        public async Task<int> Translate(IEnumerable<ClubTranslations> clubTranslations)
+        public async Task Translate(IEnumerable<ITranslation> translations)
         {
-            var remainTranslations = new List<ClubTranslations>(clubTranslations);
-            foreach (ClubTranslations translations in clubTranslations)
+            if (translations == null) return;
+
+            var translation = translations.FirstOrDefault(x => x.Value != null);
+            
+            if (translation == null) return;
+
+            var remainTranslations = translations.Where(x => x.Value == null).ToList();
+
+            foreach (var t in remainTranslations)
             {
-                if (translations.Value != null)
-                {
-                    remainTranslations.Remove(translations);
-                    foreach (ClubTranslations _translations1 in remainTranslations)
-                    {
-                        if (_translations1.Value == null)
-                            _translations1.Value = Translation(translations.Value, translations.Language, _translations1.Language).Result[0].Translations[0].Text;
-                    }
-                    return await _context.SaveChangesAsync();
-                }
+                t.Value = Translation(translation.Value, translation.Language, t.Language).Result[0].Translations[0].Text;
             }
-            return await _context.SaveChangesAsync();
         }
 
         public async Task<List<TranslationsContainer>> Translation(string content, string fromLang, string toLang)
@@ -65,7 +62,7 @@ namespace SCManagement.Services.TranslationService
                 List<TranslationsContainer> containers = JsonConvert.DeserializeObject<List<TranslationsContainer>>(jsonString);
 
                 return containers;
-            };
+            }
         }
     }
 

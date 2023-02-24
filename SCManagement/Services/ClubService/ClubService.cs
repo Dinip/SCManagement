@@ -108,8 +108,6 @@ namespace SCManagement.Services.ClubService
                 .Include(c => c.Address)
                 .Include(c => c.ClubTranslations)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            club.About = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "About")?.Value;
-            club.TermsAndConditions = club.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "TermsAndConditions")?.Value;
             return club;
         }
 
@@ -137,7 +135,7 @@ namespace SCManagement.Services.ClubService
                    AddressId = s.AddressId,
                    Address = s.Address,
                    Modalities = s.Modalities,
-                   About = s.ClubTranslations.FirstOrDefault(cc => cc.Language == cultureInfo && cc.Atribute == "About").Value,
+                   ClubTranslations = s.ClubTranslations!.Where(cc => cc.Language == cultureInfo).ToList(),
                })
                .ToListAsync();
         }
@@ -869,7 +867,8 @@ namespace SCManagement.Services.ClubService
 
         public async Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId)
         {
-            return await _context.ClubTranslations.Where(c => c.ClubId == clubId).ToListAsync();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            return await _context.ClubTranslations.Where(c => c.ClubId == clubId && c.Language == cultureInfo).ToListAsync();
         }
 
         public async Task<ClubStatus> GetClubStatus(int clubId)

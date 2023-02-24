@@ -8,6 +8,6 @@ namespace SCManagement.Services.TranslationService
     {
         public Task<List<TranslationsContainer>> Translation(string content, string fromLang, string toLang);
 
-        public Task<int> Translate(IEnumerable<ClubTranslations> clubTranslations);
+        public Task Translate(IEnumerable<ITranslation> translations);
     }
 }

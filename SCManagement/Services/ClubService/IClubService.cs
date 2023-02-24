@@ -45,6 +45,7 @@ namespace SCManagement.Services.ClubService
         public Task<IEnumerable<Modality>> GetClubModalities(int clubId);
         public Task<IEnumerable<User>> GetAthletes(int clubId);
         public Task<IEnumerable<User>> GetClubTrainers(int clubId);
+        public Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId);
         public Task<Address> CreateAddress(Address address, int clubId);
         public Task UpdateClubAddress(Address address, int addressId);
         public Task<IEnumerable<object>> GetAllCoordinates();
