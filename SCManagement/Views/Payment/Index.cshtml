@@ -4,8 +4,6 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Payments</h1>
-
 <div id="modal" class="modal">
     <div class="modal-content" style="margin-top:7%; margin-bottom:0;">
         <span onclick="closeModal()" class="close">&times;</span>
@@ -17,25 +15,25 @@
     <h1 style="margin-top:130px !important;" class="text-to-dark">Wallet</h1>
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
-            <table id="table_id" " class="display">
+            <table id="table_id" class="display">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Product.Name)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Value)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.PaymentMethod)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.PaymentStatus)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.CreatedAt)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.PayedAt)
                         </th>
                     </tr>
@@ -44,22 +42,22 @@
                     @foreach (var item in Model)
                     {
                         <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Product.Name)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Value)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.PaymentMethod)
                             </td>
-                            <td>
+                            <td class ="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.PaymentStatus)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.PayedAt)
                             </td>
                         </tr>

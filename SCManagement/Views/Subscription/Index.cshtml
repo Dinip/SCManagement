@@ -19,28 +19,28 @@
             <table id="table_id" class="display">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.StartTime)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.NextTime)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.EndTime)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Value)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Status)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Product)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.AutoRenew)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Frequency)
                         </th>
                     </tr>
@@ -49,37 +49,37 @@
                     @foreach (var item in Model)
                     {
                         <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.StartTime)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.NextTime)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.EndTime)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Value)€
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Status)
                             </td>
                             @if (item.Club != null)
                             {
-                                <td>
+                                <td class="text-to-dark">
                                     @item.Product.Name (@item.Club.Name)
                                 </td>
                             }
                             else
                             {
-                                <td>
+                                <td class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.Product.Name)
                                 </td>
                             }
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.AutoRenew)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Frequency)
                             </td>
                         </tr>

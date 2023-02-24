@@ -57,7 +57,7 @@
 </style>
 
 <div>
-    <h4>Payment</h4>
+    <h4 class="text-to-dark">Payment</h4>
     <hr />
 
     <div style="color:red;" id="error"></div>
@@ -65,65 +65,65 @@
     <table class="table">
         <thead>
             <tr>
-                <th>@Html.DisplayNameFor(model => model.Product)</th>
-                <th>@Html.DisplayNameFor(model => model.Value)</th>
-                <th>@Html.DisplayNameFor(model => model.PaymentMethod)</th>
-                <th>@Html.DisplayNameFor(model => model.PaymentStatus)</th>
-                <th>@Html.DisplayNameFor(model => model.CreatedAt)</th>
-                <th>@Html.DisplayNameFor(model => model.PayedAt)</th>
+                <th class="text-to-dark">@Html.DisplayNameFor(model => model.Product)</th>
+                <th class="text-to-dark">@Html.DisplayNameFor(model => model.Value)</th>
+                <th class="text-to-dark">@Html.DisplayNameFor(model => model.PaymentMethod)</th>
+                <th class="text-to-dark">@Html.DisplayNameFor(model => model.PaymentStatus)</th>
+                <th class="text-to-dark">@Html.DisplayNameFor(model => model.CreatedAt)</th>
+                <th class="text-to-dark">@Html.DisplayNameFor(model => model.PayedAt)</th>
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
                 {
-                    <th>@Html.DisplayNameFor(model => model.MbEntity)</th>
-                    <th>@Html.DisplayNameFor(model => model.MbReference)</th>
+                    <th class="text-to-dark">@Html.DisplayNameFor(model => model.MbEntity)</th>
+                    <th class="text-to-dark">@Html.DisplayNameFor(model => model.MbReference)</th>
                 }
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
                 {
-                    <th>@Html.DisplayNameFor(model => model.PhoneNumber)</th>
+                    <th class="text-to-dark">@Html.DisplayNameFor(model => model.PhoneNumber)</th>
                 }
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
                 {
                     @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
                     {
-                        <th>@Html.DisplayNameFor(model => model.Url)</th>
+                        <th class="text-to-dark">@Html.DisplayNameFor(model => model.Url)</th>
                     }
                     else
                     {
-                        <th>@Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)</th>
-                        <th>@Html.DisplayNameFor(model => model.CardInfo.Type)</th>
-                        <th>@Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)</th>
+                        <th class="text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)</th>
+                        <th class="text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.Type)</th>
+                        <th class="text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)</th>
                     }
                 }
             </tr>
         </thead>
         <tbody>
             <tr>
-                <td>@Html.DisplayFor(model => model.Product.Name)</td>
-                <td>@Html.DisplayFor(model => model.Value)</td>
-                <td>@Html.DisplayFor(model => model.PaymentMethod)</td>
-                <td>@Html.DisplayFor(model => model.PaymentStatus)</td>
-                <td>@Html.DisplayFor(model => model.CreatedAt)</td>
-                <td>@Html.DisplayFor(model => model.PayedAt)</td>
+                <td class="text-to-dark">@Html.DisplayFor(model => model.Product.Name)</td>
+                <td class="text-to-dark">@Html.DisplayFor(model => model.Value)</td>
+                <td class="text-to-dark">@Html.DisplayFor(model => model.PaymentMethod)</td>
+                <td class="text-to-dark">@Html.DisplayFor(model => model.PaymentStatus)</td>
+                <td class="text-to-dark">@Html.DisplayFor(model => model.CreatedAt)</td>
+                <td class="text-to-dark">@Html.DisplayFor(model => model.PayedAt)</td>
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
                 {
-                    <td>@Html.DisplayFor(model => model.MbEntity)</td>
-                    <td>@Html.DisplayFor(model => model.MbReference)</td>
+                    <td class="text-to-dark">@Html.DisplayFor(model => model.MbEntity)</td>
+                    <td class="text-to-dark">@Html.DisplayFor(model => model.MbReference)</td>
                 }
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
                 {
-                    <td>@Html.DisplayFor(model => model.PhoneNumber)</td>
+                    <td class="text-to-dark">@Html.DisplayFor(model => model.PhoneNumber)</td>
                 }
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
                 {
                     @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
                     {
-                        <td>@Html.DisplayFor(model => model.Url)</td>
+                        <td class="text-to-dark">@Html.DisplayFor(model => model.Url)</td>
                         <td><a href="@Model.Url">Click here to pay</a></td>
                     }
                     else
                     {
-                        <td>@Html.DisplayFor(model => model.CardInfo.LastFourDigits)</td>
-                        <td>@Html.DisplayFor(model => model.CardInfo.Type)</td>
-                        <td>@Html.DisplayFor(model => model.CardInfo.ExpirationDate)</td>
+                        <td class="text-to-dark">@Html.DisplayFor(model => model.CardInfo.LastFourDigits)</td>
+                        <td class="text-to-dark">@Html.DisplayFor(model => model.CardInfo.Type)</td>
+                        <td class="text-to-dark">@Html.DisplayFor(model => model.CardInfo.ExpirationDate)</td>
                     }
                 }
             </tr>
@@ -143,4 +143,4 @@
     </div>
 </div>
 
-
+<script src="~/js/site.js" asp-append-version="true"></script>
