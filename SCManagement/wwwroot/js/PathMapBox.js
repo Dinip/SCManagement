@@ -18,15 +18,11 @@ const btnSave = document.getElementById('save-button');
 const ev = document.getElementById("ev");
 const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
 
-
-//var response = "";
-var newCoords = "";
-var profile = "";
+let newCoords = null;
+let profile = "";
 
 btnSave.onclick = function () {
-    console.log(newCoords);
-
-    if (newCoords != "") {
+    if (newCoords != null) {
         ev.value = newCoords;
         btnSave.classList.add("d-none");
     }
@@ -124,12 +120,15 @@ function updateRoute() {
 
     const lastFeature = data.features.length - 1;
     const coords = data.features[lastFeature].geometry.coordinates;
+    if (coords.length < 2) return;
     data.features[0].geometry.coordinates = [coords];
     // Format the coordinates
     newCoords = coords.join(';');
     // Set the radius for each coordinate pair to 50 meters
     const radius = coords.map(() => 50);
     getMatch(newCoords, radius, profile);
+
+
 }
 
 // Make a Map Matching request
@@ -148,6 +147,8 @@ async function getMatch(coordinates, radius, profile) {
         alert(
             `${response.code} - ${response.message}.\n\nFor more information: https://docs.mapbox.com/api/navigation/map-matching/#map-matching-api-errors`
         );
+        removeRoute();
+        draw.deleteAll();
         return;
     }
     const coords = response.matchings[0].geometry;
@@ -236,17 +237,18 @@ function addRoute(coords) {
                 'line-opacity': 0.8
             }
         });
-
-
-
-
     }
 }
 
 // If the user clicks the delete draw button, remove the layer if it exists
 function removeRoute() {
-    if (!map.getSource('trace')) return;
+    if (!map.getSource('trace')) {
+        newCoords = null;
+        return;
+    } 
     map.removeLayer('tracee');
+    map.removeSource('tracee');
     map.removeSource('trace');
+    newCoords = null;
 
 }

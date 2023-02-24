@@ -32,8 +32,6 @@ map.on('load', () => {
     // Listen for the `geocoder.input` event that is triggered when a user
     // makes a selection
     geocoder.on('result', (event) => {
-        //var address2 = JSON.stringify(event.result, null, 2);
-        //console.log(address2);
         address = event.result;
         
     });

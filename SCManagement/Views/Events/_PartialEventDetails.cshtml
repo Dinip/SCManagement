@@ -61,13 +61,6 @@
             @Html.DisplayFor(model => model.HaveRoute)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Route)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Route)
-@*            <input asp-for="Route" type="hidden" class="form-control" id="path" value="@Model.Route"/>
-*@        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxEventEnrolls)
         </dt>
         <dd class="col-sm-10">
@@ -86,10 +79,9 @@
             @Html.DisplayFor(model => model.EventResultType)
         </dd>
 
-        <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>Ver Caminho</a>
-
-        
-
+        @if(Model.Route != null){
+            <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>Ver Caminho</a>
+        }
 
         @*Botao para Inscrever ou pagar inscrição*@
         @if (ViewBag.IsEnrolled)

@@ -1,7 +1,5 @@
 ﻿
-
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
-
 
 const map = new mapboxgl.Map({
     container: 'map', // Specify the container ID
@@ -55,7 +53,6 @@ async function getMatch(coordinates) {
         { method: 'GET' }
     );
     response = await query.json();
-    console.log(response);
     // Handle errors
     if (response.code !== 'Ok') {
         alert(
