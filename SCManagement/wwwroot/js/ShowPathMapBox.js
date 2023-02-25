@@ -1,24 +1,23 @@
 ﻿
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
 
+
+const path = document.getElementById("path");
+
+let coordsString = path.value;
+let coordsArrayString = coordsString.split(';');
+let coodrsArray = coordsArrayString.map(coord => {
+    const [longitude, latitude] = coord.split(',');
+    return [parseFloat(longitude), parseFloat(latitude)];
+});
+
+
 const map = new mapboxgl.Map({
     container: 'map', // Specify the container ID
     style: 'mapbox://styles/mapbox/streets-v12', // Specify which map style to use
-    center: [-8.8926, 38.5243], // Specify the starting position
-    zoom: 14.5 // Specify the starting zoom
+    center: [coodrsArray[0][0], coodrsArray[0][1]], // Specify the starting position
+    zoom: 12 // Specify the starting zoom
 });
-
-const layerList = document.getElementById('menu');
-const inputs = layerList.getElementsByTagName('input');
-const path = document.getElementById("path");
-
-
-for (const input of inputs) {
-    input.onclick = (layer) => {
-        const layerId = layer.target.id;
-        map.setStyle('mapbox://styles/mapbox/' + layerId);
-    };
-}
 
 
 map.on('load', function () {
@@ -31,16 +30,12 @@ map.on('load', function () {
 });
 
 
+
+
 // Make a Map Matching request
 async function getMatch(coordinates) {
     const profile = 'walking';
-    const coordsString = coordinates;
-    const coordsArrayString = coordsString.split(';');
-    const coodrsArray = coordsArrayString.map(coord => {
-        const [longitude, latitude] = coord.split(',');
-        return [parseFloat(longitude), parseFloat(latitude)];
-    });
-
+    
     // Set the radius for each coordinate pair to 50 meters
     const radius = coodrsArray.map(() => 50);
 
@@ -55,9 +50,22 @@ async function getMatch(coordinates) {
     response = await query.json();
     // Handle errors
     if (response.code !== 'Ok') {
-        alert(
-            `${response.code} - ${response.message}.\n\nFor more information: https://docs.mapbox.com/api/navigation/map-matching/#map-matching-api-errors`
-        );
+        if (response.code == "NoMatch") {
+            errorMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
+            alert(errorMessage);
+        } else if (response.code == "NoSegment") {
+            errorMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
+            alert(errorMessage);
+        } else if (response.code == "TooManyCoordinates") {
+            errorMessage = "There are more than 100 points in the request."
+            alert(errorMessage);
+        } else if (response.code == "ProfileNotFound") {
+            errorMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
+            alert(errorMessage);
+        } else if (response.code == "InvalidInput") {
+            errorMessage = "message will hold an explanation of the invalid input.";
+            alert(errorMessage);
+        }    
         return;
     }
     const coords = response.matchings[0].geometry;

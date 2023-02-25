@@ -3,7 +3,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM
 
 const map = new mapboxgl.Map({
     container: 'map', // Specify the container ID
-    style: 'mapbox://styles/mapbox/streets-v12', // Specify which map style to use
+    style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
     center: [-8.8926, 38.5243], // Specify the starting position
     zoom: 14.5 // Specify the starting zoom
 });
@@ -12,14 +12,24 @@ map.on('load', () => {
     map.resize();
 });
 
-const layerList = document.getElementById('menu');
-const inputs = layerList.getElementsByTagName('input');
+
 const btnSave = document.getElementById('save-button');
 const ev = document.getElementById("ev");
 const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
 
+let errorMessage = "";
 let newCoords = null;
 let profile = "";
+
+
+const geocoder = new MapboxGeocoder({
+    accessToken: mapboxgl.accessToken,
+    mapboxgl: mapboxgl,
+    marker: false,
+    placeholder: 'Digite um endereço ou localização'
+});
+
+map.addControl(geocoder, 'top-left');
 
 btnSave.onclick = function () {
     if (newCoords != null) {
@@ -28,12 +38,6 @@ btnSave.onclick = function () {
     }
 }
 
-for (const input of inputs) {
-    input.onclick = (layer) => {
-        const layerId = layer.target.id;
-        map.setStyle('mapbox://styles/mapbox/' + layerId);
-    };
-}
 
 let draw = new MapboxDraw({
     // Instead of showing all the draw tools, show only the line string and delete tools
@@ -127,8 +131,6 @@ function updateRoute() {
     // Set the radius for each coordinate pair to 50 meters
     const radius = coords.map(() => 50);
     getMatch(newCoords, radius, profile);
-
-
 }
 
 // Make a Map Matching request
@@ -144,9 +146,22 @@ async function getMatch(coordinates, radius, profile) {
 
     // Handle errors
     if (response.code !== 'Ok') {
-        alert(
-            `${response.code} - ${response.message}.\n\nFor more information: https://docs.mapbox.com/api/navigation/map-matching/#map-matching-api-errors`
-        );
+        if (response.code == "NoMatch") {
+            errorMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
+            alert(errorMessage);
+        } else if (response.code == "NoSegment") {
+            errorMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
+            alert(errorMessage);
+        } else if (response.code == "TooManyCoordinates") {
+            errorMessage = "There are more than 100 points in the request."
+            alert(errorMessage);
+        } else if (response.code == "ProfileNotFound") {
+            errorMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
+            alert(errorMessage);
+        } else if (response.code == "InvalidInput") {
+            errorMessage = "message will hold an explanation of the invalid input.";
+            alert(errorMessage);
+        }    
         removeRoute();
         draw.deleteAll();
         return;
@@ -250,5 +265,4 @@ function removeRoute() {
     map.removeSource('tracee');
     map.removeSource('trace');
     newCoords = null;
-
 }

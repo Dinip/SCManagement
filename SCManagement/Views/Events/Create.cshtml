@@ -8,6 +8,17 @@
 <link rel="stylesheet"
       href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.0/mapbox-gl-draw.css"
       type="text/css" />
+<!-- Import Mapbox GL JS  -->
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
+      rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+      type="text/css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin="" />
 
 
 @{
@@ -34,7 +45,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()"/>
+                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,8 +56,8 @@
             <div class="form-group">
                 <label class="control-label">Evento de 1 dia</label>
                 @*Criar CheckBox input*@
-                <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()"/>
-                
+                <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
+
             </div>
             <div class="form-group">
                 <label asp-for="Details" class="control-label"></label>
@@ -80,7 +91,7 @@
                 <input asp-for="Route" type="hidden" class="form-control" id="ev" />
             </div>
 
-            
+
             <div class="form-group">
                 <label asp-for="EventResultType" class="control-label"></label>
                 <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
@@ -93,27 +104,15 @@
             <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
                 <div class="card-body">
                     <div id='map'></div>
-                    <div id="menu">
-                        <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
-                        <label for="satellite-streets-v12">satellite streets</label>
-                        <input id="light-v11" type="radio" name="rtoggle" value="light">
-                        <label for="light-v11">light</label>
-                        <input id="dark-v11" type="radio" name="rtoggle" value="dark">
-                        <label for="dark-v11">dark</label>
-                        <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
-                        <label for="streets-v12">streets</label>
-                        <input id="outdoors-v12" type="radio" name="rtoggle" value="outdoors">
-                        <label for="outdoors-v12">outdoors</label>
-                    </div>
                     <div id="save">
                         <button type="button" id="save-button">Save</button>
-                    </div> 
+                    </div>
                 </div>
             </div>
 
-            
 
-            
+
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -126,7 +125,9 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
 }
 
@@ -134,7 +135,6 @@
     <script src="~/js/PathMapBox.js" asp-append-version="true"></script>
 
     <style>
-
         #map {
             position: absolute;
             top: 0;
@@ -149,13 +149,6 @@
             height: 100vh;
         }
 
-        #menu {
-            position: absolute;
-            background: #efefef;
-            padding: 10px;
-            font-family: 'Open Sans', sans-serif;
-        }
-
         #save {
             position: absolute;
             background: #efefef;
@@ -166,8 +159,8 @@
         }
     </style>
 
- 
-<script>
+
+    <script>
         function ApplySameDate() {
             var startDateTime = document.getElementById("startDateTime");
             var endDateTime = document.getElementById("endDateTime");
@@ -175,25 +168,24 @@
             if (startDateTime.value != "") {
                 if (startDateTime.value == endDateTime.value) {
                     sameDay.checked = true;
-                }else{
+                } else {
                     endDateTime.value = startDateTime.value;
                     sameDay.checked = true;
                 }
-            }else{
+            } else {
                 sameDay.checked = false;
             }
         }
 
-        function HaveDiferentDate()
-        {
+        function HaveDiferentDate() {
             var startDateTime = document.getElementById("startDateTime");
             var endDateTime = document.getElementById("endDateTime");
             var sameDay = document.getElementById("SameDay");
             if (startDateTime.value == endDateTime.value) {
                 sameDay.checked = true;
-            }else{
+            } else {
                 sameDay.checked = false;
             }
         }
 
-</script>
+    </script>
