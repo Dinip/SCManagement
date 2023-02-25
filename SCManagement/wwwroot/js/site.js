@@ -39,9 +39,9 @@ function setTheme(theme) {
         element.classList.remove("navbar-light");
 
         element.classList.add("bg-dark");
-
-        noClubImg.src = "../img/NoClubWhite.png";
-
+        if (noClubImg) {
+            noClubImg.src = "../img/NoClubWhite.png";
+        }
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].classList.add("bg-dark");
         }
@@ -84,9 +84,9 @@ function setTheme(theme) {
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].classList.remove("bg-dark");
         }
-
-        noClubImg.src = "../img/NoClubBlack.png";
-
+        if (noClubImg) {
+            noClubImg.src = "../img/NoClubBlack.png";
+        }
         element.classList.add("bg-white");
 
         for (let i = 0; i < texts.length; i++) {
