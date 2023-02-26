@@ -13,9 +13,6 @@
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
 
 
-
-
-      
 <input type="hidden" class="form-control" id="path" value="@Model.Route"/>
 
 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
@@ -23,6 +20,12 @@
         <div id='map'></div>
     </div>
 </div>
+
+<p>A distancia total é de: <span id="tDistance"></span>km</p>
+<p>A maior elevação é de: <span id="hElevation"></span>m</p>
+<p>A menor elevação é de: <span id="lElevation"></span>m</p>
+<p>Subida Total(d+): <span id="dMore"></span>m</p>
+<p>Descida Total(d-): <span id="dLess"></span>m</p>
 
 
 <script src="https://unpkg.com/turf/turf"></script>

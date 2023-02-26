@@ -3,6 +3,12 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM
 
 
 const path = document.getElementById("path");
+const hElevation = document.getElementById("hElevation");
+const lElevation = document.getElementById("lElevation");
+const tDistance = document.getElementById("tDistance");
+const dMore = document.getElementById("dMore");
+const dLess = document.getElementById("dLess");
+
 
 let coordsString = path.value;
 let coordsArrayString = coordsString.split(';');
@@ -10,6 +16,13 @@ let coodrsArray = coordsArrayString.map(coord => {
     const [longitude, latitude] = coord.split(',');
     return [parseFloat(longitude), parseFloat(latitude)];
 });
+
+
+let highestElevation = -Infinity;
+let lowestElevation = Infinity;
+let totalAscent = 0;
+let totalDescent = 0;
+let prevElevation;
 
 
 const map = new mapboxgl.Map({
@@ -33,15 +46,13 @@ map.on('load', function () {
 // convert the coordinates into an object of type LineString from Turf.js
 //Get total Distance in Path
 let lineString = turf.lineString(coodrsArray);
-let length = turf.lineDistance(lineString, 'meters');
+let length = turf.lineDistance(lineString, 'kilometers');
 lineString.properties.distance = length
-console.log(lineString.properties.distance)
+tDistance.textContent = lineString.properties.distance.toFixed(2);;
 
 
 //Get the max and min elevation in a path
 async function getElevation(coordsArray) {
-    let highestElevation = -Infinity;
-    let lowestElevation = Infinity;
 
     for (let i = 0; i < coordsArray.length; i++) {
         // Make the API request for each coordinate.
@@ -67,16 +78,27 @@ async function getElevation(coordsArray) {
         if (lowestCoordElevation < lowestElevation) {
             lowestElevation = lowestCoordElevation;
         }
+
+        if (prevElevation !== undefined) {
+            const elevationDiff = highestCoordElevation - prevElevation;
+            if (elevationDiff > 0) {
+                totalAscent += elevationDiff;
+            } else {
+                totalDescent -= elevationDiff;
+            }
+        }
+        prevElevation = highestCoordElevation;
+ 
     }
 
-    console.log('Highest elevation:', highestElevation);
-    console.log('Lowest elevation:', lowestElevation);
+    hElevation.textContent = highestElevation;
+    lElevation.textContent = lowestElevation;
+    dMore.textContent = totalAscent;
+    dLess.textContent = totalDescent;
+   
 }
 
-
 getElevation(coodrsArray);
-
-
 
 
 // Make a Map Matching request
