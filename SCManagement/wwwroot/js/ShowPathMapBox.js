@@ -11,6 +11,7 @@ let coodrsArray = coordsArrayString.map(coord => {
     return [parseFloat(longitude), parseFloat(latitude)];
 });
 
+
 const map = new mapboxgl.Map({
     container: 'map', // Specify the container ID
     style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
@@ -29,17 +30,59 @@ map.on('load', function () {
 });
 
 
-// converter as coordenadas em um objeto do tipo LineString do Turf.js
+// convert the coordinates into an object of type LineString from Turf.js
+//Get total Distance in Path
 let lineString = turf.lineString(coodrsArray);
 let length = turf.lineDistance(lineString, 'meters');
 lineString.properties.distance = length
 console.log(lineString.properties.distance)
 
 
+//Get the max and min elevation in a path
+async function getElevation(coordsArray) {
+    let highestElevation = -Infinity;
+    let lowestElevation = Infinity;
+
+    for (let i = 0; i < coordsArray.length; i++) {
+        // Make the API request for each coordinate.
+        const query = await fetch(
+            `https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/${coordsArray[i][0]},${coordsArray[i][1]}.json?layers=contour&limit=50&access_token=${mapboxgl.accessToken}`,
+            { method: 'GET' }
+        );
+        if (query.status !== 200) continue;
+        const data = await query.json();
+
+        // Get all the returned features.
+        const allFeatures = data.features;
+        // For each returned feature, add elevation data to the elevations array.
+        const elevations = allFeatures.map((feature) => feature.properties.ele);
+        // Find the largest and smallest elevation in the elevations array.
+        const highestCoordElevation = Math.max(...elevations);
+        const lowestCoordElevation = Math.min(...elevations);
+
+        // Update the highest and lowest elevation variables if necessary.
+        if (highestCoordElevation > highestElevation) {
+            highestElevation = highestCoordElevation;
+        }
+        if (lowestCoordElevation < lowestElevation) {
+            lowestElevation = lowestCoordElevation;
+        }
+    }
+
+    console.log('Highest elevation:', highestElevation);
+    console.log('Lowest elevation:', lowestElevation);
+}
+
+
+getElevation(coodrsArray);
+
+
+
+
 // Make a Map Matching request
 async function getMatch(coordinates) {
     const profile = 'walking';
-    
+
     // Set the radius for each coordinate pair to 50 meters
     const radius = coodrsArray.map(() => 50);
 
@@ -69,7 +112,7 @@ async function getMatch(coordinates) {
         } else if (response.code == "InvalidInput") {
             errorMessage = "message will hold an explanation of the invalid input.";
             alert(errorMessage);
-        }    
+        }
         return;
     }
     const coords = response.matchings[0].geometry;
@@ -81,7 +124,7 @@ async function getMatch(coordinates) {
 
 // Draw the Map Matching route as a new layer on the map
 function addRoute(coords) {
-    
+
     // If a route is already loaded, remove it
     if (map.getSource('route')) {
         map.removeLayer('route');
@@ -116,10 +159,12 @@ function addRoute(coords) {
 function AddMarkers(initialCoord, endCoord) {
     initialMarker = new mapboxgl.Marker({ color: 'green' })
         .setLngLat([initialCoord[0], initialCoord[1]])
+        .setPopup(new mapboxgl.Popup().setHTML('Inicio'))
         .addTo(map);
 
     endMarker = new mapboxgl.Marker({ color: 'red' })
         .setLngLat([endCoord[0], endCoord[1]])
+        .setPopup(new mapboxgl.Popup().setHTML('Fim'))
         .addTo(map);
 }
 

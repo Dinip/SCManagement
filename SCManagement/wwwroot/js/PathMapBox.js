@@ -285,10 +285,12 @@ function removeRoute() {
 function AddMarkers(initialCoord, endCoord) {
     initialMarker = new mapboxgl.Marker({ color: 'green' })
         .setLngLat([initialCoord[0], initialCoord[1]])
+        .setPopup(new mapboxgl.Popup().setHTML('Inicio'))
         .addTo(map);
 
     endMarker = new mapboxgl.Marker({ color: 'red' })
         .setLngLat([endCoord[0], endCoord[1]])
+        .setPopup(new mapboxgl.Popup().setHTML('Fim'))
         .addTo(map);
 }
 
