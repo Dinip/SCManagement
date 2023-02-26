@@ -50,6 +50,12 @@ app.MapControllerRoute(
     defaults: new { controller = "MyClub", action = "Index" });
 
 app.MapControllerRoute(
+    name: "showPath",
+    pattern: "Events/PathInfoMapBox",
+    defaults: new { controller = "Events", action = "PathInfoMapBox" });
+
+
+app.MapControllerRoute(
     name: "clubs",
     pattern: "Clubs/{id}",
     defaults: new { controller = "Clubs", action = "Index" },

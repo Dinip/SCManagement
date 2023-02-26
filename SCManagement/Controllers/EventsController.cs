@@ -391,10 +391,14 @@ namespace SCManagement.Controllers
             myEvent.UsersEnrooled.Remove(enrollToRemove);
             return 0;
         }
-        
+
+        [Route("Events/PathInfoMapBox")]
         public async Task<IActionResult> PathInfoMapBox(int id)
         {
             var ev = await _eventService.GetEvent(id);
+
+            if(ev == null) View("CustomError", "Error_NotFound");
+            if (ev.Route == null) return View("CustomError", "Error_NotFound");
             return View(ev);
         }
 
