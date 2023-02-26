@@ -395,7 +395,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> PathInfoMapBox(int id)
         {
             var ev = await _eventService.GetEvent(id);
-            return View("PathInfoMapBox", ev);
+            return View(ev);
         }
 
     }

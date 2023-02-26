@@ -19,7 +19,9 @@ const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
 
 let errorMessage = "";
 let newCoords = null;
-let profile = "";
+let initialMarker = null;
+let endMarker = null;
+
 
 
 const geocoder = new MapboxGeocoder({
@@ -116,6 +118,11 @@ map.on('draw.delete', removeRoute);
 function updateRoute() {
     const data = draw.getAll();
 
+    if (initialMarker != null && endMarker != null) {
+        initialMarker.remove();
+        endMarker.remove();
+    }
+
     btnSave.classList.remove("d-none");
 
     const profile = 'walking'; // Set the profile
@@ -161,7 +168,7 @@ async function getMatch(coordinates, radius, profile) {
         } else if (response.code == "InvalidInput") {
             errorMessage = "message will hold an explanation of the invalid input.";
             alert(errorMessage);
-        }    
+        }
         removeRoute();
         draw.deleteAll();
         return;
@@ -253,6 +260,8 @@ function addRoute(coords) {
             }
         });
     }
+    AddMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
+
 }
 
 // If the user clicks the delete draw button, remove the layer if it exists
@@ -260,9 +269,26 @@ function removeRoute() {
     if (!map.getSource('trace')) {
         newCoords = null;
         return;
-    } 
+    }
     map.removeLayer('tracee');
     map.removeSource('tracee');
     map.removeSource('trace');
+
+    if (initialMarker != null && endMarker != null) {
+        initialMarker.remove();
+        endMarker.remove();
+    }
+
     newCoords = null;
 }
+
+function AddMarkers(initialCoord, endCoord) {
+    initialMarker = new mapboxgl.Marker({ color: 'green' })
+        .setLngLat([initialCoord[0], initialCoord[1]])
+        .addTo(map);
+
+    endMarker = new mapboxgl.Marker({ color: 'red' })
+        .setLngLat([endCoord[0], endCoord[1]])
+        .addTo(map);
+}
+

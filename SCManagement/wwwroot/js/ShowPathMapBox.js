@@ -11,10 +11,9 @@ let coodrsArray = coordsArrayString.map(coord => {
     return [parseFloat(longitude), parseFloat(latitude)];
 });
 
-
 const map = new mapboxgl.Map({
     container: 'map', // Specify the container ID
-    style: 'mapbox://styles/mapbox/streets-v12', // Specify which map style to use
+    style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
     center: [coodrsArray[0][0], coodrsArray[0][1]], // Specify the starting position
     zoom: 12 // Specify the starting zoom
 });
@@ -30,6 +29,11 @@ map.on('load', function () {
 });
 
 
+// converter as coordenadas em um objeto do tipo LineString do Turf.js
+let lineString = turf.lineString(coodrsArray);
+let length = turf.lineDistance(lineString, 'meters');
+lineString.properties.distance = length
+console.log(lineString.properties.distance)
 
 
 // Make a Map Matching request
@@ -105,5 +109,17 @@ function addRoute(coords) {
             }
         });
     }
+    AddMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
+
+}
+
+function AddMarkers(initialCoord, endCoord) {
+    initialMarker = new mapboxgl.Marker({ color: 'green' })
+        .setLngLat([initialCoord[0], initialCoord[1]])
+        .addTo(map);
+
+    endMarker = new mapboxgl.Marker({ color: 'red' })
+        .setLngLat([endCoord[0], endCoord[1]])
+        .addTo(map);
 }
 
