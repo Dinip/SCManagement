@@ -40,8 +40,8 @@ namespace SCManagement.Controllers
             Console.WriteLine(verifyCode);
             Console.WriteLine(notification);
 
-            if (verifyCode != "admin123") return BadRequest(); //change to secret later
-
+            if (string.IsNullOrEmpty(verifyCode)) return BadRequest();
+            if (!(await _paymentService.ValidateWebhook(verifyCode))) return BadRequest();
 
             if (notification.type == "capture")
             {

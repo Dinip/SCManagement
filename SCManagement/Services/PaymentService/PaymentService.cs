@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
@@ -9,14 +8,55 @@ namespace SCManagement.Services.PaymentService
 {
     public class PaymentService : IPaymentService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
         public PaymentService(ApplicationDbContext context, IConfiguration configuration)
         {
             _context = context;
-            _httpClient = new HttpClient();
-            _httpClient.DefaultRequestHeaders.Add("AccountId", configuration["Easypay-SystemAccountId"]);
-            _httpClient.DefaultRequestHeaders.Add("ApiKey", configuration["Easypay-SystemAccountKey"]);
+            _configuration = configuration;
+        }
+
+        /// <summary>
+        /// Creates an http client with the correct api key/secret, based
+        /// on the clubId passed. If clubId is null, it assumes that should
+        /// use the system credentials (eg. subscribe to a club plan)
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns>HttpClient</returns>
+        private async Task<HttpClient> createHttpClient(int? clubId = null)
+        {
+            var client = new HttpClient();
+            if (clubId == null)
+            {
+                client.DefaultRequestHeaders.Add("AccountId", _configuration["Easypay-SystemAccountId"]);
+                client.DefaultRequestHeaders.Add("ApiKey", _configuration["Easypay-SystemAccountKey"]);
+            }
+            else
+            {
+                var club = await _context.ClubPaymentSettings.FirstAsync(c => c.ClubPaymentSettingsId == clubId);
+                client.DefaultRequestHeaders.Add("AccountId", club.AccountId);
+                client.DefaultRequestHeaders.Add("ApiKey", club.AccountKey);
+            }
+
+            return client;
+        }
+
+
+        /// <summary>
+        /// Validate a webhook request by checking if the secret
+        /// exists in the database (clients/club secret) or if it
+        /// belongs to the system, otherwise, reject the request
+        /// </summary>
+        /// <param name="secret"></param>
+        /// <returns></returns>
+        public async Task<bool> ValidateWebhook(string secret)
+        {
+            var settings = await _context.ClubPaymentSettings.FirstAsync(c => c.RequestSecret == secret);
+            if (settings != null) return true;
+
+            if (!string.IsNullOrEmpty(_configuration["Easypay-SystemSecret"])) return true;
+
+            return false;
         }
 
         /// <summary>
@@ -48,7 +88,8 @@ namespace SCManagement.Services.PaymentService
 
         private async Task<EasypayResponse?> SubscriptionApiRequest(Product product, User user, DateTime startTime)
         {
-            var result = await _httpClient.PostAsJsonAsync("https://api.test.easypay.pt/2.0/subscription", new
+            var client = await createHttpClient(product.ClubId);
+            var result = await client.PostAsJsonAsync("https://api.test.easypay.pt/2.0/subscription", new
             {
                 currency = "EUR",
                 value = product.Value,
@@ -80,7 +121,8 @@ namespace SCManagement.Services.PaymentService
 
         private async Task<EasypayResponse?> SinglePaymentApiRequest(Payment paymentInput, User user)
         {
-            var result = await _httpClient.PostAsJsonAsync("https://api.test.easypay.pt/2.0/single", new
+            var client = await createHttpClient(paymentInput.Product.ClubId);
+            var result = await client.PostAsJsonAsync("https://api.test.easypay.pt/2.0/single", new
             {
                 type = "sale",
                 currency = "EUR",
@@ -144,9 +186,10 @@ namespace SCManagement.Services.PaymentService
         //a info da entitade, verifica de quem é o produto (clube ou sistema) e
         //vai buscar as api keys do clube ou do sistema e define no httpclient
 
-        private async Task<EasypayResponse?> singlePaymentIdApiRequest(string id)
+        private async Task<EasypayResponse?> singlePaymentIdApiRequest(string id, int? clubId)
         {
-            var result = await _httpClient.GetAsync($"https://api.test.easypay.pt/2.0/single/{id}");
+            var client = await createHttpClient(clubId);
+            var result = await client.GetAsync($"https://api.test.easypay.pt/2.0/single/{id}");
 
             if (!result.IsSuccessStatusCode)
             {
@@ -158,9 +201,10 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
-        private async Task<EasypayResponse?> subscriptionPaymentIdApiRequest(string id)
+        private async Task<EasypayResponse?> subscriptionPaymentIdApiRequest(string id, int? clubId)
         {
-            var result = await _httpClient.GetAsync($"https://api.test.easypay.pt/2.0/subscription/{id}");
+            var client = await createHttpClient(clubId);
+            var result = await client.GetAsync($"https://api.test.easypay.pt/2.0/subscription/{id}");
 
             if (!result.IsSuccessStatusCode)
             {
@@ -172,9 +216,10 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
-        private async Task<bool> deleteSubscriptionId(string id)
+        private async Task<bool> deleteSubscriptionId(string id, int? clubId)
         {
-            var result = await _httpClient.DeleteAsync($"https://api.test.easypay.pt/2.0/subscription/{id}");
+            var client = await createHttpClient(clubId);
+            var result = await client.DeleteAsync($"https://api.test.easypay.pt/2.0/subscription/{id}");
 
             if (!result.IsSuccessStatusCode)
             {
@@ -185,7 +230,6 @@ namespace SCManagement.Services.PaymentService
 
             return true;
         }
-
 
         private string? buildCardInfo(EasypayResponse info)
         {
@@ -209,7 +253,7 @@ namespace SCManagement.Services.PaymentService
             var payment = await _context.Payment.Include(p => p.Product).FirstOrDefaultAsync(p => p.PaymentKey == data.id);
             if (payment == null) return;
 
-            var info = await singlePaymentIdApiRequest(data.id);
+            var info = await singlePaymentIdApiRequest(data.id, payment.Product.ClubId);
             if (info == null) return;
 
             if (info.payment_status != null) payment.PaymentStatus = Payment.ConvertStatus(info.payment_status);
@@ -285,7 +329,7 @@ namespace SCManagement.Services.PaymentService
             var subscription = await _context.Subscription.FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
             if (subscription == null) return;
 
-            var info = await subscriptionPaymentIdApiRequest(data.id);
+            var info = await subscriptionPaymentIdApiRequest(data.id, subscription.Product.ClubId);
             if (info == null) return;
 
             subscription.CardInfoData = buildCardInfo(info);
@@ -300,7 +344,7 @@ namespace SCManagement.Services.PaymentService
             var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
             if (subscription == null) return;
 
-            var info = await subscriptionPaymentIdApiRequest(data.id);
+            var info = await subscriptionPaymentIdApiRequest(data.id, subscription.Club.Id);
             if (info == null) return;
 
             var payment = await _context.Payment.Where(p => p.SubscriptionId == subscription.Id && p.PaymentStatus != PaymentStatus.Paid).FirstOrDefaultAsync();
@@ -399,7 +443,6 @@ namespace SCManagement.Services.PaymentService
             return sub;
         }
 
-
         public async Task<Subscription?> SetSubscriptionToAuto(int subId)
         {
             //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
@@ -435,12 +478,10 @@ namespace SCManagement.Services.PaymentService
 
         public async Task<Subscription?> CancelAutoSubscription(int subId)
         {
-            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
-
             var subscription = await _context.Subscription.Include(s => s.Product).Include(s => s.User).FirstOrDefaultAsync(s => s.Id == subId);
             if (subscription == null || string.IsNullOrEmpty(subscription.SubscriptionKey)) return null;
 
-            var success = await deleteSubscriptionId(subscription.SubscriptionKey!);
+            var success = await deleteSubscriptionId(subscription.SubscriptionKey!, subscription.Product.ClubId);
 
             if (!success) return null;
 
@@ -482,7 +523,7 @@ namespace SCManagement.Services.PaymentService
             //cancel easypay subscription
             if (!string.IsNullOrEmpty(subscription.SubscriptionKey))
             {
-                var success = await deleteSubscriptionId(subscription.SubscriptionKey!);
+                var success = await deleteSubscriptionId(subscription.SubscriptionKey!, subscription.Product.ClubId);
                 if (success)
                 {
                     subscription.AutoRenew = false;
@@ -518,10 +559,10 @@ namespace SCManagement.Services.PaymentService
             return;
         }
 
-
-        private async Task<bool> updateSubscription(string id, float newValue)
+        private async Task<bool> updateSubscription(string id, float newValue, int? clubId)
         {
-            var result = await _httpClient.PatchAsJsonAsync($"https://api.test.easypay.pt/2.0/subscription/{id}", new
+            var client = await createHttpClient(clubId);
+            var result = await client.PatchAsJsonAsync($"https://api.test.easypay.pt/2.0/subscription/{id}", new
             {
                 value = newValue
             });
@@ -535,7 +576,6 @@ namespace SCManagement.Services.PaymentService
 
             return true;
         }
-
 
         public async Task UpgradeClubPlan(int subId, int newPlanId)
         {
@@ -560,7 +600,7 @@ namespace SCManagement.Services.PaymentService
 
             if (subscription.AutoRenew)
             {
-                var res = await updateSubscription(subscription.SubscriptionKey, product.Value);
+                var res = await updateSubscription(subscription.SubscriptionKey, product.Value, product.ClubId);
                 if (!res)
                 {
                     throw new Exception("Error updating subscription value");
@@ -603,7 +643,6 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
-
         public async Task UpdateProductEvent(Event myEvent)
         {
             var oldProduct = await _context.Product.Where(p => p.OriginalId == myEvent.Id && p.ClubId == myEvent.ClubId && p.ProductType == ProductType.Event).FirstOrDefaultAsync();
@@ -636,7 +675,6 @@ namespace SCManagement.Services.PaymentService
 
             await _context.SaveChangesAsync();
         }
-
 
         public async Task<Payment?> CreateEventPayment(EventEnroll enroll)
         {
@@ -713,12 +751,12 @@ namespace SCManagement.Services.PaymentService
 
         private async Task<EasypayConfigResponse?> easypayConfigRequest(string id, string key)
         {
-            _httpClient.DefaultRequestHeaders.Remove("AccountId");
-            _httpClient.DefaultRequestHeaders.Remove("ApiKey");
-            _httpClient.DefaultRequestHeaders.Add("AccountId", id);
-            _httpClient.DefaultRequestHeaders.Add("ApiKey", key);
+            var client = new HttpClient();
 
-            var result = await _httpClient.GetAsync("https://api.test.easypay.pt/2.0/config");
+            client.DefaultRequestHeaders.Add("AccountId", id);
+            client.DefaultRequestHeaders.Add("ApiKey", key);
+
+            var result = await client.GetAsync("https://api.test.easypay.pt/2.0/config");
 
             if (!result.IsSuccessStatusCode)
             {
