@@ -4,6 +4,89 @@
 @{
     ViewData["Title"] = "Index";
 }
+<style>
+
+    #map {
+        position: absolute;
+        top: 76px;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        border-radius: 20px;
+        height: 100%;
+    }
+
+    .mapboxgl-canvas-container {
+        height: 100%;
+    }
+
+    .sidebar {
+        height: 100%;
+        width: 0;
+        position: fixed;
+        z-index: 5;
+        top: 76px;
+        left: 0;
+        background-color: white;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 60px;
+    }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.5s;
+        }
+
+            .sidebar a:hover {
+                color: #f1f1f1;
+            }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+    .openbtn {
+        font-size: 20px;
+        cursor: pointer;
+        height:80px;
+        width:60px;
+        background-color: #00639A;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        position:fixed;
+        top: 150px;
+        z-index:1;
+        left:-8px;
+        border-bottom-right-radius:10px;
+        border-top-right-radius: 10px;
+        transition: 0.5s;
+    }
+
+    footer{
+        display:none;
+    }
+
+    .popupCard{
+        font-size:14px;
+        margin-bottom:0 !important;
+        padding: 5px 15px;
+    }
+
+    .mapboxgl-popup-content{
+        padding: 5px !important;
+    }
+
+</style>
 
 <!-- Import Mapbox GL JS  -->
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
@@ -17,12 +100,9 @@
       integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
       crossorigin="" />
 
-<div class="container-fluid p-5" style="height:50%; align-self:center">
-    <h2>@StringLocalizer["Clubs List"]</h2>
-    <div class="row">
-        <div class="card card-to-dark col-xs-12 col-sm-12 col-md-4 me-2" style="min-height:400px;">
-            <div class="card-body" style="max-height:550px;">
-
+<div class="container-fluid" style="height:50%; align-self:center">
+        <div id="mySidebar" class="sidebar">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
                 <div class="input-group rounded">
                     <input type="search" class="form-control rounded" placeholder="@StringLocalizer["Search"]" aria-label="Search" aria-describedby="search-addon" />
                     <span class="input-group-text border-0" id="search-addon">
@@ -32,39 +112,36 @@
                 
                 @await Html.PartialAsync("_PartialSearchClub",Model)
 
-            </div>
         </div>
-        <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px;">
-            <div class="card-body">
-                <div id='map'></div>
-                <script src="~/js/Mapbox.js" asp-append-version="true"></script>
-            </div>
-        </div>
-    </div>
+        
+        <button id="openbtn" class="openbtn" onmouseover="openNav()"><i class="fa-solid fa-chevron-right"></i></button>
+        <div id='map' style="border-radius:0 !important;"></div>
 </div>
 
 
-<style>
 
-    #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        left: 0;
-        border-radius: 20px;
-        height: 100%
-    }
-
-    .mapboxgl-canvas-container {
-        height: 100vh;
-    }
-</style>
-
-
+<script src="~/js/Mapbox.js" asp-append-version="true"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+
+    function openNav() {
+        if(window.innerWidth <= 768){
+            document.getElementById("mySidebar").style.width = "100%"
+        }else{
+            document.getElementById("mySidebar").style.width = "600px"
+        }
+        
+        document.getElementById("mySidebar").style.paddingLeft = "30px"
+        document.getElementById("mySidebar").style.paddingRight = "30px"
+    }
+
+    function closeNav() {
+        document.getElementById("mySidebar").style.width = "0";
+        document.getElementById("mySidebar").style.paddingLeft = "0";
+        document.getElementById("mySidebar").style.paddingRight = "0";
+    }
+
     $(function () {
         $('input[type="search"]').on('input', function () {
             var term = $(this).val();

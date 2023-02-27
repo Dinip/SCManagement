@@ -60,10 +60,10 @@ function loadMap(userCoordinates, markersCoordinates) {
         map.resize();
         var coords = markersCoordinates;
         Object.keys(coords).forEach(function (key) {
-            new mapboxgl.Marker()
+            new mapboxgl.Marker({ color: "#00639A"})
                 .setLngLat([coords[key].coordinateX, coords[key].coordinateY])
                 .addTo(map)
-                .setPopup(new mapboxgl.Popup().setHTML('<h1>Clube ' + coords[key].name + '</h1>'))
+                .setPopup(new mapboxgl.Popup().setHTML('<h1 class="popupCard">' + coords[key].name + '</h1>'))
                 .on('click', function () {
                     map.flyTo({
                         center: [coords[key].coordinateX, coords[key].coordinateY],

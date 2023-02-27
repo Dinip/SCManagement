@@ -42,7 +42,8 @@
                             </div>
 
                             <div class="form-group mt-3">
-                                <select multiple required data-placeholder=@StringLocalizer["Choose modalities"] asp-for="ModalitiesIds" class="form-control chosen-select w-100" asp-items="ViewBag.Modalities"></select>
+                                <span>@StringLocalizer["Choose modalities"]:</span>
+                                <select multiple required data-placeholder=" " style="width: fit-content !important;" asp-for="ModalitiesIds" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
                                 <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                             </div>
 

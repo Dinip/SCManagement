@@ -7,9 +7,9 @@
         {
 
             <div class="card card-to-dark shadow-sm mt-2" id="@item.Id" onclick="flyToClub('@item.Address?.CoordinateX','@item.Address?.CoordinateY')">
-                <div class="card-body d-flex justify-content-between">
-                    <div class="col-4">
-                        <h3 style="font-size: 2vw;" class="text-to-dark">
+                <div class="card-body d-flex justify-content-between" style="margin-top:0 !important;">
+                    <div class="col-8">
+                        <h3 class="text-to-dark">
                             @Html.DisplayFor(modelItem => item.Name)
                         </h3>
                         <p style="white-space: nowrap;
@@ -17,10 +17,9 @@
                                         text-overflow: ellipsis;">
                             @Html.DisplayFor(modelItem => item.ClubTranslations.FirstOrDefault(c => c.Atribute == "About").Value)
                         </p>
-                        <p>
-                            
-                            <a asp-route-id="@item.Id" asp-action="Details">@StringLocalizer["Details"]</a>
-                        </p>
+                        <div>
+                            <a asp-route-id="@item.Id" style="font-size:20px; padding-left:0; width:fit-content" asp-action="Details">@StringLocalizer["Details"]</a>
+                        </div>
                     </div>
                     <div class="col-4 d-flex justify-content-center align-items-center">
                         <img src="@(item?.Photography?.Uri ?? "https://cdn.scmanagement.me/public/user_placeholder.png")" crossorigin="anonymous" class="rounded-circle" style="height: 100px; object-fit:cover; aspect-ratio:1;" />

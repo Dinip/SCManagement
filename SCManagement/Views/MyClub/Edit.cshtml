@@ -9,20 +9,43 @@
 
 <style>
     .selected {
-        background-color: red;
+        background-color: #00639A !important;
+        color:white;
+        border: 1px solid black;
+    }
+
+    .lang-btn-about{
+        background-color:white;
+        border-bottom:none !important;
+        width:60px;
+        border: 1px solid black;
+    }
+
+    .lang-btn-termsandconditions{
+        background-color: white;
+        border-bottom: none !important;
+        width: 60px;
+        border: 1px solid black;
+    }
+
+    .translatebtn{
+        color: white;
+        border-radius: 2px;
+        background-color: #00639A;
+        border: 1px solid black;
     }
 </style>
 
 
 <div class="container-fluid row justify-content-evenly">
-    <div id="card1" class="col-md-3 col-8 card-to-dark card mt-5">
-        <div class="card-body pt-5 p-3 d-flex align-content-center justify-content-center" style="max-height: 500px;">
-            <div style="text-align:center;">
+    <div id="card1" class="col-md-3 col-8 card-to-dark card mt-5" style="height:fit-content">
+        <div class="card-body pt-5 p-3 d-flex align-content-center justify-content-center">
+            <div style="text-align:center; height:fit-content;">
                 <img id="profilePicture"
                      src="@Model.PhotoUri"
                      class="rounded-circle row"
                      style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
-                <div class="row d-flex mt-5">
+                <div class="row d-flex mt-5 mb-4">
                     <i id="btnRemoveImage"
                        type="button"
                        style="color:red"
@@ -50,14 +73,19 @@
                 <div class="About">
                     <label class="control-label">@StringLocalizer["About Us"]</label>
                     <div class="language-select">
+                        
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
-                                <input type="button" class="lang-btn lang-btn-about" id="btn-about-@lang.Name" onclick="toggleLang('@lang.Name','about')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
+                            <input type="button" class="lang-btn lang-btn-about" id="btn-about-@lang.Name" onclick="toggleLang('@lang.Name','about')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
+                            
                         }
-                        <input type="button" class="lang-btn" onclick="translateFn('about')" value="trans" />
+                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('about')" value="translate" />
 
                     </div>
-                    @Html.EditorFor(x => x.ClubTranslationsAbout)
+                    <div style="margin-left:11px; z-index:0;">
+                        @Html.EditorFor(x => x.ClubTranslationsAbout)
+                    </div>
+                    
                 </div>
 
                 <hr style="margin-bottom:20px;" />
@@ -68,14 +96,16 @@
                         {
                             <input type="button" class="lang-btn lang-btn-termsandconditions" id="btn-termsandconditions-@lang.Name" onclick="toggleLang('@lang.Name','termsandconditions')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
                         }
-                        <input type="button" class="lang-btn" onclick="translateFn('termsandconditions')" value="trans" />
+                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('termsandconditions')" value="translate" />
 
                     </div>
-                    @Html.EditorFor(x => x.ClubTranslationsTerms)
+                    <div style="margin-left:11px;">
+                        @Html.EditorFor(x => x.ClubTranslationsTerms)
+                    </div>
                 </div>
 
                 <hr style="margin-bottom:20px;" />
-                <div class="form-group w-100" style="margin-bottom:20px;">
+                <div class="form-group" style="margin-bottom:20px; width:fit-content;">
                     <label class="control-label">@StringLocalizer["Choose modalities"]</label>
                     <select required multiple asp-for="ModalitiesIds" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
@@ -96,10 +126,7 @@
 
                 @if (Model.Address != null)
                 {
-                    <p>@Model.Address.Street</p>
-                    <p>@Model.Address.City</p>
-                    <p>@Model.Address.Country</p>
-                    <p>@Model.Address.ZipCode</p>
+                    <span>@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
                 }
 
                 <div class="row form-floating" style="margin-bottom:20px;">
