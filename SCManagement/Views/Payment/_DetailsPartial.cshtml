@@ -77,28 +77,28 @@
         <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.Product)</dt>
         <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.Product.Name)</dd>
 
-        <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.Value)</dt>
-        <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.Value)</dd>
+        <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.Value)</dt>
+        <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.Value)</dd>
 
         <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.PaymentMethod)</dt>
         <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.PaymentMethod)</dd>
 
-        <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.PaymentStatus)</dt>
-                <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.PaymentStatus)</dd>
+        <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.PaymentStatus)</dt>
+        <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.PaymentStatus)</dd>
 
         <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.CreatedAt)</dt>
         <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.CreatedAt)</dd>
 
-        <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.PayedAt)</dt>
-        <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.PayedAt)</dd>
+        <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.PayedAt)</dt>
+        <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.PayedAt)</dd>
 
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
                 {
             <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.MbEntity)</dt>
             <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.MbEntity)</dd>
 
-            <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.MbReference)</dt>
-            <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.MbReference)</dd>
+            <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.MbReference)</dt>
+            <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.MbReference)</dd>
                 }
                 @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
                 {
@@ -115,14 +115,14 @@
                     }
                     else
                     {
-                        <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)</dt>
-                <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.CardInfo.LastFourDigits)</dd>
+                        <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)</dt>
+                <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.CardInfo.LastFourDigits)</dd>
 
                 <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.Type)</dt>
                 <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.CardInfo.Type)</dd>
 
-                <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)</dt>
-                <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.CardInfo.ExpirationDate)</dd>
+                <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)</dt>
+                <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.CardInfo.ExpirationDate)</dd>
                     }
                 }
     </dl>
