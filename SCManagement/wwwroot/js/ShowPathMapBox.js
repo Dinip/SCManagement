@@ -64,11 +64,6 @@ lineSegments.forEach(segment => {
 });
 
 
-
-
-
-
-
 //Get the max and min elevation in a path
 async function getElevation(coordsArray) {
     
@@ -196,11 +191,11 @@ function addRoute(coords) {
             }
         });
     }
-    AddMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
+    addMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
 
 }
 
-function AddMarkers(initialCoord, endCoord) {
+function addMarkers(initialCoord, endCoord) {
     initialMarker = new mapboxgl.Marker({ color: 'green' })
         .setLngLat([initialCoord[0], initialCoord[1]])
         .setPopup(new mapboxgl.Popup().setHTML('Inicio'))

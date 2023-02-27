@@ -44,7 +44,7 @@ if (path.value !== 'null') {
         response = await query.json();
         // Handle errors
         if (response.code !== 'Ok') {
-            ErrorMessage(response.code);
+            errorMessage(response.code);
             return;
         }
         const coords = response.matchings[0].geometry;
@@ -207,7 +207,7 @@ async function getMatch(coordinates, radius, profile) {
 
     // Handle errors
     if (response.code !== 'Ok') {
-        ErrorMessage(response.code);
+        errorMessage(response.code);
         removeRoute();
         draw.deleteAll();
         return;
@@ -299,7 +299,7 @@ function addRoute(coords) {
             }
         });
     }
-    AddMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
+    addMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
 
 }
 
@@ -324,7 +324,7 @@ function removeRoute() {
 
 }
 
-function AddMarkers(initialCoord, endCoord) {
+function addMarkers(initialCoord, endCoord) {
     initialMarker = new mapboxgl.Marker({ color: 'green' })
         .setLngLat([initialCoord[0], initialCoord[1]])
         .setPopup(new mapboxgl.Popup().setHTML('Inicio'))
@@ -336,7 +336,7 @@ function AddMarkers(initialCoord, endCoord) {
         .addTo(map);
 }
 
-function ErrorMessage(codeMessage) {
+function errorMessage(codeMessage) {
     if (codeMessage == "NoMatch") {
         errorMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
         alert(errorMessage);
