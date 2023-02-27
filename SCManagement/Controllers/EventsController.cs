@@ -139,7 +139,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route, EnroolLimitDate, EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route, EnroolLimitDate, EventResultType, MaxEventEnrolls, AddressByPath")] EventModel myEvent)
         {
             if (ModelState.IsValid)
             {
@@ -170,7 +170,8 @@ namespace SCManagement.Controllers
                     EventResultType = myEvent.EventResultType,
                     EnroolLimitDate = myEvent.EnroolLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
-                    ClubId = role.ClubId
+                    ClubId = role.ClubId,
+                    AddressByPath = myEvent.AddressByPath
                 });
 
                 return RedirectToAction(nameof(Index));
@@ -198,6 +199,8 @@ namespace SCManagement.Controllers
             public string? Route { get; set; }
             public Event.ResultType EventResultType { get; set; }
             public int MaxEventEnrolls { get; set; }
+            public string? AddressByPath { get; set; }
+
 
         }
 
@@ -233,7 +236,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnroolLimitDate,EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnroolLimitDate,EventResultType, MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -264,6 +267,7 @@ namespace SCManagement.Controllers
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnroolLimitDate = myEvent.EnroolLimitDate;
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
+                eventToUpdate.AddressByPath = myEvent.AddressByPath;
 
 
                 await _eventService.UpdateEvent(eventToUpdate);

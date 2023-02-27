@@ -47,5 +47,7 @@ namespace SCManagement.Models
             Position = 2,
             Score = 3
         }
+
+        public string? AddressByPath { get; set; }
     }
 }

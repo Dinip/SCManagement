@@ -70,9 +70,10 @@ if (path.value !== 'null') {
 
 const btnSave = document.getElementById('save-button');
 const ev = document.getElementById("ev");
+const addressByPath = document.getElementById("AddressByPath");
 const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
 
-let errorMessage = "";
+let erMessage = "";
 let newCoords = null;
 let initialMarker = null;
 let endMarker = null;
@@ -300,7 +301,7 @@ function addRoute(coords) {
         });
     }
     addMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
-
+    getCityAndCountryFromCoordinates(coords.coordinates[0][1], coords.coordinates[0][0], mapboxgl.accessToken)
 }
 
 // If the user clicks the delete draw button, remove the layer if it exists
@@ -321,6 +322,7 @@ function removeRoute() {
     btnSave.classList.remove("d-none");
     newCoords = null;
     ev.value = newCoords;
+    addressByPath.value = null;
 
 }
 
@@ -338,19 +340,34 @@ function addMarkers(initialCoord, endCoord) {
 
 function errorMessage(codeMessage) {
     if (codeMessage == "NoMatch") {
-        errorMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
-        alert(errorMessage);
+        erMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
+        alert(erMessage);
     } else if (codeMessage == "NoSegment") {
-        errorMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
-        alert(errorMessage);
+        erMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
+        alert(erMessage);
     } else if (codeMessage == "TooManyCoordinates") {
-        errorMessage = "There are more than 100 points in the request."
-        alert(errorMessage);
+        erMessage = "There are more than 100 points in the request."
+        alert(erMessage);
     } else if (codeMessage == "ProfileNotFound") {
-        errorMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
-        alert(errorMessage);
+        erMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
+        alert(erMessage);
     } else if (codeMessage == "InvalidInput") {
-        errorMessage = "message will hold an explanation of the invalid input.";
-        alert(errorMessage);
+        erMessage = "message will hold an explanation of the invalid input.";
+        alert(erMessage);
     }
 }
+
+
+async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken) {
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=address&access_token=${accessToken}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const address = data.features[0].place_name;
+        addressByPath.value = address;
+    } catch (error) {
+        alert(error);
+    }
+}
+

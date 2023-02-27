@@ -78,6 +78,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EventResultType)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.AddressByPath)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.AddressByPath)
+        </dd>
 
         @if(Model.Route != null){
             <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>Ver Caminho</a>
