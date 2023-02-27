@@ -1,124 +1,143 @@
 ﻿@model SCManagement.Services.PaymentService.Models.Subscription
 
+
+<style>
+    dt {
+        border: 1px solid gainsboro;
+        padding: 3px;
+    }
+
+    dd {
+        border: 1px solid gainsboro;
+        margin-bottom: 0;
+        padding: 3px;
+    }
+
+</style>
 <div>
-    <h4>Subscription for @Model.Product.Name</h4>
+<h4 class="text-to-dark">Subscription</h4>
+<hr />
 
-    <div style="color:red;" id="error"></div>
+<div style="color:red;" id="error"></div>
 
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.StartTime)
+<dl class="row">
+    <dt class="col-sm-4 dlBg text-to-dark">
+        @Html.DisplayNameFor(model => model.StartTime)
+    </dt>
+        <dd class="col-sm-8 dlBg text-to-dark">
+        @Html.DisplayFor(model => model.StartTime)
+    </dd>
+        <dt class="col-sm-4 text-to-dark">
+        @Html.DisplayNameFor(model => model.NextTime)
+    </dt>
+        <dd class="col-sm-8 text-to-dark">
+        @Html.DisplayFor(model => model.NextTime)
+    </dd>
+    <dt class="col-sm-4 dlBg text-to-dark">
+        @Html.DisplayNameFor(model => model.EndTime)
+    </dt>
+        <dd class="col-sm-8 dlBg text-to-dark">
+        @Html.DisplayFor(model => model.EndTime)
+    </dd>
+        <dt class="col-sm-4 text-to-dark">
+        @Html.DisplayNameFor(model => model.Value)
+    </dt>
+        <dd class="col-sm-8 text-to-dark">
+        @Html.DisplayFor(model => model.Value)
+    </dd>
+        <dt class="col-sm-4 dlBg text-to-dark">
+        @Html.DisplayNameFor(model => model.Status)
+    </dt>
+        <dd class="col-sm-8 dlBg text-to-dark">
+        @Html.DisplayFor(model => model.Status)
+    </dd>
+        <dt class="col-sm-4 text-to-dark">
+        @Html.DisplayNameFor(model => model.Product)
+    </dt>
+        <dd class="col-sm-8 text-to-dark">
+        @Html.DisplayFor(model => model.Product.Name)
+    </dd>
+        <dt class="col-sm-4 dlBg text-to-dark">
+        @Html.DisplayNameFor(model => model.AutoRenew)
+    </dt>
+        <dd class="col-sm-8 dlBg text-to-dark">
+        @Html.DisplayFor(model => model.AutoRenew)
+    </dd>
+    <dt class="col-sm-4 text-to-dark">
+        @Html.DisplayNameFor(model => model.Frequency)
+    </dt>
+        <dd class="col-sm-8 text-to-dark">
+        @Html.DisplayFor(model => model.Frequency)
+    </dd>
+    @if (Model.ClubId != null)
+    {
+        <dt class="col-sm-4 dlBg text-to-dark">
+            @Html.DisplayNameFor(model => model.Club.Name)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.StartTime)
+            <dd class="col-sm-8 dlBg text-to-dark">
+            @Html.DisplayFor(model => model.Club.Name)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.NextTime)
+            <dt class="col-sm-4 text-to-dark">
+            @Html.DisplayNameFor(model => model.Product.AthleteSlots)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.NextTime)
+        <dd class="col-sm-8 text-to-dark">
+            @Html.DisplayFor(model => model.Product.AthleteSlots)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.EndTime)
+    }
+    @if (Model.CardInfo != null)
+    {
+            <dt class="col-sm-4 dlBg text-to-dark">
+            @Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.EndTime)
+            <dd class="col-sm-8 dlBg text-to-dark">
+            @Html.DisplayFor(model => model.CardInfo.LastFourDigits)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Value)
+        <dt class="col-sm-4 text-to-dark">
+            @Html.DisplayNameFor(model => model.CardInfo.Type)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Value)
+            <dd class="col-sm-8 text-to-dark">
+            @Html.DisplayFor(model => model.CardInfo.Type)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Status)
+            <dt class="col-sm-4 dlBg text-to-dark">
+            @Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Status)
+            <dd class="col-sm-8 dlBg text-to-dark">
+            @Html.DisplayFor(model => model.CardInfo.ExpirationDate)
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Product)
+    }
+
+    @if (Model.AutoRenew && Model.Status == SCManagement.Services.PaymentService.Models.SubscriptionStatus.Waiting)
+    {
+            <dt class="col-sm-4 text-to-dark">
+            @Html.DisplayNameFor(model => model.ConfigUrl)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Product.Name)
+            <dd class="col-sm-8 text-to-dark">
+            <a href="@Model.ConfigUrl">@Model.ConfigUrl</a>
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.AutoRenew)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AutoRenew)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Frequency)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Frequency)
-        </dd>
-        @if (Model.ClubId != null)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Club.Name)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Club.Name)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.Product.AthleteSlots)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.Product.AthleteSlots)
-            </dd>
-        }
-        @if (Model.CardInfo != null)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CardInfo.LastFourDigits)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CardInfo.Type)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CardInfo.Type)
-            </dd>
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)
-            </dt>
-            <dd class="col-sm-10">
-                @Html.DisplayFor(model => model.CardInfo.ExpirationDate)
-            </dd>
-        }
-        @if (!Model.AutoRenew)
-        {
-            <div>
-                Your subscription is set to manual renew! You can enable auto renew and set a credit/debit card
-                to enable it, or go to your <a asp-action="Index" asp-controller="Payment">payments page</a>
-                to pay manually.
-            </div>
-        }
-        else if (Model.AutoRenew && Model.Status == SCManagement.Services.PaymentService.Models.SubscriptionStatus.Waiting)
-        {
-            <dt class="col-sm-2">
-                @Html.DisplayNameFor(model => model.ConfigUrl)
-            </dt>
-            <dd class="col-sm-10">
-                <a href="@Model.ConfigUrl">@Model.ConfigUrl</a>
-            </dd>
-        }
-    </dl>
+    }
+</dl>
+@if (!Model.AutoRenew)
+{
+        <div class="mb-3 text-to-dark">
+        Your subscription is set to manual renew! You can enable auto renew and set a credit/debit card
+        to enable it, or go to your <a asp-action="Index" asp-controller="Payment">payments page</a>
+        to pay manually.
+    </div>
+}
+
 </div>
 <div>
     @if (Model.Product.ProductType == SCManagement.Services.PaymentService.Models.ProductType.ClubSubscription)
     {
-        <button onclick="updatePlanPick(@Model.Id)">Update Plan</button>
+        <button style=" margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="updatePlanPick(@Model.Id)">Update Plan</button>
     }
-    <button onclick="updateAutoRenew(@Model.Id, '@Model.AutoRenew')">@(Model.AutoRenew ? "Disable AutoRenew" : "Enable AutoRenew")</button>
-    <button onclick="cancelSub(@Model.Id)">Cancel</button>
+    <button style="margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="updateAutoRenew(@Model.Id, '@Model.AutoRenew')">@(Model.AutoRenew ? "Disable AutoRenew" : "Enable AutoRenew")</button>
+    <button style="margin-right: 10px; color:white; border-radius: 10px; padding: 5px 15px 5px 15px; background-color: red; border-color: black;" onclick="cancelSub(@Model.Id)">
+        Cancel
+    </button>
 </div>
 
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script>
     const cancelSub = (id) => {
         const res = confirm("Are you sure that you want to cancel the subscription? It will be canceled at the end of the payment cycle")

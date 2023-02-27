@@ -58,16 +58,18 @@
 
 <form asp-action="PaySinglePayment">
     <input hidden asp-for="Id" />
-
-    <div class="cc-selector">
-        @foreach (var method in ViewBag.PaymentMethods)
-        {
-            <input type="radio" asp-for="PaymentMethod" id="@method.Name.ToLower()" name="PaymentMethod" value="@method.Id" onclick="selectedOption(this)" />
-            <label class="card-cc @method.Name.ToLower()" for="@method.Name.ToLower()"></label>
-        }
+    <span div="mt-2 mb-4">Select the payment method you want:</span>
+    <div style="border: 1px solid grey !important; border-radius:15px;" class="mb-3">
+        <div class="cc-selector d-flex justify-content-center">
+            @foreach (var method in ViewBag.PaymentMethods)
+            {
+                <input type="radio" asp-for="PaymentMethod" id="@method.Name.ToLower()" name="PaymentMethod" value="@method.Id" onclick="selectedOption(this)" />
+                <label class="card-cc @method.Name.ToLower()" style="margin-left:150px; margin-right:150px;" for="@method.Name.ToLower()"></label>
+            }
+        </div>
     </div>
 
-    <input asp-for="PhoneNumber" type="tel" placeholder="961234567" pattern="[0-9]{9}" style="display:none;" />
+    <input asp-for="PhoneNumber" type="tel" placeholder="961234567" pattern="[0-9]{9}" style="display:none;" class="mb-3" />
 
     <input type="submit" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" value=@StringLocalizer["Complete Payment"] class="btn btn-primary" />
 </form>

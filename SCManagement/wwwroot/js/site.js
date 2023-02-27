@@ -30,7 +30,8 @@ function setTheme(theme) {
     let logoText = document.getElementById("logoText");
     let logoText1 = document.getElementById("logoText1");
     let modal = document.getElementsByClassName('modal-content');
-
+    let dlBg = document.getElementsByClassName('dlBg');
+    let noClubImg = document.getElementById('swapImage');
     if (theme === "dark") {
         darkToggle.checked = true
         darkToggle1.checked = true
@@ -38,7 +39,9 @@ function setTheme(theme) {
         element.classList.remove("navbar-light");
 
         element.classList.add("bg-dark");
-
+        if (noClubImg) {
+            noClubImg.src = "../img/NoClubWhite.png";
+        }
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].classList.add("bg-dark");
         }
@@ -66,7 +69,11 @@ function setTheme(theme) {
         if (logoText1) {
             logoText1.style.fill = 'white';
         }
-        
+
+        for (let i = 0; i < dlBg.length; i++) {
+            dlBg[i].style.background = '#1a1a1a';
+        }
+
     } else {
         darkToggle.checked = false
         darkToggle1.checked = false
@@ -77,7 +84,9 @@ function setTheme(theme) {
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].classList.remove("bg-dark");
         }
-
+        if (noClubImg) {
+            noClubImg.src = "../img/NoClubBlack.png";
+        }
         element.classList.add("bg-white");
 
         for (let i = 0; i < texts.length; i++) {
@@ -97,10 +106,16 @@ function setTheme(theme) {
         for (let i = 0; i < modal.length; i++) {
             modal[i].classList.remove("bg-dark");
         }
-       
+
+        for (let i = 0; i < dlBg.length; i++) {
+            dlBg[i].style.background = 'whitesmoke';
+        }
+
         logoText.style.fill = 'black';
         if (logoText1) {
             logoText1.style.fill = 'black';
         }
+
+        
     }
 }

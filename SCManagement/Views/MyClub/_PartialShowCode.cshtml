@@ -1,6 +1,20 @@
 ﻿@model SCManagement.Models.CodeClub
 @inject IStringLocalizer<SharedResource> stringLocalizer
 
+<style>
+    dt {
+        border: 1px solid gainsboro;
+        padding: 3px;
+    }
+
+    dd {
+        border: 1px solid gainsboro;
+        margin-bottom: 0;
+        padding: 3px;
+    }
+
+</style>
+
 <div>
     <h4 class="text-to-dark">CodeClub</h4>
     <hr />
@@ -14,66 +28,60 @@
         <p class="text-to-dark">@stringLocalizer["Error approving code"]</p>
     }
     <div class="row">
-        <div class="col-6 me-0">
-            <dl class="row">
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.Code)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.Code)
-                </dd>
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.CreationDate)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.CreationDate)
-                </dd>
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.ExpireDate)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.ExpireDate)
-                </dd>
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.UsedDate)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.UsedDate)
-                </dd>
-            </dl>
-        </div>
-        <div class="col-6 me-0">
-            <dl class="row">
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.Approved)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.Approved)
-                </dd>
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.Role)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.Role.RoleName)
-                </dd>
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.CreatedByUser)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.CreatedByUser.FullName)
-                </dd>
-                <dt class="col-sm-6 text-to-dark">
-                    @Html.DisplayNameFor(model => model.UsedByUser)
-                </dt>
-                <dd class="col-sm-6 text-to-dark">
-                    @Html.DisplayFor(model => model.UsedByUser.FullName)
-                </dd>
-                @if (!Model.Approved && ViewBag.IsAdmin)
-                {
-                    <a href="/Clubs/Codes?approveCode=@Model.Id">@stringLocalizer["Approve"]</a>
-                }
-            </dl>
-        </div>
+        <dl class="row ms-1">
+            <dt class="col-sm-4 dlBg text-to-dark">
+                @Html.DisplayNameFor(model => model.Code)
+            </dt>
+            <dd class="col-sm-8 dlBg text-to-dark">
+                @Html.DisplayFor(model => model.Code)
+            </dd>
+            <dt class="col-sm-4 text-to-dark">
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </dt>
+            <dd class="col-sm-8 text-to-dark">
+                @Html.DisplayFor(model => model.CreationDate)
+            </dd>
+            <dt class="col-sm-4 dlBg text-to-dark">
+                @Html.DisplayNameFor(model => model.ExpireDate)
+            </dt>
+            <dd class="col-sm-8 dlBg text-to-dark">
+                @Html.DisplayFor(model => model.ExpireDate)
+            </dd>
+            <dt class="col-sm-4 text-to-dark">
+                @Html.DisplayNameFor(model => model.UsedDate)
+            </dt>
+            <dd class="col-sm-8 text-to-dark">
+                @Html.DisplayFor(model => model.UsedDate)
+            </dd>
+            <dt class="col-sm-4 dlBg text-to-dark">
+                @Html.DisplayNameFor(model => model.Approved)
+            </dt>
+            <dd class="col-sm-8 dlBg text-to-dark">
+                @Html.DisplayFor(model => model.Approved)
+            </dd>
+            <dt class="col-sm-4 text-to-dark">
+                @Html.DisplayNameFor(model => model.Role)
+            </dt>
+            <dd class="col-sm-8 text-to-dark">
+                @Html.DisplayFor(model => model.Role.RoleName)
+            </dd>
+            <dt class="col-sm-4 dlBg text-to-dark">
+                @Html.DisplayNameFor(model => model.CreatedByUser)
+            </dt>
+            <dd class="col-sm-8 dlBg text-to-dark">
+                @Html.DisplayFor(model => model.CreatedByUser.FullName)
+            </dd>
+            <dt class="col-sm-4 text-to-dark">
+                @Html.DisplayNameFor(model => model.UsedByUser)
+            </dt>
+            <dd class="col-sm-8 text-to-dark">
+                @Html.DisplayFor(model => model.UsedByUser.FullName)
+            </dd>
+            @if (!Model.Approved && ViewBag.IsAdmin)
+            {
+                <a href="/Clubs/Codes?approveCode=@Model.Id">@stringLocalizer["Approve"]</a>
+            }
+        </dl>
         <div class="d-flex justify-content-center row">
             <div id="qrcode" style="max-width:300px; max-height:300px;"></div>
         </div>
