@@ -50,7 +50,7 @@
                                 @foreach (var plan in ViewBag.Plans)
                                 {
                                     <div>
-                                        <input type="radio" asp-for="PlanId" id="plan-@plan.Id" value="@plan.Id" />
+                                        <input type="radio" asp-for="PlanId" id="plan-@plan.Id" value="@plan.Id" checked=@(ViewBag.SelectedId == plan.Id) />
                                         <label class="card-cc" for="plan-@plan.Id">@plan.Name - @plan.Value€/@StringLocalizer[@plan.Frequency.ToString()]</label>
                                     </div>
                                 }

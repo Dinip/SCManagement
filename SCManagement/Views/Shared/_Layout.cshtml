@@ -34,23 +34,26 @@
                     <div class="navbar-nav">
 
                         <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Index">@StringLocalizer["Home"]</a>
-                        
+
                         @if (SignInManager.IsSignedIn(User))
                         {
                             <div class="dropdown dropdown2 nav-item d-none d-md-block" id="dropdownMenuButton2">
                                 <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">@StringLocalizer["Clubs"]</a>
                                 <ul class="dropdown-menu dropdown-menu2 nav-item shadow" style="margin-top: 16px; border:none; border-radius:0;">
                                     <li style="padding: 5px;">
-                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">@StringLocalizer["My Club"]</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-action="Index">@StringLocalizer["My Club"]</a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index" asp-route-id="">@StringLocalizer["Search club"]</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Index" asp-route-id="">@StringLocalizer["Search club"]</a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Join">@StringLocalizer["Join with code"] </a>
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Join">@StringLocalizer["Join with code"] </a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Create">@StringLocalizer["Create a club"] </a>
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Create">@StringLocalizer["Create a club"] </a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["Club Plans"] </a>
                                     </li>
                                 </ul>
                             </div>
@@ -61,29 +64,32 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-full" role="menu" id="Dropdown">
                                     <li style="padding: 5px;">
-                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-area="" asp-action="Index">@StringLocalizer["My Club"]</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="MyClub" asp-action="Index">@StringLocalizer["My Club"]</a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index" asp-route-id="">@StringLocalizer["Search club"]</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Index" asp-route-id="">@StringLocalizer["Search club"]</a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Join">@StringLocalizer["Join with code"] </a>
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Join">@StringLocalizer["Join with code"] </a>
                                     </li>
                                     <li style="padding: 5px;">
-                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Create">@StringLocalizer["Create a club"] </a>
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Create">@StringLocalizer["Create a club"] </a>
+                                    </li>
+                                    <li style="padding: 5px;">
+                                        <a type="button" class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["Club Plans"] </a>
                                     </li>
                                 </ul>
                             </div>
 
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="Settings">@StringLocalizer["Settings"]</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="Settings">@StringLocalizer["Settings"]</a>
                         }
                         else
                         {
-                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-area="" asp-action="Index">@StringLocalizer["Clubs"]</a>
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Index">@StringLocalizer["Clubs"]</a>
                         }
-                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Events" asp-area="" asp-action="Index">@StringLocalizer["Events"]</a>
-                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-area="" asp-action="About">@StringLocalizer["About Us"]</a>
-                            
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Events" asp-action="Index">@StringLocalizer["Events"]</a>
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="About">@StringLocalizer["About Us"]</a>
+
                         <hr />
                         <div class="dropdown d-block d-md-none nav-item">
                             <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false">
@@ -109,12 +115,12 @@
                                     <div class="w-25">
                                         @await Component.InvokeAsync("UserClubContext")
                                     </div>
-                                    
+
                                 </li>
                             </ul>
                         </div>
                         <hr />
-                        
+
                     </div>
                     <partial name="_LoginPartial" />
                 </div>

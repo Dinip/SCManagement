@@ -1,0 +1,16 @@
+﻿@model IEnumerable<SCManagement.Services.PaymentService.Models.Product>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "Club Plans";
+}
+
+@foreach (var product in Model)
+{
+    <div>
+        <h2>@product.Name</h2>
+        <p>Atlhete slots: @product.AthleteSlots</p>
+        <p>Price: @product.Value/@StringLocalizer[product.Frequency.ToString()]</p>
+        <a href="/Clubs/Create?planId=@product.Id">Crete club</a>
+    </div>
+}
