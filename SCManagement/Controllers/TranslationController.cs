@@ -1,16 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SCManagement.Data;
-using Newtonsoft.Json;
-using System.Text;
-using Azure.Core;
-using Azure;
-using Microsoft.AspNetCore.Http.Headers;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SCManagement.Services.TranslationService;
-using Newtonsoft.Json.Linq;
-using System.Text.Json.Nodes;
+
 
 namespace SCManagement.Controllers
 {
+    [Authorize]
     public class TranslationController : Controller
     {
         private readonly ITranslationService _translationService;

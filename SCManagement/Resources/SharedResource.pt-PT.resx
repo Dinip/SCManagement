@@ -1212,4 +1212,28 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Credenciais válidas</value>
     <comment>23-02-2023_payments</comment>
   </data>
+  <data name="Unavailable" xml:space="preserve">
+    <value>Indisponível</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableTitle" xml:space="preserve">
+    <value>Atualmente o teu clube está</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="Suspended" xml:space="preserve">
+    <value>suspenso</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="Waiting_Payment" xml:space="preserve">
+    <value>à espera de pagamento</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableDescriptionPrivate" xml:space="preserve">
+    <value>Regulariza o pagamento para que o teu clube volte a ficar disponível.</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableDescriptionPublic" xml:space="preserve">
+    <value>Fala com a administração do clube para mais informação.</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
 </root>

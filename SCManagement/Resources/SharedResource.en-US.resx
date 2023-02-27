@@ -1076,4 +1076,28 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Valid Credentials</value>
     <comment>23-02-2023_payments</comment>
   </data>
+  <data name="Unavailable" xml:space="preserve">
+    <value>Unavailable</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="Suspended" xml:space="preserve">
+    <value>suspended</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="Waiting_Payment" xml:space="preserve">
+    <value>waiting payment</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableDescriptionPrivate" xml:space="preserve">
+    <value>Regularize the payment so that your club is available again.</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableDescriptionPublic" xml:space="preserve">
+    <value>Talk to club administration for more info.</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableTitle" xml:space="preserve">
+    <value>Your club is currently</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
 </root>

@@ -30,6 +30,10 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/MyClub") && !context.Request.Path.Value.Contains("Unavailable"), appBuilder =>
+{
+    appBuilder.UseClubMiddleware();
+});
 
 using (var ser = app.Services.CreateScope())
 {
@@ -40,6 +44,7 @@ using (var ser = app.Services.CreateScope())
 }
 //this needs to be in this order, after user auth
 app.UseRequestLocalizationCookies();
+
 
 app.MapControllerRoute(
     name: "myclub",
@@ -57,6 +62,7 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
+
 
 using var scope = app.Services.CreateScope();
 await Configurations.CreateRoles(scope.ServiceProvider);

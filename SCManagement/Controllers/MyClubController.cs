@@ -14,6 +14,7 @@ using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.PaymentService;
+using SCManagement.Services;
 
 namespace SCManagement.Controllers
 {
@@ -31,6 +32,7 @@ namespace SCManagement.Controllers
         private readonly ITeamService _teamService;
         private readonly ITranslationService _translationService;
         private readonly IPaymentService _paymentService;
+        private readonly ApplicationContextService _applicationContextService;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -41,13 +43,15 @@ namespace SCManagement.Controllers
         /// <param name="teamService"></param>
         /// <param name="translationService"></param>
         /// <param name="paymentService"></param>
+        /// <param name="applicationContextService"></param>
         public MyClubController(
             UserManager<User> userManager,
             IClubService clubService,
             IUserService userService,
             ITeamService teamService,
             ITranslationService translationService,
-            IPaymentService paymentService)
+            IPaymentService paymentService,
+            ApplicationContextService applicationContextService)
         {
             _userManager = userManager;
             _clubService = clubService;
@@ -55,29 +59,26 @@ namespace SCManagement.Controllers
             _teamService = teamService;
             _translationService = translationService;
             _paymentService = paymentService;
+            _applicationContextService = applicationContextService;
         }
 
-        /// <summary>
-        /// Get id of the user that makes the request
-        /// </summary>
-        /// <returns>Returns the user id</returns>
-        private string getUserIdFromAuthedUser()
-        {
-            //reminder: this does not query the db, it just gets the id from the token (claims)
-            return _userManager.GetUserId(User);
-        }
-
-        public async Task<IActionResult> MissingPayment()
+        public async Task<IActionResult> Unavailable()
         {
             //get id of the user
-            string userId = getUserIdFromAuthedUser();
+            string userId = _userManager.GetUserId(User);
 
             //get the user selected role
             var role = await _userService.GetSelectedRole(userId);
 
             if (role.ClubId == 0) return RedirectToAction(nameof(Index));
 
-            return View(await _clubService.GetClub(role.ClubId));
+            var club = await _clubService.GetClub(role.ClubId);
+
+            if (club?.Status == ClubStatus.Active) return RedirectToAction(nameof(Index));
+
+            ViewBag.RoleId = role.RoleId;
+
+            return View("Unavailable", club);
         }
 
         /// <summary>
@@ -86,17 +87,9 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Index()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
+            UsersRoleClub role = _applicationContextService.UserRole;
 
-            //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
-
-            if (role.ClubId == 0) return View();
-
-            //check for payment disabled for now
-            //var status = await _clubService.GetClubStatus(role.ClubId);
-            //if (status != ClubStatus.Active) return RedirectToAction(nameof(MissingPayment));
+            if (role.RoleId == 0) return View();
 
             ViewBag.RoleId = role.RoleId;
 
@@ -110,11 +103,8 @@ namespace SCManagement.Controllers
         /// <returns>Edit View</returns>
         public async Task<IActionResult> Edit()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //checl role
             if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
@@ -173,11 +163,8 @@ namespace SCManagement.Controllers
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             if (!ModelState.IsValid) return View(club);
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check roles
             if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
@@ -265,11 +252,8 @@ namespace SCManagement.Controllers
         /// <returns>view PartenersList</returns>
         public async Task<IActionResult> PartnersList()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check roles
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
@@ -286,11 +270,8 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> StaffList()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check roles
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
@@ -307,11 +288,8 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> AthletesList()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
@@ -333,11 +311,8 @@ namespace SCManagement.Controllers
         {
             if (usersRoleClubId == null) return View("CustomError", "Error_NotFound");
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
@@ -366,11 +341,8 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> CreateCode()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
@@ -391,11 +363,8 @@ namespace SCManagement.Controllers
         {
             if (!ModelState.IsValid) return RedirectToAction("Codes");
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
@@ -411,7 +380,7 @@ namespace SCManagement.Controllers
             CodeClub codeToBeCreated = new CodeClub
             {
                 ClubId = role.ClubId,
-                CreatedByUserId = userId,
+                CreatedByUserId = _applicationContextService.UserId,
                 RoleId = codeClub.RoleId,
                 ExpireDate = expireDate,
                 Approved = !(_clubService.IsClubSecretary(role) && codeClub.RoleId >= 40)
@@ -440,11 +409,8 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> Codes(string? approveCode, int? code)
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
@@ -480,11 +446,8 @@ namespace SCManagement.Controllers
         [AutoValidateAntiforgeryToken]
         public async Task<IActionResult> SendCodeEmail(int codeId, string email)
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
@@ -500,11 +463,8 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> TeamList()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
@@ -521,18 +481,15 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> CreateTeam()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check role Trainer
             //if its trainer will use userId
             if (_clubService.IsClubTrainer(role))
             {
                 ViewBag.IsManager = false;
-                ViewBag.TrainerId = userId;
+                ViewBag.TrainerId = _applicationContextService.UserId;
             }
 
             //if its admin will send trainers IDs to selectList
@@ -562,11 +519,8 @@ namespace SCManagement.Controllers
         {
             if (!ModelState.IsValid) return View(team);
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check role Trainer
             if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
@@ -620,11 +574,8 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> EditTeam(int? id)
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
@@ -658,11 +609,8 @@ namespace SCManagement.Controllers
             //check model state
             if (!ModelState.IsValid) return View(team);
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check roles
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
@@ -691,11 +639,8 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> AddTeamAthletes(int id)
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
@@ -705,7 +650,7 @@ namespace SCManagement.Controllers
             if (team == null) return View("CustomError", "Error_NotFound");
 
             //if he is trainer need to be the trainer of the team
-            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != _applicationContextService.UserId) return View("CustomError", "Error_Unauthorized");
 
             List<User> clubAthletes = (await _clubService.GetAthletes(team.ClubId)).ToList();
             //check which athletes are available 
@@ -725,11 +670,8 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddTeamAthletes(int id, List<string> selectedAthletes)
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
@@ -739,7 +681,7 @@ namespace SCManagement.Controllers
             if (team == null) return View("CustomError", "Error_NotFound");
 
             //if he is trainer need to be the trainer of the team
-            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != _applicationContextService.UserId) return View("CustomError", "Error_Unauthorized");
 
             await _teamService.UpdateTeamAthletes(id, selectedAthletes);
 
@@ -760,11 +702,8 @@ namespace SCManagement.Controllers
             if (athleteId == null) return View("CustomError", "Error_NotFound");
             if (teamId == null) return View("CustomError", "Error_NotFound");
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check user role
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
@@ -796,11 +735,8 @@ namespace SCManagement.Controllers
             Team team = await _teamService.GetTeam((int)id);
             if (team == null) return View("CustomError", "Error_NotFound");
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //Check if is member of the club
             if (!_clubService.IsClubMember(role.UserId, role.ClubId)) return View("CustomError", "Error_Unauthorized");
@@ -820,17 +756,14 @@ namespace SCManagement.Controllers
             Team team = await _teamService.GetTeam((int)id);
             if (team == null) return View("CustomError", "Error_NotFound");
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //Check if is staff
             if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
             //Check if is trainer
-            if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
+            if (_clubService.IsClubTrainer(role) && team.TrainerId != _applicationContextService.UserId) return View("CustomError", "Error_Unauthorized");
 
             await _teamService.DeleteTeam(team);
 
@@ -843,16 +776,13 @@ namespace SCManagement.Controllers
         /// <returns></returns>
         public async Task<IActionResult> MyTeams()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //Check if is athlete
             if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-            var teams = await _teamService.GetTeamsByAthlete(userId, role.ClubId);
+            var teams = await _teamService.GetTeamsByAthlete(_applicationContextService.UserId, role.ClubId);
 
             return View(teams);
         }
@@ -867,14 +797,11 @@ namespace SCManagement.Controllers
         {
             if (id == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //Check if is staff
-            if (!_clubService.IsClubMember(userId, role.ClubId)) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
+            if (!_clubService.IsClubMember(_applicationContextService.UserId, role.ClubId)) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
             //check if the athlete belongs to the club
             if (!_clubService.IsClubMember(id, role.ClubId)) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
@@ -907,11 +834,8 @@ namespace SCManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> ReceiveAddress(Address address)
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //check if the user is a admin of the club
             if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
@@ -937,11 +861,8 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> PaymentSettings()
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //Check if is staff
             if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
@@ -960,11 +881,8 @@ namespace SCManagement.Controllers
 
             if (!ModelState.IsValid) return View(paymentSettings);
 
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
-
             //get the user selected role
-            var role = await _userService.GetSelectedRole(userId);
+            UsersRoleClub role = _applicationContextService.UserRole;
 
             //Check if is staff
             if (!_clubService.IsClubAdmin(role) || paymentSettings.ClubPaymentSettingsId != role.ClubId) return View("CustomError", "Error_Unauthorized");
