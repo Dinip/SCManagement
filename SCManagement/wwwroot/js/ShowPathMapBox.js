@@ -12,7 +12,7 @@ const dLess = document.getElementById("dLess");
 
 let coordsString = path.value;
 let coordsArrayString = coordsString.split(';');
-let coodrsArray = coordsArrayString.map(coord => {
+let coordsArray = coordsArrayString.map(coord => {
     const [longitude, latitude] = coord.split(',');
     return [parseFloat(longitude), parseFloat(latitude)];
 });
@@ -25,10 +25,11 @@ let totalDescent = 0;
 let prevElevation;
 
 
+
 const map = new mapboxgl.Map({
     container: 'map', // Specify the container ID
     style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
-    center: [coodrsArray[0][0], coodrsArray[0][1]], // Specify the starting position
+    center: [coordsArray[0][0], coordsArray[0][1]], // Specify the starting position
     zoom: 12 // Specify the starting zoom
 });
 
@@ -37,23 +38,41 @@ map.on('load', function () {
     map.resize();
     if (path.value != null) {
         getMatch(path.value);
-    } else {
-        console.log("erro");
-    }
+    } 
 });
 
 
 // convert the coordinates into an object of type LineString from Turf.js
 //Get total Distance in Path
-let lineString = turf.lineString(coodrsArray);
+let lineString = turf.lineString(coordsArray);
 let length = turf.lineDistance(lineString, 'kilometers');
 lineString.properties.distance = length
-tDistance.textContent = lineString.properties.distance.toFixed(2);;
+tDistance.textContent = lineString.properties.distance.toFixed(2);
+
+// Split the path into smaller segments
+const lineSegments = [];
+for (let i = 0; i < coordsArray.length - 1; i++) {
+    const segment = turf.lineString([coordsArray[i], coordsArray[i + 1]]);
+    lineSegments.push(segment);
+}
+
+// Calculate the distance of each segment
+const distances = [];
+lineSegments.forEach(segment => {
+    const length = turf.lineDistance(segment, 'kilometers');
+    distances.push(length.toFixed(3));
+});
+
+
+
+
+
 
 
 //Get the max and min elevation in a path
 async function getElevation(coordsArray) {
-
+    
+    
     for (let i = 0; i < coordsArray.length; i++) {
         // Make the API request for each coordinate.
         const query = await fetch(
@@ -67,6 +86,8 @@ async function getElevation(coordsArray) {
         const allFeatures = data.features;
         // For each returned feature, add elevation data to the elevations array.
         const elevations = allFeatures.map((feature) => feature.properties.ele);
+        
+
         // Find the largest and smallest elevation in the elevations array.
         const highestCoordElevation = Math.max(...elevations);
         const lowestCoordElevation = Math.min(...elevations);
@@ -88,7 +109,7 @@ async function getElevation(coordsArray) {
             }
         }
         prevElevation = highestCoordElevation;
- 
+       
     }
 
     hElevation.textContent = highestElevation;
@@ -98,7 +119,8 @@ async function getElevation(coordsArray) {
    
 }
 
-getElevation(coodrsArray);
+getElevation(coordsArray);
+
 
 
 // Make a Map Matching request
@@ -106,7 +128,7 @@ async function getMatch(coordinates) {
     const profile = 'walking';
 
     // Set the radius for each coordinate pair to 50 meters
-    const radius = coodrsArray.map(() => 50);
+    const radius = coordsArray.map(() => 50);
 
     // Separate the radiuses with semicolons
     const radiuses = radius.join(';');
@@ -189,4 +211,5 @@ function AddMarkers(initialCoord, endCoord) {
         .setPopup(new mapboxgl.Popup().setHTML('Fim'))
         .addTo(map);
 }
+
 

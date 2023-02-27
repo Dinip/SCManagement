@@ -12,8 +12,9 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
 
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<input type="hidden" class="form-control" id="path" value="@Model.Route"/>
+<input type="hidden" class="form-control" id="path" value="@Model.Route" />
 
 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
     <div class="card-body">
@@ -27,6 +28,7 @@
 <p>Subida Total(d+): <span id="dMore"></span>m</p>
 <p>Descida Total(d-): <span id="dLess"></span>m</p>
 
+<canvas id="myChart"></canvas>
 
 <script src="https://unpkg.com/turf/turf"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -46,6 +48,11 @@
 
     .mapboxgl-canvas-container {
         height: 100vh;
+    }
+
+    #myChart {
+        width: 300px;
+        height: 300px
     }
 
 </style>

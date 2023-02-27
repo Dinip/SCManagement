@@ -81,6 +81,8 @@
 
         @if(Model.Route != null){
             <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>Ver Caminho</a>
+        }else{
+            <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="Edit" asp-route-id=@Model.Id>Adicionar Caminho</a>
         }
 
         @*Botao para Inscrever ou pagar inscrição*@

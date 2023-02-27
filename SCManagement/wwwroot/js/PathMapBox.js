@@ -1,16 +1,71 @@
 ﻿
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
 
-const map = new mapboxgl.Map({
-    container: 'map', // Specify the container ID
-    style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
-    center: [-8.8926, 38.5243], // Specify the starting position
-    zoom: 14.5 // Specify the starting zoom
-});
 
-map.on('load', () => {
-    map.resize();
-});
+const path = document.getElementById("path");
+let map;
+
+if (path.value !== 'null') {
+    let coordsString = path.value;
+    let coordsArrayString = coordsString.split(';');
+    let coordsArray = coordsArrayString.map(coord => {
+        const [longitude, latitude] = coord.split(',');
+        return [parseFloat(longitude), parseFloat(latitude)];
+    });
+
+    map = new mapboxgl.Map({
+        container: 'map', // Specify the container ID
+        style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
+        center: [coordsArray[0][0], coordsArray[0][1]], // Specify the starting position
+        zoom: 12 // Specify the starting zoom
+    });
+
+    map.on('load', function () {
+        map.resize();
+        getNewMatch(path.value);
+    });
+
+
+    // Make a Map Matching request
+    async function getNewMatch(coordinates) {
+        const profile = 'walking';
+
+        // Set the radius for each coordinate pair to 50 meters
+        const radius = coordsArray.map(() => 50);
+
+        // Separate the radiuses with semicolons
+        const radiuses = radius.join(';');
+
+        // Create the query
+        const query = await fetch(
+            `https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&steps=true&access_token=${mapboxgl.accessToken}`,
+            { method: 'GET' }
+        );
+        response = await query.json();
+        // Handle errors
+        if (response.code !== 'Ok') {
+            ErrorMessage(response.code);
+            return;
+        }
+        const coords = response.matchings[0].geometry;
+
+        // Draw the route on the map
+        addRoute(coords);
+    }
+
+} else {
+    map = new mapboxgl.Map({
+        container: 'map', // Specify the container ID
+        style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
+        center: [-8.8926, 38.5243], // Specify the starting position
+        zoom: 14.5 // Specify the starting zoom
+    });
+
+    map.on('load', () => {
+        map.resize();
+    });
+
+}
 
 
 const btnSave = document.getElementById('save-button');
@@ -21,8 +76,6 @@ let errorMessage = "";
 let newCoords = null;
 let initialMarker = null;
 let endMarker = null;
-
-
 
 const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
@@ -39,7 +92,6 @@ btnSave.onclick = function () {
         btnSave.classList.add("d-none");
     }
 }
-
 
 let draw = new MapboxDraw({
     // Instead of showing all the draw tools, show only the line string and delete tools
@@ -133,8 +185,10 @@ function updateRoute() {
     const coords = data.features[lastFeature].geometry.coordinates;
     if (coords.length < 2) return;
     data.features[0].geometry.coordinates = [coords];
+
     // Format the coordinates
     newCoords = coords.join(';');
+
     // Set the radius for each coordinate pair to 50 meters
     const radius = coords.map(() => 50);
     getMatch(newCoords, radius, profile);
@@ -153,22 +207,7 @@ async function getMatch(coordinates, radius, profile) {
 
     // Handle errors
     if (response.code !== 'Ok') {
-        if (response.code == "NoMatch") {
-            errorMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
-            alert(errorMessage);
-        } else if (response.code == "NoSegment") {
-            errorMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
-            alert(errorMessage);
-        } else if (response.code == "TooManyCoordinates") {
-            errorMessage = "There are more than 100 points in the request."
-            alert(errorMessage);
-        } else if (response.code == "ProfileNotFound") {
-            errorMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
-            alert(errorMessage);
-        } else if (response.code == "InvalidInput") {
-            errorMessage = "message will hold an explanation of the invalid input.";
-            alert(errorMessage);
-        }
+        ErrorMessage(response.code);
         removeRoute();
         draw.deleteAll();
         return;
@@ -279,7 +318,10 @@ function removeRoute() {
         endMarker.remove();
     }
 
+    btnSave.classList.remove("d-none");
     newCoords = null;
+    ev.value = newCoords;
+
 }
 
 function AddMarkers(initialCoord, endCoord) {
@@ -294,3 +336,21 @@ function AddMarkers(initialCoord, endCoord) {
         .addTo(map);
 }
 
+function ErrorMessage(codeMessage) {
+    if (codeMessage == "NoMatch") {
+        errorMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
+        alert(errorMessage);
+    } else if (codeMessage == "NoSegment") {
+        errorMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
+        alert(errorMessage);
+    } else if (codeMessage == "TooManyCoordinates") {
+        errorMessage = "There are more than 100 points in the request."
+        alert(errorMessage);
+    } else if (codeMessage == "ProfileNotFound") {
+        errorMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
+        alert(errorMessage);
+    } else if (codeMessage == "InvalidInput") {
+        errorMessage = "message will hold an explanation of the invalid input.";
+        alert(errorMessage);
+    }
+}

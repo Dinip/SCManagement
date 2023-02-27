@@ -233,7 +233,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,EnroolLimitDate,EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnroolLimitDate,EventResultType, MaxEventEnrolls")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -260,6 +260,7 @@ namespace SCManagement.Controllers
                 eventToUpdate.IsPublic = myEvent.IsPublic;
                 eventToUpdate.Fee = myEvent.Fee;
                 eventToUpdate.HaveRoute = myEvent.HaveRoute;
+                eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnroolLimitDate = myEvent.EnroolLimitDate;
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
