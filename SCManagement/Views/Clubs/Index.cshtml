@@ -6,12 +6,12 @@
 }
 
 <!-- Import Mapbox GL JS  -->
-<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
-<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css"
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
       rel="stylesheet" />
-<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
 <link rel="stylesheet"
-      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
       type="text/css" />
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
       integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
@@ -37,6 +37,16 @@
         <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px;">
             <div class="card-body">
                 <div id='map'></div>
+                <div id="menu">
+                    <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
+                    <label for="satellite-streets-v12">satellite streets</label>
+                    <input id="light-v11" type="radio" name="rtoggle" value="light">
+                    <label for="light-v11">light</label>
+                    <input id="dark-v11" type="radio" name="rtoggle" value="dark">
+                    <label for="dark-v11">dark</label>
+                    <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
+                    <label for="streets-v12">streets</label>
+                </div>
                 <script src="~/js/Mapbox.js" asp-append-version="true"></script>
             </div>
         </div>
@@ -58,6 +68,14 @@
 
     .mapboxgl-canvas-container {
         height: 100vh;
+    }
+
+    #menu {
+        position: absolute;
+        background: #efefef;
+        padding: 10px;
+        font-family: 'Open Sans', sans-serif;
+        right:0;
     }
 </style>
 

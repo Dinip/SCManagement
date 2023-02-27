@@ -44,6 +44,16 @@ function loadMap(userCoordinates, markersCoordinates) {
         center: [-8.8926, 38.5243]
     });
 
+    const layerList = document.getElementById('menu');
+    const inputs = layerList.getElementsByTagName('input');
+
+    for (const input of inputs) {
+        input.onclick = (layer) => {
+            const layerId = layer.target.id;
+            map.setStyle('mapbox://styles/mapbox/' + layerId);
+        };
+    }
+
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
@@ -58,7 +68,7 @@ function loadMap(userCoordinates, markersCoordinates) {
 
     map.on('load', () => {
         map.resize();
-        var coords = markersCoordinates;
+        let coords = markersCoordinates;
         Object.keys(coords).forEach(function (key) {
             new mapboxgl.Marker()
                 .setLngLat([coords[key].coordinateX, coords[key].coordinateY])

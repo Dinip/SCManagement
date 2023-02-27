@@ -1,0 +1,58 @@
+﻿@model SCManagement.Models.Event
+
+
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
+      rel="stylesheet" />
+<!-- Import Mapbox GL Draw -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.0/mapbox-gl-draw.js"></script>
+<link rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.0/mapbox-gl-draw.css"
+      type="text/css" />
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<input type="hidden" class="form-control" id="path" value="@Model.Route" />
+
+<div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
+    <div class="card-body">
+        <div id='map'></div>
+    </div>
+</div>
+
+<p>A distancia total é de: <span id="tDistance"></span>km</p>
+<p>A maior elevação é de: <span id="hElevation"></span>m</p>
+<p>A menor elevação é de: <span id="lElevation"></span>m</p>
+<p>Subida Total(d+): <span id="dMore"></span>m</p>
+<p>Descida Total(d-): <span id="dLess"></span>m</p>
+
+<canvas id="myChart"></canvas>
+
+<script src="https://unpkg.com/turf/turf"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/ShowPathMapBox.js" asp-append-version="true"></script>
+
+<style>
+
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        border-radius: 20px;
+        height: 100%
+    }
+
+    .mapboxgl-canvas-container {
+        height: 100vh;
+    }
+
+    #myChart {
+        width: 300px;
+        height: 300px
+    }
+
+</style>

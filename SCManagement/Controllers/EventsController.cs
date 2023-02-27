@@ -126,7 +126,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_Unauthorized");
             }
 
-            var EventResultTypes = from Event.ResultType e in Enum.GetValues(typeof(Event.ResultType))
+            var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
@@ -138,7 +138,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute, EnrollLimitDate, EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
             if (ModelState.IsValid)
             {
@@ -165,10 +165,12 @@ namespace SCManagement.Controllers
                     IsPublic = myEvent.IsPublic,
                     Fee = myEvent.Fee,
                     HaveRoute = myEvent.HaveRoute,
+                    Route = myEvent.Route,
                     EventResultType = myEvent.EventResultType,
                     EnrollLimitDate = myEvent.EnrollLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
-                    ClubId = role.ClubId
+                    ClubId = role.ClubId,
+                    AddressByPath = myEvent.AddressByPath
                 });
 
                 if (myEvent.Fee > 0)
@@ -179,7 +181,7 @@ namespace SCManagement.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var EventResultTypes = from Event.ResultType e in Enum.GetValues(typeof(Event.ResultType))
+            var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
@@ -198,8 +200,11 @@ namespace SCManagement.Controllers
             public bool IsPublic { get; set; }
             public float Fee { get; set; }
             public bool HaveRoute { get; set; }
-            public Event.ResultType EventResultType { get; set; }
+            public string? Route { get; set; }
+            public ResultType EventResultType { get; set; }
             public int MaxEventEnrolls { get; set; }
+            public string? AddressByPath { get; set; }
+
 
         }
 
@@ -223,7 +228,7 @@ namespace SCManagement.Controllers
             }
 
 
-            var EventResultTypes = from Event.ResultType e in Enum.GetValues(typeof(Event.ResultType))
+            var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
@@ -235,7 +240,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,EnrollLimitDate,EventResultType, MaxEventEnrolls")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -258,9 +263,11 @@ namespace SCManagement.Controllers
                 eventToUpdate.IsPublic = myEvent.IsPublic;
                 eventToUpdate.Fee = myEvent.Fee;
                 eventToUpdate.HaveRoute = myEvent.HaveRoute;
+                eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
+                eventToUpdate.AddressByPath = myEvent.AddressByPath;
 
                 await _eventService.UpdateEvent(eventToUpdate);
 
@@ -270,7 +277,7 @@ namespace SCManagement.Controllers
             }
 
 
-            var EventResultTypes = from Event.ResultType e in Enum.GetValues(typeof(Event.ResultType))
+            var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
@@ -385,6 +392,15 @@ namespace SCManagement.Controllers
 
             myEvent.UsersEnrolled.Remove(enrollToRemove);
             return 0;
+        }
+
+        public async Task<IActionResult> PathInfoMapBox(int id)
+        {
+            var ev = await _eventService.GetEvent(id);
+
+            if(ev == null) View("CustomError", "Error_NotFound");
+            if (ev.Route == null) return View("CustomError", "Error_NotFound");
+            return View(ev);
         }
 
     }

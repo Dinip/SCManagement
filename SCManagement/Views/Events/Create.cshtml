@@ -1,5 +1,50 @@
 ﻿@model SCManagement.Models.Event
 
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
+      rel="stylesheet" />
+<!-- Import Mapbox GL Draw -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.0/mapbox-gl-draw.js"></script>
+<link rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-draw/v1.4.0/mapbox-gl-draw.css"
+      type="text/css" />
+<!-- Import Mapbox GL JS  -->
+<script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
+      rel="stylesheet" />
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css"
+      type="text/css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
+      integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
+      crossorigin="" />
+
+<style>
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+        left: 0;
+        border-radius: 20px;
+        height: 100%
+    }
+
+    .mapboxgl-canvas-container {
+        height: 100vh;
+    }
+
+    #save {
+        position: absolute;
+        background: #efefef;
+        padding: 10px;
+        font-family: 'Open Sans', sans-serif;
+        right: 10%;
+        top: 10%;
+    }
+</style>
+
 @{
     ViewData["Title"] = "Create";
 }
@@ -63,11 +108,40 @@
                     <input class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
                 </label>
             </div>
+
+
+            <div class="form-group">
+                <label asp-for="Route" class="control-label"></label>
+                <input asp-for="Route" type="hidden" class="form-control" id="ev" />
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AddressByPath" class="control-label"></label>
+                <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
+            </div>
+
             <div class="form-group">
                 <label asp-for="EventResultType" class="control-label"></label>
                 <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
                 <span asp-validation-for="EventResultType" class="text-danger"></span>
             </div>
+
+
+            <input type="hidden" class="form-control" id="path" value="null" />
+
+            <br /> <br />
+            <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
+                <div class="card-body">
+                    <div id='map'></div>
+                    <div id="save">
+                        <button type="button" id="save-button">Save</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -84,6 +158,8 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="~/js/PathMapBox.js" asp-append-version="true"></script>
 
 <script>
     function ApplySameDate() {
@@ -112,5 +188,4 @@
             sameDay.checked = false;
         }
     }
-
 </script>

@@ -14,6 +14,5 @@ namespace SCManagement.Services.EventService
         public Task<EventEnroll?> GetEnroll(int eventId, string userId);
         public Task CancelEventEnroll(EventEnroll enroll);
 
-
     }
 }
