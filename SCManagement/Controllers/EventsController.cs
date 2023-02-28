@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -78,16 +79,16 @@ namespace SCManagement.Controllers
             //if event is not public need to check if user is in the club
             if (!myEvent.IsPublic)
             {
-                if (userRole == null)
-                {
-                    return View("CustomError", "Error_Unauthorized");
-                }
+                if (userRole == null) return View("CustomError", "Error_Unauthorized");
+
+                if (userRole.ClubId != myEvent.ClubId) return View("CustomError", "Error_Unauthorized");
             }
 
             //if users is staff can see users enrolled
             if (_clubService.IsClubStaff(userRole))
             {
                 ViewBag.IsStaff = true;
+                ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
             }
 
             //check if user is already enrolled
@@ -102,8 +103,7 @@ namespace SCManagement.Controllers
                 ViewBag.IsEnrolled = false;
             }
 
-            return PartialView("_PartialEventDetails", myEvent);
-
+            return View("EventDetails", myEvent); ;
         }
 
 
@@ -123,6 +123,8 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_Unauthorized");
             }
 
+            ViewBag.ValidKey = await _paymentService.ClubHasValidKey(role.ClubId);
+
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
@@ -137,9 +139,9 @@ namespace SCManagement.Controllers
         [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (ModelState.IsValid)
             {
-                var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
                 if (role == null)
                 {
                     return View("CustomError", "Error_Unauthorized");
@@ -152,6 +154,8 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_Unauthorized");
                 }
 
+                var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
+
                 var createdEvent = await _eventService.CreateEvent(new Event
                 {
                     Id = myEvent.Id,
@@ -160,7 +164,7 @@ namespace SCManagement.Controllers
                     EndDate = myEvent.EndDate,
                     Details = myEvent.Details,
                     IsPublic = myEvent.IsPublic,
-                    Fee = myEvent.Fee,
+                    Fee = validKey ? myEvent.Fee : 0,
                     HaveRoute = myEvent.HaveRoute,
                     Route = myEvent.Route,
                     EventResultType = myEvent.EventResultType,
@@ -180,6 +184,8 @@ namespace SCManagement.Controllers
 
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
+
+            ViewBag.ValidKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
             return View(myEvent);
@@ -224,7 +230,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_Unauthorized");
             }
 
-
+            ViewBag.ValidKey = await _paymentService.ClubHasValidKey(role.ClubId);
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
@@ -253,12 +259,14 @@ namespace SCManagement.Controllers
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
 
+                var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
+
                 eventToUpdate.Name = myEvent.Name;
                 eventToUpdate.StartDate = myEvent.StartDate;
                 eventToUpdate.EndDate = myEvent.EndDate;
                 eventToUpdate.Details = myEvent.Details;
                 eventToUpdate.IsPublic = myEvent.IsPublic;
-                eventToUpdate.Fee = myEvent.Fee;
+                eventToUpdate.Fee = validKey ? myEvent.Fee : 0;
                 eventToUpdate.HaveRoute = myEvent.HaveRoute;
                 eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
@@ -328,6 +336,19 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_AlreadyEnrolled");
             }
 
+            //Verify number of enrollments on event if do not exceed the limit
+            var numberOfEnrollments = await _eventService.GetNumberOfEnrolls(id);
+            if (numberOfEnrollments >= eventToEnroll.MaxEventEnrolls)
+            {
+                return View("CustomError", "Error_MaxNumberOfEnrollments");
+            }
+
+            //Check Date
+            if (DateTime.Now >= eventToEnroll.EnrollLimitDate)
+            {
+                return View("CustomError", "Error_LimitDateExceed");
+            }
+
             //create Enrollment
             var enroll = await _eventService.CreateEventEnroll(new EventEnroll
             {
@@ -337,15 +358,11 @@ namespace SCManagement.Controllers
                 EnrollStatus = eventToEnroll.Fee != 0 ? EnrollPaymentStatus.Pending : EnrollPaymentStatus.Valid
             });
 
-            //update event enroll users list
-            eventToEnroll.UsersEnrolled.Add(enroll);
-
-            await _eventService.UpdateEvent(eventToEnroll);
             var pay = await _paymentService.CreateEventPayment(enroll);
 
             if (pay != null) return RedirectToAction("Index", "Payment", new { payId = pay.Id });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
 
@@ -372,30 +389,21 @@ namespace SCManagement.Controllers
             if (enrollRoRemove == null) return View("CustomError", "Error_NotFound");
 
             //Its only available to cancel enrollment if user not paid yet
-            if (enrollRoRemove.EnrollStatus != EnrollPaymentStatus.Pending) return View("CustomError", "Error_Unauthorized");
-
-            var removeCode = RemoveUserFromEnrollList(myEvent, userId);
-            if (removeCode == -1) return View("CustomError", "Error_NotFound");
+            //If fee = 0 is possible to cancel with enrolment paymend valid
+            if (myEvent.Fee != 0 && enrollRoRemove.EnrollStatus != EnrollPaymentStatus.Pending) return View("CustomError", "Error_Unauthorized");
 
             await _eventService.CancelEventEnroll(enrollRoRemove);
-            return RedirectToAction(nameof(Index));
+            await _paymentService.CancelEventPayment(enrollRoRemove);
+
+            return RedirectToAction(nameof(Details), new { id = id });
         }
 
-        private int RemoveUserFromEnrollList(Event myEvent, string userId)
-        {
-            var enrollToRemove = myEvent.UsersEnrolled.Where(u => u.UserId == userId).FirstOrDefault();
-
-            if (enrollToRemove == null) return -1;
-
-            myEvent.UsersEnrolled.Remove(enrollToRemove);
-            return 0;
-        }
 
         public async Task<IActionResult> PathInfoMapBox(int id)
         {
             var ev = await _eventService.GetEvent(id);
 
-            if(ev == null) View("CustomError", "Error_NotFound");
+            if (ev == null) View("CustomError", "Error_NotFound");
             if (ev.Route == null) return View("CustomError", "Error_NotFound");
             return View(ev);
         }

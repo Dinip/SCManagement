@@ -783,5 +783,32 @@ namespace SCManagement.Services.PaymentService
 
             return sub;
         }
+
+        public async Task CancelEventPayment(EventEnroll enroll)
+        {
+            var product = await _context.Product
+                .Where(p => p.ProductType == ProductType.Event && p.OriginalId == enroll.EventId)
+                .FirstOrDefaultAsync();
+            if (product == null) return;
+
+            var payment = await _context.Payment
+                .Where(p => p.ProductId == product.Id && p.UserId == enroll.UserId)
+                .FirstOrDefaultAsync();
+            if (payment == null) return;
+
+            payment.PaymentStatus = PaymentStatus.Canceled;
+
+            _context.Payment.Update(payment);
+            await _context.SaveChangesAsync();
+
+        }
+
+        public async Task<bool> ClubHasValidKey(int clubId)
+        {
+            var club = await _context.ClubPaymentSettings.FindAsync(clubId);
+            if (club == null) return false;
+            return club.ValidCredentials;
+        }
+
     }
 }
