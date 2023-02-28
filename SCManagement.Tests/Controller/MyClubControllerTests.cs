@@ -1,23 +1,15 @@
 ﻿using FakeItEasy;
 using FakeItEasy.Creation;
 using FluentAssertions;
-using FluentEmail.Core.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using SCManagement.Controllers;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
-using SCManagement.Services.Location;
+using SCManagement.Services.PaymentService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static SCManagement.Controllers.MyClubController;
 
 namespace SCManagement.Tests.Controller
@@ -60,8 +52,9 @@ namespace SCManagement.Tests.Controller
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
         private readonly ITeamService _teamService;
-        private readonly ILocationService _locationService;
         private readonly ITranslationService _translationService;
+        private readonly IPaymentService _paymentService;
+        private readonly IUrlHelper _urlHelper;
 
         public MyClubControllerTests()
         {
@@ -69,11 +62,12 @@ namespace SCManagement.Tests.Controller
             _clubService = A.Fake<IClubService>();
             _userService = A.Fake<IUserService>();
             _teamService = A.Fake<ITeamService>();
-            _locationService = A.Fake<ILocationService>();
             _translationService = A.Fake<ITranslationService>();
+            _paymentService = A.Fake<IPaymentService>();
+            _urlHelper = A.Fake<IUrlHelper>();
 
             //SUT (system under test)
-            _controller = new MyClubController(_userManager, _clubService, _userService, _teamService, _locationService, _translationService);
+            _controller = new MyClubController(_userManager, _clubService, _userService, _teamService, _translationService, _paymentService, _urlHelper);
         }
         
         [Fact]
@@ -1326,74 +1320,238 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>();
         }
 
-        //[Fact]
-        //public async Task MyClubController_ReceiveAddress_Post_ReturnsCreate()
-        //{
-        //    // Arrange
-        //    var role = new UsersRoleClub { RoleId = 2 };
-        //    var club = A.Fake<Club>();
-        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
-        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
-        //    A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+        [Fact]
+        public async Task MyClubController_ReceiveAddress_Post_ReturnsSuccess()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2 };
+            var club = A.Fake<Club>();
+            var address = new Models.Address
+            { 
+                Id = 1,
+                Street = "Street",
+                City = "City",
+                ZipCode = "ZipCode",
+                Country = "Country",
+                CoordinateX = 1,
+                CoordinateY = 1
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
 
 
-        //    // Act
-        //    var result = await _controller.ReceiveAddress(2.0,1.0,"22-00","Rua","Lisboa", "Lisboa","Portugal");
+            // Act
+            var result = await _controller.ReceiveAddress(address);
 
-        //    // Assert
-        //    result.Should().BeOfType<JsonResult>();
-        //}
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
 
-        //[Fact]
-        //public async Task MyClubController_ReceiveAddress_Post_ReturnsUpdate() 
-        //{
-        //    // Arrange
-        //    var role = new UsersRoleClub { RoleId = 2 };
-        //    var club = new Club { AddressId = 1};
-        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
-        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
-        //    A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+        [Fact]
+        public async Task MyClubController_ReceiveAddress_Post_ReturnsUpdate()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2 };
+            var club = A.Fake<Club>();
+            club.AddressId = 1;
+            var address = new Models.Address
+            {
+                Id = 1,
+                Street = "Street",
+                City = "City",
+                ZipCode = "ZipCode",
+                Country = "Country",
+                CoordinateX = 1,
+                CoordinateY = 1
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
 
-        //    // Act
-        //    var result = await _controller.ReceiveAddress(2.0, 1.0, "22-00", "Rua", "Lisboa", "Lisboa", "Portugal");
 
-        //    // Assert
-        //    result.Should().BeOfType<JsonResult>();
-        //}
+            // Act
+            var result = await _controller.ReceiveAddress(address);
 
-        //[Fact]
-        //public async Task MyClubController_ReceiveAddress_Post_ReturnsIsNotClubAdmin()
-        //{
-        //    // Arrange
-        //    var role = new UsersRoleClub { RoleId = 2 };
-        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
-        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(false);
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
 
-        //    // Act
-        //    var result = await _controller.ReceiveAddress(2.0, 1.0, "22-00", "Rua", "Lisboa", "Lisboa", "Portugal");
+        [Fact]
+        public async Task MyClubController_ReceiveAddress_Post_ReturnsIsNotClubAdmin()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2 };
+            var club = A.Fake<Club>();
+            var address = new Models.Address
+            {
+                Id = 1,
+                Street = "Street",
+                City = "City",
+                ZipCode = "ZipCode",
+                Country = "Country",
+                CoordinateX = 1,
+                CoordinateY = 1
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
 
-        //    // Assert
-        //    result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
-        //    result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
-        //}
 
-        //[Fact]
-        //public async Task MyClubController_ReceiveAddress_Post_ReturnsClubNull()
-        //{
-        //    // Arrange
-        //    var role = new UsersRoleClub { RoleId = 2 };
-        //    A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
-        //    A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
-        //    A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(Task.FromResult<Club>(null));
+            // Act
+            var result = await _controller.ReceiveAddress(address);
 
-        //    // Act
-        //    var result = await _controller.ReceiveAddress(2.0, 1.0, "22-00", "Rua", "Lisboa", "Lisboa", "Portugal");
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
 
-        //    // Assert
-        //    result.Should().BeOfType<NotFoundResult>();
-        //    //result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
-        //    //result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
-        //}
+        [Fact]
+        public async Task MyClubController_ReceiveAddress_Post_ReturnsClubNull()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2 };
+            var address = new Models.Address
+            {
+                Id = 1,
+                Street = "Street",
+                City = "City",
+                ZipCode = "ZipCode",
+                Country = "Country",
+                CoordinateX = 1,
+                CoordinateY = 1
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(Task.FromResult<Club>(null));
+
+
+            // Act
+            var result = await _controller.ReceiveAddress(address);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task MyClubController_PaymentSettings_ReturnsSuccess()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.GetClubPaymentSettings(A<int>._)).Returns(A.Fake<ClubPaymentSettings>());
+
+            // Act
+            var result = await _controller.PaymentSettings();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task MyClubController_PaymentSettings_ReturnsIsNotClubAdmin()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.PaymentSettings();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_PaymentSettings_Post_ReturnsSuccess()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2, ClubId = 2 };
+            var paymentSettings = new ClubPaymentSettings()
+            {
+                ClubPaymentSettingsId = 2,
+                AccountId = "AccountId",
+                AccountKey = "AccountKey"
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.UpdateClubPaymentSettings(A<ClubPaymentSettings>._)).Returns(A.Fake<ClubPaymentSettings>());
+
+            // Act
+            var result = await _controller.PaymentSettings(paymentSettings);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task MyClubController_PaymentSettings_Post_ReturnsIsNotClubAdmin()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2, ClubId = 2 };
+            var paymentSettings = new ClubPaymentSettings()
+            {
+                ClubPaymentSettingsId = 2,
+                AccountId = "AccountId",
+                AccountKey = "AccountKey"
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubAdmin(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.UpdateClubPaymentSettings(A<ClubPaymentSettings>._)).Returns(A.Fake<ClubPaymentSettings>());
+
+            // Act
+            var result = await _controller.PaymentSettings(paymentSettings);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyClubController_MissingPayment_ReturnsSuccess()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2, ClubId = 2 };
+            var paymentSettings = new ClubPaymentSettings()
+            {
+                ClubPaymentSettingsId = 2,
+                AccountId = "AccountId",
+                AccountKey = "AccountKey"
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+
+            // Act
+            var result = await _controller.MissingPayment();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+            
+        }
+
+        [Fact]
+        public async Task MyClubController_MissingPayment_ReturnsClubIdZero()
+        {
+            // Arrange
+            var role = new UsersRoleClub { RoleId = 2, ClubId = 0 };
+            var paymentSettings = new ClubPaymentSettings()
+            {
+                ClubPaymentSettingsId = 2,
+                AccountId = "AccountId",
+                AccountKey = "AccountKey"
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+
+            // Act
+            var result = await _controller.MissingPayment();
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
 
 
     }

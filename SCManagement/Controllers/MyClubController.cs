@@ -31,6 +31,7 @@ namespace SCManagement.Controllers
         private readonly ITeamService _teamService;
         private readonly ITranslationService _translationService;
         private readonly IPaymentService _paymentService;
+        private readonly IUrlHelper _urlHelper;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -47,7 +48,8 @@ namespace SCManagement.Controllers
             IUserService userService,
             ITeamService teamService,
             ITranslationService translationService,
-            IPaymentService paymentService)
+            IPaymentService paymentService, 
+            IUrlHelper urlHelper)
         {
             _userManager = userManager;
             _clubService = clubService;
@@ -55,6 +57,7 @@ namespace SCManagement.Controllers
             _teamService = teamService;
             _translationService = translationService;
             _paymentService = paymentService;
+            _urlHelper = urlHelper;
         }
 
         /// <summary>
@@ -885,7 +888,7 @@ namespace SCManagement.Controllers
             var userRoleId = _clubService.GetUserRoleInClub(user.Id, role.ClubId);
             if (userRoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
-            return PartialView("_PartialUserDetails", user); ;
+            return PartialView("_PartialUserDetails", user);
         }
 
         /// <summary>
@@ -923,7 +926,7 @@ namespace SCManagement.Controllers
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
 
-            if (club == null) return NotFound();
+            if (club == null) return View("CustomError", "Error_NotFound");
 
             var clubAddresId = club.AddressId;
 
@@ -931,12 +934,12 @@ namespace SCManagement.Controllers
             {
                 // update Address
                 await _clubService.UpdateClubAddress(address, (int)clubAddresId);
-                return Json(new { url = Url.Action("Edit", "MyClub") });
+                return Json(new { url = _urlHelper.Action("Edit", "MyClub") });
             }
 
             //create address
             await _clubService.CreateAddress(address, club.Id);
-            return Json(new { url = Url.Action("Edit", "MyClub") });
+            return Json(new { url = _urlHelper.Action("Edit", "MyClub") });
         }
 
         public async Task<IActionResult> PaymentSettings()

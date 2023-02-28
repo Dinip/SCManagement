@@ -9,33 +9,33 @@ namespace SCManagement.Services.TranslationService
 {
     public class TranslationService : ITranslationService
     {
-        private readonly string Endpoint;
-        private readonly string SubscriptionKey;
-        private readonly string Region;
-        private readonly ApplicationDbContext _context;
+        private readonly string _endpoint;
+        private readonly string _subscriptionKey;
+        private readonly string _region;
 
-        public TranslationService(ApplicationDbContext context, IConfiguration configuration)
+        public TranslationService(IConfiguration configuration)
         {
-            SubscriptionKey = configuration["TranslatorAPIKey"];
-            Region = configuration["TranslatorLocation"];
-            Endpoint = configuration["TranslatorAPIEndpoint"];
-            _context = context;
+            _subscriptionKey = configuration["TranslatorAPIKey"];
+            _region = configuration["TranslatorLocation"];
+            _endpoint = configuration["TranslatorAPIEndpoint"];
         }
-
-        public async Task Translate(IEnumerable<ITranslation> translations)
+        
+        public Task? Translate(IEnumerable<ITranslation> translations)
         {
-            if (translations == null) return;
+            if (translations == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
 
-            var translation = translations.FirstOrDefault(x => x.Value != null);
+            var translation = translations.FirstOrDefault(x => x.Value != "");
             
-            if (translation == null) return;
+            if (translation == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
 
-            var remainTranslations = translations.Where(x => x.Value == null).ToList();
+            var remainTranslations = translations.Where(x => x.Value == "").ToList();
 
             foreach (var t in remainTranslations)
             {
                 t.Value = Translation(translation.Value, translation.Language, t.Language).Result[0].Translations[0].Text;
             }
+
+            return Task.CompletedTask;
         }
 
         public async Task<List<TranslationsContainer>> Translation(string content, string fromLang, string toLang)
@@ -49,10 +49,10 @@ namespace SCManagement.Services.TranslationService
             using (var request = new HttpRequestMessage())
             {
                 request.Method = HttpMethod.Post;
-                request.RequestUri = new Uri(Endpoint + route);
+                request.RequestUri = new Uri(_endpoint + route);
                 request.Content = new StringContent(requestBody, Encoding.UTF8, "application/json");
-                request.Headers.Add("Ocp-Apim-Subscription-Key", SubscriptionKey);
-                request.Headers.Add("Ocp-Apim-Subscription-Region", Region);
+                request.Headers.Add("Ocp-Apim-Subscription-Key", _subscriptionKey);
+                request.Headers.Add("Ocp-Apim-Subscription-Region", _region);
 
                 HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 

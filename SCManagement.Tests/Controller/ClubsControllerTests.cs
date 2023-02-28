@@ -5,7 +5,10 @@ using Microsoft.AspNetCore.Mvc;
 using SCManagement.Controllers;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.PaymentService;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.UserService;
+using static SCManagement.Controllers.ClubsController;
 
 namespace SCManagement.Tests.Controller
 {
@@ -15,15 +18,17 @@ namespace SCManagement.Tests.Controller
         private readonly UserManager<User> _userManager;
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
+        private readonly IPaymentService _paymentService;
 
         public ClubsControllerTests()
         {
             _userManager = A.Fake<UserManager<User>>();
             _clubService = A.Fake<IClubService>();
             _userService = A.Fake<IUserService>();
+            _paymentService = A.Fake<IPaymentService>();
 
             //SUT (system under test)
-            _controller = new ClubsController(_userManager, _clubService, _userService);
+            _controller = new ClubsController(_userManager, _clubService, _userService, _paymentService);
         }
 
         [Fact]
@@ -59,8 +64,31 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var club = A.Fake<Club>();
+            var ClubTranslations = new List<ClubTranslations>() { A.Fake<ClubTranslations>(), A.Fake<ClubTranslations>() };
             A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+            A.CallTo(() => _clubService.GetClubTranslations(A<int>._)).Returns(ClubTranslations);
+            A.CallTo(() => _clubService.IsClubPartner(A<string>._ ,A<int>._)).Returns(false);
+
+            // Act
+            var result = await _controller.Index(1);
             
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("Details");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be(club);
+        }
+
+        [Fact]
+        public async Task ClubsController_Index_Details_ReturnsIsPartnerSuccess()
+        {
+            // Arrange
+            var club = A.Fake<Club>();
+            var ClubTranslations = new List<ClubTranslations>() { A.Fake<ClubTranslations>(), A.Fake<ClubTranslations>() };
+            var sub = A.Fake<Subscription>();
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+            A.CallTo(() => _clubService.GetClubTranslations(A<int>._)).Returns(ClubTranslations);
+            A.CallTo(() => _clubService.IsClubPartner(A<string>._, A<int>._)).Returns(true);
+            A.CallTo(() => _paymentService.GetMembershipSubscription(A<string>._, A<int>._)).Returns(sub);
+
             // Act
             var result = await _controller.Index(1);
 
@@ -85,18 +113,17 @@ namespace SCManagement.Tests.Controller
 
 
         [Fact]
-        public void ClubsController_CreateGet_ReturnsSuccess()
+        public async Task ClubsController_CreateGet_ReturnsSuccess()
         {
             // Arrange
-
+            
             // Act
-            var result = _controller.Create();
+            var result = await _controller.Create();
 
             // Assert
-            result.Should().BeAssignableTo<IActionResult>();
+            result.Should().BeOfType<ViewResult>();
         }
-
-        //rever este teste pois não está muito bom
+        
         [Fact]
         public async Task ClubsController_Create_Post_ReturnsSuccess()
         {
@@ -105,15 +132,40 @@ namespace SCManagement.Tests.Controller
             {
                 Id = 123,
                 UsersRoleClub = new List<UsersRoleClub>() { new UsersRoleClub { Id = 1} },
+                
             };
-            var clubToCreate = new Club { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 } };
+            var clubToCreate = new CreateClubModel { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 }, PlanId = 1 };
+            var clubSubProducts = new List<Product>() { new Product { Id = 1 } };
             A.CallTo(() => _clubService.CreateClub(A<Club>._, A<string>._)).Returns(createdClub);
+            A.CallTo(() => _paymentService.GetClubSubscriptionPlans()).Returns(clubSubProducts);
+
+            // Act
+            var result = await _controller.Create(clubToCreate);
+            
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task ClubsController_Create_Post_ReturnsView()
+        {
+            // Arrange
+            var createdClub = new Club
+            {
+                Id = 123,
+                UsersRoleClub = new List<UsersRoleClub>() { new UsersRoleClub { Id = 1 } },
+
+            };
+            var clubToCreate = new CreateClubModel { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 }, PlanId = 1 };
+            var clubSubProducts = new List<Product>() { new Product { Id = 3 } };
+            A.CallTo(() => _clubService.CreateClub(A<Club>._, A<string>._)).Returns(createdClub);
+            A.CallTo(() => _paymentService.GetClubSubscriptionPlans()).Returns(clubSubProducts);
 
             // Act
             var result = await _controller.Create(clubToCreate);
 
             // Assert
-            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+            result.Should().BeOfType<ViewResult>();
         }
 
         [Fact]
@@ -122,12 +174,31 @@ namespace SCManagement.Tests.Controller
             // Arrange
             var club = A.Fake<Club>();
             A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._,A<int>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubPartner(A<string>._,A<int>._)).Returns(true);
 
             // Act
             var result = await _controller.Associate(1);
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task ClubsController_Associate_ReturnsIsClubMember()
+        {
+            // Arrange
+            var club = A.Fake<Club>();
+            A.CallTo(() => _clubService.GetClub(A<int>._)).Returns(club);
+            A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubPartner(A<string>._, A<int>._)).Returns(false);
+
+            // Act
+            var result = await _controller.Associate(1);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+            result.Should().BeOfType<RedirectToActionResult>().Which.ControllerName.Should().Be("Subscription");
         }
 
         [Fact]
@@ -200,6 +271,30 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("Join");
+        }
+
+        [Fact]
+        public async Task ClubsController_CoordsMarkers_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.CoordsMarkers();
+
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
+
+        [Fact]
+        public async Task ClubsController_SearchNameClubs_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.SearchNameClubs("Benfica");
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_PartialSearchClub");
         }
     }
 }
