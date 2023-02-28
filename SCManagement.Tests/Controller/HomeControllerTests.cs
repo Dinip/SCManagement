@@ -60,8 +60,5 @@ namespace SCManagement.Tests.Controller
             // Assert
             result.Should().BeOfType<ViewResult>();
         }
-
-        //Error not working
-
     }
 }

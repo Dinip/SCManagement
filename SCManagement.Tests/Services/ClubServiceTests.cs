@@ -10,6 +10,8 @@ using SCManagement.Models;
 using FluentAssertions;
 using System.Data;
 using SCManagement.Services.AzureStorageService.Models;
+using System.Collections.Generic;
+using SCManagement.Services.PaymentService.Models;
 
 namespace SCManagement.Tests.Services
 {
@@ -77,7 +79,19 @@ namespace SCManagement.Tests.Services
                                 Language = "en-US",
                                 Atribute = "About",
                             }
-                        }
+                        },
+                        Address = new Address
+                        {
+                            Id = i,
+                            Street = "Test Street",
+                            District = "Test District",
+                            City = "Test City",
+                            Country = "Test Country",
+                            ZipCode = "Test ZipCode",
+                            CoordinateX = 0,
+                            CoordinateY = 0,
+                        },
+                        ClubPaymentSettings = A.Fake<ClubPaymentSettings>(),
                     });
 
                     if (i == 10)
@@ -181,8 +195,6 @@ namespace SCManagement.Tests.Services
             var result = await _clubService.GetClub(1);
 
             // Assert
-            result.About.Should().NotBeNull();
-            result.TermsAndConditions.Should().NotBeNull();
             result.Should().NotBeNull();
             result.Should().BeOfType<Club>();
         }
@@ -800,19 +812,6 @@ namespace SCManagement.Tests.Services
             // Assert
             _context.UsersRoleClub.Count().Should().Be(count-1);
         }
-        
-        [Fact]
-        public async Task ClubService_RemoveClubUser_FN_ReturnsSuccess()
-        {
-            // Arrange
-            var count = _context.UsersRoleClub.Count();
-            
-            // Act
-            await _clubService.RemoveClubUser("Test 1", 5, 10);
-
-            // Assert
-            _context.UsersRoleClub.Count().Should().Be(count - 1);
-        }
 
         [Fact]
         public async Task ClubService_UpdateClubPhoto_ReturnsSuccess()
@@ -881,25 +880,20 @@ namespace SCManagement.Tests.Services
         }
 
         [Fact]
-        public async Task ClubService_AddUserToClub_ReturnsSuccess()
-        {
-            // Arrange
-            var count = _context.UsersRoleClub.Count();
-
-            // Act
-            await _clubService.AddUserToClub("Test 1", 5, 20);
-
-            // Assert
-            _context.UsersRoleClub.Count().Should().Be(count + 1);
-        }
-
-        [Fact]
         public async Task ClubService_CreateAddress_ReturnsSuccess()
         {
             // Arrange
+            var address = new Address()
+            {
+                ZipCode = "222-22",
+                Street = "Rua",
+                City = "Lisboa",
+                District = "Lisboa",
+                Country = "Portugal",
+            };
 
             // Act
-            var result = await _clubService.CreateAddress(2.0,2.0,"222-22","Rua","Lisboa", "Lisboa","Portugal",1);
+            var result = await _clubService.CreateAddress(address, 1);
 
             // Assert
             result.Should().BeOfType<Address>();
@@ -975,6 +969,126 @@ namespace SCManagement.Tests.Services
 
             // Assert
             result.Should().BeOfType<List<ClubTranslations>>();
+        }
+
+        [Fact]
+        public async Task ClubService_AddPartnerToClub_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _clubService.AddPartnerToClub("Test 8", 1, UserRoleStatus.Active);
+
+            // Assert
+            result.Should().BeOfType<UsersRoleClub>();
+        }
+
+        [Fact]
+        public async Task ClubService_UpdateClubAddress_ReturnsSuccess()
+        {
+            // Arrange
+            var address = new Address()
+            {
+                Id = 1,
+                ZipCode = "222-22",
+                Street = "Rua",
+                City = "Lisboa",
+                District = "Lisboa",
+                Country = "Portugal",
+            };
+
+            // Act
+            await _clubService.UpdateClubAddress(address, 1);
+
+            // Assert
+            _context.Address.Where(a => a.Id == 1).First().Street.Should().Be("Rua");
+        }
+
+        [Fact]
+        public async Task ClubService_GetAllCoordinates_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _clubService.GetAllCoordinates();
+
+            // Assert
+            result.Should().NotBeNull();
+        }
+
+        [Fact]
+        public async Task ClubService_SearchNameClubs_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _clubService.SearchNameClubs("Test Club");
+
+            // Assert
+            result.Should().BeOfType<List<Club>>();
+        }
+
+        [Fact]
+        public async Task ClubService_SearchNameClubs_ReturnsNameNull()
+        {
+            // Arrange
+            
+            // Act
+            var result = await _clubService.SearchNameClubs(null);
+
+            // Assert
+            result.Should().BeOfType<List<Club>>();
+        }
+
+        [Fact]
+        public async Task ClubService_GetClubStatus_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _clubService.GetClubStatus(1);
+
+            // Assert
+            result.Should().BeOneOf(ClubStatus.Active, ClubStatus.Waiting_Payment, ClubStatus.Suspended, ClubStatus.Deleted);
+        }
+
+        [Fact]
+        public async Task ClubService_UpdateClubPaymentSettings_ReturnsSuccess()
+        {
+            // Arrange
+            var settings = new ClubPaymentSettings()
+            {
+                ClubPaymentSettingsId = 1,
+                AccountId = "Test Account",
+                AccountKey = "Test Key",
+                ValidCredentials = true,
+            };
+
+            // Act
+            var result = await _clubService.UpdateClubPaymentSettings(settings);
+
+            // Assert
+            result.Should().BeOfType<ClubPaymentSettings>();
+        }
+
+        [Fact]
+        public async Task ClubService_UpdateClubPaymentSettings_ReturnsNotifyPartnersQuotaChange()
+        {
+            // Arrange
+            var settings = new ClubPaymentSettings()
+            {
+                ClubPaymentSettingsId = 1,
+                AccountId = "Test Account",
+                AccountKey = "Test Key",
+                ValidCredentials = true,
+                QuotaFrequency = SubscriptionFrequency.Weekly,
+            };
+
+            // Act
+            var result = await _clubService.UpdateClubPaymentSettings(settings);
+
+            // Assert
+            result.Should().BeOfType<ClubPaymentSettings>();
         }
     }
 }

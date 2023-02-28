@@ -14,7 +14,6 @@ namespace SCManagement.Controllers
 {
     public class EventsController : Controller
     {
-        private readonly ApplicationDbContext _context;
         private readonly IEventService _eventService;
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
@@ -22,7 +21,6 @@ namespace SCManagement.Controllers
         private readonly IPaymentService _paymentService;
 
         public EventsController(
-            ApplicationDbContext context,
             IEventService eventService,
             IUserService userService,
             UserManager<User> userManager,
@@ -30,7 +28,6 @@ namespace SCManagement.Controllers
             IPaymentService paymentService
             )
         {
-            _context = context;
             _eventService = eventService;
             _userService = userService;
             _userManager = userManager;
@@ -67,13 +64,13 @@ namespace SCManagement.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             var myEvent = await _eventService.GetEvent(id.Value);
             if (myEvent == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             var userId = getUserIdFromAuthedUser();
@@ -105,7 +102,7 @@ namespace SCManagement.Controllers
                 ViewBag.IsEnrolled = false;
             }
 
-            return PartialView("_PartialEventDetails", myEvent); ;
+            return PartialView("_PartialEventDetails", myEvent);
 
         }
 
@@ -208,13 +205,13 @@ namespace SCManagement.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             var myEvent = await _eventService.GetEvent((int)id);
             if (myEvent == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (!_clubService.IsClubStaff(role))
@@ -239,7 +236,7 @@ namespace SCManagement.Controllers
         {
             if (id != myEvent.Id)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             if (ModelState.IsValid)
@@ -284,13 +281,13 @@ namespace SCManagement.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             var myEvent = await _eventService.GetEvent((int)id);
             if (myEvent == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             await _eventService.DeleteEvent(myEvent);
@@ -352,20 +349,20 @@ namespace SCManagement.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             var myEvent = await _eventService.GetEvent((int)id);
             if (myEvent == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             var userId = getUserIdFromAuthedUser();
 
             //Check if users is enrolled
             var enrollRoRemove = await _eventService.GetEnroll(myEvent.Id, userId);
-            if (enrollRoRemove == null) return NotFound();
+            if (enrollRoRemove == null) return View("CustomError", "Error_NotFound");
 
             //Its only available to cancel enrollment if user not paid yet
             if (enrollRoRemove.EnrollStatus != EnrollPaymentStatus.Pending) return View("CustomError", "Error_Unauthorized");
