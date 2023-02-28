@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Models.Event
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
 <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
@@ -95,8 +96,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="Fee" class="control-label"></label>
-                <input type="number" step="0.01" min="0" asp-for="Fee" class="form-control" value="0" />
+                <input type="number" step="0.01" min="0" asp-for="Fee" class="form-control" value="0" readonly="@(ViewBag.ValidKey == false)" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
+                <span style="color: orange;">@(ViewBag.ValidKey == false ? StringLocalizer["Warning_InvalidKey"] : "")</span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>

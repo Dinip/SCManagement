@@ -1212,4 +1212,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Credenciais válidas</value>
     <comment>23-02-2023_payments</comment>
   </data>
+  <data name="Warning_InvalidKey" xml:space="preserve">
+    <value>O teu clube não tem pagamentos ativos. Podes criar um evento na mesma, mas este não pode ter uma taxa de entrada.</value>
+    <comment>28-02-2023_events</comment>
+  </data>
 </root>

@@ -1076,4 +1076,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Valid Credentials</value>
     <comment>23-02-2023_payments</comment>
   </data>
+  <data name="Warning_InvalidKey" xml:space="preserve">
+    <value>Your club doesn't have payments enabled. You can still create an event but it can't have an entry fee.</value>
+    <comment>28-02-2023_events</comment>
+  </data>
 </root>
