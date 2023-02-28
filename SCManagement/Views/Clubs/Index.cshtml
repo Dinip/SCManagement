@@ -54,7 +54,7 @@
             margin-left: 50px;
         }
 
-    .openbtn {
+    #openbtn {
         font-size: 20px;
         cursor: pointer;
         height: 80px;
@@ -86,6 +86,16 @@
         padding: 5px !important;
     }
 
+    #menu {
+        position: absolute;
+        background: #efefef;
+        padding: 10px;
+        font-family: 'Open Sans', sans-serif;
+        right: 0;
+        top: 76px;
+        z-index:1;
+    }
+
 </style>
 
 <!-- Import Mapbox GL JS  -->
@@ -113,54 +123,22 @@
         @await Html.PartialAsync("_PartialSearchClub",Model)
 
     </div>
-    <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px;">
-        <div class="card-body">
-            <div id='map'></div>
-            <div id="menu">
-                <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
-                <label for="satellite-streets-v12">satellite streets</label>
-                <input id="light-v11" type="radio" name="rtoggle" value="light">
-                <label for="light-v11">light</label>
-                <input id="dark-v11" type="radio" name="rtoggle" value="dark">
-                <label for="dark-v11">dark</label>
-                <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
-                <label for="streets-v12">streets</label>
-            </div>
-            <script src="~/js/Mapbox.js" asp-append-version="true"></script>
+    
+    <button id="openbtn" onmouseover="openNav()"><i class="fa-solid fa-chevron-right"></i></button>
+    <div id='map' style="border-radius:0 !important;">
+        <div id="menu">
+            <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
+            <label for="satellite-streets-v12">satellite streets</label>
+            <input id="light-v11" type="radio" name="rtoggle" value="light">
+            <label for="light-v11">light</label>
+            <input id="dark-v11" type="radio" name="rtoggle" value="dark">
+            <label for="dark-v11">dark</label>
+            <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
+            <label for="streets-v12">streets</label>
         </div>
     </div>
-</div>
-</div>
-
-
-<style>
-
-    #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        left: 0;
-        border-radius: 20px;
-        height: 100%
-    }
-
-    .mapboxgl-canvas-container {
-        height: 100vh;
-    }
-
-    #menu {
-        position: absolute;
-        background: #efefef;
-        padding: 10px;
-        font-family: 'Open Sans', sans-serif;
-        right: 0;
-    }
-</style>
-
-</div>
-<button id="openbtn" class="openbtn" onmouseover="openNav()"><i class="fa-solid fa-chevron-right"></i></button>
-<div id='map' style="border-radius:0 !important;"></div>
+    
+   
 </div>
 
 
@@ -169,7 +147,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
-
     function openNav() {
         if (window.innerWidth <= 768) {
             document.getElementById("mySidebar").style.width = "100%"

@@ -181,9 +181,11 @@
     <script>
         $(".chosen-select").chosen().css("display", "").addClass("sr-only");
 
-        document.getElementById("dropdownMenu2").classList.add("dropdown-menu");
-        document.getElementById("dropdown2").classList.add("dropdown");
-        dropdown2
+        if (document.getElementById("dropdownMenu2") != null)
+            document.getElementById("dropdownMenu2").classList.add("dropdown-menu");
+
+        if (document.getElementById("dropdown2") != null)
+            document.getElementById("dropdown2").classList.add("dropdown");
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
