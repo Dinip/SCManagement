@@ -81,16 +81,16 @@ namespace SCManagement.Controllers
             //if event is not public need to check if user is in the club
             if (!myEvent.IsPublic)
             {
-                if (userRole == null)
-                {
-                    return View("CustomError", "Error_Unauthorized");
-                }
+                if (userRole == null) return View("CustomError", "Error_Unauthorized");
+                
+                if (userRole.ClubId != myEvent.ClubId) return View("CustomError", "Error_Unauthorized");
             }
 
             //if users is staff can see users enrolled
             if (_clubService.IsClubStaff(userRole))
             {
                 ViewBag.IsStaff = true;
+                ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
             }
 
             //check if user is already enrolled
@@ -105,7 +105,7 @@ namespace SCManagement.Controllers
                 ViewBag.IsEnrolled = false;
             }
 
-            return PartialView("_PartialEventDetails", myEvent); ;
+            return View("EventDetails", myEvent); ;
 
         }
 
@@ -331,6 +331,19 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_AlreadyEnrolled");
             }
 
+            //Verify number of enrollments on event if do not exceed the limit
+            var numberOfEnrollments = await _eventService.GetNumberOfEnrolls(id);
+            if(numberOfEnrollments >= eventToEnroll.MaxEventEnrolls)
+            {
+                return View("CustomError", "Error_MaxNumberOfEnrollments");
+            }
+
+            //Check Date
+            if(DateTime.Now >= eventToEnroll.EnrollLimitDate)
+            {
+                return View("CustomError", "Error_LimitDateExceed");
+            }
+
             //create Enrollment
             var enroll = await _eventService.CreateEventEnroll(new EventEnroll
             {
@@ -340,15 +353,11 @@ namespace SCManagement.Controllers
                 EnrollStatus = eventToEnroll.Fee != 0 ? EnrollPaymentStatus.Pending : EnrollPaymentStatus.Valid
             });
 
-            //update event enroll users list
-            eventToEnroll.UsersEnrolled.Add(enroll);
-
-            await _eventService.UpdateEvent(eventToEnroll);
             var pay = await _paymentService.CreateEventPayment(enroll);
 
             if (pay != null) return RedirectToAction("Index", "Payment", new { payId = pay.Id });
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new {id = id});
         }
 
 
@@ -375,24 +384,14 @@ namespace SCManagement.Controllers
             if (enrollRoRemove == null) return NotFound();
 
             //Its only available to cancel enrollment if user not paid yet
-            if (enrollRoRemove.EnrollStatus != EnrollPaymentStatus.Pending) return View("CustomError", "Error_Unauthorized");
-
-            var removeCode = RemoveUserFromEnrollList(myEvent, userId);
-            if (removeCode == -1) return View("CustomError", "Error_NotFound");
+            //If fee = 0 is possible to cancel with enrolment paymend valid
+            if (myEvent.Fee != 0)
+                if (enrollRoRemove.EnrollStatus != EnrollPaymentStatus.Pending) return View("CustomError", "Error_Unauthorized");
 
             await _eventService.CancelEventEnroll(enrollRoRemove);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Details), new {id = id});
         }
 
-        private int RemoveUserFromEnrollList(Event myEvent, string userId)
-        {
-            var enrollToRemove = myEvent.UsersEnrolled.Where(u => u.UserId == userId).FirstOrDefault();
-
-            if (enrollToRemove == null) return -1;
-
-            myEvent.UsersEnrolled.Remove(enrollToRemove);
-            return 0;
-        }
 
         public async Task<IActionResult> PathInfoMapBox(int id)
         {

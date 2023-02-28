@@ -66,9 +66,21 @@ namespace SCManagement.Services.EventService
             _context.EventEnroll.Remove(enroll);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<int> GetNumberOfEnrolls(int eventId)
+        {
+            return await _context.EventEnroll.Where(e => e.EventId == eventId).CountAsync();
+        }
+        public async Task<IEnumerable<EventEnroll>> GetEnrolls(int eventId)
+        {
+            return await _context.EventEnroll.Where(e => e.EventId == eventId).Include(e => e.User).ToListAsync();
+        }
+
     }
+    }
+    
 
 
 
-}
+
 

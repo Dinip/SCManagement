@@ -46,8 +46,7 @@ namespace SCManagement.Models
         //Fazer validação: tem de ser depois da start date e antes da end date
         [Display(Name = "Enroll Limit Date")]
         public DateTime EnrollLimitDate { get; set; }
-
-        public ICollection<EventEnroll> UsersEnrolled { get; set; } = new List<EventEnroll>();
+        public ICollection<EventEnroll>? UsersEnrolled { get; set; }
 
         public int ClubId { get; set; }
 
