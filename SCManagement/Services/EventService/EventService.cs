@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
+using SCManagement.Data.Migrations;
 using SCManagement.Models;
 
 namespace SCManagement.Services.EventService
@@ -33,12 +35,44 @@ namespace SCManagement.Services.EventService
 
         public async Task<IEnumerable<Event>> GetPublicEvents()
         {
-            return await _context.Event.Where(e => e.IsPublic == true).Include(e => e.Club).Include(e => e.EventTranslations).ToListAsync();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            return await _context.Event
+                .Where(e => e.IsPublic == true)
+                .Include(e => e.Club)
+                .Include(e => e.EventTranslations)
+                .Select(e =>
+                new Event
+                {
+                    Id = e.Id,
+                    ClubId = e.ClubId,
+                    Club = e.Club,
+                    EventTranslations = e.EventTranslations!.Where(et => et.Language == cultureInfo).ToList(),
+                    IsPublic = e.IsPublic,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                })
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<Event>> GetClubEvents(int clubId)
         {
-            return await _context.Event.Where(e => e.ClubId == clubId && e.IsPublic == false).Include(e => e.Club).Include(e => e.EventTranslations).ToListAsync();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            
+            return await _context.Event
+                .Where(e => e.ClubId == clubId && e.IsPublic == false)
+                .Include(e => e.Club)
+                .Include(e => e.EventTranslations)
+                .Select(e =>
+                new Event
+                {
+                    Id = e.Id,
+                    ClubId = e.ClubId,
+                    Club = e.Club,
+                    EventTranslations = e.EventTranslations!.Where(et => et.Language == cultureInfo).ToList(),
+                    IsPublic = e.IsPublic,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                }).ToListAsync();
         }
 
         public async Task<Event> UpdateEvent(Event myEvent)

@@ -1,4 +1,4 @@
-﻿@model SCManagement.Models.Event
+﻿@model SCManagement.Controllers.EventsController.EventModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
@@ -62,10 +62,17 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="Name">
+                <label class="control-label">@StringLocalizer["Name"]</label>
+                <div class="language-select">
+                    @foreach (CultureInfo lang in ViewBag.Languages)
+                    {
+                        <input type="button" class="lang-btn lang-btn-name" id="btn-name-@lang.Name" onclick="toggleLang('@lang.Name','name')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
+                    }
+                    <input type="button" class="lang-btn" onclick="translateFn('name')" value="trans" />
+
+                </div>
+                @Html.EditorFor(x => x.EventTranslationsName)
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
@@ -86,7 +93,7 @@
                 <label class="control-label">Evento de 1 dia</label>
                 @*Criar CheckBox input*@
                 <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
-
+            </div>
             <div class="Details">
                 <label class="control-label">@StringLocalizer["Details"]</label>
                 <div class="language-select">
@@ -97,7 +104,7 @@
                     <input type="button" class="lang-btn" onclick="translateFn('details')" value="trans" />
 
                 </div>
-                @Html.EditorFor(x => x.EventTranslations)
+                @Html.EditorFor(x => x.EventTranslationsDetails)
             </div>
             
             <div class="form-group form-check">
@@ -251,5 +258,6 @@
     window.onload = function () {
         const culture = "@ViewBag.CultureInfo"
         toggleLang(culture, "details")
+        toggleLang(culture, "name")
     }
 </script>

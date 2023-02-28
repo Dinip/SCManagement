@@ -1,4 +1,4 @@
-﻿@model SCManagement.Models.Event
+﻿@model SCManagement.Controllers.EventsController.EventModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
@@ -40,10 +40,17 @@
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="Name">
+                <label class="control-label">@StringLocalizer["Name"]</label>
+                <div class="language-select">
+                    @foreach (CultureInfo lang in ViewBag.Languages)
+                    {
+                        <input type="button" class="lang-btn lang-btn-name" id="btn-name-@lang.Name" onclick="toggleLang('@lang.Name','name')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
+                    }
+                    <input type="button" class="lang-btn" onclick="translateFn('name')" value="trans" />
+
+                </div>
+                @Html.EditorFor(x => x.EventTranslationsName)
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
@@ -60,7 +67,6 @@
                 <input asp-for="EnrollLimitDate" class="form-control" />
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
             </div>
-            
             <div class="Details">
                 <label class="control-label">@StringLocalizer["Details"]</label>
                 <div class="language-select">
@@ -71,9 +77,8 @@
                     <input type="button" class="lang-btn" onclick="translateFn('details')" value="trans" />
 
                 </div>
-                @Html.EditorFor(x => x.EventTranslations)
+                @Html.EditorFor(x => x.EventTranslationsDetails)
             </div>
-            
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsPublic" /> @Html.DisplayNameFor(model => model.IsPublic)
@@ -187,6 +192,7 @@
     window.onload = function () {
         const culture = "@ViewBag.CultureInfo"
         toggleLang(culture, "details")
+        toggleLang(culture, "name")
     }
 </script>
 

@@ -143,22 +143,29 @@ namespace SCManagement.Controllers
 
             var languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             ViewBag.Languages = languages;
-
-            List<EventTranslations> translations = new List<EventTranslations>();
-            var eve = new Event();
+            
+            var eve = new EventModel();
+            eve.EventTranslationsName = new List<EventTranslations>();
+            eve.EventTranslationsDetails = new List<EventTranslations>();
 
             foreach (CultureInfo culture in languages)
             {
-                translations.Add(new()
+                eve.EventTranslationsDetails.Add(new()
                 {
                     EventId = eve.Id,
                     Value = "",
                     Language = culture.Name,
                     Atribute = "Details",
                 });
-            }
 
-            eve.EventTranslations = new List<EventTranslations>(translations);
+                eve.EventTranslationsName.Add(new()
+                {
+                    EventId = eve.Id,
+                    Value = "",
+                    Language = culture.Name,
+                    Atribute = "Name",
+                });
+            }
 
             return View(eve);
         }
@@ -168,7 +175,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,EventTranslations,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
             if (ModelState.IsValid)
             {
@@ -185,13 +192,11 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_Unauthorized");
                 }
 
-                var createdEvent = await _eventService.CreateEvent(new Event
+                var createdEvent = new Event
                 {
                     Id = myEvent.Id,
-                    Name = myEvent.Name,
                     StartDate = myEvent.StartDate,
                     EndDate = myEvent.EndDate,
-                    EventTranslations = myEvent.EventTranslations,
                     IsPublic = myEvent.IsPublic,
                     Fee = myEvent.Fee,
                     HaveRoute = myEvent.HaveRoute,
@@ -200,10 +205,18 @@ namespace SCManagement.Controllers
                     EnrollLimitDate = myEvent.EnrollLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
                     ClubId = role.ClubId,
-                    AddressByPath = myEvent.AddressByPath
-                });
+                    AddressByPath = myEvent.AddressByPath,
+                    EventTranslations = new List<EventTranslations>()
+                };
 
-                await UpdateTranslations(myEvent.EventTranslations, createdEvent);
+                await UpdateTranslations(myEvent.EventTranslationsName, createdEvent);
+                await UpdateTranslations(myEvent.EventTranslationsDetails, createdEvent);
+
+                var translations = new List<EventTranslations>(myEvent.EventTranslationsName);
+                translations.AddRange(myEvent.EventTranslationsDetails);
+                createdEvent.EventTranslations = translations;
+
+                await _eventService.CreateEvent(createdEvent);
 
                 if (myEvent.Fee > 0)
                 {
@@ -224,11 +237,11 @@ namespace SCManagement.Controllers
         public class EventModel
         {
             public int Id { get; set; }
-            public string Name { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
             public DateTime EnrollLimitDate { get; set; }
-            public ICollection<EventTranslations>? EventTranslations { get; set; }
+            public ICollection<EventTranslations>? EventTranslationsName { get; set; }
+            public ICollection<EventTranslations>? EventTranslationsDetails { get; set; }
             public bool IsPublic { get; set; }
             public float Fee { get; set; }
             public bool HaveRoute { get; set; }
@@ -267,8 +280,24 @@ namespace SCManagement.Controllers
 
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
-            
-            return View(myEvent);
+
+            var eve = new EventModel()
+            {
+                StartDate = myEvent.StartDate,
+                EndDate = myEvent.EndDate,
+                IsPublic = myEvent.IsPublic,
+                Fee = myEvent.Fee,
+                HaveRoute = myEvent.HaveRoute,
+                Route = myEvent.Route,
+                EventResultType = myEvent.EventResultType,
+                EnrollLimitDate = myEvent.EnrollLimitDate,
+                MaxEventEnrolls = myEvent.MaxEventEnrolls,
+                AddressByPath = myEvent.AddressByPath,
+                EventTranslationsName = myEvent.EventTranslations.Where(e => e.Atribute == "Name").ToList(),
+                EventTranslationsDetails = myEvent.EventTranslations.Where(e => e.Atribute == "Details").ToList(),
+        };
+
+            return View(eve);
 
         }
 
@@ -292,7 +321,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,EventTranslations,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -307,8 +336,7 @@ namespace SCManagement.Controllers
 
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
-
-                eventToUpdate.Name = myEvent.Name;
+                
                 eventToUpdate.StartDate = myEvent.StartDate;
                 eventToUpdate.EndDate = myEvent.EndDate;
                 eventToUpdate.IsPublic = myEvent.IsPublic;
@@ -320,7 +348,12 @@ namespace SCManagement.Controllers
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
                 eventToUpdate.AddressByPath = myEvent.AddressByPath;
 
-                await UpdateTranslations(myEvent.EventTranslations, eventToUpdate);
+                await UpdateTranslations(myEvent.EventTranslationsName, eventToUpdate);
+                await UpdateTranslations(myEvent.EventTranslationsDetails, eventToUpdate);
+
+                var translations = new List<EventTranslations>(myEvent.EventTranslationsName);
+                translations.AddRange(myEvent.EventTranslationsDetails);
+                eventToUpdate.EventTranslations = translations;
 
                 await _eventService.UpdateEvent(eventToUpdate);
 

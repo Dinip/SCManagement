@@ -594,7 +594,7 @@ namespace SCManagement.Services.PaymentService
                 ClubId = myEvent.ClubId,
                 IsSubscription = false,
                 Enabled = true,
-                Name = myEvent.Name,
+                Name = myEvent.EventTranslations.Where(e => e.Language == "en-US" && e.Atribute == "Name").Select(e => e.Value).FirstOrDefault(),
                 OriginalId = myEvent.Id,
                 ProductType = ProductType.Event,
                 Value = myEvent.Fee
@@ -615,7 +615,7 @@ namespace SCManagement.Services.PaymentService
                     ClubId = myEvent.ClubId,
                     IsSubscription = false,
                     Enabled = true,
-                    Name = myEvent.Name,
+                    Name = myEvent.EventTranslations.Where(e => e.Language == "en-US" && e.Atribute == "Name").Select(e => e.Value).FirstOrDefault(),
                     OriginalId = myEvent.Id,
                     ProductType = ProductType.Event,
                     Value = myEvent.Fee

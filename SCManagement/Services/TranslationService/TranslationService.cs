@@ -24,7 +24,7 @@ namespace SCManagement.Services.TranslationService
         {
             if (translations == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
 
-            var translation = translations.FirstOrDefault(x => x.Value != "" || x.Value != null);
+            var translation = translations.FirstOrDefault(x => x.Value != "" && x.Value != null);
             
             if (translation == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
 

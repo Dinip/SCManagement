@@ -7,11 +7,7 @@ namespace SCManagement.Models
     public class Event
     {
         public int Id { get; set; }
-
-        [Required(ErrorMessage = "Error_Required")]
-        [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
-        [Display(Name = "Event Name")]
-        public string Name { get; set; }
+        
 
         [Display(Name = "Start Date")]
         public DateTime StartDate { get; set; }
