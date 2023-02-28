@@ -1,5 +1,5 @@
 ﻿@model SCManagement.Models.Event
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 
 @{
@@ -37,10 +37,10 @@
             @Html.DisplayFor(model => model.EnrollLimitDate)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Details)
+            @StringLocalizer["Details"]
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Details)
+            @Html.DisplayFor(model => model.EventTranslations.FirstOrDefault(c => c.Atribute == "Details").Value)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IsPublic)

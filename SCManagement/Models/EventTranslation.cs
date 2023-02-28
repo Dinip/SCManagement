@@ -1,6 +1,6 @@
 ﻿namespace SCManagement.Models
 {
-    public class EventTranslation : ITranslation
+    public class EventTranslations : ITranslation
     {
         public int Id { get; set; }
         public int EventId { get; set; }

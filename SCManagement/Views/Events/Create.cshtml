@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Models.Event
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
 <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
@@ -43,6 +44,10 @@
         right: 10%;
         top: 10%;
     }
+
+    .selected {
+        background-color: red;
+    }
 </style>
 
 @{
@@ -82,12 +87,19 @@
                 @*Criar CheckBox input*@
                 <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
 
+            <div class="Details">
+                <label class="control-label">@StringLocalizer["Details"]</label>
+                <div class="language-select">
+                    @foreach (CultureInfo lang in ViewBag.Languages)
+                    {
+                        <input type="button" class="lang-btn lang-btn-details" id="btn-details-@lang.Name" onclick="toggleLang('@lang.Name','details')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
+                    }
+                    <input type="button" class="lang-btn" onclick="translateFn('details')" value="trans" />
+
+                </div>
+                @Html.EditorFor(x => x.EventTranslations)
             </div>
-            <div class="form-group">
-                <label asp-for="Details" class="control-label"></label>
-                <textarea asp-for="Details" class="form-control"></textarea>
-                <span asp-validation-for="Details" class="text-danger"></span>
-            </div>
+            
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsPublic" /> @Html.DisplayNameFor(model => model.IsPublic)
@@ -187,5 +199,57 @@
         } else {
             sameDay.checked = false;
         }
+    }
+
+    function toggleLang(lang, elemento) {
+
+        const btns = document.querySelectorAll(`input.lang-btn-${elemento}`)
+        for (let bt of btns) {
+            bt.getAttribute("id") == `btn-${elemento}-${lang}` ? bt.classList.add("selected") : bt.classList.remove("selected")
+        }
+
+        const textareas = document.querySelectorAll(`div.${elemento}-lang`)
+        for (let ta of textareas) {
+            ta.getAttribute("id") == `${elemento}-${lang}` ? ta.classList.remove("d-none") : ta.classList.add("d-none")
+        }
+    }
+
+    function translateFn(elemento) {
+        const textareas = document.querySelectorAll(`div.${elemento}-lang > textarea`)
+        const selectedLang = document.querySelectorAll(`input.selected.lang-btn-${elemento}`)[0].getAttribute("data-lang")
+        const selectedContent = document.querySelectorAll(`div#${elemento}-${selectedLang} > textarea`)[0]
+
+        for (let ta of textareas) {
+            if (ta.value == "" && ta.getAttribute("data-lang") != selectedLang) {
+                getTranslation(ta, selectedContent.value, selectedLang, ta.getAttribute("data-lang"))
+            }
+        }
+    }
+
+    function getTranslation(ta, content, fromLang, toLang) {
+        //ajax
+        //return do texto traduzido do pedido
+        $.ajax({
+            type: 'Post',
+            url: '/Translation/Translation',
+            data:
+            {
+                content: content,
+                fromLang: fromLang,
+                toLang: toLang
+            },
+        }).done(function (response) {
+            console.log("Sucess")
+            ta.value = response[0].translations[0].text
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log("Erro: " + textStatus + ", " + errorThrown)
+            console.log("Resposta do servidor: " + jqXHR.responseText)
+        })
+    }
+
+    window.onload = function () {
+        const culture = "@ViewBag.CultureInfo"
+        toggleLang(culture, "details")
     }
 </script>

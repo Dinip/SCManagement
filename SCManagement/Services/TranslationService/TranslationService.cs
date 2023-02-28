@@ -24,11 +24,11 @@ namespace SCManagement.Services.TranslationService
         {
             if (translations == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
 
-            var translation = translations.FirstOrDefault(x => x.Value != "");
+            var translation = translations.FirstOrDefault(x => x.Value != "" || x.Value != null);
             
             if (translation == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
 
-            var remainTranslations = translations.Where(x => x.Value == "").ToList();
+            var remainTranslations = translations.Where(x => x.Value == "" || x.Value == null).ToList();
 
             foreach (var t in remainTranslations)
             {
