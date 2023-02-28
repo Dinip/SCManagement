@@ -26,7 +26,8 @@
     <p>
         <button onclick="openCreate()">@StringLocalizer["Create New"]</button>
     </p>
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="mt-5" style="font-size: 1.5rem;">@ViewBag.Slots @StringLocalizer["SlotsStats"]</div>
+    <div class="card mt-1 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
             <table id="table_id" class="display">
                 <thead>
@@ -71,7 +72,7 @@
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.ExpireDate)
                             </td>
-                            <td class ="text-to-dark">
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.UsedDate)
                             </td>
                             <td class="text-to-dark">
@@ -101,7 +102,7 @@
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
     let modal = document.getElementById("modal");
-    
+
     window.onclick = function (event) {
         if (event.target == modal) {
             $("#modal").hide();

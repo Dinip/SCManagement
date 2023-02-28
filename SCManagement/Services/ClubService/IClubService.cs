@@ -1,5 +1,6 @@
 ﻿
 using SCManagement.Models;
+using SCManagement.Services.ClubService.Models;
 
 namespace SCManagement.Services.ClubService
 {
@@ -51,5 +52,6 @@ namespace SCManagement.Services.ClubService
         public Task<ClubStatus> GetClubStatus(int clubId);
         public Task<ClubPaymentSettings> GetClubPaymentSettings(int clubId);
         public Task<ClubPaymentSettings> UpdateClubPaymentSettings(ClubPaymentSettings settings);
+        public Task<ClubSlots> ClubAthleteSlots(int clubId);
     }
 }

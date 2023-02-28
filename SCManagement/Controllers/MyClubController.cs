@@ -417,6 +417,10 @@ namespace SCManagement.Controllers
 
             ViewBag.isAdmin = _clubService.IsClubAdmin(role);
 
+            var slots = await _clubService.ClubAthleteSlots(role.ClubId);
+
+            ViewBag.Slots = $"{slots.UsedSlots}/{slots.TotalSlots}";
+
             if (approveCode != null && _clubService.IsClubAdmin(role))
             {
                 //approve the usage of the code
