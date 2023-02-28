@@ -45,15 +45,9 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var events = await _eventService.GetPublicEvents();
-
             var userId = getUserIdFromAuthedUser();
-            var role = await _userService.GetSelectedRole(userId);
-            if (role != null)
-            {
-                var clubEvents = await _eventService.GetClubEvents(role.ClubId);
-                events = events.Concat(clubEvents);
-            }
+            
+            var events = await _eventService.GetEvents(userId);
 
             events.OrderBy(e => e.StartDate);
 
