@@ -1268,4 +1268,12 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Referência</value>
     <comment>28-02-2023_payments</comment>
   </data>
+  <data name="Code_ClubFull" xml:space="preserve">
+    <value>O clube encontra-se cheio. Fala com a administração para mais informação.</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="SlotsStats" xml:space="preserve">
+    <value>slots de atletas disponíveis</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
 </root>

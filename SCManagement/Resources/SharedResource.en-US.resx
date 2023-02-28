@@ -1132,4 +1132,12 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Reference</value>
     <comment>28-02-2023_payments</comment>
   </data>
+  <data name="Code_ClubFull" xml:space="preserve">
+    <value>Club is full. Talk with the administration for more info.</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="SlotsStats" xml:space="preserve">
+    <value>athlete slots available</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
 </root>
