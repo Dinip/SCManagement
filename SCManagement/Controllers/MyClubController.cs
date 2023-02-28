@@ -31,7 +31,6 @@ namespace SCManagement.Controllers
         private readonly ITeamService _teamService;
         private readonly ITranslationService _translationService;
         private readonly IPaymentService _paymentService;
-        private readonly IUrlHelper _urlHelper;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -48,8 +47,7 @@ namespace SCManagement.Controllers
             IUserService userService,
             ITeamService teamService,
             ITranslationService translationService,
-            IPaymentService paymentService, 
-            IUrlHelper urlHelper)
+            IPaymentService paymentService)
         {
             _userManager = userManager;
             _clubService = clubService;
@@ -57,7 +55,6 @@ namespace SCManagement.Controllers
             _teamService = teamService;
             _translationService = translationService;
             _paymentService = paymentService;
-            _urlHelper = urlHelper;
         }
 
         /// <summary>
@@ -934,12 +931,12 @@ namespace SCManagement.Controllers
             {
                 // update Address
                 await _clubService.UpdateClubAddress(address, (int)clubAddresId);
-                return Json(new { url = _urlHelper.Action("Edit", "MyClub") });
+                return Json(new { url = "/MyClub/Edit" });
             }
 
             //create address
             await _clubService.CreateAddress(address, club.Id);
-            return Json(new { url = _urlHelper.Action("Edit", "MyClub") });
+            return Json(new { url = "/MyClub/Edit" });
         }
 
         public async Task<IActionResult> PaymentSettings()

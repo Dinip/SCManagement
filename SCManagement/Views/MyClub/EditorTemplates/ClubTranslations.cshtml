@@ -1,7 +1,9 @@
 ﻿@model SCManagement.Models.ClubTranslations
 
+
+
 <div id="@Model.Atribute.ToLower()-@Model.Language" class="row form-outline @Model.Atribute.ToLower()-lang" style="margin-bottom:20px;">
-    <textarea asp-for="Value" data-lang="@Model.Language"></textarea>
+    <textarea asp-for="Value" data-lang="@Model.Language" style="border:0; border-radius:5px; margin-top:-3px; border-top-left-radius:0 !important;"></textarea>
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.Language)
     @Html.HiddenFor(x => x.Atribute)
