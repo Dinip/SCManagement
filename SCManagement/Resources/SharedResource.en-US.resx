@@ -1100,4 +1100,36 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Your club is currently</value>
     <comment>27-02-2023_payments</comment>
   </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>Canceled</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="CreditCard" xml:space="preserve">
+    <value>Credit card</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>Failed</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="MbWay" xml:space="preserve">
+    <value>MBWay</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
 </root>

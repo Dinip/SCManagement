@@ -821,5 +821,14 @@ namespace SCManagement.Services.PaymentService
 
             return sub;
         }
+
+        public async Task<IEnumerable<Payment>> GetClubPayments(int clubId)
+        {
+            return await _context.Payment
+                .Include(p => p.Product)
+                .Include(p => p.User)
+                .Where(p => p.Product.ClubId == clubId)
+                .ToListAsync();
+        }
     }
 }

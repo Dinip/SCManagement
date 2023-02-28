@@ -903,5 +903,19 @@ namespace SCManagement.Controllers
 
             return View(updated);
         }
+
+        public async Task<IActionResult> PaymentsRecieved()
+        {
+            //get the user selected role
+            UsersRoleClub role = _applicationContextService.UserRole;
+
+            //Check if is staff
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+
+            var payments = await _paymentService.GetClubPayments(role.ClubId);
+
+            return View(payments);
+        }
+
     }
 }
