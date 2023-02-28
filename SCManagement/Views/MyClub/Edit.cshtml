@@ -105,9 +105,9 @@
                 </div>
 
                 <hr style="margin-bottom:20px;" />
-                <div class="form-group" style="margin-bottom:20px; width:fit-content;">
-                    <label class="control-label">@StringLocalizer["Choose modalities"]</label>
-                    <select required multiple asp-for="ModalitiesIds" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
+                <div class="form-group" style="margin-bottom:20px;">
+                    <label class="control-label col-md-2">@StringLocalizer["Choose modalities"]</label>
+                    <select required multiple asp-for="ModalitiesIds" class="form-control chosen-select col-md-10 row" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>
                 <hr style="margin-bottom:20px;" />
