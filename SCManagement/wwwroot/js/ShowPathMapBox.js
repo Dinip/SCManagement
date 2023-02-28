@@ -56,13 +56,16 @@ for (let i = 0; i < coordsArray.length - 1; i++) {
     lineSegments.push(segment);
 }
 
-// Calculate the distance of each segment
-const distances = [];
+// Calcule a distância de cada segmento e a distância acumulada ao longo do caminho
+const distances = [0];
+let cumulativeDistance = 0;
 lineSegments.forEach(segment => {
     const length = turf.lineDistance(segment, 'kilometers');
-    distances.push(length.toFixed(3));
+    cumulativeDistance += length;
+    distances.push(cumulativeDistance.toFixed(3));
 });
 
+const elevtsAux = [];
 
 //Get the max and min elevation in a path
 async function getElevation(coordsArray) {
@@ -82,7 +85,6 @@ async function getElevation(coordsArray) {
         // For each returned feature, add elevation data to the elevations array.
         const elevations = allFeatures.map((feature) => feature.properties.ele);
         
-
         // Find the largest and smallest elevation in the elevations array.
         const highestCoordElevation = Math.max(...elevations);
         const lowestCoordElevation = Math.min(...elevations);
@@ -104,14 +106,14 @@ async function getElevation(coordsArray) {
             }
         }
         prevElevation = highestCoordElevation;
-       
+        elevtsAux.push(highestCoordElevation);
     }
 
     hElevation.textContent = highestElevation;
     lElevation.textContent = lowestElevation;
     dMore.textContent = totalAscent;
     dLess.textContent = totalDescent;
-   
+    createChartAltimetry(elevtsAux, distances);
 }
 
 getElevation(coordsArray);
@@ -207,4 +209,22 @@ function addMarkers(initialCoord, endCoord) {
         .addTo(map);
 }
 
+
+function createChartAltimetry(elevations,dists) {
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: dists,
+            datasets: [{
+                label:"Grafico De Altimetria",
+                data: elevations,
+                
+                borderColor: 'rgb(255, 99, 132)',
+                
+                borderWidth: 1
+            }]
+        }    
+    });
+}
 
