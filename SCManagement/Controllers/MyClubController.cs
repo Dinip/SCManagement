@@ -72,13 +72,13 @@ namespace SCManagement.Controllers
 
             if (role.ClubId == 0) return RedirectToAction(nameof(Index));
 
-            var club = await _clubService.GetClub(role.ClubId);
+            var status = await _clubService.GetClubStatus(role.ClubId);
 
-            if (club?.Status == ClubStatus.Active) return RedirectToAction(nameof(Index));
+            if (status == ClubStatus.Active) return RedirectToAction(nameof(Index));
 
             ViewBag.RoleId = role.RoleId;
 
-            return View("Unavailable", club);
+            return View("Unavailable", await _clubService.GetClub(role.ClubId));
         }
 
         /// <summary>
