@@ -1,5 +1,5 @@
 ﻿@model SCManagement.Models.Event
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
 <link href="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css"
@@ -12,7 +12,7 @@
 <link href="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.css" rel="stylesheet">
 <script src="https://api.mapbox.com/mapbox-gl-js/v2.13.0/mapbox-gl.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
 <input type="hidden" class="form-control" id="path" value="@Model.Route" />
 
@@ -22,11 +22,11 @@
     </div>
 </div>
 
-<p>A distancia total é de: <span id="tDistance"></span>km</p>
-<p>A maior elevação é de: <span id="hElevation"></span>m</p>
-<p>A menor elevação é de: <span id="lElevation"></span>m</p>
-<p>Subida Total(d+): <span id="dMore"></span>m</p>
-<p>Descida Total(d-): <span id="dLess"></span>m</p>
+<p>@StringLocalizer["TotalDistance"]<span id="tDistance"></span>km</p>
+<p>@StringLocalizer["HElevation"] <span id="hElevation"></span>m</p>
+<p>@StringLocalizer["LElevation"] <span id="lElevation"></span>m</p>
+<p>@StringLocalizer["FullAscent"] <span id="dMore"></span>m</p>
+<p>@StringLocalizer["FullDescent"]<span id="dLess"></span>m</p>
 
 <canvas id="myChart"></canvas>
 
@@ -56,3 +56,21 @@
     }
 
 </style>
+
+
+<script>
+    var strings = {
+        "noMatch": '@Html.Raw(StringLocalizer["NoMatch"].Value.ToString())',
+        "noSegment": '@Html.Raw(StringLocalizer["NoSegment"].Value.ToString())',
+        "tooManyCoordinates": '@Html.Raw(StringLocalizer["TooManyCoordinates"].Value.ToString())',
+        "profileNotFound": '@Html.Raw(StringLocalizer["ProfileNotFound"].Value.ToString())',
+        "invalidInput": '@Html.Raw(StringLocalizer["InvalidInput"].Value.ToString())',
+        "other": '@Html.Raw(StringLocalizer["Other"].Value.ToString())',
+        "start": '@Html.Raw(StringLocalizer["Start"].Value.ToString())',
+        "end": '@Html.Raw(StringLocalizer["End"].Value.ToString())',
+        "altimetryChart": '@Html.Raw(StringLocalizer["AltimetryChart"].Value.ToString())',
+        "distance": '@Html.Raw(StringLocalizer["Distance"].Value.ToString())',
+        "altitude": '@Html.Raw(StringLocalizer["Altitude"].Value.ToString())',
+        "altimetry": '@Html.Raw(StringLocalizer["Altimetry"].Value.ToString())',
+    };
+</script>

@@ -136,7 +136,7 @@
                 <div class="card-body">
                     <div id='map'></div>
                     <div id="save">
-                        <button type="button" id="save-button">Save</button>
+                        <button type="button" id="save-button">@StringLocalizer["Save"]</button>
                     </div>
                 </div>
             </div>
@@ -159,35 +159,51 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="~/js/PathMapBox.js" asp-append-version="true"></script>
+    }
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="~/js/PathMapBox.js" asp-append-version="true"></script>
 
-<script>
-    function ApplySameDate() {
-        var startDateTime = document.getElementById("startDateTime");
-        var endDateTime = document.getElementById("endDateTime");
-        var sameDay = document.getElementById("SameDay");
-        if (startDateTime.value != "") {
+
+    <script>
+        function ApplySameDate() {
+            var startDateTime = document.getElementById("startDateTime");
+            var endDateTime = document.getElementById("endDateTime");
+            var sameDay = document.getElementById("SameDay");
+            if (startDateTime.value != "") {
+                if (startDateTime.value == endDateTime.value) {
+                    sameDay.checked = true;
+                } else {
+                    endDateTime.value = startDateTime.value;
+                    sameDay.checked = true;
+                }
+            } else {
+                sameDay.checked = false;
+            }
+        }
+
+        function HaveDiferentDate() {
+            var startDateTime = document.getElementById("startDateTime");
+            var endDateTime = document.getElementById("endDateTime");
+            var sameDay = document.getElementById("SameDay");
             if (startDateTime.value == endDateTime.value) {
                 sameDay.checked = true;
             } else {
-                endDateTime.value = startDateTime.value;
-                sameDay.checked = true;
+                sameDay.checked = false;
             }
-        } else {
-            sameDay.checked = false;
         }
-    }
 
-    function HaveDiferentDate() {
-        var startDateTime = document.getElementById("startDateTime");
-        var endDateTime = document.getElementById("endDateTime");
-        var sameDay = document.getElementById("SameDay");
-        if (startDateTime.value == endDateTime.value) {
-            sameDay.checked = true;
-        } else {
-            sameDay.checked = false;
-        }
-    }
-</script>
+        var strings = {
+            "noMatch": '@Html.Raw(StringLocalizer["NoMatch"].Value.ToString())',
+            "noSegment": '@Html.Raw(StringLocalizer["NoSegment"].Value.ToString())',
+            "tooManyCoordinates": '@Html.Raw(StringLocalizer["TooManyCoordinates"].Value.ToString())',
+            "profileNotFound": '@Html.Raw(StringLocalizer["ProfileNotFound"].Value.ToString())',
+            "invalidInput": '@Html.Raw(StringLocalizer["InvalidInput"].Value.ToString())',
+            "other": '@Html.Raw(StringLocalizer["Other"].Value.ToString())',
+            "start": '@Html.Raw(StringLocalizer["Start"].Value.ToString())',
+            "end": '@Html.Raw(StringLocalizer["End"].Value.ToString())',
+            "searchLocation": '@Html.Raw(StringLocalizer["SearchLocation"].Value.ToString())',
+        };
+
+    </script>
+
+
