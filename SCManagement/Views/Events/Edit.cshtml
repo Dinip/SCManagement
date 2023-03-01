@@ -76,13 +76,16 @@
                 <input asp-for="MaxEventEnrolls" class="form-control" />
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
-                </label>
+
+            
+            <div class="form-group">
+                <label asp-for="EventResultType" class="control-label"></label>
+                <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
+                <span asp-validation-for="EventResultType" class="text-danger"></span>
             </div>
 
-            <div class="form-group">      
+
+            <div id="LocationContainer" class="form-group">      
                 @if(@Model.LocationId != null)
                 {
                     <a asp-action="UpdateEventLocation" asp-route-id="@Model.Id" class="form-check-input">Alterar Lococalização</a>
@@ -100,22 +103,23 @@
             </div>
 
                 <input asp-for="Route" type="hidden" class="form-control" id="ev" />
-            
-            <div class="form-group">
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input id="ckbHaveRoute" class="form-check-input" asp-for="HaveRoute" onchange="ToggleMapBox()" /> @Html.DisplayNameFor(model => model.HaveRoute)
+                </label>
+            </div>
+
+            <div id="AddressContainer" class="form-group">
                 <label asp-for="AddressByPath" class="control-label"></label>
                 <input asp-for="AddressByPath" readonly class="form-control" id="AddressByPath" />
             </div>
 
-            <div class="form-group">
-                <label asp-for="EventResultType" class="control-label"></label>
-                <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
-                <span asp-validation-for="EventResultType" class="text-danger"></span>
-            </div>
 
             <br /> <br />
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
 
-            <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
+            <div id="mapboxContainer" class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
                 <div class="card-body">
                     <div id='map'></div>
                     <div id="save">
@@ -139,6 +143,31 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/PathMapBox.js" asp-append-version="true"></script>
+
+<script>
+    window.onload = function(){
+        ToggleMapBox();
+        console.log("Dale Usasdo")
+    }
+
+    function ToggleMapBox() {
+        var mapBox = document.getElementById("mapboxContainer");
+        var addressContainer = document.getElementById("AddressContainer");
+        var locationContainer = document.getElementById("LocationContainer");
+        var ckbHaveRoute = document.getElementById("ckbHaveRoute");
+
+        if (ckbHaveRoute.checked == true) {
+            mapBox.style.display = "block";
+            addressContainer.style.display = "block";
+            locationContainer.style.display = "none";
+        }
+        else {
+            mapBox.style.display = "none";
+            addressContainer.style.display = "none";
+            locationContainer.style.display = "block";
+        }
+    }
+</script>
 
 <style>
     #map {

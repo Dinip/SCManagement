@@ -472,6 +472,7 @@ namespace SCManagement.Controllers
                 myEvent.LocationId = newAddress.Id;
                 myEvent.AddressByPath = null;
                 myEvent.Route = null;
+                myEvent.HaveRoute = false;
                 await _eventService.UpdateEvent(myEvent);
             }
             else
