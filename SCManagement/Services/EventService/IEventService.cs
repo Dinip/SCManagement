@@ -17,6 +17,7 @@ namespace SCManagement.Services.EventService
         public Task<IEnumerable<EventEnroll>> GetEnrolls(int eventId);
         public Task<Address> CreateEventAddress(Address address);
         public Task<Address> UpdateEventAddress(int locationId, Address address);
+        public Task RemoveEventAddress(Event myEvent);
 
     }
 }

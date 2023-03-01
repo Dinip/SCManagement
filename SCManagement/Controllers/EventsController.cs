@@ -261,18 +261,28 @@ namespace SCManagement.Controllers
 
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
+                //Quando o eventToUpdate ja tiver uma localização e o myEvent tiver um addressByPath ele vai meter a localização a null e guardar o address
+                if (eventToUpdate.LocationId != null && myEvent.Route != null)
+                {
+                    await _eventService.RemoveEventAddress(eventToUpdate);
+                    eventToUpdate.LocationId = null;
+                    eventToUpdate.Location = null;
+                }
+
                 eventToUpdate.Name = myEvent.Name;
                 eventToUpdate.StartDate = myEvent.StartDate;
                 eventToUpdate.EndDate = myEvent.EndDate;
                 eventToUpdate.Details = myEvent.Details;
                 eventToUpdate.IsPublic = myEvent.IsPublic;
                 eventToUpdate.Fee = validKey ? myEvent.Fee : 0;
-                eventToUpdate.HaveRoute = myEvent.HaveRoute;
+                eventToUpdate.HaveRoute = myEvent.AddressByPath!=null;
                 eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
                 eventToUpdate.AddressByPath = myEvent.AddressByPath;
+
+
 
                 await _eventService.UpdateEvent(eventToUpdate);
 
@@ -441,11 +451,12 @@ namespace SCManagement.Controllers
             if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
                 return View("CustomError", "Error_Unauthorized");
 
-
             if (myEvent.LocationId == null)
             {
                 var newAddress = await _eventService.CreateEventAddress(address);
                 myEvent.LocationId = newAddress.Id;
+                myEvent.AddressByPath = null;
+                myEvent.Route = null;
                 await _eventService.UpdateEvent(myEvent);
             }
             else

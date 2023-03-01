@@ -97,6 +97,22 @@ namespace SCManagement.Services.EventService
             return address;
         }
 
+        public async Task RemoveEventAddress(Event myEvent)
+        {
+            {
+                Address ad = _context.Address.Find(myEvent.LocationId);
+                
+                if (ad == null) return;
+                
+                //myEvent.Location = null;
+                //myEvent.LocationId = null;
+                //_context.Event.Update(myEvent);
+                
+                _context.Address.Remove(ad);
+                await _context.SaveChangesAsync();
+            }
+        }
+
     }
     }
     
