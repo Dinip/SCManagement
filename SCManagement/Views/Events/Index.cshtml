@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SCManagement.Models.Event>
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "Index";
@@ -17,7 +18,7 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @StringLocalizer["Name"]
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StartDate)
@@ -34,9 +35,9 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr>
+            <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @Html.DisplayFor(model => item.EventTranslations.FirstOrDefault(c => c.Atribute == "Name").Value)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartDate)

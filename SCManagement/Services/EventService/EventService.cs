@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
+using SCManagement.Data.Migrations;
 using SCManagement.Models;
 
 namespace SCManagement.Services.EventService
@@ -28,23 +30,74 @@ namespace SCManagement.Services.EventService
 
         public async Task<Event?> GetEvent(int eventId)
         {
-            return await _context.Event.Include(e => e.Club).FirstOrDefaultAsync(e => e.Id == eventId);
-
+            return await _context.Event.Include(e => e.Club).Include(e => e.EventTranslations).FirstOrDefaultAsync(e => e.Id == eventId);
         }
         
         public async Task<IEnumerable<Event>> GetEvents(string? userId)
         {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+
             if (userId == null)
             {
-                return await _context.Event.Where(e => e.IsPublic == true).Include(e => e.Club).ToListAsync();
+                return await _context.Event
+                .Where(e => e.IsPublic == true)
+                .Include(e => e.Club)
+                .Include(e => e.EventTranslations)
+                .Select(e =>
+                new Event
+                {
+                    Id = e.Id,
+                    ClubId = e.ClubId,
+                    Club = e.Club,
+                    EventTranslations = e.EventTranslations!.Where(et => et.Language == cultureInfo).ToList(),
+                    IsPublic = e.IsPublic,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                })
+                .ToListAsync();
             }
             else
             {
                 var clubsIds = _context.UsersRoleClub.Where(u => u.UserId == userId).Select(u => u.ClubId);
-                return await _context.Event.Where(e => clubsIds.Contains(e.ClubId) || e.IsPublic == true).Include(e => e.Club).ToListAsync();
+                return await _context.Event
+                .Where(e => clubsIds.Contains(e.ClubId) || e.IsPublic == true)
+                .Include(e => e.Club)
+                .Include(e => e.EventTranslations)
+                .Select(e =>
+                new Event
+                {
+                    Id = e.Id,
+                    ClubId = e.ClubId,
+                    Club = e.Club,
+                    EventTranslations = e.EventTranslations!.Where(et => et.Language == cultureInfo).ToList(),
+                    IsPublic = e.IsPublic,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                })
+                .ToListAsync();
             }
         }
 
+        public async Task<IEnumerable<Event>> GetClubEvents(int clubId)
+        {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            
+            return await _context.Event
+                .Where(e => e.ClubId == clubId && e.IsPublic == false)
+                .Include(e => e.Club)
+                .Include(e => e.EventTranslations)
+                .Select(e =>
+                new Event
+                {
+                    Id = e.Id,
+                    ClubId = e.ClubId,
+                    Club = e.Club,
+                    EventTranslations = e.EventTranslations!.Where(et => et.Language == cultureInfo).ToList(),
+                    IsPublic = e.IsPublic,
+                    StartDate = e.StartDate,
+                    EndDate = e.EndDate,
+                }).ToListAsync();
+        }
 
         public async Task<Event> UpdateEvent(Event myEvent)
         {

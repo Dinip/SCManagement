@@ -3,12 +3,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.EventService;
 using SCManagement.Services.PaymentService;
+using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers
@@ -20,13 +19,15 @@ namespace SCManagement.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IClubService _clubService;
         private readonly IPaymentService _paymentService;
+        private readonly ITranslationService _translationService;
 
         public EventsController(
             IEventService eventService,
             IUserService userService,
             UserManager<User> userManager,
             IClubService clubService,
-            IPaymentService paymentService
+            IPaymentService paymentService,
+            ITranslationService translationService
             )
         {
             _eventService = eventService;
@@ -34,6 +35,7 @@ namespace SCManagement.Controllers
             _userManager = userManager;
             _clubService = clubService;
             _paymentService = paymentService;
+            _translationService = translationService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -100,7 +102,10 @@ namespace SCManagement.Controllers
                 ViewBag.IsEnrolled = false;
             }
 
-            return View("EventDetails", myEvent); ;
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            myEvent.EventTranslations = myEvent.EventTranslations!.Where(cc => cc.Language == cultureInfo).ToList();
+
+            return View("EventDetails", myEvent);
         }
 
 
@@ -120,7 +125,36 @@ namespace SCManagement.Controllers
                                    select new { Id = (int)e, Name = e.ToString() };
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
-            return View();
+
+            ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+
+            var languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
+            ViewBag.Languages = languages;
+
+            var eve = new EventModel();
+            eve.EventTranslationsName = new List<EventTranslations>();
+            eve.EventTranslationsDetails = new List<EventTranslations>();
+
+            foreach (CultureInfo culture in languages)
+            {
+                eve.EventTranslationsDetails.Add(new()
+                {
+                    EventId = eve.Id,
+                    Value = "",
+                    Language = culture.Name,
+                    Atribute = "Details",
+                });
+
+                eve.EventTranslationsName.Add(new()
+                {
+                    EventId = eve.Id,
+                    Value = "",
+                    Language = culture.Name,
+                    Atribute = "Name",
+                });
+            }
+
+            return View(eve);
         }
 
 
@@ -128,7 +162,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (ModelState.IsValid)
@@ -144,10 +178,8 @@ namespace SCManagement.Controllers
                 var createdEvent = await _eventService.CreateEvent(new Event
                 {
                     Id = myEvent.Id,
-                    Name = myEvent.Name,
                     StartDate = myEvent.StartDate,
                     EndDate = myEvent.EndDate,
-                    Details = myEvent.Details,
                     IsPublic = myEvent.IsPublic,
                     Fee = validKey ? myEvent.Fee : 0,
                     HaveRoute = myEvent.HaveRoute,
@@ -156,8 +188,18 @@ namespace SCManagement.Controllers
                     EnrollLimitDate = myEvent.EnrollLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
                     ClubId = role.ClubId,
-                    AddressByPath = myEvent.AddressByPath
+                    AddressByPath = myEvent.AddressByPath,
+                    EventTranslations = new List<EventTranslations>()
                 });
+
+                await UpdateTranslations(myEvent.EventTranslationsName, createdEvent);
+                await UpdateTranslations(myEvent.EventTranslationsDetails, createdEvent);
+
+                var translations = new List<EventTranslations>(myEvent.EventTranslationsName);
+                translations.AddRange(myEvent.EventTranslationsDetails);
+                createdEvent.EventTranslations = translations;
+
+                await _eventService.CreateEvent(createdEvent);
 
                 if (myEvent.Fee > 0)
                 {
@@ -180,11 +222,11 @@ namespace SCManagement.Controllers
         public class EventModel
         {
             public int Id { get; set; }
-            public string Name { get; set; }
             public DateTime StartDate { get; set; }
             public DateTime EndDate { get; set; }
             public DateTime EnrollLimitDate { get; set; }
-            public string? Details { get; set; }
+            public ICollection<EventTranslations>? EventTranslationsName { get; set; }
+            public ICollection<EventTranslations>? EventTranslationsDetails { get; set; }
             public bool IsPublic { get; set; }
             public float Fee { get; set; }
             public bool HaveRoute { get; set; }
@@ -214,21 +256,57 @@ namespace SCManagement.Controllers
             {
                 return View("CustomError", "Error_Unauthorized");
             }
-            
+
             ViewBag.ValidKey = await _paymentService.ClubHasValidKey(role.ClubId);
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
-            return View(myEvent);
+
+            ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
+
+            var eve = new EventModel()
+            {
+                StartDate = myEvent.StartDate,
+                EndDate = myEvent.EndDate,
+                IsPublic = myEvent.IsPublic,
+                Fee = myEvent.Fee,
+                HaveRoute = myEvent.HaveRoute,
+                Route = myEvent.Route,
+                EventResultType = myEvent.EventResultType,
+                EnrollLimitDate = myEvent.EnrollLimitDate,
+                MaxEventEnrolls = myEvent.MaxEventEnrolls,
+                AddressByPath = myEvent.AddressByPath,
+                EventTranslationsName = myEvent.EventTranslations.Where(e => e.Atribute == "Name").ToList(),
+                EventTranslationsDetails = myEvent.EventTranslations.Where(e => e.Atribute == "Details").ToList(),
+            };
+
+            return View(eve);
 
         }
 
+        private async Task UpdateTranslations(ICollection<EventTranslations> eventTranslations, Event actualEvent)
+        {
+            //update translations
+            ICollection<EventTranslations> clubTranslationsFromFrontend = new List<EventTranslations>(eventTranslations);
+
+            await _translationService.Translate(eventTranslations);
+
+            foreach (var translations in clubTranslationsFromFrontend)
+            {
+                var f = actualEvent.EventTranslations.FirstOrDefault(c => c.Id == translations.Id);
+                if (f != null)
+                {
+                    f.Value = translations.Value;
+                }
+            }
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -249,10 +327,8 @@ namespace SCManagement.Controllers
 
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
-                eventToUpdate.Name = myEvent.Name;
                 eventToUpdate.StartDate = myEvent.StartDate;
                 eventToUpdate.EndDate = myEvent.EndDate;
-                eventToUpdate.Details = myEvent.Details;
                 eventToUpdate.IsPublic = myEvent.IsPublic;
                 eventToUpdate.Fee = validKey ? myEvent.Fee : 0;
                 eventToUpdate.HaveRoute = myEvent.HaveRoute;
@@ -261,6 +337,13 @@ namespace SCManagement.Controllers
                 eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
                 eventToUpdate.AddressByPath = myEvent.AddressByPath;
+
+                await UpdateTranslations(myEvent.EventTranslationsName, eventToUpdate);
+                await UpdateTranslations(myEvent.EventTranslationsDetails, eventToUpdate);
+
+                var translations = new List<EventTranslations>(myEvent.EventTranslationsName);
+                translations.AddRange(myEvent.EventTranslationsDetails);
+                eventToUpdate.EventTranslations = translations;
 
                 await _eventService.UpdateEvent(eventToUpdate);
 
