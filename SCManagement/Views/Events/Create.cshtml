@@ -74,16 +74,16 @@
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label class="control-label">Evento de 1 dia</label>
+                @*Criar CheckBox input*@
+                <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
+            </div>
+            <div class="form-group">
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
                 <input asp-for="EnrollLimitDate" class="form-control" />
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label class="control-label">Evento de 1 dia</label>
-                @*Criar CheckBox input*@
-                <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
 
-            </div>
             <div class="form-group">
                 <label asp-for="Details" class="control-label"></label>
                 <textarea asp-for="Details" class="form-control"></textarea>
@@ -107,7 +107,7 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
+                    <input id="ckbHaveRoute" onchange="ToggleMapBox()" class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
                 </label>
             </div>
 
@@ -132,13 +132,15 @@
             <input type="hidden" class="form-control" id="path" value="null" />
 
             <br /> <br />
-            <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
+            <div id="cardMapBox" style="display:none">
+            <div  class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px;">
                 <div class="card-body">
                     <div id='map'></div>
                     <div id="save">
                         <button type="button" id="save-button">Save</button>
                     </div>
                 </div>
+            </div>
             </div>
 
 
@@ -190,4 +192,17 @@
             sameDay.checked = false;
         }
     }
+
+        function ToggleMapBox(){
+            var mapBox = document.getElementById("cardMapBox");
+
+            if(mapBox.style.display == "none")
+            {
+                mapBox.style.display = "block";
+            }
+            else 
+            {
+                mapBox.style.display = "none";
+            }
+        }
 </script>
