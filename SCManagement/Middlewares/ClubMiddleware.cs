@@ -49,14 +49,16 @@ namespace SCManagement.Middlewares
             var role = await _userService.GetSelectedRole(userId);
             _applicationContextService.UserRole = role;
 
-            var status = await _clubService.GetClubStatus(role.ClubId);
-            _applicationContextService.ClubStatus = status;
-
-            if (status != ClubStatus.Active)
+            if (role.ClubId != 0)
             {
-                context.Response.Redirect("/MyClub/Unavailable", false);
-            }
+                var status = await _clubService.GetClubStatus(role.ClubId);
+                _applicationContextService.ClubStatus = status;
 
+                if (status != ClubStatus.Active)
+                {
+                    context.Response.Redirect("/MyClub/Unavailable", false);
+                }
+            }
             await next(context);
         }
     }
