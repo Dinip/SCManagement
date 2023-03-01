@@ -35,14 +35,6 @@ namespace SCManagement.Controllers
         [Route("api/Payment/WebhookGeneric")]
         public async Task<IActionResult> WebhookGeneric([FromBody] PaymentWebhookGeneric notification)
         {
-            //check if security code is present in the request, otherwise reject it
-            string verifyCode = Request.Headers["x-easypay-code"];
-            Console.WriteLine(verifyCode);
-            Console.WriteLine(notification);
-
-            if (string.IsNullOrEmpty(verifyCode)) return BadRequest();
-            if (!(await _paymentService.ValidateWebhook(verifyCode))) return BadRequest();
-
             if (notification.type == "capture")
             {
                 await _paymentService.WebhookHandleSinglePayment(notification);

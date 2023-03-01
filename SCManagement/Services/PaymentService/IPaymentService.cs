@@ -11,7 +11,6 @@ namespace SCManagement.Services.PaymentService
 
         public Task<Product?> GetProduct(int id);
 
-        public Task<bool> ValidateWebhook(string secret);
         public Task WebhookHandleSinglePayment(PaymentWebhookGeneric data);
         public Task WebhookHandleSubscriptionCreate(PaymentWebhookGeneric data);
         public Task WebhookHandleSubscriptionPayment(PaymentWebhookGeneric data);

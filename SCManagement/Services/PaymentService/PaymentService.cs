@@ -41,24 +41,6 @@ namespace SCManagement.Services.PaymentService
             return client;
         }
 
-
-        /// <summary>
-        /// Validate a webhook request by checking if the secret
-        /// exists in the database (clients/club secret) or if it
-        /// belongs to the system, otherwise, reject the request
-        /// </summary>
-        /// <param name="secret"></param>
-        /// <returns></returns>
-        public async Task<bool> ValidateWebhook(string secret)
-        {
-            var settings = await _context.ClubPaymentSettings.FirstAsync(c => c.RequestSecret == secret);
-            if (settings != null) return true;
-
-            if (!string.IsNullOrEmpty(_configuration["Easypay-SystemSecret"])) return true;
-
-            return false;
-        }
-
         /// <summary>
         /// Get all payments from a user ordered by date
         /// from the most recent to the oldest

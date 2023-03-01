@@ -27,11 +27,6 @@
                 <span asp-validation-for="AccountKey" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="RequestSecret" class="control-label"></label>
-                <input readonly asp-for="RequestSecret" class="form-control" />
-                <span asp-validation-for="RequestSecret" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="QuotaFrequency" class="control-label"></label>
                 <select asp-for="QuotaFrequency" class="form-control" asp-items="ViewBag.Frequency"></select>
                 <span asp-validation-for="QuotaFrequency" class="text-danger"></span>
