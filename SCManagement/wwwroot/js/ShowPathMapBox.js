@@ -210,21 +210,55 @@ function addMarkers(initialCoord, endCoord) {
 }
 
 
-function createChartAltimetry(elevations,dists) {
+function createChartAltimetry(elevations, dists) {
     var ctx = document.getElementById('myChart').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'line',
         data: {
             labels: dists,
             datasets: [{
-                label:"Grafico De Altimetria",
+                label: "Altimetria",
                 data: elevations,
-                
                 borderColor: 'rgb(255, 99, 132)',
-                
                 borderWidth: 1
             }]
-        }    
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Gráfico de Altimetria'
+            },
+            scales: {
+                yAxes: [{
+                    type: 'linear',
+                    position: 'left',
+                    id: 'y-axis-1',
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Altitude (m)'
+                    }
+                }],
+                xAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        stepSize: 50
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Distância (km)'
+                    }
+                }]
+            },
+            tooltips: {
+                callbacks: {
+                    label: function (tooltipItem, data) {
+                        var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
+                        var label = data.labels[tooltipItem.index];
+                        var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
+                        return `${datasetLabel}[ Distância: ${label} km, Altitude: ${value} m]`;
+                    }
+                }
+            }
+        }
     });
 }
-
