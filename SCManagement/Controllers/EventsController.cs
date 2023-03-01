@@ -82,7 +82,7 @@ namespace SCManagement.Controllers
             }
 
             //if users is staff can see users enrolled
-            if (_clubService.IsClubStaff(userRole))
+            if (_clubService.IsClubStaff(userRole) && userRole.ClubId == myEvent.ClubId)
             {
                 ViewBag.IsStaff = true;
                 ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
@@ -247,8 +247,6 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_Unauthorized");
                 }
 
-
-
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
                 eventToUpdate.Name = myEvent.Name;
@@ -322,7 +320,7 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //check if event is public
-            if (!eventToEnroll.IsPublic && (role == null || role.ClubId != eventToEnroll.ClubId))
+            if (!eventToEnroll.IsPublic && role.ClubId != eventToEnroll.ClubId)
             {
                 return View("CustomError", "Error_Unauthorized");
             }
