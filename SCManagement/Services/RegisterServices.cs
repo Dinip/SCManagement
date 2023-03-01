@@ -15,6 +15,7 @@ using SCManagement.Services.PaymentService;
 using SCManagement.Services.EventService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.Location;
+using SCManagement.Services.CronJobService;
 
 namespace SCManagement.Services
 {
@@ -141,6 +142,12 @@ namespace SCManagement.Services
 
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
+
+            services.AddCronJob<DailySubscriptionChecker>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Utc;
+                c.CronExpression = @"*/1 * * * *";
+            });
         }
     }
 }
