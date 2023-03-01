@@ -210,11 +210,11 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-            if (!_clubService.IsClubStaff(role))
+            if (!_clubService.IsClubStaff(role) || role.ClubId != myEvent.ClubId)
             {
                 return View("CustomError", "Error_Unauthorized");
             }
-
+            
             ViewBag.ValidKey = await _paymentService.ClubHasValidKey(role.ClubId);
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
@@ -237,15 +237,17 @@ namespace SCManagement.Controllers
 
             if (ModelState.IsValid)
             {
+                var eventToUpdate = await _eventService.GetEvent(id);
+                if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
+
                 //check if user is staff of the club that owns the event
                 var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-                if (!_clubService.IsClubStaff(role))
+                if (!_clubService.IsClubStaff(role) || role.ClubId != eventToUpdate.ClubId)
                 {
                     return View("CustomError", "Error_Unauthorized");
                 }
 
-                var eventToUpdate = await _eventService.GetEvent(id);
-                if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
+
 
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
@@ -291,6 +293,13 @@ namespace SCManagement.Controllers
             if (myEvent == null)
             {
                 return View("CustomError", "Error_NotFound");
+            }
+
+            //check if user is staff of the club that owns the event
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+            if (!_clubService.IsClubStaff(role) || role.ClubId != myEvent.ClubId)
+            {
+                return View("CustomError", "Error_Unauthorized");
             }
 
             await _eventService.DeleteEvent(myEvent);
