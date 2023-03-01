@@ -1152,4 +1152,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Select and create club</value>
     <comment>28-02-2023_payments</comment>
   </data>
+  <data name="PaymentsRecieved" xml:space="preserve">
+    <value>Payments Recieved</value>
+    <comment>01-03-2023_payments</comment>
+  </data>
 </root>

@@ -308,7 +308,7 @@ namespace SCManagement.Services.PaymentService
 
         public async Task WebhookHandleSubscriptionCreate(PaymentWebhookGeneric data)
         {
-            var subscription = await _context.Subscription.FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
+            var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
             if (subscription == null) return;
 
             var info = await subscriptionPaymentIdApiRequest(data.id, subscription.Product.ClubId);
@@ -326,7 +326,7 @@ namespace SCManagement.Services.PaymentService
             var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
             if (subscription == null) return;
 
-            var info = await subscriptionPaymentIdApiRequest(data.id, subscription.Club.Id);
+            var info = await subscriptionPaymentIdApiRequest(data.id, subscription.Product.ClubId);
             if (info == null) return;
 
             var payment = await _context.Payment.Where(p => p.SubscriptionId == subscription.Id && p.PaymentStatus != PaymentStatus.Paid).FirstOrDefaultAsync();
@@ -362,7 +362,7 @@ namespace SCManagement.Services.PaymentService
 
             if (subscription.Product.ProductType == ProductType.ClubSubscription)
             {
-                await updateClubSubStatus((int)subscription.Product.ClubId, ClubStatus.Active);
+                await updateClubSubStatus((int)subscription.ClubId, ClubStatus.Active);
             }
 
             if (subscription.Product.ProductType == ProductType.ClubMembership)
