@@ -154,3 +154,20 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+
+    <script>
+        var strings = {
+            "noMatch": '@Html.Raw(StringLocalizer["NoMatch"].Value.ToString())',
+            "noSegment": '@Html.Raw(StringLocalizer["NoSegment"].Value.ToString())',
+            "tooManyCoordinates": '@Html.Raw(StringLocalizer["TooManyCoordinates"].Value.ToString())',
+            "profileNotFound": '@Html.Raw(StringLocalizer["ProfileNotFound"].Value.ToString())',
+            "invalidInput": '@Html.Raw(StringLocalizer["InvalidInput"].Value.ToString())',
+            "other": '@Html.Raw(StringLocalizer["Other"].Value.ToString())',
+            "start": '@Html.Raw(StringLocalizer["Start"].Value.ToString())',
+            "end": '@Html.Raw(StringLocalizer["End"].Value.ToString())',
+            "altimetryChart": '@Html.Raw(StringLocalizer["AltimetryChart"].Value.ToString())',
+            "distance": '@Html.Raw(StringLocalizer["Distance"].Value.ToString())',
+            "altitude": '@Html.Raw(StringLocalizer["Altitude"].Value.ToString())',
+            "altimetry": '@Html.Raw(StringLocalizer["Altimetry"].Value.ToString())',
+        };
+    </script>

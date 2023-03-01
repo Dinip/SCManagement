@@ -139,19 +139,19 @@ async function getMatch(coordinates) {
     // Handle errors
     if (response.code !== 'Ok') {
         if (response.code == "NoMatch") {
-            errorMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
+            errorMessage = strings.noMatch;
             alert(errorMessage);
         } else if (response.code == "NoSegment") {
-            errorMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
+            errorMessage = strings.noSegment;
             alert(errorMessage);
         } else if (response.code == "TooManyCoordinates") {
-            errorMessage = "There are more than 100 points in the request."
+            errorMessage = strings.tooManyCoordinates;
             alert(errorMessage);
         } else if (response.code == "ProfileNotFound") {
-            errorMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
+            errorMessage = strings.profileNotFound;
             alert(errorMessage);
         } else if (response.code == "InvalidInput") {
-            errorMessage = "message will hold an explanation of the invalid input.";
+            errorMessage = strings.invalidInput;
             alert(errorMessage);
         }
         return;
@@ -200,12 +200,12 @@ function addRoute(coords) {
 function addMarkers(initialCoord, endCoord) {
     initialMarker = new mapboxgl.Marker({ color: 'green' })
         .setLngLat([initialCoord[0], initialCoord[1]])
-        .setPopup(new mapboxgl.Popup().setHTML('Inicio'))
+        .setPopup(new mapboxgl.Popup().setHTML(strings.start))
         .addTo(map);
 
     endMarker = new mapboxgl.Marker({ color: 'red' })
         .setLngLat([endCoord[0], endCoord[1]])
-        .setPopup(new mapboxgl.Popup().setHTML('Fim'))
+        .setPopup(new mapboxgl.Popup().setHTML(strings.end))
         .addTo(map);
 }
 
@@ -217,7 +217,7 @@ function createChartAltimetry(elevations, dists) {
         data: {
             labels: dists,
             datasets: [{
-                label: "Altimetria",
+                label: strings.altimetry,
                 data: elevations,
                 borderColor: 'rgb(255, 99, 132)',
                 borderWidth: 1
@@ -226,7 +226,7 @@ function createChartAltimetry(elevations, dists) {
         options: {
             title: {
                 display: true,
-                text: 'Gráfico de Altimetria'
+                text: strings.altimetryChart
             },
             scales: {
                 yAxes: [{
@@ -235,7 +235,7 @@ function createChartAltimetry(elevations, dists) {
                     id: 'y-axis-1',
                     scaleLabel: {
                         display: true,
-                        labelString: 'Altitude (m)'
+                        labelString: strings.altitude
                     }
                 }],
                 xAxes: [{
@@ -245,7 +245,7 @@ function createChartAltimetry(elevations, dists) {
                     },
                     scaleLabel: {
                         display: true,
-                        labelString: 'Distância (km)'
+                        labelString: strings.distance
                     }
                 }]
             },
@@ -255,7 +255,7 @@ function createChartAltimetry(elevations, dists) {
                         var datasetLabel = data.datasets[tooltipItem.datasetIndex].label || '';
                         var label = data.labels[tooltipItem.index];
                         var value = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index];
-                        return `${datasetLabel}[ Distância: ${label} km, Altitude: ${value} m]`;
+                        return `${datasetLabel}[ ${strings.distance}: ${label},  ${strings.altitude}: ${value}]`;
                     }
                 }
             }

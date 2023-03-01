@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Models.Event
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 
 
@@ -87,12 +88,12 @@
 
         @if (Model.Route != null)
         {
-            <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>Ver Caminho</a>
+            <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
         }
         else
         {
             @if (ViewBag.IsStaff != null && ViewBag.IsStaff){
-            <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="Edit" asp-route-id=@Model.Id>Adicionar Caminho</a>
+                <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="Edit" asp-route-id=@Model.Id>@StringLocalizer["AddPath"]</a>
             }   
         }
 

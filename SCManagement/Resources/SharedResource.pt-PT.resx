@@ -1292,13 +1292,49 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Pagamentos Recebidos</value>
     <comment>01-03-2023_payments</comment>
   </data>
+  <data name="AddPath" xml:space="preserve">
+    <value>Adicionar Caminho</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="Altimetry" xml:space="preserve">
+    <value>Altimetria</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="AltimetryChart" xml:space="preserve">
+    <value>Gráfico de Altimetria</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="Altitude" xml:space="preserve">
+    <value>Altitude (m)</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distância (km)</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
   <data name="End" xml:space="preserve">
     <value>Fim</value>
     <comment>01-03-2023_PathMapBox</comment>
   </data>
+  <data name="FullAscent" xml:space="preserve">
+    <value>Subida Total(d+):</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="FullDescent" xml:space="preserve">
+    <value>Descida Total(d-):</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="HElevation" xml:space="preserve">
+    <value>A maior elevação é de:</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
   <data name="InvalidInput" xml:space="preserve">
     <value>A mensagem conterá uma explicação sobre a entrada inválida.</value>
     <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="LElevation" xml:space="preserve">
+    <value>A menor elevação é de:</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
   </data>
   <data name="NoMatch" xml:space="preserve">
     <value>A entrada não produziu nenhuma correspondência, ou os pontos de passagem pedidos não foram encontrados na correspondência resultante. as características serão uma matriz vazia.</value>
@@ -1320,6 +1356,10 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Digite um endereço ou localização</value>
     <comment>01-03-2023_PathMapBox</comment>
   </data>
+  <data name="SeePath" xml:space="preserve">
+    <value>Ver Caminho</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Inicio</value>
     <comment>01-03-2023_PathMapBox</comment>
@@ -1327,5 +1367,9 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="TooManyCoordinaTooManyCoordinates" xml:space="preserve">
     <value>Há mais de 100 pontos no pedido.</value>
     <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>A Distancia Total é de:</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
   </data>
 </root>

@@ -1156,13 +1156,49 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Payments Recieved</value>
     <comment>01-03-2023_payments</comment>
   </data>
+  <data name="AddPath" xml:space="preserve">
+    <value>Add Path</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="Altimetry" xml:space="preserve">
+    <value>Altimetry</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="AltimetryChart" xml:space="preserve">
+    <value>Altimetry Chart</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="Altitude" xml:space="preserve">
+    <value>Altitude (m)</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="Distance" xml:space="preserve">
+    <value>Distance (km)</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
   <data name="End" xml:space="preserve">
     <value>End</value>
     <comment>01-03-2023_PathMapBox</comment>
   </data>
+  <data name="FullAscent" xml:space="preserve">
+    <value>Total Ascent (d+):</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="FullDescent" xml:space="preserve">
+    <value>Total Descent(d-):</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
+  <data name="HElevation" xml:space="preserve">
+    <value>The highest elevation is:</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
   <data name="InvalidInput" xml:space="preserve">
     <value>message will hold an explanation of the invalid input.</value>
     <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="LElevation" xml:space="preserve">
+    <value>The lowest elevation is:</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
   </data>
   <data name="NoMatch" xml:space="preserve">
     <value>The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.</value>
@@ -1184,6 +1220,10 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Enter an address or location</value>
     <comment>01-03-2023_PathMapBox</comment>
   </data>
+  <data name="SeePath" xml:space="preserve">
+    <value>See Path</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
+  </data>
   <data name="Start" xml:space="preserve">
     <value>Start</value>
     <comment>01-03-2023_PathMapBox</comment>
@@ -1191,5 +1231,9 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="TooManyCoordinates" xml:space="preserve">
     <value>There are more than 100 points in the request.</value>
     <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="TotalDistance" xml:space="preserve">
+    <value>The total distance is:</value>
+    <comment>01-03-2023_ShowPathMapBox</comment>
   </data>
 </root>
