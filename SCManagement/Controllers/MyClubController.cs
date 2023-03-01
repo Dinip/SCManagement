@@ -837,7 +837,7 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //Check if is staff
-            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
 
             //Check if is trainer
             if (_clubService.IsClubTrainer(role) && team.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
