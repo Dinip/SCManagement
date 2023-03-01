@@ -40,7 +40,7 @@ namespace SCManagement.Models
         public string? Route { get; set; }
 
         [Display(Name = "Max Enrolls")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value between 1 and 2147483647")]
+        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
         public int MaxEventEnrolls { get; set; }
 
         //Fazer validação: tem de ser depois da start date e antes da end date
