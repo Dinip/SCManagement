@@ -105,6 +105,15 @@
                 <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" class="form-control" value="0" />
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
+
+
+             <div class="form-group">
+                <label asp-for="EventResultType" class="control-label"></label>
+                <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
+                <span asp-validation-for="EventResultType" class="text-danger"></span>
+            </div>
+
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input id="ckbHaveRoute" onchange="ToggleMapBox()" class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
@@ -112,23 +121,8 @@
             </div>
 
 
-            <div class="form-group">
-                <label asp-for="Route" class="control-label"></label>
-                <input asp-for="Route" type="hidden" class="form-control" id="ev" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="AddressByPath" class="control-label"></label>
-                <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="EventResultType" class="control-label"></label>
-                <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
-                <span asp-validation-for="EventResultType" class="text-danger"></span>
-            </div>
-
-
+            <input asp-for="Route" type="hidden" class="form-control" id="ev" />
+            <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
             <input type="hidden" class="form-control" id="path" value="null" />
 
             <br /> <br />
@@ -195,14 +189,17 @@
 
         function ToggleMapBox(){
             var mapBox = document.getElementById("cardMapBox");
+            var addressContainer = document.getElementById("AddressContainer");
 
             if(mapBox.style.display == "none")
             {
                 mapBox.style.display = "block";
+                addressContainer.style.display = "block";
             }
             else 
             {
                 mapBox.style.display = "none";
+                addressContainer.style.display = "none";
             }
         }
 </script>

@@ -99,14 +99,11 @@
                 }
             </div>
 
-            @*<div class="form-group">*@
-                @*<label asp-for="Route" class="control-label"></label>*@
                 <input asp-for="Route" type="hidden" class="form-control" id="ev" />
-            @*</div>*@
             
             <div class="form-group">
                 <label asp-for="AddressByPath" class="control-label"></label>
-                <input asp-for="AddressByPath" disabled class="form-control" id="AddressByPath" />
+                <input asp-for="AddressByPath" readonly class="form-control" id="AddressByPath" />
             </div>
 
             <div class="form-group">

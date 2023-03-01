@@ -55,12 +55,6 @@
             @Html.DisplayFor(model => model.Fee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HaveRoute)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HaveRoute)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxEventEnrolls)
         </dt>
         <dd class="col-sm-10">
@@ -81,10 +75,25 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AddressByPath)
         </dt>
-        <dd class="col-sm-10">
+        @if(Model.AddressByPath != null)
+        {<dd class="col-sm-10">
             @Html.DisplayFor(model => model.AddressByPath)
         </dd>
-
+        }else if(Model.Location!= null)
+        {
+            <dd class="col-sm-10">
+                <span>@Model.Location.Street, </span>
+                <span>@Model.Location.City, </span>
+                <span>@Model.Location.Country, </span>
+                <span>@Model.Location.ZipCode</span>
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HaveRoute)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.HaveRoute)
+        </dd>
         @if (Model.Route != null)
         {
             <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>Ver Caminho</a>

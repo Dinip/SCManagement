@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -195,17 +196,31 @@ namespace SCManagement.Controllers
         public class EventModel
         {
             public int Id { get; set; }
+            [Required(ErrorMessage = "Error_Required")]
+            [StringLength(40, ErrorMessage = "Error_Length", MinimumLength = 2)]
+            [Display(Name = "Event Name")]
             public string Name { get; set; }
+            [Display(Name = "Start Date")]
             public DateTime StartDate { get; set; }
+            [Display(Name = "End Date")]
             public DateTime EndDate { get; set; }
+            [Display(Name = "Enroll Limit Date")]
             public DateTime EnrollLimitDate { get; set; }
+            [Display(Name = "Event Details")]
             public string? Details { get; set; }
+            [Display(Name = "Public Event")]
             public bool IsPublic { get; set; }
+            [Display(Name = "Fee")]
             public float Fee { get; set; }
+            [Display(Name = "Event Have Route")]
             public bool HaveRoute { get; set; }
             public string? Route { get; set; }
+            
             public ResultType EventResultType { get; set; }
+            [Display(Name = "Max Enrolls")]
+            [Range(1, int.MaxValue, ErrorMessage = "Please enter a value between 1 and 214783647")]
             public int MaxEventEnrolls { get; set; }
+            [Display(Name = "Event Location")]
             public string? AddressByPath { get; set; }
 
 
