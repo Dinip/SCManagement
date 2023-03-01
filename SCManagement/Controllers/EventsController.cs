@@ -45,15 +45,14 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var events = await _eventService.GetPublicEvents();
-
             var userId = getUserIdFromAuthedUser();
+
+            var events = await _eventService.GetEvents(userId);
+
+            //Check if iss Staff of the active club
             var role = await _userService.GetSelectedRole(userId);
-            if (role != null)
-            {
-                var clubEvents = await _eventService.GetClubEvents(role.ClubId);
-                events = events.Concat(clubEvents);
-            }
+
+            ViewBag.IsStaff = _clubService.IsClubStaff(role);
 
             events.OrderBy(e => e.StartDate);
 
@@ -77,15 +76,13 @@ namespace SCManagement.Controllers
             var userId = getUserIdFromAuthedUser();
             var userRole = await _userService.GetSelectedRole(userId);
             //if event is not public need to check if user is in the club
-            if (!myEvent.IsPublic)
+            if (!myEvent.IsPublic && userRole.ClubId != myEvent.ClubId)
             {
-                if (userRole == null) return View("CustomError", "Error_Unauthorized");
-
-                if (userRole.ClubId != myEvent.ClubId) return View("CustomError", "Error_Unauthorized");
+                return View("CustomError", "Error_Unauthorized");
             }
 
             //if users is staff can see users enrolled
-            if (_clubService.IsClubStaff(userRole))
+            if (_clubService.IsClubStaff(userRole) && userRole.ClubId == myEvent.ClubId)
             {
                 ViewBag.IsStaff = true;
                 ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
@@ -110,14 +107,8 @@ namespace SCManagement.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-            if (role == null)
-            {
-                return View("CustomError", "Error_Unauthorized");
 
-            }
-            //Check if user is Staff of the club that owns the event
             if (!_clubService.IsClubStaff(role))
             {
                 return View("CustomError", "Error_Unauthorized");
@@ -142,12 +133,6 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (ModelState.IsValid)
             {
-                if (role == null)
-                {
-                    return View("CustomError", "Error_Unauthorized");
-
-                }
-
                 //Check if user is Staff of the club that owns the event
                 if (!_clubService.IsClubStaff(role))
                 {
@@ -225,11 +210,11 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-            if (!_clubService.IsClubStaff(role))
+            if (!_clubService.IsClubStaff(role) || role.ClubId != myEvent.ClubId)
             {
                 return View("CustomError", "Error_Unauthorized");
             }
-
+            
             ViewBag.ValidKey = await _paymentService.ClubHasValidKey(role.ClubId);
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
@@ -252,12 +237,15 @@ namespace SCManagement.Controllers
 
             if (ModelState.IsValid)
             {
-                //check if user is staff of the club that owns the event
-                var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-                if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
-
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
+
+                //check if user is staff of the club that owns the event
+                var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+                if (!_clubService.IsClubStaff(role) || role.ClubId != eventToUpdate.ClubId)
+                {
+                    return View("CustomError", "Error_Unauthorized");
+                }
 
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
@@ -305,6 +293,13 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
+            //check if user is staff of the club that owns the event
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+            if (!_clubService.IsClubStaff(role) || role.ClubId != myEvent.ClubId)
+            {
+                return View("CustomError", "Error_Unauthorized");
+            }
+
             await _eventService.DeleteEvent(myEvent);
 
             return RedirectToAction(nameof(Index));
@@ -325,7 +320,7 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //check if event is public
-            if (!eventToEnroll.IsPublic && (role == null || role.ClubId != eventToEnroll.ClubId))
+            if (!eventToEnroll.IsPublic && role.ClubId != eventToEnroll.ClubId)
             {
                 return View("CustomError", "Error_Unauthorized");
             }
