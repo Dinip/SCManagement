@@ -121,6 +121,17 @@
             </form>
         }
 
+        <div>
+            @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+                <form asp-action="Delete">
+                    <input name="Id" value="@Model?.Id" class="form-control" hidden />
+                    <input type="submit" value="Delete" />
+                </form>
+            }
+        </div>
+
         @*Botao para visualizar os inscritos no evento*@
         @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
         {
@@ -163,16 +174,7 @@
     </dl>
 
 </div>
-<div>
-    @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
-    {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> 
-        <form asp-action="Delete">
-            <input name="Id" value="@Model?.Id" class="form-control" hidden />
-            <input type="submit" value="Delete" />
-        </form>
-    }
-</div>
+
 
 
 @section Scripts {

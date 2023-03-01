@@ -28,7 +28,7 @@ namespace SCManagement.Services.EventService
 
         public async Task<Event?> GetEvent(int eventId)
         {
-            return await _context.Event.Include(e => e.Club).FirstOrDefaultAsync(e => e.Id == eventId);
+            return await _context.Event.Include(e => e.Club).Include(e => e.Location).FirstOrDefaultAsync(e => e.Id == eventId);
 
         }
 
@@ -74,6 +74,27 @@ namespace SCManagement.Services.EventService
         public async Task<IEnumerable<EventEnroll>> GetEnrolls(int eventId)
         {
             return await _context.EventEnroll.Where(e => e.EventId == eventId).Include(e => e.User).ToListAsync();
+        }
+        public async Task<Address> CreateEventAddress(Address address)
+        {
+            _context.Address.Add(address);
+            await _context.SaveChangesAsync();
+            return address;
+        }
+        public async Task<Address> UpdateEventAddress(int locationId, Address address)
+        {
+            Address ad = _context.Address.Find(locationId);
+            ad.CoordinateX = address.CoordinateX;
+            ad.CoordinateY = address.CoordinateY;
+            ad.ZipCode = address.ZipCode;
+            ad.Street = address.Street;
+            ad.City = address.City;
+            ad.District = address.District;
+            ad.Country = address.Country;
+
+            _context.Address.Update(ad);
+            await _context.SaveChangesAsync();
+            return address;
         }
 
     }

@@ -82,10 +82,27 @@
                 </label>
             </div>
 
-            <div class="form-group">
-                <label asp-for="Route" class="control-label"></label>
-                <input asp-for="Route" type="hidden" class="form-control" id="ev" />
+            <div class="form-group">      
+                @if(@Model.LocationId != null)
+                {
+                    <a asp-action="UpdateEventLocation" asp-route-id="@Model.Id" class="form-check-input">Alterar Lococalização</a>
+
+                    @if(Model.Location !=null){
+                        <span>@Model.Location.Street, </span>
+                        <span>@Model.Location.City, </span>
+                        <span>@Model.Location.Country, </span>
+                        <span>@Model.Location.ZipCode</span>
+                    }
+                }else
+                {
+                    <a asp-action="UpdateEventLocation" asp-route-id="@Model.Id" class="form-check-input">Inserir Lococalização</a>
+                }
             </div>
+
+            @*<div class="form-group">*@
+                @*<label asp-for="Route" class="control-label"></label>*@
+                <input asp-for="Route" type="hidden" class="form-control" id="ev" />
+            @*</div>*@
             
             <div class="form-group">
                 <label asp-for="AddressByPath" class="control-label"></label>

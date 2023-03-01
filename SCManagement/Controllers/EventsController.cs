@@ -408,5 +408,53 @@ namespace SCManagement.Controllers
             return View(ev);
         }
 
+
+        [Authorize]
+        public async Task<IActionResult> UpdateEventLocation(int id)
+        {
+            var myEvent = await _eventService.GetEvent(id);
+            if (myEvent == null) return NotFound();
+
+
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+            if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
+            {
+                return View("CustomError", "Error_Unauthorized");
+            }
+
+            return View(myEvent);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UpdateLocation(int eventId, Address address)
+        {
+            var userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+            if (role == null)
+                return View("CustomError", "Error_Unauthorized");
+
+            var myEvent = await _eventService.GetEvent(eventId);
+            if (myEvent == null) return NotFound();
+
+            if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
+                return View("CustomError", "Error_Unauthorized");
+
+
+            if (myEvent.LocationId == null)
+            {
+                var newAddress = await _eventService.CreateEventAddress(address);
+                myEvent.LocationId = newAddress.Id;
+                await _eventService.UpdateEvent(myEvent);
+            }
+            else
+            {
+                await _eventService.UpdateEventAddress((int)myEvent.LocationId, address);
+            }
+
+            return Json(new { url = "/Events/Edit/"+myEvent.Id });
+        }
+
     }
 }
