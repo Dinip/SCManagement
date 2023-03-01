@@ -382,6 +382,12 @@ namespace SCManagement.Services.PaymentService
                 .ToListAsync();
         }
 
+        public async Task<Product?> GetClubSubscriptionPlans(int planId)
+        {
+            return await _context.Product
+                .FirstOrDefaultAsync(p => p.ProductType == ProductType.ClubSubscription && p.Enabled && p.Id == planId);
+        }
+
         public async Task<Subscription> SubscribeClubToPlan(int clubId, string userId, int planId)
         {
             var product = await GetProduct(planId);

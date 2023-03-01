@@ -134,10 +134,14 @@ namespace SCManagement.Controllers
         [Authorize]
         public async Task<IActionResult> Create(int? planId)
         {
-            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");    
+            if (planId == null) return RedirectToAction(nameof(Plans));
 
-            ViewBag.Plans = await _paymentService.GetClubSubscriptionPlans();
-            ViewBag.SelectedId = planId;
+            var plan = await _paymentService.GetClubSubscriptionPlan((int)planId);
+
+            if (plan == null) return RedirectToAction(nameof(Plans));
+
+            ViewBag.SelectedPlan = plan;
+            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
 
             return View(new CreateClubModel());
         }

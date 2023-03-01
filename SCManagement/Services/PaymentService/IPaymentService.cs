@@ -19,6 +19,7 @@ namespace SCManagement.Services.PaymentService
         public Task<Subscription?> GetSubscription(int id);
 
         public Task<IEnumerable<Product>> GetClubSubscriptionPlans();
+        public Task<Product?> GetClubSubscriptionPlan(int planId);
         public Task<Subscription> SubscribeClubToPlan(int clubId, string userId, int planId);
         public Task UpgradeClubPlan(int subId, int newPlanId);
 
