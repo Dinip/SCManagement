@@ -6,6 +6,7 @@ namespace SCManagement.Services.PaymentService
     public interface IPaymentService
     {
         public Task<IEnumerable<Payment>> GetPayments(string userId);
+        public Task<IEnumerable<Payment>> GetClubPayments(int clubId);
         public Task<Payment?> GetPayment(int id);
 
         public Task<Product?> GetProduct(int id);

@@ -1080,4 +1080,76 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Your club doesn't have payments enabled. You can still create an event but it can't have an entry fee.</value>
     <comment>28-02-2023_events</comment>
   </data>
+  <data name="Unavailable" xml:space="preserve">
+    <value>Unavailable</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="Suspended" xml:space="preserve">
+    <value>suspended</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="Waiting_Payment" xml:space="preserve">
+    <value>waiting payment</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableDescriptionPrivate" xml:space="preserve">
+    <value>Regularize the payment so that your club is available again.</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableDescriptionPublic" xml:space="preserve">
+    <value>Talk to club administration for more info.</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="ClubUnavailableTitle" xml:space="preserve">
+    <value>Your club is currently</value>
+    <comment>27-02-2023_payments</comment>
+  </data>
+  <data name="Canceled" xml:space="preserve">
+    <value>Canceled</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="CreditCard" xml:space="preserve">
+    <value>Credit card</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Error" xml:space="preserve">
+    <value>Error</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Failed" xml:space="preserve">
+    <value>Failed</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="MbWay" xml:space="preserve">
+    <value>MBWay</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Paid" xml:space="preserve">
+    <value>Paid</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Pending" xml:space="preserve">
+    <value>Pending</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Reference" xml:space="preserve">
+    <value>Reference</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Code_ClubFull" xml:space="preserve">
+    <value>Club is full. Talk with the administration for more info.</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="SlotsStats" xml:space="preserve">
+    <value>athlete slots available</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Club Plans" xml:space="preserve">
+    <value>Club Plans</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
+  <data name="Select and create club" xml:space="preserve">
+    <value>Select and create club</value>
+    <comment>28-02-2023_payments</comment>
+  </data>
 </root>

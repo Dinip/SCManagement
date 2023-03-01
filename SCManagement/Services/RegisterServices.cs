@@ -138,6 +138,9 @@ namespace SCManagement.Services
             services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
             services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
             #endregion
+
+            services.AddScoped<ApplicationContextService, ApplicationContextService>();
+            services.AddScoped<ClubMiddleware>();
         }
     }
 }

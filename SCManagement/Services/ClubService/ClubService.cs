@@ -8,6 +8,7 @@ using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
+using SCManagement.Services.ClubService.Models;
 using SCManagement.Services.Location;
 
 namespace SCManagement.Services.ClubService
@@ -402,6 +403,12 @@ namespace SCManagement.Services.ClubService
             if (UserAlreadyInAClub(userId, cc.ClubId))
             {
                 return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_AlreadyPart"));
+            }
+
+            var slots = await ClubAthleteSlots(cc.ClubId);
+            if (slots.AvailableSlots == 0)
+            {
+                return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_ClubFull"));
             }
 
             _context.UsersRoleClub.Add(new UsersRoleClub { UserId = userId, ClubId = cc.ClubId, RoleId = cc.RoleId });
@@ -899,26 +906,44 @@ namespace SCManagement.Services.ClubService
 
             foreach (var partner in partners)
             {
-                string lang = partner.User.Language;
-
-                string emailBody = _sharedResource.Get("Email_ClubFees", lang);
-
-                Dictionary<string, string> values = new Dictionary<string, string>
+                if (!partner.User.Email.ToLower().Contains("scmanagement"))
                 {
+                    string lang = partner.User.Language;
+
+                    string emailBody = _sharedResource.Get("Email_ClubFees", lang);
+
+                    Dictionary<string, string> values = new Dictionary<string, string>
+                    {
                     { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.ToString(), lang) },
                     { "_PRICE_", $"{settings.QuotaFee.ToString()}€"},
                     { "_CLUB_", club.Name },
                     { "_SUBSCRIPTION_", $"{hostUrl}/Subscription"},
-                };
+                    };
 
-                foreach (KeyValuePair<string, string> entry in values)
-                {
-                    emailBody = emailBody.Replace(entry.Key, entry.Value);
+                    foreach (KeyValuePair<string, string> entry in values)
+                    {
+                        emailBody = emailBody.Replace(entry.Key, entry.Value);
+                    }
+
+                    await _emailSender.SendEmailAsync(partner.User.Email, _sharedResource.Get("Subject_ClubFees", lang), emailBody);
                 }
-
-                await _emailSender.SendEmailAsync(partner.User.Email, _sharedResource.Get("Subject_ClubFees", lang), emailBody);
             }
             return;
+        }
+
+        public async Task<ClubSlots> ClubAthleteSlots(int clubId)
+        {
+            var total = await _context.Subscription
+                .Include(p => p.Product)
+                .Where(c => c.ClubId == clubId && c.Product.ProductType == PaymentService.Models.ProductType.ClubSubscription)
+                .Select(c => c.Product.AthleteSlots)
+                .FirstOrDefaultAsync() ?? 0;
+
+            var athletes = await _context.UsersRoleClub
+                .Where(u => u.ClubId == clubId && u.RoleId == 20)
+                .CountAsync();
+
+            return new ClubSlots { TotalSlots = total, UsedSlots = athletes, AvailableSlots = total - athletes };
         }
     }
 }

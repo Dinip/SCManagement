@@ -104,7 +104,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
-            club.ClubTranslations = (ICollection<ClubTranslations>?) await _clubService.GetClubTranslations(id);
+            club.ClubTranslations = (ICollection<ClubTranslations>?)await _clubService.GetClubTranslations(id);
 
             //If the club does not have an image, one is placed by default.
             if (club.Photography == null)
@@ -132,11 +132,12 @@ namespace SCManagement.Controllers
         /// </summary>
         /// <returns>Create View</returns>
         [Authorize]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create(int? planId)
         {
-            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
+            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");    
 
             ViewBag.Plans = await _paymentService.GetClubSubscriptionPlans();
+            ViewBag.SelectedId = planId;
 
             return View(new CreateClubModel());
         }
@@ -243,6 +244,11 @@ namespace SCManagement.Controllers
             ViewBag.Message = joined.Value;
             if (joined.Key == false) return View("Join", new CodeClub { Code = cc.Code });
             return RedirectToAction("Index", "MyClub");
+        }
+
+        public async Task<IActionResult> Plans()
+        {
+            return View(await _paymentService.GetClubSubscriptionPlans());
         }
     }
 }

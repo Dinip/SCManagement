@@ -78,7 +78,7 @@
         <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.Product.Name)</dd>
 
         <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.Value)</dt>
-        <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.Value)</dd>
+        <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.Value)€</dd>
 
         <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.PaymentMethod)</dt>
         <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.PaymentMethod)</dd>
@@ -92,30 +92,30 @@
         <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.PayedAt)</dt>
         <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.PayedAt)</dd>
 
-                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
-                {
+        @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.Reference)
+        {
             <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.MbEntity)</dt>
             <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.MbEntity)</dd>
 
             <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.MbReference)</dt>
             <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.MbReference)</dd>
-                }
-                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
-                {
+        }
+        @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.MbWay)
+        {
             <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.PhoneNumber)</dt>
             <dd class="col-sm-8 dlBg text-to-dark">@Html.DisplayFor(model => model.PhoneNumber)</dd>
-                }
-                @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
-                {
-                    @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
-                    {
+        }
+        @if (Model.PaymentMethod == SCManagement.Services.PaymentService.Models.PaymentMethod.CreditCard)
+        {
+            @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
+            {
                 <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.Url)</dt>
                 <dd class="col-sm-4 dlBg text-to-dark">@Html.DisplayFor(model => model.Url)</dd>
                 <dd class="col-sm-4 dlBg text-to-dark"><a href="@Model.Url">Click here to pay</a></dd>
-                    }
-                    else
-                    {
-                        <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)</dt>
+            }
+            else
+            {
+                <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.LastFourDigits)</dt>
                 <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.CardInfo.LastFourDigits)</dd>
 
                 <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.Type)</dt>
@@ -123,8 +123,8 @@
 
                 <dt class="col-sm-4 text-to-dark">@Html.DisplayNameFor(model => model.CardInfo.ExpirationDate)</dt>
                 <dd class="col-sm-8 text-to-dark">@Html.DisplayFor(model => model.CardInfo.ExpirationDate)</dd>
-                    }
-                }
+            }
+        }
     </dl>
     @if (Model.SubscriptionId != null)
     {
