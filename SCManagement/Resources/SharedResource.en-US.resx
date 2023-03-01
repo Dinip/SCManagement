@@ -1156,4 +1156,40 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Payments Recieved</value>
     <comment>01-03-2023_payments</comment>
   </data>
+  <data name="End" xml:space="preserve">
+    <value>End</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="InvalidInput" xml:space="preserve">
+    <value>message will hold an explanation of the invalid input.</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="NoMatch" xml:space="preserve">
+    <value>The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="NoSegment" xml:space="preserve">
+    <value>No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road.</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="Other" xml:space="preserve">
+    <value>Unable to obtain the location of the event</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="ProfileNotFound" xml:space="preserve">
+    <value>Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="SearchLocation" xml:space="preserve">
+    <value>Enter an address or location</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="Start" xml:space="preserve">
+    <value>Start</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
+  <data name="TooManyCoordinates" xml:space="preserve">
+    <value>There are more than 100 points in the request.</value>
+    <comment>01-03-2023_PathMapBox</comment>
+  </data>
 </root>

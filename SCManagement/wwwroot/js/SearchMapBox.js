@@ -27,6 +27,7 @@ const geocoder = new MapboxGeocoder({
 map.addControl(geocoder, 'top-left');
 
 let address;
+let errorMessage;
 
 map.on('load', () => {
     // Listen for the `geocoder.input` event that is triggered when a user
@@ -80,7 +81,8 @@ window.onload = function () {
                 });
             }
         } catch (error) {
-            alert("Terá de inserir uma localização com rua incluida");
+            errorMessage = "Terá de inserir uma localização com rua incluida";
+            alert(errorMessage);
         }
     }
 };

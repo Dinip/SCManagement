@@ -329,30 +329,33 @@ function removeRoute() {
 function addMarkers(initialCoord, endCoord) {
     initialMarker = new mapboxgl.Marker({ color: 'green' })
         .setLngLat([initialCoord[0], initialCoord[1]])
-        .setPopup(new mapboxgl.Popup().setHTML('Inicio'))
+        .setPopup(new mapboxgl.Popup().setHTML(strings.start))
         .addTo(map);
-
+    
     endMarker = new mapboxgl.Marker({ color: 'red' })
         .setLngLat([endCoord[0], endCoord[1]])
-        .setPopup(new mapboxgl.Popup().setHTML('Fim'))
+        .setPopup(new mapboxgl.Popup().setHTML(strings.end))
         .addTo(map);
-}
+} 
 
 function errorMessage(codeMessage) {
     if (codeMessage == "NoMatch") {
-        erMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
+        erMessage = strings.noMatch;
         alert(erMessage);
     } else if (codeMessage == "NoSegment") {
-        erMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
+        erMessage = strings.noSegment;
         alert(erMessage);
     } else if (codeMessage == "TooManyCoordinates") {
-        erMessage = "There are more than 100 points in the request."
+        erMessage = strings.tooManyCoordinates;
         alert(erMessage);
     } else if (codeMessage == "ProfileNotFound") {
-        erMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
+        erMessage = strings.profileNotFound;
         alert(erMessage);
     } else if (codeMessage == "InvalidInput") {
-        erMessage = "message will hold an explanation of the invalid input.";
+        erMessage = strings.invalidInput;
+        alert(erMessage);
+    } else if (codeMessage == "Other") {
+        erMessage = strings.other;
         alert(erMessage);
     }
 }
@@ -367,7 +370,7 @@ async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken
         const address = data.features[0].place_name;
         addressByPath.value = address;
     } catch (error) {
-        alert(error);
+        errorMessage("Other")
     }
 }
 
