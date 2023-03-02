@@ -15,8 +15,6 @@ using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services;
-using FluentEmail.Core.Models;
-using Address = SCManagement.Models.Address;
 
 namespace SCManagement.Controllers
 {
