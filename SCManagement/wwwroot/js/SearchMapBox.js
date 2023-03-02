@@ -1,16 +1,33 @@
 ﻿
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v12',
-    center: [-8.896442, 38.533278],
-    zoom: 13
-});
 
 const layerList = document.getElementById('menu');
 const inputs = layerList.getElementsByTagName('input');
 const addressElement = document.getElementById('address');
 const newAd = document.getElementById('NewAd');
+const coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
+const coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
+
+let marker;
+let map;
+
+if (coordX != null && coordY != null) {
+    map = new mapboxgl.Map({
+        container: 'map', // Specify the container ID
+        style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
+        center: [coordX, coordY], // Specify the starting position
+        zoom: 12 // Specify the starting zoom
+    });
+    addMarkers(coordX, coordY);
+} else {
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [-8.896442, 38.533278],
+        zoom: 13
+    });
+}
+
 
 for (const input of inputs) {
     input.onclick = (layer) => {
@@ -36,7 +53,7 @@ map.on('load', () => {
     // makes a selection
     geocoder.on('result', (event) => {
         address = event.result;
-
+        marker.remove();
     });
 });
 
@@ -65,3 +82,9 @@ btnSave.onclick = function () {
     }
 }
 
+
+function addMarkers(coordX, coordY) {
+    marker = new mapboxgl.Marker({ color: 'blue' })
+        .setLngLat([coordX, coordY])
+        .addTo(map);
+}
