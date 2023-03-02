@@ -87,6 +87,11 @@ namespace SCManagement.Services.PaymentService.Models
             if (paymentMethod == Models.PaymentMethod.Reference) return "mb";
             return "cc";
         }
+
+        public override string ToString()
+        {
+            return $"Payment: {Id} - {Value} - {PaymentStatus} - {CreatedAt} - {PayedAt} - {UserId} - {MbEntity} - {MbReference} - {Url} - {SubscriptionId} - {CardInfoData}";
+        }
     }
 
     public enum PaymentStatus : int
