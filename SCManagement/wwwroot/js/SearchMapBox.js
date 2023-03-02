@@ -9,6 +9,8 @@ const map = new mapboxgl.Map({
 
 const layerList = document.getElementById('menu');
 const inputs = layerList.getElementsByTagName('input');
+const addressElement = document.getElementById('address');
+const newAd = document.getElementById('NewAd');
 
 for (const input of inputs) {
     input.onclick = (layer) => {
@@ -34,55 +36,32 @@ map.on('load', () => {
     // makes a selection
     geocoder.on('result', (event) => {
         address = event.result;
-        
+
     });
 });
 
-window.onload = function () {
+const btnSave = document.getElementById('save-button');
 
-    let btn = document.getElementById("btnSave");
+btnSave.onclick = function () {
+    if (address != null) {
+        let { text, geometry, context } = address;
+        let addressCode = context[0].text;
+        let city = context[1].text;
+        let district = context[2].text;
+        let country = context[3].text;
+        let coord = geometry.coordinates;
 
-    btn.onclick = function () {
+        addressElement.value = JSON.stringify({
+            CoordinateY: coord[1],
+            CoordinateX: coord[0],
+            ZipCode: addressCode,
+            Street: text,
+            City: city,
+            District: district,
+            Country: country,
+        })
+        newAd.innerHTML = strings.newAddress + ": " + text + "," + addressCode + "," + city + "," + district + "," + country
 
-        try {
-            if (address != null) {
-
-                let { text, geometry, context } = address;
-                let addressCode = context[0].text;
-                let city = context[1].text;
-                let district = context[2].text;
-                let country = context[3].text;
-                let coord = geometry.coordinates;
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/MyClub/ReceiveAddress',
-                    dataType: 'json',
-                    data: {
-                        Address:
-                        {
-                            CoordinateY: coord[1],
-                            CoordinateX: coord[0],
-                            ZipCode: addressCode,
-                            Street: text,
-                            City: city,
-                            District: district,
-                            Country: country,
-                        }
-                    },
-                   
-                }).done(function (response) {
-                    btn.disabled = true;
-                    window.location.href = response.url;
-                        
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log("Erro: " + textStatus + ", " + errorThrown);
-                    console.log("Resposta do servidor: " + jqXHR.responseText);
-                });
-            }
-        } catch (error) {
-            errorMessage = "Terá de inserir uma localização com rua incluida";
-            alert(errorMessage);
-        }
     }
-};
+}
+

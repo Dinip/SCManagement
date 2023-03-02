@@ -1372,4 +1372,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>A Distancia Total é de:</value>
     <comment>01-03-2023_ShowPathMapBox</comment>
   </data>
+  <data name="NewAddress" xml:space="preserve">
+    <value>Novo Endereço</value>
+    <comment>02-03-2023_SearchMapBox</comment>
+  </data>
 </root>
