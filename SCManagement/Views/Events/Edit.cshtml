@@ -85,20 +85,16 @@
             </div>
 
 
-            <div id="LocationContainer" class="form-group">      
-                @if(@Model.LocationId != null)
-                {
-                    <a asp-action="UpdateEventLocation" asp-route-id="@Model.Id" class="form-check-input">Alterar Lococalização</a>
+            <div id="LocationContainer" class="form-group"> 
+                <a id="btnAddLocation" onclick="AddLocation()" class="form-check-input">Inserir Lococalização</a>
+                <input asp-for="Location" type="hidden" id="Location" />
 
-                    @if(Model.Location !=null){
-                        <span>@Model.Location.Street, </span>
+                @if (@Model.LocationId != null && Model.Location != null)
+                {                   
+                        <span id="spanStreet">@Model.Location.Street, </span>
                         <span>@Model.Location.City, </span>
                         <span>@Model.Location.Country, </span>
                         <span>@Model.Location.ZipCode</span>
-                    }
-                }else
-                {
-                    <a asp-action="UpdateEventLocation" asp-route-id="@Model.Id" class="form-check-input">Inserir Lococalização</a>
                 }
             </div>
 
@@ -119,11 +115,15 @@
             <br /> <br />
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
 
-            <div id="mapboxContainer" class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
-                <div class="card-body">
-                    <div id='map'></div>
-                    <div id="save">
-                        <button type="button" id="save-button">Save</button>
+            <div id="cardMapBox">
+                <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px;">
+                    <div class="card-body">
+                        <div id='map'></div>
+                        <div id="menu">
+                        </div>
+                        <div id="save">
+                            <button type="button" id="save-button">Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -142,30 +142,71 @@
 
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="~/js/PathMapBox.js" asp-append-version="true"></script>
+
+<script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
 
 <script>
     window.onload = function(){
         ToggleMapBox();
-        console.log("Dale Usasdo")
+        var ckbHaveRoute = document.getElementById("ckbHaveRoute");
+        if(ckbhaveRoute.checked)
+        {
+            PathMapBoxConfig();
+        }
     }
+    
 
     function ToggleMapBox() {
-        var mapBox = document.getElementById("mapboxContainer");
+        var mapBox = document.getElementById("cardMapBox");
         var addressContainer = document.getElementById("AddressContainer");
         var locationContainer = document.getElementById("LocationContainer");
         var ckbHaveRoute = document.getElementById("ckbHaveRoute");
+
+        var spanStreet = document.getElementById("spanStreet");
+        var btnAddLocation = document.getElementById("btnAddLocation");
+
 
         if (ckbHaveRoute.checked == true) {
             mapBox.style.display = "block";
             addressContainer.style.display = "block";
             locationContainer.style.display = "none";
+
+            document.getElementById("ev").value = null;
+            document.getElementById("AddressByPath").value = null;
+            document.getElementById("map").innerHTML = "";
+            //Load MapBox
+            PathMapBoxConfig();
         }
         else {
             mapBox.style.display = "none";
             addressContainer.style.display = "none";
             locationContainer.style.display = "block";
+
+            document.getElementById("ev").value = null;
+            document.getElementById("AddressByPath").value = null;
+            document.getElementById("map").innerHTML = "";
+
+            if(spanStreet.innerHTML != null){
+                btnAddLocation.innerHTML = "Atualizar Localização"
+            }else{
+                btnAddLocation.innerHTML = "Inserir Localização"
+            }
+
+            
+
         }
+    }
+
+    function AddLocation(){
+        var mapBox = document.getElementById("cardMapBox");
+        var addressContainer = document.getElementById("AddressContainer");
+        var locationContainer = document.getElementById("LocationContainer");
+
+        mapBox.style.display = "block";
+        //addressContainer.style.display = "block";
+        locationContainer.style.display = "none";
+
+        SearchMapBoxConfig();
     }
 </script>
 

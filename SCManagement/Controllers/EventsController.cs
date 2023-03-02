@@ -239,6 +239,7 @@ namespace SCManagement.Controllers
             public string? Location { get; set; }
 
 
+
         }
 
         [Authorize]
@@ -273,7 +274,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath, Location")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -298,7 +299,30 @@ namespace SCManagement.Controllers
                     eventToUpdate.LocationId = null;
                     eventToUpdate.Location = null;
                 }
+                else { 
 
+                    Address newLocation = null;
+                    Address location = null;
+                    if (myEvent.Location != null) { 
+                        location = JsonConvert.DeserializeObject<Address>(myEvent.Location);
+                    }
+
+                    if (eventToUpdate.LocationId != null && location != null)
+                    {
+                        //Update Location Address
+                        newLocation = await _eventService.UpdateEventAddress((int)eventToUpdate.LocationId, location);
+                    }
+                    else
+                    {
+                        //Create Location Address
+                        if (location != null)
+                        {
+                             newLocation = await _eventService.CreateEventAddress(location);
+                             eventToUpdate.LocationId = newLocation == null ? null : newLocation.Id;
+
+                        }
+                    }
+                }
                 eventToUpdate.Name = myEvent.Name;
                 eventToUpdate.StartDate = myEvent.StartDate;
                 eventToUpdate.EndDate = myEvent.EndDate;
@@ -345,7 +369,9 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
+            await _eventService.RemoveEventAddress(myEvent);
             await _eventService.DeleteEvent(myEvent);
+            
 
             return RedirectToAction(nameof(Index));
         }
