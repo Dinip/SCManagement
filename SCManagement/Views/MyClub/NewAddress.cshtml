@@ -15,7 +15,7 @@
 
     #map {
         position: absolute;
-        top: 0;
+        top: 78px;
         bottom: 0;
         width: 100%;
     }
@@ -27,23 +27,44 @@
         font-family: 'Open Sans', sans-serif;
         right:0;
     }
+
+    footer{
+        display: none;
+    }
+
+    #btnSave {
+        border-radius: 100px;
+        width: 70px !important;
+        aspect-ratio: 1;
+        background-color: #00639A;
+        border-color: #00639A;
+        position: absolute;
+        right: 50px;
+        z-index: 1;
+        bottom: 50px;
+    }
+    @@media only screen and (max-width: 768px){
+        #btnSave {
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+    
 </style>
 
-<div class="card card-to-dark col-12 m-4 mt-4 me-4" style="min-height:600px;">
-    <div class="card-body">
-        <div id='map'></div>
-        <div id="menu">
-            <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
-            <label for="satellite-streets-v12">satellite streets</label>
-            <input id="light-v11" type="radio" name="rtoggle" value="light">
-            <label for="light-v11">light</label>
-            <input id="dark-v11" type="radio" name="rtoggle" value="dark">
-            <label for="dark-v11">dark</label>
-            <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
-            <label for="streets-v12">streets</label>
-        </div>
-        <script src="~/js/SearchMapBox.js" asp-append-version="true"></script>
-    </div>
+<div id='map'></div>
+<div id="menu">
+    <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
+    <label for="satellite-streets-v12">satellite streets</label>
+    <input id="light-v11" type="radio" name="rtoggle" value="light">
+    <label for="light-v11">light</label>
+    <input id="dark-v11" type="radio" name="rtoggle" value="dark">
+    <label for="dark-v11">dark</label>
+    <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
+    <label for="streets-v12">streets</label>
 </div>
 
-<input type="button" id="btnSave" value="Salvar" class="btn btn-primary mt-2 w-100" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+<button id="btnSave" value="Salvar" class="btn btn-primary mt-2 w-auto" ><i class="fa-solid fa-2xl fa-floppy-disk"></i></button>
+
+
+<script src="~/js/SearchMapBox.js" asp-append-version="true"></script>

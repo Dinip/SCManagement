@@ -7,6 +7,7 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.PaymentService;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers
@@ -138,6 +139,7 @@ namespace SCManagement.Controllers
 
             ViewBag.Plans = await _paymentService.GetClubSubscriptionPlans();
             ViewBag.SelectedId = planId;
+            ViewBag.SelectedPlan = (await _paymentService.GetClubSubscriptionPlans()).First();
 
             return View(new CreateClubModel());
         }

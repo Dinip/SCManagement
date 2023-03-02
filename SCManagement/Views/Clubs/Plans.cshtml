@@ -5,12 +5,65 @@
     ViewData["Title"] = "Club Plans";
 }
 
-@foreach (var product in Model)
-{
-    <div>
-        <h2>@product.Name</h2>
-        <p>@Html.DisplayNameFor(p=>p.AthleteSlots): @product.AthleteSlots</p>
-        <p>@Html.DisplayNameFor(p=>p.Value): @product.Value€/@StringLocalizer[product.Frequency.ToString()]</p>
-        <a class="btn btn-primary" href="/Clubs/Create?planId=@product.Id">@StringLocalizer["Select and create club"]</a>
+<style>
+
+    .card {
+        height: 55vh;
+        width: 15vw;
+    }
+
+    .card:hover {
+        height:60vh;
+        width: 17vw;
+    }
+
+    @@media only screen and (max-width:786px){
+        .card {
+            height: 55vh;
+            width: 80vw;
+        }
+
+            .card:hover {
+                height: 55vh;
+                width: 80vw;
+            }
+
+            #info{
+                margin-top: 0 !important;
+            }
+    }
+
+    .selectbtn {
+        border-radius: 10px;
+        background-color: #00639A;
+        border-color: #00639A;
+    }
+
+</style>
+
+<div class="container" style="min-height:100vh !important;">
+    <div class="d-md-flex align-items-center justify-content-evenly" style="min-height:80vh !important;">
+        @foreach (var product in Model)
+        {
+            <div class="card col-2 m-4 mt-5 shadow">
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-center">
+                        <div id="info" style="margin-top:30%;">
+                            <h2 class="mb-5" style="text-align:center">@product.Name</h2>
+                            <p class="mb-5" style="text-align:center"> @product.AthleteSlots @Html.DisplayNameFor(p=>p.AthleteSlots)</p>
+                            <h1 class="mb-5" style="text-align:center">@product.Value€</h1>
+                            <p class="mb-5" style="text-align:center">/@StringLocalizer[product.Frequency.ToString()]</p>
+                        </div>
+                    </div>
+
+                    
+                    <div style="position:absolute; bottom:20px !important; width:90%;">
+                        <a class="btn btn-primary col-12 selectbtn" href="/Clubs/Create?planId=@product.Id">@StringLocalizer["Select and create club"]</a>
+                    </div>
+                </div>
+
+            </div>
+        }
     </div>
-}
+    
+</div>
