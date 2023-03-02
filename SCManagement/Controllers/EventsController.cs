@@ -139,7 +139,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath,Location")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath,LocationString")] EventModel myEvent)
         {
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (ModelState.IsValid)
@@ -161,9 +161,9 @@ namespace SCManagement.Controllers
 
                 Address newLocation = null; 
                 //Create Location Address
-                if (myEvent.Location != null)
+                if (myEvent.LocationString != null)
                 {
-                    Address location = JsonConvert.DeserializeObject<Address>(myEvent.Location);
+                    Address location = JsonConvert.DeserializeObject<Address>(myEvent.LocationString);
                     if(location!= null)
                     {
                         newLocation = await _eventService.CreateEventAddress(location);
@@ -236,7 +236,9 @@ namespace SCManagement.Controllers
             public int MaxEventEnrolls { get; set; }
             [Display(Name = "Event Location")]
             public string? AddressByPath { get; set; }
-            public string? Location { get; set; }
+            public string? LocationString { get; set; }
+            public int? LocationId { get; set; }
+            public Address? Location { get; set; }
 
 
 
@@ -266,7 +268,26 @@ namespace SCManagement.Controllers
                                    select new { Id = (int)e, Name = e.ToString() };
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
-            return View(myEvent);
+
+            EventModel eventToEdit = new EventModel
+            {
+                Name = myEvent.Name,
+                StartDate = myEvent.StartDate,
+                EndDate = myEvent.EndDate,
+                EnrollLimitDate = myEvent.EnrollLimitDate,
+                Details = myEvent.Details,
+                IsPublic = myEvent.IsPublic,
+                Fee = myEvent.Fee,
+                HaveRoute = myEvent.HaveRoute,
+                Route = myEvent.Route,
+                EventResultType = myEvent.EventResultType,
+                MaxEventEnrolls = myEvent.MaxEventEnrolls,
+                AddressByPath = myEvent.AddressByPath,
+                Location = myEvent.Location,
+                LocationId = myEvent.LocationId
+            };
+
+            return View(eventToEdit);
 
         }
 
@@ -274,7 +295,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath, Location")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath, LocationString")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -303,8 +324,9 @@ namespace SCManagement.Controllers
 
                     Address newLocation = null;
                     Address location = null;
-                    if (myEvent.Location != null) { 
-                        location = JsonConvert.DeserializeObject<Address>(myEvent.Location);
+                    if (myEvent.LocationString != null)
+                    {
+                        location = JsonConvert.DeserializeObject<Address>(myEvent.LocationString);
                     }
 
                     if (eventToUpdate.LocationId != null && location != null)

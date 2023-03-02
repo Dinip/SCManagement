@@ -1,4 +1,4 @@
-﻿@model SCManagement.Models.Event
+﻿@model SCManagement.Controllers.EventsController.EventModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
@@ -58,6 +58,7 @@
                 <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" onchange="CheckLimitEnrollDate()" />
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
                 <span class="text-danger" id="spanLimiteEnrollError" style="display:none">O limite de inscrição não pode exceder a data de inicio do evento</span>
+                <span class="text-danger" id="spanLimiteEnrollError2" style="display:none">Essa data não é permitida</span>
             </div>
             
             <div class="form-group">
@@ -92,7 +93,7 @@
 
             <div id="LocationContainer" class="form-group"> 
                 <a id="btnAddLocation" onclick="AddLocation()" class="form-check-input">Inserir Lococalização</a>
-                <input asp-for="Location" type="hidden" id="Location" />
+                <input asp-for="LocationString" type="hidden" id="Location" />
 
                 @if (@Model.LocationId != null && Model.Location != null)
                 {                   
@@ -176,8 +177,6 @@
             addressContainer.style.display = "block";
             locationContainer.style.display = "none";
 
-            document.getElementById("ev").value = null;
-            document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
             //Load MapBox
             PathMapBoxConfig();
@@ -249,14 +248,20 @@
         var startDateTime = document.getElementById("startDateTime");
         var EnrollLimitDate = document.getElementById("EnrollLimitDate");
         var spanLimiteEnrollError = document.getElementById("spanLimiteEnrollError");
+        var spanLimiteEnrollError2 = document.getElementById("spanLimiteEnrollError2");
 
         var startDate = new Date(startDateTime.value);
         var enrollDate = new Date(EnrollLimitDate.value);
+        var dateNow = new Date();
 
         if (enrollDate > startDate) {
             spanLimiteEnrollError.style.display = "block"
             EnrollLimitDate.value = new Date();
-        } else {
+        }else if(enrollDate < dateNow){
+            spanLimiteEnrollError.style.display = "block"
+            EnrollLimitDate.value = new Date();
+        }
+        else  {
             spanLimiteEnrollError.style.display = "none"
         }
 

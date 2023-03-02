@@ -1,4 +1,4 @@
-﻿@model SCManagement.Models.Event
+﻿@model SCManagement.Controllers.EventsController.EventModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 <script src="https://api.tiles.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
@@ -128,7 +128,7 @@
             <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
             <input type="hidden" class="form-control" id="path" value="null" />
 
-            <input asp-for="Location" type="hidden" id="Location" />
+            <input asp-for="LocationString" type="hidden" id="Location" />
 
             <br /> <br />
             <div id="cardMapBox">
