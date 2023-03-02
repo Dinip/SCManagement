@@ -11,6 +11,7 @@ using SCManagement.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using static SCManagement.Controllers.EventsController;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.TranslationService;
 
 namespace SCManagement.Tests.Controller
 {
@@ -21,6 +22,7 @@ namespace SCManagement.Tests.Controller
         private readonly UserManager<User> _userManager;
         private readonly IClubService _clubService;
         private readonly IPaymentService _paymentService;
+        private readonly ITranslationService _translationService;
         private readonly EventsController _eventsController;
 
         public EventsControllerTests()
@@ -30,9 +32,10 @@ namespace SCManagement.Tests.Controller
             _userManager = A.Fake<UserManager<User>>();
             _clubService = A.Fake<IClubService>();
             _paymentService = A.Fake<IPaymentService>();
+            _translationService = A.Fake<ITranslationService>();
 
             //SUT (system under test)
-            _eventsController = new EventsController(_eventService, _userService, _userManager, _clubService, _paymentService);
+            _eventsController = new EventsController(_eventService, _userService, _userManager, _clubService, _paymentService, _translationService);
         }
 
         [Fact]
@@ -40,9 +43,8 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var events = new List<Event> { new Event { Id = 1, Name = "Test Event" } };
+            var events = new List<Event> { new Event { Id = 1,} };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
-            A.CallTo(() => _eventService.GetPublicEvents()).Returns(events);
 
             // Act
             var result = await _eventsController.Index();
@@ -56,11 +58,9 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var events = new List<Event> { new Event { Id = 1, Name = "Test Event" } };
-            var clubEvents = new List<Event> { new Event { Id = 2, Name = "Test Event" , ClubId = 1} };
+            var events = new List<Event> { new Event { Id = 1, } };
+            var clubEvents = new List<Event> { new Event { Id = 2 , ClubId = 1} };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
-            A.CallTo(() => _eventService.GetPublicEvents()).Returns(events);
-            A.CallTo(() => _eventService.GetClubEvents(A<int>._)).Returns(clubEvents);
 
             // Act
             var result = await _eventsController.Index();
@@ -74,7 +74,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var events =  new Event { Id = 1, Name = "Test Event" };
+            var events = new Event { Id = 1, ClubId = 1, IsPublic = true, EventTranslations = new List<EventTranslations> { new EventTranslations { EventId = 1, Language = "en", Value = "test" } } };
             var enroll = new EventEnroll { Id = 1, EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
@@ -85,15 +85,34 @@ namespace SCManagement.Tests.Controller
             var result = await _eventsController.Details(1);
 
             // Assert
-            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_PartialEventDetails");
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("EventDetails");
         }
 
         [Fact]
-        public async Task EventsController_Details_ReturnsRoleNull()
+        public async Task EventsController_Details_ReturnsEnrollNull()
         {
             // Arrange
-            var events = new Event { Id = 1, Name = "Test Event" };
-            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
+            var role = new UsersRoleClub { ClubId = 1 };
+            var events = new Event { Id = 1, ClubId = 1, IsPublic = true, EventTranslations = new List<EventTranslations> { new EventTranslations { EventId = 1, Language = "en", Value = "test" } } };
+            var enroll = new EventEnroll { Id = 1, EventId = 1, UserId = "1" };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
+            A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(Task.FromResult<EventEnroll>(null));
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.Details(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("EventDetails");
+        }
+
+        [Fact]
+        public async Task EventsController_Details_ReturnsRoleNotExist()
+        {
+            // Arrange
+            var events = new Event { Id = 1,  IsPublic = false, ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
 
             // Act
@@ -129,6 +148,25 @@ namespace SCManagement.Tests.Controller
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_Details_ReturnsRoleIdDiffEventClubId()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 1 };
+            var events = new Event { Id = 1,  IsPublic = false, ClubId = 2 };
+            var enroll = new EventEnroll { Id = 1, EventId = 1, UserId = "1" };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
+            A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(enroll);
+
+            // Act
+            var result = await _eventsController.Details(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -183,19 +221,52 @@ namespace SCManagement.Tests.Controller
             var even = new EventModel 
             { 
                 Id = 1, 
-                Name = "Test Event",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(1),
-                Details = "Test Details",
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
+                EventTranslationsName = new List<EventTranslations> 
+                { 
+                    new EventTranslations 
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslations
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslations>
+                {
+                    new EventTranslations
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslations
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
             };
-            var events = new Event { Id = 1, Name = "Test Event" };
+            var events = new Event { Id = 1, EventTranslations = new List<EventTranslations>() };
             var role = new UsersRoleClub { ClubId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.CreateEvent(A<Event>._)).Returns(events);
+            A.CallTo(() => _paymentService.ClubHasValidKey(A<int>._)).Returns(true);
 
             // Act
             var result = await _eventsController.Create(even);
@@ -205,41 +276,14 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task EventsController_Create_Post_ReturnsRoleNull()
-        {
-            // Arrange
-            var even = new EventModel
-            {
-                Id = 1,
-                Name = "Test Event",
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(1),
-                Details = "Test Details",
-                IsPublic = true,
-                Fee = 10,
-                HaveRoute = true,
-            };
-            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
-
-            // Act
-            var result = await _eventsController.Create(even);
-
-            // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
-            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
-        }
-
-        [Fact]
         public async Task EventsController_Create_Post_ReturnsIsNotClubStaff()
         {
             // Arrange
             var even = new EventModel
             {
                 Id = 1,
-                Name = "Test Event",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(1),
-                Details = "Test Details",
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
@@ -261,7 +305,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1, Name = "Test Event" };
+            var e = new Event { Id = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
@@ -308,7 +352,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1, Name = "Test Event" };
+            var e = new Event { Id = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
@@ -325,19 +369,84 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Edit_Post_ReturnsSuccess()
         {
             // Arrange
+            var a = new List<EventTranslations>()
+            {
+                new EventTranslations
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Name",
+                },
+                new EventTranslations
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Name",
+                },
+                new EventTranslations
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Details",
+                },
+                new EventTranslations
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Details",
+                }
+            };
+            
             var even = new EventModel
             {
                 Id = 1,
-                Name = "Test Event",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(1),
-                Details = "Test Details",
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
+                EventTranslationsName = new List<EventTranslations>
+                {
+                    new EventTranslations
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslations
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslations>
+                {
+                    new EventTranslations
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslations
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
             };
+            
             var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1, Name = "Test Event" };
+            var e = new Event { Id = 1 , ClubId = 1 , EventTranslations = a };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
@@ -356,10 +465,8 @@ namespace SCManagement.Tests.Controller
             var even = new EventModel
             {
                 Id = 2,
-                Name = "Test Event",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(1),
-                Details = "Test Details",
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
@@ -380,10 +487,8 @@ namespace SCManagement.Tests.Controller
             var even = new EventModel
             {
                 Id = 1,
-                Name = "Test Event",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(1),
-                Details = "Test Details",
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
@@ -407,10 +512,8 @@ namespace SCManagement.Tests.Controller
             var even = new EventModel
             {
                 Id = 1,
-                Name = "Test Event",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(1),
-                Details = "Test Details",
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
@@ -432,14 +535,31 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Delete_ReturnsSuccess()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event" };
+            var e = new Event { Id = 1};
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
-
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            
             // Act
             var result = await _eventsController.Delete(1);
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task EventsController_Delete_ReturnsIsNotClubStaff()
+        {
+            // Arrange
+            var e = new Event { Id = 1 };
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _eventsController.Delete(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
         [Fact]
@@ -473,7 +593,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_EventEnrollment_ReturnsSuccess()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = true };
+            var e = new Event { Id = 1, IsPublic = true, MaxEventEnrolls = 10, EnrollLimitDate = DateTime.Now.AddDays(1) };
             var role = new UsersRoleClub { ClubId = 1 };
             var createEnroll = new EventEnroll { EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -486,7 +606,7 @@ namespace SCManagement.Tests.Controller
             var result = await _eventsController.EventEnrollment(1);
 
             // Assert
-            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Details");
         }
 
         [Fact]
@@ -507,7 +627,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_EventEnrollment_ReturnsIsNotPublic()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = false, ClubId = 1 };
+            var e = new Event { Id = 1, IsPublic = false, ClubId = 1 };
             var role = new UsersRoleClub { ClubId = 2 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
@@ -524,7 +644,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_EventEnrollment_ReturnsUserAlreadyEnrolled()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = true };
+            var e = new Event { Id = 1,  IsPublic = true };
             var role = new UsersRoleClub { ClubId = 1 };
             var enroll = new EventEnroll { EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -543,7 +663,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_EventEnrollment_ReturnsPay()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = true };
+            var e = new Event { Id = 1, IsPublic = true , MaxEventEnrolls = 10, EnrollLimitDate = DateTime.Now.AddDays(1)};
             var role = new UsersRoleClub { ClubId = 1 };
             var createEnroll = new EventEnroll { EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -561,11 +681,53 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
+        public async Task EventsController_EventEnrollment_ReturnsMaxEventEnrolls()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, MaxEventEnrolls = 10, EnrollLimitDate = DateTime.Now.AddDays(1) };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var createEnroll = new EventEnroll { EventId = 1, UserId = "1" };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(Task.FromResult<EventEnroll>(null));
+            A.CallTo(() => _eventService.CreateEventEnroll(A<EventEnroll>._)).Returns(createEnroll);
+            A.CallTo(() => _eventService.GetNumberOfEnrolls(A<int>._)).Returns(11);
+
+            // Act
+            var result = await _eventsController.EventEnrollment(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_MaxNumberOfEnrollments");
+        }
+
+        [Fact]
+        public async Task EventsController_EventEnrollment_ReturnsDateHigher()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, MaxEventEnrolls = 10, EnrollLimitDate = DateTime.UtcNow };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var createEnroll = new EventEnroll { EventId = 1, UserId = "1" };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(Task.FromResult<EventEnroll>(null));
+            A.CallTo(() => _eventService.CreateEventEnroll(A<EventEnroll>._)).Returns(createEnroll);
+            A.CallTo(() => _eventService.GetNumberOfEnrolls(A<int>._)).Returns(1);
+
+            // Act
+            var result = await _eventsController.EventEnrollment(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_LimitDateExceed");
+        }
+
+        [Fact]
         public async Task EventsController_CancelEventEnroll_ReturnsSuccess()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = true, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
-            var enroll = new EventEnroll { EventId = 1, UserId = "1", EnrollStatus = EnrollPaymentStatus.Pending };
+            var e = new Event { Id = 1, IsPublic = true, Fee = 0, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
+            var enroll = new EventEnroll { EventId = 1, UserId = "1", EnrollStatus = EnrollPaymentStatus.Valid };
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
             A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(enroll);
 
@@ -573,7 +735,7 @@ namespace SCManagement.Tests.Controller
             var result = await _eventsController.CancelEventEnroll(1);
 
             // Assert
-            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Details");
         }
 
         [Fact]
@@ -608,7 +770,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_CancelEventEnroll_ReturnsEnrollStatus()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = true, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
+            var e = new Event { Id = 1, IsPublic = true, Fee = 10 , UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
             var enroll = new EventEnroll { EventId = 1, UserId = "1", EnrollStatus = EnrollPaymentStatus.Valid };
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
             A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(enroll);
@@ -625,7 +787,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_CancelEventEnroll_ReturnsEnrollRoRemoveNull()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = true, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
+            var e = new Event { Id = 1, IsPublic = true, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
             A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(Task.FromResult<EventEnroll>(null));
 
@@ -638,16 +800,43 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task EventsController_CancelEventEnroll_ReturnsRemoveCode()
+        public async Task EventsController_PathInfoMapBox_ReturnsSuccess()
         {
             // Arrange
-            var e = new Event { Id = 1, Name = "Test Event", IsPublic = true, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "12" } } };
-            var enroll = new EventEnroll { EventId = 1, UserId = "1", EnrollStatus = EnrollPaymentStatus.Pending };
+            var e = new Event { Id = 1, IsPublic = true, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, Route = "Rota" };
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
-            A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(enroll);
+            A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(A.Fake<EventEnroll>());
 
             // Act
-            var result = await _eventsController.CancelEventEnroll(1);
+            var result = await _eventsController.PathInfoMapBox(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_PathInfoMapBox_ReturnsEventNull()
+        {
+            // Arrange
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(Task.FromResult<Event>(null));
+
+            // Act
+            var result = await _eventsController.PathInfoMapBox(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_PathInfoMapBox_ReturnsRouteNull()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, Route = null };
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+
+            // Act
+            var result = await _eventsController.PathInfoMapBox(1);
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");

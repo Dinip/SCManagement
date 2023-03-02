@@ -406,7 +406,7 @@ namespace SCManagement.Services.ClubService
             }
 
             var slots = await ClubAthleteSlots(cc.ClubId);
-            if (slots.AvailableSlots == 0)
+            if (cc.RoleId == 20 && slots.AvailableSlots == 0)
             {
                 return await Task.FromResult(new KeyValuePair<bool, string>(false, "Code_ClubFull"));
             }

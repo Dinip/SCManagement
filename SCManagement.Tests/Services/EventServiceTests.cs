@@ -93,8 +93,6 @@ namespace SCManagement.Tests.Services
                 {
                     Id = 1,
                     ClubId = 1,
-                    Name = "Test Event 1",
-                    Details = "Test Event 1 Details",
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddDays(5),
                     IsPublic = true,
@@ -118,8 +116,6 @@ namespace SCManagement.Tests.Services
             {
                 Id = 2,
                 ClubId = 1,
-                Name = "Test Event 2",
-                Details = "Test Event 2 Details",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
@@ -140,8 +136,6 @@ namespace SCManagement.Tests.Services
             {
                 Id = 3,
                 ClubId = 1,
-                Name = "Test Event 3",
-                Details = "Test Event 3 Details",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
@@ -168,18 +162,6 @@ namespace SCManagement.Tests.Services
         }
 
         [Fact]
-        public async Task EventService_GetPublicEvents_ReturnsSuccess()
-        {
-            // Arrange
-
-            // Act
-            var result = await _eventService.GetPublicEvents();
-
-            // Assert
-            result.Should().BeOfType<List<Event>>().And.NotBeNull();
-        }
-
-        [Fact]
         public async Task EventService_GetClubEvents_ReturnsSuccess()
         {
             // Arrange
@@ -199,8 +181,6 @@ namespace SCManagement.Tests.Services
             {
                 Id = 4,
                 ClubId = 1,
-                Name = "Test Event 4",
-                Details = "Test Event 4 Details",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
@@ -209,14 +189,10 @@ namespace SCManagement.Tests.Services
             // Act
             await _eventService.CreateEvent(e);
             
-            e.Name = "Test Event 4 Updated";
-            e.Details = "Test Event 4 Details Updated";
-            
             var result = await _eventService.UpdateEvent(e);
 
             // Assert
             result.Should().BeOfType<Event>().And.NotBeNull();
-            _context.Event.Where(x => x.Id == 4).FirstOrDefault().Name.Should().Be("Test Event 4 Updated");
         }
 
         [Fact]
@@ -270,5 +246,52 @@ namespace SCManagement.Tests.Services
             _context.EventEnroll.Should().NotContain(e);
         }
 
+        [Fact]
+        public async Task EventService_GetNumberOfEnrolls_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.GetNumberOfEnrolls(1);
+
+            // Assert
+            result.Should().Be(0);
+        }
+
+        [Fact]
+        public async Task EventService_GetEnrolls_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.GetEnrolls(1);
+
+            // Assert
+            result.Should().BeOfType<List<EventEnroll>>();
+        }
+
+        [Fact]
+        public async Task EventService_GetEvents_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.GetEvents("Test 1");
+
+            // Assert
+            result.Should().BeOfType<List<Event>>();
+        }
+
+        [Fact]
+        public async Task EventService_GetEvents_ReturnsUserIdNull()
+        {
+            // Arrange
+            
+            // Act
+            var result = await _eventService.GetEvents(null);
+
+            // Assert
+            result.Should().BeOfType<List<Event>>();
+        }
     }
 }

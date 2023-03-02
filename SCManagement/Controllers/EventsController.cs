@@ -481,7 +481,7 @@ namespace SCManagement.Controllers
         {
             var ev = await _eventService.GetEvent(id);
 
-            if (ev == null) View("CustomError", "Error_NotFound");
+            if (ev == null) return View("CustomError", "Error_NotFound");
             if (ev.Route == null) return View("CustomError", "Error_NotFound");
             return View(ev);
         }
