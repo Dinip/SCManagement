@@ -7,21 +7,21 @@
 
 <div class="text-center" style="margin-top:15%;">
     <h1 class="display-4 mb-5 text-to-dark">@StringLocalizer["Welcomeclub"] @Model.Name</h1>
+    @if (ViewBag.RoleId >= 40)
+    {
+        <div>
+            <h2 style="color:red">@StringLocalizer["ClubUnavailableTitle"] @StringLocalizer[Model.Status.ToString()].</h2>
+            <p>@StringLocalizer["ClubUnavailableDescriptionPrivate"]</p>
+        </div>
+    }
+    else
+    {
+        <div>
+            <h2 style="color:red">
+                @StringLocalizer["ClubUnavailableTitle"] @StringLocalizer["Unavailable"].Value.ToLower().
+            </h2>
+            <p>@StringLocalizer["ClubUnavailableDescriptionPublic"]</p>
+        </div>
+    }
 </div>
 
-@if (ViewBag.RoleId >= 40)
-{
-    <div>
-        <h2>@StringLocalizer["ClubUnavailableTitle"] @StringLocalizer[Model.Status.ToString()].</h2>
-        <p>@StringLocalizer["ClubUnavailableDescriptionPrivate"]</p>
-    </div>
-}
-else
-{
-    <div>
-        <h2>
-            @StringLocalizer["ClubUnavailableTitle"] @StringLocalizer["Unavailable"].Value.ToLower().
-        </h2>
-        <p>@StringLocalizer["ClubUnavailableDescriptionPublic"]</p>
-    </div>
-}

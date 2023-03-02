@@ -6,55 +6,81 @@
     ViewData["Title"] = "PaymentSettings";
 }
 
-<h1>ClubPaymentSettings</h1>
+<style>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <div id="callback"></div>
+    .form-floating{
+        margin-top: 10px;
+    }
 
-        <form asp-action="PaymentSettings">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="ClubPaymentSettingsId" />
-            <div class="form-group">
-                <label asp-for="AccountId" class="control-label"></label>
-                <input asp-for="AccountId" class="form-control" />
-                <span asp-validation-for="AccountId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AccountKey" class="control-label"></label>
-                <input asp-for="AccountKey" class="form-control" />
-                <span asp-validation-for="AccountKey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuotaFrequency" class="control-label"></label>
-                <select asp-for="QuotaFrequency" class="form-control" asp-items="ViewBag.Frequency"></select>
-                <span asp-validation-for="QuotaFrequency" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="QuotaFee" class="control-label"></label>
-                <input type="number" step="0.01" asp-for="QuotaFee" class="form-control" />
-                <span asp-validation-for="QuotaFee" class="text-danger"></span>
-            </div>
+    .inputgroup{
+        margin-left:0;
+    }
 
-            <div>
-                @HtmlLocalizer["Disclaimer_ClubePayments"]
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
-        @if (!string.IsNullOrEmpty(ViewBag.Error))
-        {
-            <div style="color:red;">@StringLocalizer[ViewBag.Error]</div>
+    @@media only screen and (max-width: 768px) {
+        .form-control {
+            width:100% !important;
         }
+    }
+    
+</style>
+
+<div class="container">
+    <h1 class="text-to-dark ms-4" style="margin-top:130px !important">Payment Settings</h1>
+
+    <hr />
+    <div class="card">
+        <div class="card-body p-4" style="margin-top: 0 !important;">
+            <div id="callback" class="text-to-dark"></div>
+            <a href="https://scribehow.com/shared/Setting_Up_SCManagement_Webhooks_in_EasyPay__avj8EiSHTQKFHYjZJtszAw" target="_blank">How to configure your easyPay?</a>
+            <form asp-action="PaymentSettings">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ClubPaymentSettingsId" />
+                <div class="form-floating col-md-12">
+                    <input asp-for="AccountId" class="form-control" />
+                    <label asp-for="AccountId" class="control-label"></label>
+                    <span asp-validation-for="AccountId" class="text-danger"></span>
+                </div>
+                <div class="form-floating col-md-12">
+                    <input asp-for="AccountKey" class="form-control" />
+                    <label asp-for="AccountKey" class="control-label"></label>
+                    <span asp-validation-for="AccountKey" class="text-danger"></span>
+                </div>
+                <div class="col-md-12 d-md-flex">
+                    <div class="form-floating col-md-4 col-12">
+                        <select asp-for="QuotaFrequency" class="form-control" asp-items="ViewBag.Frequency"></select>
+                        <label asp-for="QuotaFrequency" class="control-label"></label>
+                        <span asp-validation-for="QuotaFrequency" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating col-md-2 ms-md-2 col-12">
+                        <input type="number" step="0.01" asp-for="QuotaFee" class="form-control w-auto" />
+                        <label asp-for="QuotaFee" class="control-label"></label>
+                        <span asp-validation-for="QuotaFee" class="text-danger"></span>
+                    </div>
+                </div>
+               
+                
+
+                <div class="text-to-dark mt-3">
+                    *@HtmlLocalizer["Disclaimer_ClubePayments"]
+                </div>
+
+                <div class="form-group mt-3">
+                    <input type="submit" value="Save" class="btn btn-primary" style="border-radius: 10px;
+                                                                                float:right;
+                                                                                padding: 5px 25px 5px 25px;
+                                                                                background-color: #00639A;
+                                                                                border-color: #00639A;" />
+                </div>
+            </form>
+            @if (!string.IsNullOrEmpty(ViewBag.Error))
+            {
+                <div style="color:red;">@StringLocalizer[ViewBag.Error]</div>
+            }
+        </div>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 <script>
     window.onload = () => {

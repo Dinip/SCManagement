@@ -34,6 +34,7 @@
         background-color: #00639A;
         border: 1px solid black;
     }
+    
 </style>
 
 
@@ -110,6 +111,7 @@
                     <select required multiple asp-for="ModalitiesIds" class="form-control chosen-select col-md-10 row" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>
+
                 <hr style="margin-bottom:20px;" />
                 <div class="row form-floating" style="margin-bottom:20px;">
                     <input asp-for="Email" class="form-control" />
@@ -128,11 +130,11 @@
                 {
                     <span>@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
                 }
-
-                <div class="row form-floating" style="margin-bottom:20px;">
-                    <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="MyClub" asp-action="NewAddress">!!!Novo Endereço!!!</a>
-
-                </div>
+                <a asp-controller ="MyClub" asp-action="NewAddress">
+                    <i class="fa-solid fa-lg fa-pen-to-square text-to-dark ms-3" style="cursor:pointer;" ></i>
+                </a>
+                
+                
                 <hr style="margin-bottom:20px;" />
                 <div class="row form-floating">
                     <input type="submit" value=@StringLocalizer["Save"] class="btn btn-primary mt-2 w-100" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
