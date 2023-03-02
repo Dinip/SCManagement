@@ -155,7 +155,7 @@ namespace SCManagement.Controllers
         /// <returns>View Index</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,ClubTranslationsAbout,ClubTranslationsTerms,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
+        public async Task<IActionResult> Edit([Bind("Id,Name,Email,PhoneNumber,AddressString,ClubTranslationsAbout,ClubTranslationsTerms,CreationDate,File,RemoveImage,ModalitiesIds")] EditModel club)
         {
             //check model state
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
@@ -178,6 +178,22 @@ namespace SCManagement.Controllers
             if (actualClub == null) return View("CustomError", "Error_NotFound");
 
             await _clubService.UpdateClubModalities(actualClub, club.ModalitiesIds!);
+
+            if (club.AddressString != null) {
+                Address newLocation = JsonConvert.DeserializeObject<Address>(club.AddressString);
+
+                if (actualClub.AddressId != null)
+                {
+                    // update Address
+                    await _clubService.UpdateClubAddress(newLocation, (int)actualClub.AddressId);
+                }
+                else
+                {
+                    //create address
+                    await _clubService.CreateAddress(newLocation, actualClub.Id);
+                }
+                
+            }
 
             //updates to the settings of club
             actualClub.Name = club.Name;
@@ -233,6 +249,8 @@ namespace SCManagement.Controllers
             public int? PhotographyId { get; set; }
 
             public BlobDto? Photography { get; set; }
+
+            public string? AddressString { get; set; }
 
             public Address? Address { get; set; }
 
@@ -826,54 +844,6 @@ namespace SCManagement.Controllers
             if (userRoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
             return PartialView("_PartialUserDetails", user);
-        }
-
-        /// <summary>
-        /// Return a view
-        /// </summary>
-        /// <returns></returns>
-        public IActionResult NewAddress()
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// Allow to create a address to the club or update
-        /// </summary>
-        /// <param name="CoordinateX"></param>
-        /// <param name="CoordinateY"></param>
-        /// <param name="ZipCode"></param>
-        /// <param name="Street"></param>
-        /// <param name="City"></param>
-        /// <param name="District"></param>
-        /// <param name="Country"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public async Task<IActionResult> ReceiveAddress(Address address)
-        {
-            //get the user selected role
-            UsersRoleClub role = _applicationContextService.UserRole;
-
-            //check if the user is a admin of the club
-            if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
-
-            //get the club
-            var club = await _clubService.GetClub(role.ClubId);
-
-            if (club == null) return View("CustomError", "Error_NotFound");
-
-            var clubAddresId = club.AddressId;
-
-            if (clubAddresId != null)
-            {
-                // update Address
-                await _clubService.UpdateClubAddress(address, (int)clubAddresId);
-                return Json(new { url = "/MyClub/Edit" });
-            }
-
-            //create address
-            await _clubService.CreateAddress(address, club.Id);
-            return Json(new { url = "/MyClub/Edit" });
         }
 
         public async Task<IActionResult> PaymentSettings()

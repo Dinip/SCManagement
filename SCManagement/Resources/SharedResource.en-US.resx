@@ -1236,4 +1236,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>The total distance is:</value>
     <comment>01-03-2023_ShowPathMapBox</comment>
   </data>
+  <data name="NewAddress" xml:space="preserve">
+    <value>New Address</value>
+    <comment>02-03-2023_SearchMapBox</comment>
+  </data>
 </root>

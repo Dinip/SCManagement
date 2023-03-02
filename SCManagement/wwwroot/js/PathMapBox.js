@@ -362,7 +362,7 @@ function errorMessage(codeMessage) {
 
 
 async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=address&access_token=${accessToken}`;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?ypes=poi,address,region,district,place,country&access_token=${accessToken}`;
 
     try {
         const response = await fetch(url);
@@ -371,6 +371,9 @@ async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken
         addressByPath.value = address;
     } catch (error) {
         errorMessage("Other")
+        removeRoute();
+        draw.deleteAll();
+        return;
     }
 }
 
