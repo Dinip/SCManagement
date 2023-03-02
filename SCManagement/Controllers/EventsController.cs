@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
@@ -138,7 +139,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,Details,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath,Location")] EventModel myEvent)
         {
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (ModelState.IsValid)
@@ -157,6 +158,18 @@ namespace SCManagement.Controllers
 
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
+
+                Address newLocation = null; 
+                //Create Location Address
+                if (myEvent.Location != null)
+                {
+                    Address location = JsonConvert.DeserializeObject<Address>(myEvent.Location);
+                    if(location!= null)
+                    {
+                        newLocation = await _eventService.CreateEventAddress(location);
+                    }
+                }
+
                 var createdEvent = await _eventService.CreateEvent(new Event
                 {
                     Id = myEvent.Id,
@@ -168,12 +181,13 @@ namespace SCManagement.Controllers
                     Fee = validKey ? myEvent.Fee : 0,
                     HaveRoute = myEvent.HaveRoute,
                     Route = myEvent.Route,
+                    LocationId = newLocation == null ? null : newLocation.Id,
                     EventResultType = myEvent.EventResultType,
                     EnrollLimitDate = myEvent.EnrollLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
                     ClubId = role.ClubId,
                     AddressByPath = myEvent.AddressByPath
-                });
+                }); ;
 
                 if (myEvent.Fee > 0)
                 {
@@ -222,6 +236,7 @@ namespace SCManagement.Controllers
             public int MaxEventEnrolls { get; set; }
             [Display(Name = "Event Location")]
             public string? AddressByPath { get; set; }
+            public string? Location { get; set; }
 
 
         }

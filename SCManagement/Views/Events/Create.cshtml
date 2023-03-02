@@ -56,11 +56,11 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form id="myForm" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
+                <label asp-for="Name" class="control-label" ></label>
+                <input asp-for="Name" class="form-control" id="txtName" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -80,36 +80,36 @@
             </div>
             <div class="form-group">
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
-                <input asp-for="EnrollLimitDate" class="form-control" />
+                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate"/>
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">
                 <label asp-for="Details" class="control-label"></label>
-                <textarea asp-for="Details" class="form-control"></textarea>
+                <textarea asp-for="Details" class="form-control" id="txtDetails"></textarea>
                 <span asp-validation-for="Details" class="text-danger"></span>
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsPublic" /> @Html.DisplayNameFor(model => model.IsPublic)
+                    <input class="form-check-input" asp-for="IsPublic" id="ckbIsPublic"/> @Html.DisplayNameFor(model => model.IsPublic)
                 </label>
             </div>
             <div class="form-group">
                 <label asp-for="Fee" class="control-label"></label>
-                <input type="number" step="0.01" min="0" asp-for="Fee" class="form-control" value="0" readonly="@(ViewBag.ValidKey == false)" />
+                <input type="number" step="0.01" min="0" asp-for="Fee" id="txtFee" class="form-control" value="0" readonly="@(ViewBag.ValidKey == false)" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
                 <span style="color: orange;">@(ViewBag.ValidKey == false ? StringLocalizer["Warning_InvalidKey"] : "")</span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>
-                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" class="form-control" value="0" />
+                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" value="0" />
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
 
 
              <div class="form-group">
                 <label asp-for="EventResultType" class="control-label"></label>
-                <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
+                <select asp-for="EventResultType" class="form-control" id="selectEventResultType" asp-items="ViewBag.EventResultType"></select>
                 <span asp-validation-for="EventResultType" class="text-danger"></span>
             </div>
 
@@ -125,20 +125,21 @@
             <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
             <input type="hidden" class="form-control" id="path" value="null" />
 
+            <input asp-for="Location" type="hidden" id="Location" />
+
             <br /> <br />
-            <div id="cardMapBox" style="display:none">
-            <div  class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px;">
-                <div class="card-body">
-                    <div id='map'></div>
-                    <div id="save">
-                        <button type="button" id="save-button">Save</button>
-                    </div>
-                </div>
+            <div id="cardMapBox">
+            <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px;">
+            <div class="card-body">
+            <div id='map'></div>
+            <div id="menu">
+            </div>
+            <div id="save">
+            <button type="button" id="save-button">Save</button>
             </div>
             </div>
-
-
-
+            </div>
+            </div>
 
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -157,9 +158,93 @@
     }
 }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="~/js/PathMapBox.js" asp-append-version="true"></script>
+
+<script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
+
 
 <script>
+    window.onload = function () {
+        SearchMapBoxConfig();
+
+            //document.getElementById("myForm").addEventListener("onSubmit", (event) => {
+            //    event.preventDefault();
+
+            //    var address = document.getElementById("AddressByPath");
+            //    var location = document.getElementById("Location");
+            //    console.log(address.value)
+            //    console.log(location.value)
+
+            //    var txtName = document.getElementById("txtName").value;
+            //    var startDate = document.getElementById("startDateTime").value;
+            //    var endDate = document.getElementById("endDateTime").value;
+            //    var enrollLimitDate = document.getElementById("EnrollLimitDate").value;
+            //    var txtDetails = document.getElementById("txtDetails").value;
+            //    var ckbIsPublic = document.getElementById("ckbIsPublic").value;
+            //    var txtFee = document.getElementById("txtFee").value;
+            //    var txtMaxEventEnrolls = document.getElementById("txtMaxEventEnrolls").value;
+            //    var selectEventResultType = document.getElementById("selectEventResultType").value;
+            //    var ckbHaveRoute = document.getElementById("ckbHaveRoute").value;
+            //    var Route = document.getElementById("ev").value;
+
+
+
+            //    if (address.value != null || location.value != null) {
+            //        console.log("entrou")
+            //        if (address.value != null) {
+            //            var myEvent = {
+            //                Name: txtName,
+            //                StartDate: startDate,
+            //                EndDate: endDate,
+            //                Details: txtDetails,
+            //                IsPublic: ckbIsPublic,
+            //                Fee: txtFee,
+            //                HaveRoute: ckbHaveRoute,
+            //                EnrollLimitDate: enrollLimitDate,
+            //                EventResultType: selectEventResultType,
+            //                MaxEventEnrolls: txtMaxEventEnrolls,
+            //                AddressByPath: address.value,
+            //                Route: Route,
+            //            }
+            //        }
+            //        else {
+            //            var myEvent = {
+            //                Name: txtName,
+            //                StartDate: startDate,
+            //                EndDate: endDate,
+            //                Details: txtDetails,
+            //                IsPublic: ckbIsPublic,
+            //                Fee: txtFee,
+            //                HaveRoute: ckbHaveRoute,
+            //                EnrollLimitDate: enrollLimitDate,
+            //                EventResultType: selectEventResultType,
+            //                MaxEventEnrolls: txtMaxEventEnrolls,
+            //                Location: location.value
+            //            }
+            //        }
+
+            //        //$.ajax({
+            //        //    type: 'POST',
+            //        //    url: '/Events/Create',
+            //        //    dataType: 'json',
+            //        //    data: {
+            //        //        myEvent: myEvent
+            //        //    },
+
+            //        //}).done(function (response) {
+            //        //    btn.disabled = true;
+            //        //    window.location.href = response.url;
+
+            //        //}).fail(function (jqXHR, textStatus, errorThrown) {
+            //        //    console.log("Erro: " + textStatus + ", " + errorThrown);
+            //        //    console.log("Resposta do servidor: " + jqXHR.responseText);
+            //        //});
+            //    } else {
+            //        alert("Prenche a localização")
+            //    }
+            //})
+    }
+
+
     function ApplySameDate() {
         var startDateTime = document.getElementById("startDateTime");
         var endDateTime = document.getElementById("endDateTime");
@@ -188,18 +273,20 @@
     }
 
         function ToggleMapBox(){
-            var mapBox = document.getElementById("cardMapBox");
+            var ckbHaveRoute = document.getElementById("ckbHaveRoute");
             var addressContainer = document.getElementById("AddressContainer");
 
-            if(mapBox.style.display == "none")
-            {
-                mapBox.style.display = "block";
-                addressContainer.style.display = "block";
+            if (ckbHaveRoute.checked) {
+                document.getElementById("ev").value = null;
+                document.getElementById("AddressByPath").value = null;
+                document.getElementById("map").innerHTML = "";
+                PathMapBoxConfig();
             }
             else 
             {
-                mapBox.style.display = "none";
-                addressContainer.style.display = "none";
+                document.getElementById("ev").value = null;
+                document.getElementById("AddressByPath").value = null;
+                SearchMapBoxConfig();
             }
         }
 </script>
