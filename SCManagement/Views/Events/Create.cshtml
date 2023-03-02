@@ -66,12 +66,14 @@
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
                 <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <span asp-validation-for="StartDate" class="text-danger" id="spanStartDate"></span>
+                <span class="text-danger" id="spanStartDateError" style="display:none">Essa data não é permitida</span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
                 <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
+                <span class="text-danger" id="spanEndDateError" style="display:none">Essa data não é permitida</span>
             </div>
             <div class="form-group">
                 <label class="control-label">Evento de 1 dia</label>
@@ -80,8 +82,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
-                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate"/>
+                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" onchange="CheckLimitEnrollDate()"/>
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
+                <span class="text-danger" id="spanLimiteEnrollError" style="display:none">O limite de inscrição não pode exceder a data de inicio do evento</span>
             </div>
 
             <div class="form-group">
@@ -173,12 +176,15 @@
         var startDateTime = document.getElementById("startDateTime");
         var endDateTime = document.getElementById("endDateTime");
         var sameDay = document.getElementById("SameDay");
+            var spanEndError = document.getElementById("spanEndDateError")
         if (startDateTime.value != "") {
             if (startDateTime.value == endDateTime.value) {
                 sameDay.checked = true;
+                spanEndError.style.display = "none";
             } else {
                 endDateTime.value = startDateTime.value;
                 sameDay.checked = true;
+                    spanEndError.style.display = "none";
             }
         } else {
             sameDay.checked = false;
@@ -189,16 +195,42 @@
         var startDateTime = document.getElementById("startDateTime");
         var endDateTime = document.getElementById("endDateTime");
         var sameDay = document.getElementById("SameDay");
-        if (startDateTime.value == endDateTime.value) {
-            sameDay.checked = true;
-        } else {
-            sameDay.checked = false;
-        }
+            
+            var spanStartError = document.getElementById("spanStartDateError")
+            var spanEndError = document.getElementById("spanEndDateError")
+            var dateNow = new Date();
+            var checkStartDate = new Date(startDateTime.value)
+            var checkEndDate = new Date(endDateTime.value)
+
+            if (startDateTime.value == endDateTime.value) {
+                sameDay.checked = true;
+            } else {
+                sameDay.checked = false;
+            }
+
+            if (checkStartDate < dateNow) {
+                spanStartError.style.display = "block";
+                startDateTime.value = dateNow;
+                return;
+            }else{
+                spanStartError.style.display = "none";
+            }
+
+            if(checkEndDate < checkStartDate){
+                spanEndError.style.display = "block";
+                endDateTime.value = dateNow;
+                return;
+            } else {
+                spanEndError.style.display = "none";
+            }
+        
+
     }
 
         function ToggleMapBox(){
             var ckbHaveRoute = document.getElementById("ckbHaveRoute");
             var addressContainer = document.getElementById("AddressContainer");
+            document.getElementById("save-button").classList.remove("d-none");
 
             if (ckbHaveRoute.checked) {
                 document.getElementById("ev").value = null;
@@ -213,4 +245,23 @@
                 SearchMapBoxConfig();
             }
         }
+
+        function CheckLimitEnrollDate() {
+            var startDateTime = document.getElementById("startDateTime");
+            var EnrollLimitDate = document.getElementById("EnrollLimitDate");
+            var spanLimiteEnrollError = document.getElementById("spanLimiteEnrollError");
+
+            var startDate = new Date(startDateTime.value);
+            var enrollDate = new Date(EnrollLimitDate.value);
+
+            if(enrollDate > startDate){
+                spanLimiteEnrollError.style.display = "block"
+                EnrollLimitDate.value = new Date();
+            }else
+            {
+                spanLimiteEnrollError.style.display = "none"
+            }
+
+
+         }
 </script>
