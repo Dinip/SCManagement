@@ -170,6 +170,10 @@ namespace SCManagement.Controllers
                     }
                 }
 
+                if(myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now) {
+                    return View("CustomError", "Error_InvalidInput");
+                }
+
                 var createdEvent = await _eventService.CreateEvent(new Event
                 {
                     Id = myEvent.Id,
@@ -304,6 +308,12 @@ namespace SCManagement.Controllers
 
             if (ModelState.IsValid)
             {
+
+
+                if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
+                {
+                    return View("CustomError", "Error_InvalidInput");
+                }
                 //check if user is staff of the club that owns the event
                 var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
                 if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
