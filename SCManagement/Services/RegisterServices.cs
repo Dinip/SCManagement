@@ -143,10 +143,25 @@ namespace SCManagement.Services
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
 
+            //daily checker @ 1 min past midnight
             services.AddCronJob<DailySubscriptionChecker>(c =>
             {
                 c.TimeZoneInfo = TimeZoneInfo.Utc;
-                c.CronExpression = @"*/1 * * * *";
+                c.CronExpression = @"1 0 * * *";
+            });
+
+            // daily suspender @ 10 min past midnight
+            services.AddCronJob<DailySubscriptionSuspender>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Utc;
+                c.CronExpression = @"10 0 * * *";
+            });
+
+            //hourly checker and remover @ 5 min of that hour
+            services.AddCronJob<HourlyEventCheckerRemover>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Utc;
+                c.CronExpression = @"5 * * * *";
             });
         }
     }

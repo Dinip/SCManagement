@@ -2,24 +2,22 @@
 using SCManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
-using Newtonsoft.Json.Linq;
-using SCManagement.Models;
 
 namespace SCManagement.Services.CronJobService
 {
     public class DailySubscriptionChecker : CronJobService
     {
         private readonly ILogger<DailySubscriptionChecker> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly IServiceProvider _serviceProvider;
 
         public DailySubscriptionChecker(
             IScheduleConfig<DailySubscriptionChecker> config,
             ILogger<DailySubscriptionChecker> logger,
-            ApplicationDbContext context
+            IServiceProvider serviceProvider
             ) : base(config.CronExpression, config.TimeZoneInfo)
         {
             _logger = logger;
-            _context = context;
+            _serviceProvider = serviceProvider;
         }
 
         public override Task StartAsync(CancellationToken cancellationToken)
@@ -31,7 +29,9 @@ namespace SCManagement.Services.CronJobService
         public override async Task DoWork(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{DateTime.Now:hh:mm:ss} daily subscription checker working...");
-
+            using var scope = _serviceProvider.CreateScope();
+            var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            
             //get all subs that renew today but aren't expected
             //to end today (canceled subs)
             var subs = await _context.Subscription
