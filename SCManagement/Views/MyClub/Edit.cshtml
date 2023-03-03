@@ -157,9 +157,10 @@
                 @if (Model.Address != null)
                 {
                     <span>@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
-                    <input id="coordX" type="hidden" disabled value="@Model.Address.CoordinateX"></input>
-                    <input id="coordY" type="hidden" disabled value="@Model.Address.CoordinateY"></input>
                 }
+
+                <input id="coordX" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateX : "")"></input>
+                <input id="coordY" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateY : "")"></input>
 
                 @*<a asp-controller ="MyClub" asp-action="NewAddress">
                 <i class="fa-solid fa-lg fa-pen-to-square text-to-dark ms-3" style="cursor:pointer;" ></i>

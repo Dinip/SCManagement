@@ -5,13 +5,18 @@ const layerList = document.getElementById('menu');
 const inputs = layerList.getElementsByTagName('input');
 const addressElement = document.getElementById('address');
 const newAd = document.getElementById('NewAd');
-const coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
-const coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
+let coordX = document.getElementById('coordX').value;
+let coordY = document.getElementById('coordY').value;
 
 let marker;
 let map;
 
-if (coordX != null && coordY != null) {
+if (coordX != "" && coordY != "") {
+    coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
+    coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
+
+    console.log(coordX)
+    console.log(coordY)
     map = new mapboxgl.Map({
         container: 'map', // Specify the container ID
         style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
@@ -53,33 +58,41 @@ map.on('load', () => {
     // makes a selection
     geocoder.on('result', (event) => {
         address = event.result;
-        marker.remove();
+        if (coordX != "" && coordY != "") {
+            marker.remove();
+        }
     });
 });
 
 const btnSave = document.getElementById('save-button');
 
 btnSave.onclick = function () {
-    if (address != null) {
-        let { text, geometry, context } = address;
-        let addressCode = context[0].text;
-        let city = context[1].text;
-        let district = context[2].text;
-        let country = context[3].text;
-        let coord = geometry.coordinates;
+    try {
+        if (address != null) {
+            console.log(address)
+            let { text, geometry, context } = address;
+            let addressCode = context[0].text;
+            let city = context[1].text;
+            let district = context[2].text;
+            let country = context[3].text;
+            let coord = geometry.coordinates;
 
-        addressElement.value = JSON.stringify({
-            CoordinateY: coord[1],
-            CoordinateX: coord[0],
-            ZipCode: addressCode,
-            Street: text,
-            City: city,
-            District: district,
-            Country: country,
-        })
-        newAd.innerHTML = strings.newAddress + ": " + text + "," + addressCode + "," + city + "," + district + "," + country
+            addressElement.value = JSON.stringify({
+                CoordinateY: coord[1],
+                CoordinateX: coord[0],
+                ZipCode: addressCode,
+                Street: text,
+                City: city,
+                District: district,
+                Country: country,
+            })
+            newAd.innerHTML = strings.newAddress + ": " + text + "," + addressCode + "," + city + "," + district + "," + country
+        }
 
+    } catch (error) {
+        console.log("Erro")
     }
+
 }
 
 
