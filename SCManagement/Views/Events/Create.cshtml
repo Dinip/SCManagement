@@ -91,6 +91,7 @@
                 <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" onchange="CheckLimitEnrollDate()" />
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
                 <span class="text-danger" id="spanLimiteEnrollError" style="display:none">O limite de inscrição não pode exceder a data de inicio do evento</span>
+                <span class="text-danger" id="spanLimiteEnrollError2" style="display:none">Essa data não é permitida</span>
             </div>
             <div class="form-group">
                 <label class="control-label">Evento de 1 dia</label>
@@ -326,15 +327,26 @@
         let startDateTime = document.getElementById("startDateTime");
         let EnrollLimitDate = document.getElementById("EnrollLimitDate");
         let spanLimiteEnrollError = document.getElementById("spanLimiteEnrollError");
+            let spanLimiteEnrollError2 = document.getElementById("spanLimiteEnrollError2");
 
+            let dateNow = new Date();
         let startDate = new Date(startDateTime.value);
         let enrollDate = new Date(EnrollLimitDate.value);
 
+
+
         if (enrollDate > startDate) {
             spanLimiteEnrollError.style.display = "block"
+                spanLimiteEnrollError2.style.display = "none"
             EnrollLimitDate.value = new Date();
-        } else {
-            spanLimiteEnrollError.style.display = "none"
-        }
+            } else if (enrollDate < dateNow) {
+                spanLimiteEnrollError2.style.display = "block"
+                spanLimiteEnrollError.style.display = "none"
+                EnrollLimitDate.value = new Date();
+            }
+            else {
+                spanLimiteEnrollError.style.display = "none"
+                spanLimiteEnrollError2.style.display = "none"
+            }
     }
 </script>

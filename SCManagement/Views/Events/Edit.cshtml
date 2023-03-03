@@ -320,15 +320,19 @@
         let enrollDate = new Date(EnrollLimitDate.value);
         let dateNow = new Date();
 
+
         if (enrollDate > startDate) {
             spanLimiteEnrollError.style.display = "block"
+            spanLimiteEnrollError2.style.display = "none"
             EnrollLimitDate.value = new Date();
         } else if (enrollDate < dateNow) {
-            spanLimiteEnrollError.style.display = "block"
+            spanLimiteEnrollError2.style.display = "block"
+            spanLimiteEnrollError.style.display = "none"
             EnrollLimitDate.value = new Date();
         }
         else {
             spanLimiteEnrollError.style.display = "none"
+            spanLimiteEnrollError2.style.display = "none"
         }
     }
 </script>
