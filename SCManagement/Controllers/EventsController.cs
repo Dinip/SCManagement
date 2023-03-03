@@ -1,8 +1,12 @@
-﻿using System.Data;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Data;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.EventService;
@@ -158,11 +162,10 @@ namespace SCManagement.Controllers
         }
 
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Name,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Create([Bind("Id,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath,LocationString")] EventModel myEvent)
         {
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (ModelState.IsValid)
@@ -175,15 +178,32 @@ namespace SCManagement.Controllers
 
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
+
+                Address newLocation = null;
+                //Create Location Address
+                if (myEvent.LocationString != null)
+                {
+                    Address location = JsonConvert.DeserializeObject<Address>(myEvent.LocationString);
+                    if (location != null)
+                    {
+                        newLocation = await _eventService.CreateEventAddress(location);
+                    }
+                }
+
+                if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
+                {
+                    return View("CustomError", "Error_InvalidInput");
+                }
+
                 var createdEvent = await _eventService.CreateEvent(new Event
                 {
-                    Id = myEvent.Id,
                     StartDate = myEvent.StartDate,
                     EndDate = myEvent.EndDate,
                     IsPublic = myEvent.IsPublic,
                     Fee = validKey ? myEvent.Fee : 0,
                     HaveRoute = myEvent.HaveRoute,
                     Route = myEvent.Route,
+                    LocationId = newLocation == null ? null : newLocation.Id,
                     EventResultType = myEvent.EventResultType,
                     EnrollLimitDate = myEvent.EnrollLimitDate,
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
@@ -198,8 +218,6 @@ namespace SCManagement.Controllers
                 var translations = new List<EventTranslations>(myEvent.EventTranslationsName);
                 translations.AddRange(myEvent.EventTranslationsDetails);
                 createdEvent.EventTranslations = translations;
-
-                await _eventService.CreateEvent(createdEvent);
 
                 if (myEvent.Fee > 0)
                 {
@@ -222,18 +240,32 @@ namespace SCManagement.Controllers
         public class EventModel
         {
             public int Id { get; set; }
+            [Display(Name = "Start Date")]
             public DateTime StartDate { get; set; }
+            [Display(Name = "End Date")]
             public DateTime EndDate { get; set; }
+            [Display(Name = "Enroll Limit Date")]
             public DateTime EnrollLimitDate { get; set; }
             public ICollection<EventTranslations>? EventTranslationsName { get; set; }
             public ICollection<EventTranslations>? EventTranslationsDetails { get; set; }
+            [Display(Name = "Public Event")]
             public bool IsPublic { get; set; }
+            [Display(Name = "Fee")]
             public float Fee { get; set; }
+            [Display(Name = "Event Have Route")]
             public bool HaveRoute { get; set; }
             public string? Route { get; set; }
+
             public ResultType EventResultType { get; set; }
+            [Display(Name = "Max Enrolls")]
+            [Range(1, int.MaxValue, ErrorMessage = "Please enter a value between 1 and 214783647")]
             public int MaxEventEnrolls { get; set; }
+            [Display(Name = "Event Location")]
             public string? AddressByPath { get; set; }
+            public string? LocationString { get; set; }
+            public int? LocationId { get; set; }
+            public Address? Location { get; set; }
+
 
 
         }
@@ -263,27 +295,29 @@ namespace SCManagement.Controllers
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
 
+
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
 
-            var eve = new EventModel()
+            EventModel eventToEdit = new EventModel
             {
                 StartDate = myEvent.StartDate,
                 EndDate = myEvent.EndDate,
+                EnrollLimitDate = myEvent.EnrollLimitDate,
                 IsPublic = myEvent.IsPublic,
                 Fee = myEvent.Fee,
                 HaveRoute = myEvent.HaveRoute,
                 Route = myEvent.Route,
                 EventResultType = myEvent.EventResultType,
-                EnrollLimitDate = myEvent.EnrollLimitDate,
                 MaxEventEnrolls = myEvent.MaxEventEnrolls,
                 AddressByPath = myEvent.AddressByPath,
                 EventTranslationsName = myEvent.EventTranslations.Where(e => e.Atribute == "Name").ToList(),
                 EventTranslationsDetails = myEvent.EventTranslations.Where(e => e.Atribute == "Details").ToList(),
+                Location = myEvent.Location,
+                LocationId = myEvent.LocationId
             };
 
-            return View(eve);
-
+            return View(eventToEdit);
         }
 
         private async Task UpdateTranslations(ICollection<EventTranslations> eventTranslations, Event actualEvent)
@@ -306,7 +340,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath,LocationString")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -325,13 +359,52 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_Unauthorized");
                 }
 
+                if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
+                {
+                    return View("CustomError", "Error_InvalidInput");
+                }
+
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
+
+                //Quando o eventToUpdate ja tiver uma localização e o myEvent tiver um addressByPath ele vai meter a localização a null e guardar o address
+                if (eventToUpdate.LocationId != null && myEvent.Route != null)
+                {
+                    await _eventService.RemoveEventAddress(eventToUpdate);
+                    eventToUpdate.LocationId = null;
+                    eventToUpdate.Location = null;
+                }
+                else
+                {
+
+                    Address newLocation = null;
+                    Address location = null;
+                    if (myEvent.LocationString != null)
+                    {
+                        location = JsonConvert.DeserializeObject<Address>(myEvent.LocationString);
+                    }
+
+                    if (eventToUpdate.LocationId != null && location != null)
+                    {
+                        //Update Location Address
+                        newLocation = await _eventService.UpdateEventAddress((int)eventToUpdate.LocationId, location);
+                    }
+                    else
+                    {
+                        //Create Location Address
+                        if (location != null)
+                        {
+                            newLocation = await _eventService.CreateEventAddress(location);
+                            eventToUpdate.LocationId = newLocation == null ? null : newLocation.Id;
+
+                        }
+                    }
+                }
 
                 eventToUpdate.StartDate = myEvent.StartDate;
                 eventToUpdate.EndDate = myEvent.EndDate;
                 eventToUpdate.IsPublic = myEvent.IsPublic;
                 eventToUpdate.Fee = validKey ? myEvent.Fee : 0;
-                eventToUpdate.HaveRoute = myEvent.HaveRoute;
+                eventToUpdate.HaveRoute = myEvent.AddressByPath != null;
                 eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
@@ -383,6 +456,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_Unauthorized");
             }
 
+            await _eventService.RemoveEventAddress(myEvent);
             await _eventService.DeleteEvent(myEvent);
 
             return RedirectToAction(nameof(Index));
@@ -484,6 +558,56 @@ namespace SCManagement.Controllers
             if (ev == null) View("CustomError", "Error_NotFound");
             if (ev.Route == null) return View("CustomError", "Error_NotFound");
             return View(ev);
+        }
+
+
+        [Authorize]
+        public async Task<IActionResult> UpdateEventLocation(int id)
+        {
+            var myEvent = await _eventService.GetEvent(id);
+            if (myEvent == null) return NotFound();
+
+
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+            if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
+            {
+                return View("CustomError", "Error_Unauthorized");
+            }
+
+            return View(myEvent);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> UpdateLocation(int eventId, Address address)
+        {
+            var userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+            if (role == null)
+                return View("CustomError", "Error_Unauthorized");
+
+            var myEvent = await _eventService.GetEvent(eventId);
+            if (myEvent == null) return NotFound();
+
+            if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
+                return View("CustomError", "Error_Unauthorized");
+
+            if (myEvent.LocationId == null)
+            {
+                var newAddress = await _eventService.CreateEventAddress(address);
+                myEvent.LocationId = newAddress.Id;
+                myEvent.AddressByPath = null;
+                myEvent.Route = null;
+                myEvent.HaveRoute = false;
+                await _eventService.UpdateEvent(myEvent);
+            }
+            else
+            {
+                await _eventService.UpdateEventAddress((int)myEvent.LocationId, address);
+            }
+
+            return Json(new { url = "/Events/Edit/" + myEvent.Id });
         }
 
     }

@@ -30,9 +30,13 @@ namespace SCManagement.Services.EventService
 
         public async Task<Event?> GetEvent(int eventId)
         {
-            return await _context.Event.Include(e => e.Club).Include(e => e.EventTranslations).FirstOrDefaultAsync(e => e.Id == eventId);
+            return await _context.Event
+                .Include(e => e.Club)
+                .Include(e => e.EventTranslations)
+                .Include(e => e.Location)
+                .FirstOrDefaultAsync(e => e.Id == eventId);
         }
-        
+
         public async Task<IEnumerable<Event>> GetEvents(string? userId)
         {
             string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
@@ -78,27 +82,6 @@ namespace SCManagement.Services.EventService
             }
         }
 
-        public async Task<IEnumerable<Event>> GetClubEvents(int clubId)
-        {
-            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
-            
-            return await _context.Event
-                .Where(e => e.ClubId == clubId && e.IsPublic == false)
-                .Include(e => e.Club)
-                .Include(e => e.EventTranslations)
-                .Select(e =>
-                new Event
-                {
-                    Id = e.Id,
-                    ClubId = e.ClubId,
-                    Club = e.Club,
-                    EventTranslations = e.EventTranslations!.Where(et => et.Language == cultureInfo).ToList(),
-                    IsPublic = e.IsPublic,
-                    StartDate = e.StartDate,
-                    EndDate = e.EndDate,
-                }).ToListAsync();
-        }
-
         public async Task<Event> UpdateEvent(Event myEvent)
         {
             _context.Event.Update(myEvent);
@@ -132,12 +115,43 @@ namespace SCManagement.Services.EventService
         {
             return await _context.EventEnroll.Where(e => e.EventId == eventId).Include(e => e.User).ToListAsync();
         }
+        public async Task<Address> CreateEventAddress(Address address)
+        {
+            _context.Address.Add(address);
+            await _context.SaveChangesAsync();
+            return address;
+        }
+        public async Task<Address> UpdateEventAddress(int locationId, Address address)
+        {
+            Address ad = _context.Address.Find(locationId);
+            ad.CoordinateX = address.CoordinateX;
+            ad.CoordinateY = address.CoordinateY;
+            ad.ZipCode = address.ZipCode;
+            ad.Street = address.Street;
+            ad.City = address.City;
+            ad.District = address.District;
+            ad.Country = address.Country;
+
+            _context.Address.Update(ad);
+            await _context.SaveChangesAsync();
+            return address;
+        }
+
+        public async Task RemoveEventAddress(Event myEvent)
+        {
+            {
+                Address ad = _context.Address.Find(myEvent.LocationId);
+
+                if (ad == null) return;
+
+                //myEvent.Location = null;
+                //myEvent.LocationId = null;
+                //_context.Event.Update(myEvent);
+
+                _context.Address.Remove(ad);
+                await _context.SaveChangesAsync();
+            }
+        }
 
     }
-    }
-    
-
-
-
-
-
+}

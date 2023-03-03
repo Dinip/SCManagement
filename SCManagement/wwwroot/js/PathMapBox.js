@@ -70,7 +70,7 @@ if (path.value !== 'null') {
 
 const btnSave = document.getElementById('save-button');
 const ev = document.getElementById("ev");
-const addressByPath = document.getElementById("AddressByPath");
+let addressByPath = document.getElementById("AddressByPath");
 const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
 
 let erMessage = "";

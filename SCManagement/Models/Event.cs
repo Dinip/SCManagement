@@ -29,7 +29,7 @@ namespace SCManagement.Models
         [Display(Name = "Event Location")]
         public Address? Location { get; set; }
 
-        [Display(Name = "Event Route")]
+        [Display(Name = "Event Have Route")]
         public bool HaveRoute { get; set; } = false;
 
         public string? Route { get; set; }
@@ -51,7 +51,7 @@ namespace SCManagement.Models
         public ResultType EventResultType { get; set; }
 
         public ICollection<EventResult>? Results { get; set; }
-
+        [Display(Name= "Event Location")]
         public string? AddressByPath { get; set; }
     }
 
