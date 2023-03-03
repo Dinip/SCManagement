@@ -1382,4 +1382,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Error_Registration_limit_Event" xml:space="preserve">
     <value>O limite de inscrição não pode exceder a data de inicio do evento</value>
   </data>
+  <data name="SearchError" xml:space="preserve">
+    <value>Certifique-se que esta a pesquisar um local que contenha uma rua, cidade, e distrito</value>
+    <comment>03-03-2023_SearchMapBox</comment>
+  </data>
 </root>

@@ -1246,4 +1246,8 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Error_Registration_limit_Event" xml:space="preserve">
     <value>The registration limit cannot exceed the start date of the event.</value>
   </data>
+  <data name="SearchError" xml:space="preserve">
+    <value>Make sure you are searching for a location that contains a street, city, and district.</value>
+    <comment>03-03-2023_SearchMapBox</comment>
+  </data>
 </root>

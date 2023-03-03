@@ -71,10 +71,10 @@ btnSave.onclick = function () {
         if (address != null) {
             console.log(address)
             let { text, geometry, context } = address;
-            let addressCode = context[0].text;
+            let addressCode = context.find(item => item.id.startsWith('postcode')).text;
             let city = context[1].text;
             let district = context[2].text;
-            let country = context[3].text;
+            let country = context.find(item => item.id.startsWith('country')).text;
             let coord = geometry.coordinates;
 
             addressElement.value = JSON.stringify({
@@ -90,7 +90,7 @@ btnSave.onclick = function () {
         }
 
     } catch (error) {
-        console.log("Erro")
+        alert(strings.searchError)
     }
 
 }

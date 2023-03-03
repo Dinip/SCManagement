@@ -32,7 +32,7 @@ var map;
 
 function flyToClub(coordX, coordY) {
     if (coordX != '' && coordY != '') {
-        map.flyTo({ center: [coordX, coordY], zoom: 14 });
+        map.flyTo({ center: [parseFloat((coordX).replace(',', '.')), parseFloat((coordY).replace(',', '.'))], zoom: 14 });
     }
 }
 
