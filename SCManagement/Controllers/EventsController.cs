@@ -618,7 +618,19 @@ namespace SCManagement.Controllers
             var events = await _eventService.GetEvents(userId);
             events.OrderBy(e => e.StartDate);
 
-            return Json(events);
+            //For each event create a new object but he go add name of the event in the object
+            var eventAux = events.Select(e => new
+            {
+                Id = e.Id,
+                Translate = e.EventTranslations.Where(et => et.Atribute == "Name").Select(e => e.Value).FirstOrDefault(),
+                StartDate = e.StartDate,
+                Fee = e.Fee,
+                MaxEventEnrolls = e.MaxEventEnrolls,
+                
+            });
+
+
+            return Json(eventAux);
         }
 
     }

@@ -137,12 +137,12 @@ function new_event() {
 
 // Adds a json event to event_data
 function new_event_json(paramEvent) {
-    let { id, startDate, eventTranslations } = paramEvent;
+    let { id, startDate, Translate } = paramEvent;
     let eventDate = new Date(startDate)
 
     var event = {
         "id": id,
-        "occasion": name,
+        "occasion": Translate,
         "invited_count": 5,
         "year": eventDate.getFullYear(),
         "month": eventDate.getMonth() + 1,
