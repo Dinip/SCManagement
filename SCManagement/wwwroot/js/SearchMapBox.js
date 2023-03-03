@@ -72,8 +72,8 @@ btnSave.onclick = function () {
             console.log(address)
             let { text, geometry, context } = address;
             let addressCode = context.find(item => item.id.startsWith('postcode')).text;
-            let city = context[1].text;
-            let district = context[2].text;
+            let city = context.find(item => item.id.startsWith('place')).text;
+            let district = context.find(item => item.id.startsWith('region')).text;
             let country = context.find(item => item.id.startsWith('country')).text;
             let coord = geometry.coordinates;
 
@@ -86,7 +86,7 @@ btnSave.onclick = function () {
                 District: district,
                 Country: country,
             })
-            newAd.innerHTML = strings.newAddress + ": " + text + "," + addressCode + "," + city + "," + district + "," + country
+            newAd.innerHTML = strings.newAddress + ": " + text + "," + addressCode + "," + city + "," + district + "," + country;
         }
 
     } catch (error) {
