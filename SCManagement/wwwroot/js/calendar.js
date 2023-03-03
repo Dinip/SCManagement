@@ -114,46 +114,7 @@ function prev_year(event) {
 
 // Event handler for clicking the new event button
 function new_event(event) {
-    // if a date isn't selected then do nothing
-    if ($(".active-date").length === 0)
-        return;
-    // remove red error input on click
-    $("input").click(function () {
-        $(this).removeClass("error-input");
-    })
-    // empty inputs and hide events
-    $("#dialog input[type=text]").val('');
-    $("#dialog input[type=number]").val('');
-    $(".events-container").hide(250);
-    $("#dialog").show(250);
-    // Event handler for cancel button
-    $("#cancel-button").click(function () {
-        $("#name").removeClass("error-input");
-        $("#count").removeClass("error-input");
-        $("#dialog").hide(250);
-        $(".events-container").show(250);
-    });
-    // Event handler for ok button
-    $("#ok-button").unbind().click({ date: event.data.date }, function () {
-        var date = event.data.date;
-        var name = $("#name").val().trim();
-        var count = parseInt($("#count").val().trim());
-        var day = parseInt($(".active-date").html());
-        // Basic form validation
-        if (name.length === 0) {
-            $("#name").addClass("error-input");
-        }
-        else if (isNaN(count)) {
-            $("#count").addClass("error-input");
-        }
-        else {
-            $("#dialog").hide(250);
-            console.log("new event");
-            new_event_json(name, count, date, day);
-            date.setDate(day);
-            init_calendar(date);
-        }
-    });
+    window.location.href = "/Events/Create"
 }
 
 // Adds a json event to event_data
