@@ -610,5 +610,16 @@ namespace SCManagement.Controllers
             return Json(new { url = "/Events/Edit/" + myEvent.Id });
         }
 
+        ///Events/GetAllEvents
+        public async Task<IActionResult> GetAllEvents()
+        {
+            var userId = getUserIdFromAuthedUser();
+
+            var events = await _eventService.GetEvents(userId);
+            events.OrderBy(e => e.StartDate);
+
+            return Json(events);
+        }
+
     }
 }

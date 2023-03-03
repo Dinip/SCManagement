@@ -2,16 +2,34 @@
 $(document).ready(function () {
     var date = new Date();
     var today = date.getDate();
-    // Set click handlers for DOM elements
-    $(".right-button").click({ date: date }, next_year);
-    $(".left-button").click({ date: date }, prev_year);
-    $(".month").click({ date: date }, month_click);
-    $("#add-button").click({ date: date }, new_event);
-    // Set current month as active
-    $(".months-row").children().eq(date.getMonth()).addClass("active-month");
-    init_calendar(date);
-    var events = check_events(today, date.getMonth() + 1, date.getFullYear());
-    show_events(events, months[date.getMonth()], today);
+    //Request to DB for all events
+    $.ajax({
+        type: 'GET',
+        url: '/Events/GetAllEvents',
+        dataType: 'json'
+    },
+    ).done(function (response) {
+        response.forEach((event) => {
+            new_event_json(event)
+        })
+
+        // Set click handlers for DOM elements
+        $(".right-button").click({ date: date }, next_year);
+        $(".left-button").click({ date: date }, prev_year);
+        $(".month").click({ date: date }, month_click);
+        $("#add-button").click({ date: date }, new_event);
+        // Set current month as active
+        $(".months-row").children().eq(date.getMonth()).addClass("active-month");
+        init_calendar(date);
+        var events = check_events(today, date.getMonth() + 1, date.getFullYear());
+        show_events(events, months[date.getMonth()], today);
+
+    }).fail(function (jqXHR, textStatus, errorThrown) {
+        console.log("Erro: " + textStatus + ", " + errorThrown);
+        console.log("Resposta do servidor: " + jqXHR.responseText);
+    });
+
+
 });
 
 // Initialize the calendar by appending the HTML dates
@@ -113,18 +131,22 @@ function prev_year(event) {
 }
 
 // Event handler for clicking the new event button
-function new_event(event) {
+function new_event() {
     window.location.href = "/Events/Create"
 }
 
 // Adds a json event to event_data
-function new_event_json(name, count, date, day) {
+function new_event_json(paramEvent) {
+    let { id, startDate, eventTranslations } = paramEvent;
+    let eventDate = new Date(startDate)
+
     var event = {
+        "id": id,
         "occasion": name,
-        "invited_count": count,
-        "year": date.getFullYear(),
-        "month": date.getMonth() + 1,
-        "day": day
+        "invited_count": 5,
+        "year": eventDate.getFullYear(),
+        "month": eventDate.getMonth() + 1,
+        "day": eventDate.getDate(),
     };
     event_data["events"].push(event);
 }
@@ -146,19 +168,18 @@ function show_events(events, month, day) {
     else {
         // Go through and add each event as a card to the events container
         for (var i = 0; i < events.length; i++) {
-            var event_card = $("<div class='event-card'></div>");
+            var event_card = $("<div style='cursor:pointer' onclick='DetailsEvent("+events[i]["id"]+")' class='event-card'></div>");
             var event_name = $("<div class='event-name'>" + events[i]["occasion"] + ":</div>");
             var event_count = $("<div class='event-count'>" + events[i]["invited_count"] + " Invited</div>");
-            if (events[i]["cancelled"] === true) {
-                $(event_card).css({
-                    "border-left": "10px solid #00639A"
-                });
-                event_count = $("<div class='event-cancelled'>Cancelled</div>");
-            }
+
             $(event_card).append(event_name).append(event_count);
             $(".events-container").append(event_card);
         }
     }
+}
+
+function DetailsEvent(id) {
+    window.location.href = "/Events/Details/" + id;
 }
 
 // Checks if a specific date has any events
@@ -181,10 +202,9 @@ var event_data = {
         {
             "occasion": " Repeated Test Event ",
             "invited_count": 120,
-            "year": 2017,
-            "month": 5,
-            "day": 10,
-            "cancelled": false
+            "year": 2023,
+            "month": 3,
+            "day": 28,
         }
     ]
 };
