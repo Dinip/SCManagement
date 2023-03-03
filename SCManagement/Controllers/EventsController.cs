@@ -195,7 +195,7 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_InvalidInput");
                 }
 
-                var createdEvent = await _eventService.CreateEvent(new Event
+                var createdEvent = new Event
                 {
                     StartDate = myEvent.StartDate,
                     EndDate = myEvent.EndDate,
@@ -210,7 +210,7 @@ namespace SCManagement.Controllers
                     ClubId = role.ClubId,
                     AddressByPath = myEvent.AddressByPath,
                     EventTranslations = new List<EventTranslations>()
-                });
+                };
 
                 await UpdateTranslations(myEvent.EventTranslationsName, createdEvent);
                 await UpdateTranslations(myEvent.EventTranslationsDetails, createdEvent);
@@ -219,10 +219,14 @@ namespace SCManagement.Controllers
                 translations.AddRange(myEvent.EventTranslationsDetails);
                 createdEvent.EventTranslations = translations;
 
+                await _eventService.CreateEvent(createdEvent);
+
                 if (myEvent.Fee > 0)
                 {
                     await _paymentService.CreateProductEvent(createdEvent);
                 }
+
+
 
                 return RedirectToAction(nameof(Index));
             }
@@ -624,8 +628,7 @@ namespace SCManagement.Controllers
                 Id = e.Id,
                 Translate = e.EventTranslations.Where(et => et.Atribute == "Name").Select(e => e.Value).FirstOrDefault(),
                 StartDate = e.StartDate,
-                Fee = e.Fee,
-                MaxEventEnrolls = e.MaxEventEnrolls,
+                ClubName = e.Club.Name
                 
             });
 

@@ -10,6 +10,8 @@ $(document).ready(function () {
     },
     ).done(function (response) {
         response.forEach((event) => {
+            console.log("Evento")
+            console.log(event)
             new_event_json(event)
         })
 
@@ -137,13 +139,12 @@ function new_event() {
 
 // Adds a json event to event_data
 function new_event_json(paramEvent) {
-    let { id, startDate, Translate } = paramEvent;
+    let { id, startDate, translate, clubName } = paramEvent;
     let eventDate = new Date(startDate)
-
     var event = {
         "id": id,
-        "occasion": Translate,
-        "invited_count": 5,
+        "occasion": translate,
+        "clubName": clubName,
         "year": eventDate.getFullYear(),
         "month": eventDate.getMonth() + 1,
         "day": eventDate.getDate(),
@@ -170,7 +171,7 @@ function show_events(events, month, day) {
         for (var i = 0; i < events.length; i++) {
             var event_card = $("<div style='cursor:pointer' onclick='DetailsEvent("+events[i]["id"]+")' class='event-card'></div>");
             var event_name = $("<div class='event-name'>" + events[i]["occasion"] + ":</div>");
-            var event_count = $("<div class='event-count'>" + events[i]["invited_count"] + " Invited</div>");
+            var event_count = $("<div class='event-count'> Sponsor by " + events[i]["clubName"] + "</div>");
 
             $(event_card).append(event_name).append(event_count);
             $(".events-container").append(event_card);
@@ -199,13 +200,6 @@ function check_events(day, month, year) {
 // Given data for events in JSON format
 var event_data = {
     "events": [
-        {
-            "occasion": " Repeated Test Event ",
-            "invited_count": 120,
-            "year": 2023,
-            "month": 3,
-            "day": 28,
-        }
     ]
 };
 
