@@ -1376,4 +1376,10 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Novo Endereço</value>
     <comment>02-03-2023_SearchMapBox</comment>
   </data>
+  <data name="Error_This_Date_Is_Not_Allowed" xml:space="preserve">
+    <value>Esta data não é permitida</value>
+  </data>
+  <data name="Error_Registration_limit_Event" xml:space="preserve">
+    <value>O limite de inscrição não pode exceder a data de inicio do evento</value>
+  </data>
 </root>
