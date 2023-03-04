@@ -636,5 +636,150 @@ namespace SCManagement.Controllers
             return Json(eventAux);
         }
 
+        public async Task<IActionResult> Results(int id)
+        {
+            var myEvent = await _eventService.GetEvent(id);
+            if (myEvent == null) return NotFound();
+
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+            if (myEvent.ClubId == role.ClubId && _clubService.IsClubStaff(role))
+            {
+                ViewBag.IsStaff = true;
+            }
+
+            var results = await _eventService.GetResults(myEvent.Id);
+            if(results != null)
+                if (myEvent.EventResultType == ResultType.Time)
+                {
+                    results.OrderBy(r => r.Time);
+                }
+                else if (myEvent.EventResultType == ResultType.Score)
+                {
+                    results.OrderBy(r => r.Score);
+                }
+                else
+                {
+                    results.OrderBy(r => r.Position);
+                }
+
+            myEvent.Results = results;
+
+            return View(myEvent);
+        }
+
+        public async Task<IActionResult> AddResult(int id)
+        {
+            var myEvent = await _eventService.GetEvent(id);
+            if (myEvent == null) return NotFound();
+
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+            if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
+            {
+                return View("CustomError", "Error_Unauthorized");
+            }
+
+            //Get all users enrolled in the event and not have result
+            var enrolls = await _eventService.GetEnrolls(myEvent.Id);
+
+            if (enrolls != null)
+            { 
+                var usersEnrolled = enrolls.Where(e => e.EnrollStatus == EnrollPaymentStatus.Valid).ToList();
+
+                var usersEnrolledWithResult = await _eventService.GetResults(myEvent.Id);
+                if (usersEnrolledWithResult != null) {
+                    var usersStrng = usersEnrolledWithResult.Select(er => er.UserId).ToList();
+
+                    usersEnrolled.RemoveAll(u => usersStrng.Contains(u.UserId));
+                }
+
+                if(usersEnrolled.Count == 0)
+                {
+               
+                        return View("CustomError", "Error_NoUsersToResult");
+                    
+                }
+
+                ViewBag.UsersToResult = new SelectList(usersEnrolled.Select(u => u.User).ToList(), "Id", "FullName"); ;
+            }
+            
+            //Put the users in a list of select list item
+                
+            return PartialView("_PartialAddResult");
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddResult(int id, [Bind("Id,UserId,Result")] ResultModel userResult)
+        {
+            if (ModelState.IsValid) { 
+                var myEvent = await _eventService.GetEvent(id);
+
+                if(myEvent == null)
+                {
+                    return View("CustomError", "Error_NotFound");
+                }
+
+                var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+                if (role.ClubId != myEvent.ClubId || !_clubService.IsClubStaff(role))
+                {
+                    return View("CustomError", "Error_Unauthorized");
+                }
+
+                //Verify type of result
+                EventResult resultToCreate = null;
+                if (myEvent.EventResultType == ResultType.Time)
+                {
+                    resultToCreate = new EventResult
+                    {
+                        EventId = myEvent.Id,
+                        UserId = userResult.UserId,
+                        Time = Convert.ToDouble(userResult.Result.Replace(".", ","))
+                    };
+                }
+                else if(myEvent.EventResultType == ResultType.Score)
+                {
+                    resultToCreate = new EventResult
+                    {
+                        EventId = myEvent.Id,
+                        UserId = userResult.UserId,
+                        Score = Convert.ToInt16(userResult.Result)
+                    };
+                }
+                else
+                {
+                    resultToCreate = new EventResult
+                    {
+                        EventId = myEvent.Id,
+                        UserId = userResult.UserId,
+                        Position = Convert.ToInt16(userResult.Result)
+                    };
+                }
+
+                var resultCreated = await _eventService.CreateResult(resultToCreate);
+
+                //Update Result events
+                if(myEvent.Results == null)
+                {
+                    myEvent.Results = new List<EventResult>();
+
+                }
+                myEvent.Results.Add(resultCreated);
+
+                await _eventService.UpdateEvent(myEvent);
+
+                return RedirectToAction(nameof(Results), new { id = myEvent.Id });
+            }
+
+            return RedirectToAction(nameof(Results), new { id = id });
+
+        }
+
+        public class ResultModel
+        {
+            public string UserId { get; set; }
+            public User? User { get; set; }
+            public string Result { get; set; }
+        }
+
     }
 }

@@ -153,5 +153,18 @@ namespace SCManagement.Services.EventService
             }
         }
 
-    }
+
+        public async Task<EventResult> CreateResult(EventResult result)
+        {
+            _context.EventResult.Add(result);
+            await _context.SaveChangesAsync();
+            return result;
+        }
+
+        public async Task<ICollection<EventResult>> GetResults(int eventId)
+        {
+            return await _context.EventResult.Where(e => e.EventId == eventId).Include(u => u.User).ToListAsync();
+        }
+
+}
 }

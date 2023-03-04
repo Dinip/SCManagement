@@ -1,0 +1,113 @@
+﻿@model SCManagement.Models.Event
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+
+@{
+    ViewData["Title"] = "Resultados";
+}
+
+<h1>Resultados</h1>
+<h3>@Model.EventTranslations.FirstOrDefault(c => c.Atribute == "Name").Value</h3>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content">
+        </div>
+    </div>
+</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @StringLocalizer["Place"]
+                </th>
+                <th>
+                    @StringLocalizer["Name"]
+                </th>
+                <th>
+                    @StringLocalizer["Result"]
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Results != null && Model.Results.Count > 0)
+        {
+            @foreach (var item in Model.Results)
+            {
+                <tr>
+                    <td>1</td>
+                    <td>
+                        @item.User.FullName
+                    </td>
+                    <td>
+                        @if(Model.EventResultType == ResultType.Time)
+                        {
+                            @item.Time
+                        }
+                        else if(Model.EventResultType == ResultType.Score)
+                        {
+                            @item.Score
+                        }
+                        else
+                        {
+                            @item.Position
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
+
+        @if(ViewBag.IsStaff != null) {
+            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Result </a>
+        } 
+
+        </tbody>
+    </table>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    let modal = document.getElementById("modal")
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $("#modal").hide();
+        }
+    }
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+    function openCreate() {
+        $.ajax({
+            url: '/Events/AddResult/@Model.Id',
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
+    }
+    function openDetails(id) {
+        $.ajax({
+            url: `/MyClub/UserDetails/${id}`,
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
+    }
+</script>

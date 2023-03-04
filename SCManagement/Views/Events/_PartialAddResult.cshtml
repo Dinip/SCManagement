@@ -1,0 +1,27 @@
+﻿@model SCManagement.Controllers.EventsController.ResultModel
+
+<h1>Result</h1>
+
+<form method="post" asp-action="AddResult">
+    <table class="table">
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.User.FullName)</th>
+            <th>Resultado</th>
+        </tr>
+        <tr>
+            <td>
+                <select asp-for="UserId" asp-items="ViewBag.UsersToResult" class="form-control"></select>
+            </td>
+            <td>
+                <input asp-for="Result" class="form-control" />
+            </td>
+        </tr>
+    </table>
+    <button>Adicionar</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

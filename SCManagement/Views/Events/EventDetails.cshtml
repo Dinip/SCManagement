@@ -7,6 +7,8 @@
 
 <h1>Details</h1>
 
+
+
 <div>
     <h4>Event</h4>
     <hr />
@@ -110,6 +112,10 @@
             }
         }
 
+        <form asp-action="Results" asp-route-id="@Model.Id">
+            <button type="submit" class="btn btn-primary">Resultados</button>
+        </form>
+
         @*Botao para Inscrever ou pagar inscrição*@
         @if (ViewBag.IsEnrolled)
         {
@@ -204,4 +210,6 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     }
+
+
 
