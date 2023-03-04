@@ -29,7 +29,7 @@
                 <th>
                     @StringLocalizer["Result"]
                 </th>
-
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -57,8 +57,14 @@
                         }
                     </td>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
-                        <a asp-action="Delete" asp-route-id="@item.Id">Eliminar</a>
+                        @if (ViewBag.IsStaff != null)
+                        {
+                            <form asp-action="DeleteResult">
+                                <input hidden name="userId" value="@item.UserId" />
+                                <input hidden name="eventId" value="@Model.Id" />
+                                <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
+                            </form>
+                        }
                     </td>
                 </tr>
             }
@@ -70,6 +76,8 @@
 
         </tbody>
     </table>
+    
+    
 
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>

@@ -166,5 +166,16 @@ namespace SCManagement.Services.EventService
             return await _context.EventResult.Where(e => e.EventId == eventId).Include(u => u.User).ToListAsync();
         }
 
-}
+        public async Task<EventResult> GetResult(string userId, int eventId)
+        {
+            return await _context.EventResult.Where(e => e.EventId == eventId && e.UserId == userId).FirstOrDefaultAsync();
+        }
+
+        public async Task DeleteResult(EventResult result)
+        {
+            _context.EventResult.Remove(result);
+            await _context.SaveChangesAsync();
+        }
+
+    }
 }

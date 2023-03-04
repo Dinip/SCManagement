@@ -702,8 +702,6 @@ namespace SCManagement.Controllers
                 ViewBag.UsersToResult = new SelectList(usersEnrolled.Select(u => u.User).ToList(), "Id", "FullName"); ;
             }
             
-            //Put the users in a list of select list item
-                
             return PartialView("_PartialAddResult");
 
         }
@@ -771,6 +769,30 @@ namespace SCManagement.Controllers
             }
 
             return RedirectToAction(nameof(Results), new { id = id });
+
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteResult(string? userId, int? eventId)
+        {
+            if(userId == null || eventId == null)
+            {
+                return NotFound();
+            }
+
+            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
+            if(role == null || !_clubService.IsClubStaff(role))
+            {
+                return View("CustomError", "Error_Unauthorized");
+            }
+
+            var resultToDelete = await _eventService.GetResult(userId, (int)eventId);
+            if (resultToDelete == null)
+                return NotFound();
+
+            await _eventService.DeleteResult(resultToDelete);
+
+            return RedirectToAction(nameof(Results), new { id = eventId });
 
         }
 

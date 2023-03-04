@@ -19,5 +19,7 @@ namespace SCManagement.Services.EventService
         public Task RemoveEventAddress(Event myEvent);
         public Task<EventResult> CreateResult(EventResult result);
         public Task<ICollection<EventResult>> GetResults(int eventId);
+        public Task<EventResult> GetResult(string userId, int eventId);
+        public Task DeleteResult(EventResult result);
     }
 }
