@@ -15,8 +15,6 @@ if (coordX != "" && coordY != "") {
     coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
     coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
 
-    console.log(coordX)
-    console.log(coordY)
     map = new mapboxgl.Map({
         container: 'map', // Specify the container ID
         style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
@@ -71,7 +69,6 @@ btnSave.onclick = function () {
         $(".toast").show();
         document.getElementById('alertText').innerHTML = strings.searchError;
         if (address != null) {
-            console.log(address)
             let { text, geometry, context } = address;
             let addressCode = context.find(item => item.id.startsWith('postcode')).text;
             let city = context.find(item => item.id.startsWith('place')).text;
