@@ -68,6 +68,8 @@ const btnSave = document.getElementById('save-button');
 
 btnSave.onclick = function () {
     try {
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = strings.searchError;
         if (address != null) {
             console.log(address)
             let { text, geometry, context } = address;
@@ -86,18 +88,20 @@ btnSave.onclick = function () {
                 District: district,
                 Country: country,
             })
-            newAd.innerHTML = strings.newAddress + ": " + text + "," + addressCode + "," + city + "," + district + "," + country;
+            $("#modal").hide();
+            newAd.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
         }
 
     } catch (error) {
-        alert(strings.searchError)
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = strings.searchError;
     }
 
 }
 
 
 function addMarkers(coordX, coordY) {
-    marker = new mapboxgl.Marker({ color: 'blue' })
+    marker = new mapboxgl.Marker({ color: '#00639A' })
         .setLngLat([coordX, coordY])
         .addTo(map);
 }
