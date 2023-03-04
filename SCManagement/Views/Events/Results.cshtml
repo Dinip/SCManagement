@@ -35,35 +35,32 @@
         <tbody>
         @if (Model.Results != null && Model.Results.Count > 0)
         {
-            @*@for(int i = 0; i < Model.Results.Count; i++ )*@
-            @*{*@
-                @*var item = Model.Results.Skip(i).First()*@
-            @foreach (var item in Model.Results)
+            @foreach (var item in Model.Results.Select((result, index) => new { Result = result, Index = index }))
             {
                 <tr>
-                    <td>1</td>
+                    <td>@(item.Index + 1)</td>
                     <td>
-                        @item.User.FullName
+                        @item.Result.User.FullName
                     </td>
                     <td>
-                        @if(Model.EventResultType == ResultType.Time)
+                        @if (Model.EventResultType == ResultType.Time)
                         {
-                            @item.Time
+                            @item.Result.Time
                         }
-                        else if(Model.EventResultType == ResultType.Score)
+                        else if (Model.EventResultType == ResultType.Score)
                         {
-                            @item.Score
+                            @item.Result.Score
                         }
                         else
                         {
-                            @item.Position
+                            @item.Result.Position
                         }
                     </td>
                     <td>
                         @if (ViewBag.IsStaff != null)
                         {
                             <form asp-action="DeleteResult">
-                                <input hidden name="userId" value="@item.UserId" />
+                                <input hidden name="userId" value="@item.Result.UserId" />
                                 <input hidden name="eventId" value="@Model.Id" />
                                 <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
                             </form>
@@ -74,7 +71,11 @@
         }
 
         @if(ViewBag.IsStaff != null) {
+            <tr>
+                <td colspan="4">
             <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Result </a>
+                </td>
+            </tr>
         } 
 
         </tbody>

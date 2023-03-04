@@ -648,19 +648,21 @@ namespace SCManagement.Controllers
             }
 
             var results = await _eventService.GetResults(myEvent.Id);
-            if(results != null)
+            if (results != null)
+            {
                 if (myEvent.EventResultType == ResultType.Time)
                 {
-                    results.OrderBy(r => r.Time);
+                    results = results.OrderBy(r => r.Time).ToList();
                 }
                 else if (myEvent.EventResultType == ResultType.Score)
                 {
-                    results.OrderBy(r => r.Score);
+                    results = results.OrderBy(r => r.Score).ToList();
                 }
                 else
                 {
-                    results.OrderBy(r => r.Position);
+                    results = results.OrderBy(r => r.Position).ToList();
                 }
+            }
 
             myEvent.Results = results;
 
