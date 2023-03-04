@@ -136,8 +136,8 @@ namespace SCManagement.Controllers
             ViewBag.Languages = languages;
 
             var eve = new EventModel();
-            eve.EventTranslationsName = new List<EventTranslations>();
-            eve.EventTranslationsDetails = new List<EventTranslations>();
+            eve.EventTranslationsName = new List<EventTranslation>();
+            eve.EventTranslationsDetails = new List<EventTranslation>();
 
             foreach (CultureInfo culture in languages)
             {
@@ -209,13 +209,13 @@ namespace SCManagement.Controllers
                     MaxEventEnrolls = myEvent.MaxEventEnrolls,
                     ClubId = role.ClubId,
                     AddressByPath = myEvent.AddressByPath,
-                    EventTranslations = new List<EventTranslations>()
+                    EventTranslations = new List<EventTranslation>()
                 };
 
                 await UpdateTranslations(myEvent.EventTranslationsName, createdEvent);
                 await UpdateTranslations(myEvent.EventTranslationsDetails, createdEvent);
 
-                var translations = new List<EventTranslations>(myEvent.EventTranslationsName);
+                var translations = new List<EventTranslation>(myEvent.EventTranslationsName);
                 translations.AddRange(myEvent.EventTranslationsDetails);
                 createdEvent.EventTranslations = translations;
 
@@ -250,8 +250,8 @@ namespace SCManagement.Controllers
             public DateTime EndDate { get; set; }
             [Display(Name = "Enroll Limit Date")]
             public DateTime EnrollLimitDate { get; set; }
-            public ICollection<EventTranslations>? EventTranslationsName { get; set; }
-            public ICollection<EventTranslations>? EventTranslationsDetails { get; set; }
+            public ICollection<EventTranslation>? EventTranslationsName { get; set; }
+            public ICollection<EventTranslation>? EventTranslationsDetails { get; set; }
             [Display(Name = "Public Event")]
             public bool IsPublic { get; set; }
             [Display(Name = "Fee")]
@@ -324,10 +324,10 @@ namespace SCManagement.Controllers
             return View(eventToEdit);
         }
 
-        private async Task UpdateTranslations(ICollection<EventTranslations> eventTranslations, Event actualEvent)
+        private async Task UpdateTranslations(ICollection<EventTranslation> eventTranslations, Event actualEvent)
         {
             //update translations
-            ICollection<EventTranslations> clubTranslationsFromFrontend = new List<EventTranslations>(eventTranslations);
+            ICollection<EventTranslation> clubTranslationsFromFrontend = new List<EventTranslation>(eventTranslations);
 
             await _translationService.Translate(eventTranslations);
 
@@ -418,7 +418,7 @@ namespace SCManagement.Controllers
                 await UpdateTranslations(myEvent.EventTranslationsName, eventToUpdate);
                 await UpdateTranslations(myEvent.EventTranslationsDetails, eventToUpdate);
 
-                var translations = new List<EventTranslations>(myEvent.EventTranslationsName);
+                var translations = new List<EventTranslation>(myEvent.EventTranslationsName);
                 translations.AddRange(myEvent.EventTranslationsDetails);
                 eventToUpdate.EventTranslations = translations;
 
@@ -638,6 +638,8 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> Results(int id)
         {
+
+
             var myEvent = await _eventService.GetEvent(id);
             if (myEvent == null) return NotFound();
 
@@ -646,6 +648,9 @@ namespace SCManagement.Controllers
             {
                 ViewBag.IsStaff = true;
             }
+
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            myEvent.EventTranslations = myEvent.EventTranslations!.Where(cc => cc.Language == cultureInfo).ToList();
 
             var results = await _eventService.GetResults(myEvent.Id);
             if (results != null)

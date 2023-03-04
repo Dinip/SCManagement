@@ -16,7 +16,7 @@ namespace SCManagement.Models
         [Display(Name = "End Date")]
         public DateTime EndDate { get; set; }
 
-        public ICollection<EventTranslations>? EventTranslations { get; set; }
+        public ICollection<EventTranslation>? EventTranslations { get; set; }
 
         [Display(Name = "Public Event")]
         public bool IsPublic { get; set; }

@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Data.Migrations;
 using SCManagement.Models;
+using EventTranslation = SCManagement.Models.EventTranslation;
 
 namespace SCManagement.Services.EventService
 {
@@ -18,6 +19,11 @@ namespace SCManagement.Services.EventService
         public async Task<Event> CreateEvent(Event myEvent)
         {
             _context.Event.Add(myEvent);
+            
+            foreach (EventTranslation eventTranslation in myEvent.EventTranslations!)
+            {
+                _context.EventTranslations.Add(eventTranslation);
+            }
             await _context.SaveChangesAsync();
             return myEvent;
         }
