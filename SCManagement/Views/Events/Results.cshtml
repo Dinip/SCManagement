@@ -111,15 +111,5 @@
             }
         });
     }
-    function openDetails(id) {
-        $.ajax({
-            url: `/MyClub/UserDetails/${id}`,
-            type: 'GET',
-            async: false,
-            success: function (result) {
-                $("#modal-inner-content").html(result);
-                $("#modal").show();
-            }
-        });
-    }
+
 </script>

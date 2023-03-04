@@ -1,23 +1,29 @@
 ﻿@model SCManagement.Controllers.EventsController.ResultModel
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 <h1>Result</h1>
 
 <form method="post" asp-action="AddResult">
     <table class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.User.FullName)</th>
-            <th>Resultado</th>
+            <th>
+                @StringLocalizer["Result"] @if (ViewBag.EventResultType == "Position")
+                {
+                    @("(" + @StringLocalizer["MaxPosition"] + ": " + ViewBag.MaxPosition + ")")
+                } </th>
         </tr>
         <tr>
             <td>
                 <select asp-for="UserId" asp-items="ViewBag.UsersToResult" class="form-control"></select>
             </td>
             <td>
-                <input asp-for="Result" class="form-control" />
+                <input asp-for="Result" id="Result" class="form-control" oninput="verifyResult()"/>
+               <span class="text-danger" id="spanResultError" style="display:none">@StringLocalizer["Error_Invalid_Result"]</span>
             </td>
         </tr>
     </table>
-    <button>Adicionar</button>
+    <button id="btnAdd">@StringLocalizer["ButtonAdd"]</button>
+
 </form>
 
 @section Scripts {
@@ -25,3 +31,41 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     }
+
+<script>
+    function verifyResult(){
+            let eventResultType = "@ViewBag.EventResultType";
+            let flag = false;
+
+            if (eventResultType == "Time") {
+                console.log("Time")
+                let regex = new RegExp("^\\d+,?\\d*$");
+                execRegex(regex, flag)
+            }
+            else if(eventResultType == "Position"){
+                let maxPosition = "@ViewBag.MaxPosition";
+                let regex = new RegExp("^[1-9]+$");
+                if (parseFloat(document.getElementById("Result").value) > maxPosition) {
+                    flag= true;
+                }
+                execRegex(regex,flag)
+            }
+            else{
+                let regex = new RegExp("^[0-9]+$");
+                execRegex(regex, flag)
+            }
+    }
+
+    function execRegex(regex, flag){
+            let result = document.getElementById("Result").value;
+            if (!regex.test(result) || flag) {
+                document.getElementById("Result").value = "";
+                document.getElementById("spanResultError").style.display = "block";
+                document.getElementById("btnAdd").style.display = "none"
+            } else {
+                document.getElementById("spanResultError").style.display = "none";
+                document.getElementById("btnAdd").style.display = "block"
+            }
+    }
+
+</script>

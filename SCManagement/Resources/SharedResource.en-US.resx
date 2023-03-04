@@ -1250,4 +1250,13 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Make sure you are searching for a location that contains a street, city, and district.</value>
     <comment>03-03-2023_SearchMapBox</comment>
   </data>
+  <data name="Error_Invalid_Result" xml:space="preserve">
+    <value>Invalid Result</value>
+  </data>
+  <data name="MaxPosition" xml:space="preserve">
+    <value>Max Position</value>
+  </data>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
 </root>

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -692,6 +693,16 @@ namespace SCManagement.Controllers
             { 
                 var usersEnrolled = enrolls.Where(e => e.EnrollStatus == EnrollPaymentStatus.Valid).ToList();
 
+                if (myEvent.EventResultType == ResultType.Time)
+                {
+                    ViewBag.EventResultType = "Time";
+                }
+                else if (myEvent.EventResultType == ResultType.Position)
+                {
+                    ViewBag.EventResultType = "Position";
+                    ViewBag.MaxPosition = usersEnrolled.Count;
+                }
+
                 var usersEnrolledWithResult = await _eventService.GetResults(myEvent.Id);
                 if (usersEnrolledWithResult != null) {
                     var usersStrng = usersEnrolledWithResult.Select(er => er.UserId).ToList();
@@ -706,7 +717,9 @@ namespace SCManagement.Controllers
                     
                 }
 
-                ViewBag.UsersToResult = new SelectList(usersEnrolled.Select(u => u.User).ToList(), "Id", "FullName"); ;
+                ViewBag.UsersToResult = new SelectList(usersEnrolled.Select(u => u.User).ToList(), "Id", "FullName");
+
+
             }
             
             return PartialView("_PartialAddResult");

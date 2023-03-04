@@ -1386,4 +1386,13 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Certifique-se que esta a pesquisar um local que contenha uma rua, cidade, e distrito</value>
     <comment>03-03-2023_SearchMapBox</comment>
   </data>
+  <data name="Error_Invalid_Result" xml:space="preserve">
+    <value>Resultado Invalido</value>
+  </data>
+  <data name="MaxPosition" xml:space="preserve">
+    <value>Posição Máxima</value>
+  </data>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Adicionar</value>
+  </data>
 </root>
