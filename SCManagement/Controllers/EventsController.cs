@@ -195,7 +195,7 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_InvalidInput");
                 }
 
-                var createdEvent = await _eventService.CreateEvent(new Event
+                var createdEvent = new Event
                 {
                     StartDate = myEvent.StartDate,
                     EndDate = myEvent.EndDate,
@@ -210,7 +210,7 @@ namespace SCManagement.Controllers
                     ClubId = role.ClubId,
                     AddressByPath = myEvent.AddressByPath,
                     EventTranslations = new List<EventTranslations>()
-                });
+                };
 
                 await UpdateTranslations(myEvent.EventTranslationsName, createdEvent);
                 await UpdateTranslations(myEvent.EventTranslationsDetails, createdEvent);
@@ -219,10 +219,14 @@ namespace SCManagement.Controllers
                 translations.AddRange(myEvent.EventTranslationsDetails);
                 createdEvent.EventTranslations = translations;
 
+                await _eventService.CreateEvent(createdEvent);
+
                 if (myEvent.Fee > 0)
                 {
                     await _paymentService.CreateProductEvent(createdEvent);
                 }
+
+
 
                 return RedirectToAction(nameof(Index));
             }
@@ -608,6 +612,28 @@ namespace SCManagement.Controllers
             }
 
             return Json(new { url = "/Events/Edit/" + myEvent.Id });
+        }
+
+        ///Events/GetAllEvents
+        public async Task<IActionResult> GetAllEvents()
+        {
+            var userId = getUserIdFromAuthedUser();
+
+            var events = await _eventService.GetEvents(userId);
+            events.OrderBy(e => e.StartDate);
+
+            //For each event create a new object but he go add name of the event in the object
+            var eventAux = events.Select(e => new
+            {
+                Id = e.Id,
+                Translate = e.EventTranslations.Where(et => et.Atribute == "Name").Select(e => e.Value).FirstOrDefault(),
+                StartDate = e.StartDate,
+                ClubName = e.Club.Name
+                
+            });
+
+
+            return Json(eventAux);
         }
 
     }

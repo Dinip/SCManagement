@@ -65,6 +65,9 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Club.Name)
         </dd>
+        <form asp-action="Details" asp-controller="Clubs" asp-route-id="@Model.ClubId">
+            <button type="submit" class="btn btn-primary">Pagina do Clube</button>
+        </form>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EventResultType)
         </dt>
