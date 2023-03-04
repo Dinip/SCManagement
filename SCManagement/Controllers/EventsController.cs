@@ -99,7 +99,7 @@ namespace SCManagement.Controllers
             if (enroll != null)
             {
                 ViewBag.IsEnrolled = true;
-                ViewBag.IsPaid = enroll.EnrollStatus == EnrollPaymentStatus.Valid;
+                ViewBag.IsPayed = enroll.EnrollStatus == EnrollPaymentStatus.Valid;
             }
             else
             {

@@ -35,6 +35,9 @@
         <tbody>
         @if (Model.Results != null && Model.Results.Count > 0)
         {
+            @*@for(int i = 0; i < Model.Results.Count; i++ )*@
+            @*{*@
+                @*var item = Model.Results.Skip(i).First()*@
             @foreach (var item in Model.Results)
             {
                 <tr>
