@@ -186,6 +186,11 @@
 
 <script>
     window.onload = function () {
+        document.getElementById("startDateTime").value = new Date();
+        document.getElementById("EnrollLimitDate").value = new Date();
+        document.getElementById("endDateTime").value = new Date();
+
+
         const culture = "@ViewBag.CultureInfo"
         toggleLang(culture, "details")
         toggleLang(culture, "name")
