@@ -67,6 +67,31 @@
         border: 1px solid black;
     }
 
+    @@media only screen and (max-width: 768px) {
+        #save-button {
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+
+    #save-button {
+        border-radius: 100px;
+        width: 60px !important;
+        aspect-ratio: 1;
+        background-color: #00639A;
+        border-color: #00639A;
+        position: absolute !important;
+        right: 30px !important;
+        z-index: 2;
+        bottom: 30px !important;
+    }
+
+        #save-button:hover {
+            background-color: dodgerblue;
+            border-color: dodgerblue;
+        }
+
+
     .translatebtn {
         color: white;
         border-radius: 2px;
@@ -87,7 +112,7 @@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="Name">
-                <label class="control-label">@StringLocalizer["Name"]</label>
+                <label class="control-label text-to-dark">@StringLocalizer["Name"]</label>
                 <div class="language-select">
                     @foreach (CultureInfo lang in ViewBag.Languages)
                     {
@@ -120,13 +145,13 @@
                 <span class="text-danger" id="spanLimiteEnrollError" style="display:none">@StringLocalizer["Error_Registration_limit_Event"]</span>
                 <span class="text-danger" id="spanLimiteEnrollError2" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
-            <div class="form-group">
-                <label class="control-label">Evento de 1 dia</label>
+            <div class="form-group mt-3">
+                <label class="control-label text-to-dark">Evento de 1 dia</label>
                 @*Criar CheckBox input*@
                 <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
             </div>
-            <div class="Details">
-                <label class="control-label">@StringLocalizer["Details"]</label>
+            <div class="Details mt-3">
+                <label class="control-label text-to-dark">@StringLocalizer["Details"]</label>
                 <div class="language-select">
                     @foreach (CultureInfo lang in ViewBag.Languages)
                     {
@@ -140,7 +165,7 @@
                 </div>
             </div>
             <div class="form-group form-check">
-                <label class="form-check-label">
+                <label class="form-check-label text-to-dark">
                     <input class="form-check-input" asp-for="IsPublic" id="ckbIsPublic" /> @Html.DisplayNameFor(model => model.IsPublic)
                 </label>
             </div>
@@ -164,8 +189,8 @@
             </div>
 
 
-            <div class="form-group form-check">
-                <label class="form-check-label">
+            <div class="form-group form-check mt-3">
+                <label class="form-check-label text-to-dark">
                     <input id="ckbHaveRoute" onchange="ToggleMapBox()" class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
                 </label>
             </div>
@@ -178,15 +203,14 @@
             <input asp-for="LocationString" type="hidden" id="Location" />
 
             <br />
-            <div id="cardMapBox">
-                <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px;">
+            <div id="cardMapBox" class="d-none">
+                <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; width:100% !important;">
                     <div class="card-body">
                         <div id='map'></div>
                         <div id="menu">
                         </div>
-                        <div id="save">
-                            <button type="button" id="save-button">Save</button>
-                        </div>
+                        <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
+                        
                     </div>
                 </div>
             </div>
@@ -337,15 +361,17 @@
     function ToggleMapBox() {
         let ckbHaveRoute = document.getElementById("ckbHaveRoute");
         let addressContainer = document.getElementById("AddressContainer");
-        document.getElementById("save-button").classList.remove("d-none");
+        
 
         if (ckbHaveRoute.checked) {
+            document.getElementById("cardMapBox").classList.remove("d-none");
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
             PathMapBoxConfig();
         }
         else {
+            document.getElementById("cardMapBox").classList.add("d-none");
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             SearchMapBoxConfig();
