@@ -1,8 +1,11 @@
 ﻿@model IEnumerable<SCManagement.Services.PaymentService.Models.Payment>
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "Index";
 }
+
+<style>
+</style>
 
 <div id="modal" class="modal">
     <div class="modal-content" style="margin-top:7%; margin-bottom:0;">
@@ -15,7 +18,7 @@
     <h1 style="margin-top:130px !important;" class="text-to-dark">Wallet</h1>
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
-            <table id="table_id" class="display">
+            <table id="table_id" class="display" style="width:100%!important;">
                 <thead>
                     <tr>
                         <th class="text-to-dark">
@@ -36,12 +39,13 @@
                         <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.PayedAt)
                         </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
+                        <tr>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Product.Name)
                             </td>
@@ -60,6 +64,11 @@
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.PayedAt)
                             </td>
+                            <td>
+                                <strong onclick="openDetails(@item.Id)" style="cursor:pointer; color: #00639A;text-decoration: underline; float:left;">
+                                    @StringLocalizer["Details"]
+                                </strong>
+                            </td>
                         </tr>
                     }
                 </tbody>
@@ -68,10 +77,14 @@
     </div>
 </div>
 
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 
 <script type="text/javascript">
+
     window.onload = () => {
         const id = "@ViewBag.PayId";
         if (id != "") openDetails(id)
@@ -95,6 +108,10 @@
     $(document).ready(function () {
         $.noConflict();
         $("#table_id").DataTable({
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             order: [[1, 'desc']],
             columnDefs: [
                 { orderable: false, targets: [-1] }
