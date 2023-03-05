@@ -5,32 +5,36 @@
     ViewData["Title"] = @StringLocalizer["PaymentsRecieved"];
 }
 
+
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
+
 <div class="container-fluid ps-5 pe-5">
     <h1 style="margin-top:130px !important;" class="text-to-dark">Payments Recieved</h1>
     <div class="card mt-5 shadow" style="height:650px !important; border-radius:20px;">
         <div class="card-body">
-            <table id="table_payments" class="display">
+            <table id="table_payments" class="display" style="width:100%!important;">
                 <thead>
                     <tr>
-                        <th>
+                        <th class="text-to-dark"> 
                             @Html.DisplayNameFor(model => model.User)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Product.Name)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Value)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.PaymentMethod)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.PaymentStatus)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.CreatedAt)
                         </th>
-                        <th>
+                        <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.PayedAt)
                         </th>
                     </tr>
@@ -39,25 +43,25 @@
                     @foreach (var item in Model)
                     {
                         <tr>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.User.FullName)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Product.Name)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Value)€
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @(item.PaymentMethod != null ? StringLocalizer[item.PaymentMethod.ToString()].Value : "")
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @StringLocalizer[item.PaymentStatus.ToString()].Value
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.CreatedAt)
                             </td>
-                            <td>
+                            <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.PayedAt)
                             </td>
                         </tr>
@@ -68,13 +72,20 @@
     </div>
 </div>
 
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
         $("#table_payments").DataTable({
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             order: [[1, 'desc']],
             columnDefs: [
                 { orderable: false, targets: [-1] }

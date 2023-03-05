@@ -803,13 +803,14 @@ namespace SCManagement.Services.ClubService
         /// <returns></returns>
         public async Task<IEnumerable<Club>> SearchNameClubs(string? name)
         {
+            var clubs = await GetClubs();
+
             //get all clubs
-            if (name == null) return await _context.Club.ToListAsync();
+            if (name == null) return clubs;
 
             //get clubs with the name that user search
-            return await _context.Club.Where(c => c.Name.Contains(name)).Include(c => c.Address).ToListAsync();
+            return clubs.Where(c => c.Name.Contains(name));
         }
-
 
         /// <summary>
         /// Gets all club staff (admin, secretary and trainer) (users role object with join date)

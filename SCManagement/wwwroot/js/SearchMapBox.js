@@ -15,8 +15,6 @@ if (coordX != "" && coordY != "") {
     coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
     coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
 
-    console.log(coordX)
-    console.log(coordY)
     map = new mapboxgl.Map({
         container: 'map', // Specify the container ID
         style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
@@ -68,8 +66,9 @@ const btnSave = document.getElementById('save-button');
 
 btnSave.onclick = function () {
     try {
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = strings.searchError;
         if (address != null) {
-            console.log(address)
             let { text, geometry, context } = address;
             let addressCode = context.find(item => item.id.startsWith('postcode')).text;
             let city = context.find(item => item.id.startsWith('place')).text;
@@ -86,18 +85,20 @@ btnSave.onclick = function () {
                 District: district,
                 Country: country,
             })
-            newAd.innerHTML = strings.newAddress + ": " + text + "," + addressCode + "," + city + "," + district + "," + country;
+            $("#modal").hide();
+            newAd.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
         }
 
     } catch (error) {
-        alert(strings.searchError)
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = strings.searchError;
     }
 
 }
 
 
 function addMarkers(coordX, coordY) {
-    marker = new mapboxgl.Marker({ color: 'blue' })
+    marker = new mapboxgl.Marker({ color: '#00639A' })
         .setLngLat([coordX, coordY])
         .addTo(map);
 }

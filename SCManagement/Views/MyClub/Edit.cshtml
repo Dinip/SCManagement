@@ -49,19 +49,56 @@
 
     #menu {
         position: absolute;
-        background: #efefef;
+        background: white;
         padding: 10px;
         font-family: 'Open Sans', sans-serif;
-        right: 0;
+        left: 32%;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
     }
 
-    #save {
-        position: absolute;
-        background: #efefef;
-        padding: 10px;
-        font-family: 'Open Sans', sans-serif;
-        right: 10%;
-        top: 10%;
+    .mapboxgl-canvas-container {
+        height: 100vh !important;
+    }
+
+    @@media only screen and (max-width: 768px) {
+        .container-fluid {
+            margin-left: 1px;
+        }
+
+        .card {
+            width: 100% !important;
+        }
+
+        #save-btn {
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+
+
+    #save-button {
+        border-radius: 100px;
+        width: 60px !important;
+        aspect-ratio: 1;
+        background-color: #00639A;
+        border-color: #00639A;
+        position: absolute !important;
+        right: 30px !important;
+        z-index: 2;
+        bottom: 30px !important;
+    }
+
+    #save-button:hover {
+        background-color: dodgerblue;
+        border-color: dodgerblue;
+    }
+
+    .toast{
+        position:absolute;
+        top:15%;
+        right:2%;
+        border: 2px solid red;
     }
 </style>
 
@@ -100,7 +137,7 @@
 
                 <hr style="margin-bottom:20px;" />
                 <div class="About">
-                    <label class="control-label">@StringLocalizer["About Us"]</label>
+                    <label class="control-label text-to-dark">@StringLocalizer["About Us"]</label>
                     <div class="language-select">
 
                         @foreach (CultureInfo lang in ViewBag.Languages)
@@ -119,7 +156,7 @@
 
                 <hr style="margin-bottom:20px;" />
                 <div class="TermsAndConditions">
-                    <label class="control-label">@StringLocalizer["Terms and conditions"]</label>
+                    <label class="control-label text-to-dark">@StringLocalizer["Terms and conditions"]</label>
                     <div class="language-select">
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
@@ -135,8 +172,8 @@
 
                 <hr style="margin-bottom:20px;" />
                 <div class="form-group" style="margin-bottom:20px;">
-                    <label class="control-label col-md-2">@StringLocalizer["Choose modalities"]</label>
-                    <select required multiple asp-for="ModalitiesIds" class="form-control chosen-select col-md-10 row" asp-items="ViewBag.Modalities"></select>
+                    <label class="control-label col-md-2 text-to-dark">@StringLocalizer["Choose modalities"]</label>
+                    <select required multiple asp-for="ModalitiesIds" class="form-control col-md-10 row" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>
 
@@ -156,44 +193,13 @@
 
                 @if (Model.Address != null)
                 {
-                    <span>@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
+                    <span class="text-to-dark">@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
+
+                    
                 }
-
-                <input id="coordX" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateX : "")"></input>
-                <input id="coordY" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateY : "")"></input>
-
-                @*<a asp-controller ="MyClub" asp-action="NewAddress">
-                <i class="fa-solid fa-lg fa-pen-to-square text-to-dark ms-3" style="cursor:pointer;" ></i>
-                </a>*@
-
-                <div class="form-group">
-                    <input asp-for="AddressString" type="hidden" class="form-control" id="address" />
-                </div>
-
-                <span id="NewAd"></span>
-
-                <div class="card card-to-dark col-12 m-4 mt-4 me-4" style="min-height:600px;">
-                    <div class="card-body">
-                        <div id='map'></div>
-                        <div id="menu">
-                            <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
-                            <label for="satellite-streets-v12">satellite streets</label>
-                            <input id="light-v11" type="radio" name="rtoggle" value="light">
-                            <label for="light-v11">light</label>
-                            <input id="dark-v11" type="radio" name="rtoggle" value="dark">
-                            <label for="dark-v11">dark</label>
-                            <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
-                            <label for="streets-v12">streets</label>
-                        </div>
-                        <div id="save">
-                            <button type="button" id="save-button">@StringLocalizer["Save"]</button>
-                        </div>
-
-                        <script src="~/js/SearchMapBox.js" asp-append-version="true"></script>
-                    </div>
-                </div>
-
-
+                <i class="fa-solid fa-lg fa-pen-to-square text-to-dark ms-3" onclick="openDetails()" style="cursor:pointer;"></i>
+                <br />
+                <span id="NewAd" class="text-to-dark"></span>
 
                 <hr style="margin-bottom:20px;" />
                 <div class="row form-floating">
@@ -203,17 +209,65 @@
                     <input id="selectedFile" asp-for="File" type="file" class="form-control d-none" accept="image/png, image/jpeg" onchange="handleUpload(this)" />
                     <input id="removeImage" asp-for="RemoveImage" type="hidden" />
                 </div>
+
+
+                <div id="modal" class="modal" style="overflow:hidden;">
+                    <div class="modal-content" style="width:90%; height:90%; padding:0; margin-top:20px; border-radius:15px !important;">
+                        <span onclick="$('#modal').hide()" class="close" style="z-index: 1; right:20px !important; position:absolute; margin-top:5px; color:black;"><i class="fa-solid fa-xmark"></i></span>
+
+                        <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    <strong id="alertText"></strong>
+                                </div>
+                                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                            </div>
+                        </div>
+
+                        <input id="coordX" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateX : "")" />
+                        <input id="coordY" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateY : "")" />
+
+                        <div class="form-group">
+                            <input asp-for="AddressString" type="hidden" class="form-control" id="address" />
+                        </div>
+                        <div class="card h-100" style="border-radius:15px !important;">
+                            <div class="card-body h-100 p-0">
+                                <div id='map' style="border-radius:15px !important;"></div>
+                                <div id="menu">
+                                    <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
+                                    <label for="satellite-streets-v12">satellite streets</label>
+                                    <input id="light-v11" type="radio" name="rtoggle" value="light">
+                                    <label for="light-v11">light</label>
+                                    <input id="dark-v11" type="radio" name="rtoggle" value="dark">
+                                    <label for="dark-v11">dark</label>
+                                    <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
+                                    <label for="streets-v12">streets</label>
+                                </div>
+                                    <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
+                                
+                            </div>
+                        </div>
+                        <script src="~/js/SearchMapBox.js" asp-append-version="true"></script>
+                    </div>
+                </div>
+
             </form>
         </div>
-
-
     </div>
-
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript">
+
+    function openDetails() {
+        $("#modal").show();
+        map.resize();
+    }
+
+    function closeToast(){
+        $(".toast").hide();
+    }
 
     function toggleLang(lang, elemento) {
 

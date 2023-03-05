@@ -10,22 +10,22 @@
     </div>
     <div class="col-6 d-flex align-items-center">
         <dl>
-            <dt class="row">
+            <dt class="row text-to-dark">
                 @Html.DisplayNameFor(model => model.FullName)
             </dt>
-            <dd class="row">
+            <dd class="row text-to-dark">
                 @Html.DisplayFor(model => model.FullName)
             </dd>
-            <dt class="row">
+            <dt class="row text-to-dark">
                 @Html.DisplayNameFor(model => model.DateOfBirth)
             </dt>
-            <dd class="row">
+            <dd class="row text-to-dark">
                 @Html.DisplayFor(model => model.DateOfBirth)
             </dd>
         </dl>
     </div>
 </div>
-
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript">
     window.onload = () => {
         document.getElementById("modal").style.display = "block";
