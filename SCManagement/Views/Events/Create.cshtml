@@ -50,9 +50,9 @@
     }
 </style>
 
-    @{
-        ViewData["Title"] = "Create";
-    }
+@{
+    ViewData["Title"] = "Create";
+}
 
 <h1>Create</h1>
 
@@ -60,101 +60,105 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form id="myForm" asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="Name">
                 <label class="control-label">@StringLocalizer["Name"]</label>
                 <div class="language-select">
-                        @foreach (CultureInfo lang in ViewBag.Languages)
-                        {
+                    @foreach (CultureInfo lang in ViewBag.Languages)
+                    {
                         <input type="button" class="lang-btn lang-btn-name" id="btn-name-@lang.Name" onclick="toggleLang('@lang.Name','name')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
-                        }
+                    }
                     <input type="button" class="lang-btn" onclick="translateFn('name')" value="trans" />
 
                 </div>
-                    @Html.EditorFor(x => x.EventTranslationsName)
+                @Html.EditorFor(x => x.EventTranslationsName)
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
                 <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <span asp-validation-for="StartDate" class="text-danger" id="spanStartDate"></span>
+                <span class="text-danger" id="spanStartDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
                 <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
+                <span class="text-danger" id="spanEndDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
+
             <div class="form-group">
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
-                <input asp-for="EnrollLimitDate" class="form-control" />
+                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" onchange="CheckLimitEnrollDate()" />
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
+                <span class="text-danger" id="spanLimiteEnrollError" style="display:none">@StringLocalizer["Error_Registration_limit_Event"]</span>
+                <span class="text-danger" id="spanLimiteEnrollError2" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
             <div class="form-group">
                 <label class="control-label">Evento de 1 dia</label>
-                    @*Criar CheckBox input*@
+                @*Criar CheckBox input*@
                 <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
             </div>
             <div class="Details">
                 <label class="control-label">@StringLocalizer["Details"]</label>
                 <div class="language-select">
-                        @foreach (CultureInfo lang in ViewBag.Languages)
-                        {
+                    @foreach (CultureInfo lang in ViewBag.Languages)
+                    {
                         <input type="button" class="lang-btn lang-btn-details" id="btn-details-@lang.Name" onclick="toggleLang('@lang.Name','details')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
-                        }
+                    }
                     <input type="button" class="lang-btn" onclick="translateFn('details')" value="trans" />
 
                 </div>
-                    @Html.EditorFor(x => x.EventTranslationsDetails)
+                @Html.EditorFor(x => x.EventTranslationsDetails)
             </div>
-
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsPublic" /> @Html.DisplayNameFor(model => model.IsPublic)
+                    <input class="form-check-input" asp-for="IsPublic" id="ckbIsPublic" /> @Html.DisplayNameFor(model => model.IsPublic)
                 </label>
             </div>
             <div class="form-group">
                 <label asp-for="Fee" class="control-label"></label>
-                <input type="number" step="0.01" min="0" asp-for="Fee" class="form-control" value="0" readonly="@(ViewBag.ValidKey == false)" />
+                <input type="number" step="0.01" min="0" asp-for="Fee" id="txtFee" class="form-control" value="0" readonly="@(ViewBag.ValidKey == false)" />
                 <span asp-validation-for="Fee" class="text-danger"></span>
                 <span style="color: orange;">@(ViewBag.ValidKey == false ? StringLocalizer["Warning_InvalidKey"] : "")</span>
             </div>
             <div class="form-group">
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>
-                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" class="form-control" value="0" />
+                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" value="0" />
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
-                </label>
-            </div>
 
-
-            <div class="form-group">
-                <label asp-for="Route" class="control-label"></label>
-                <input asp-for="Route" type="hidden" class="form-control" id="ev" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="AddressByPath" class="control-label"></label>
-                <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
-            </div>
 
             <div class="form-group">
                 <label asp-for="EventResultType" class="control-label"></label>
-                <select asp-for="EventResultType" class="form-control" asp-items="ViewBag.EventResultType"></select>
+                <select asp-for="EventResultType" class="form-control" id="selectEventResultType" asp-items="ViewBag.EventResultType"></select>
                 <span asp-validation-for="EventResultType" class="text-danger"></span>
             </div>
 
 
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input id="ckbHaveRoute" onchange="ToggleMapBox()" class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
+                </label>
+            </div>
+
+
+            <input asp-for="Route" type="hidden" class="form-control" id="ev" />
+            <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
             <input type="hidden" class="form-control" id="path" value="null" />
 
+            <input asp-for="LocationString" type="hidden" id="Location" />
+
             <br /> <br />
-            <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
-                <div class="card-body">
-                    <div id='map'></div>
-                    <div id="save">
-                        <button type="button" id="save-button">@StringLocalizer["Save"]</button>
+            <div id="cardMapBox">
+                <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px;">
+                    <div class="card-body">
+                        <div id='map'></div>
+                        <div id="menu">
+                        </div>
+                        <div id="save">
+                            <button type="button" id="save-button">Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -170,25 +174,42 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
-    @section Scripts {
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-        }
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     }
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="~/js/PathMapBox.js" asp-append-version="true"></script>
+
+<script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
+
 
 <script>
+    window.onload = function () {
+        document.getElementById("startDateTime").value = new Date();
+        document.getElementById("EnrollLimitDate").value = new Date();
+        document.getElementById("endDateTime").value = new Date();
+
+
+        const culture = "@ViewBag.CultureInfo"
+        toggleLang(culture, "details")
+        toggleLang(culture, "name")
+        SearchMapBoxConfig();
+    }
+
     function ApplySameDate() {
-        var startDateTime = document.getElementById("startDateTime");
-        var endDateTime = document.getElementById("endDateTime");
-        var sameDay = document.getElementById("SameDay");
+        let startDateTime = document.getElementById("startDateTime");
+        let endDateTime = document.getElementById("endDateTime");
+        let sameDay = document.getElementById("SameDay");
+        let spanEndError = document.getElementById("spanEndDateError")
         if (startDateTime.value != "") {
             if (startDateTime.value == endDateTime.value) {
                 sameDay.checked = true;
+                spanEndError.style.display = "none";
             } else {
                 endDateTime.value = startDateTime.value;
                 sameDay.checked = true;
+                spanEndError.style.display = "none";
             }
         } else {
             sameDay.checked = false;
@@ -196,14 +217,39 @@
     }
 
     function HaveDiferentDate() {
-        var startDateTime = document.getElementById("startDateTime");
-        var endDateTime = document.getElementById("endDateTime");
-        var sameDay = document.getElementById("SameDay");
+        let startDateTime = document.getElementById("startDateTime");
+        let endDateTime = document.getElementById("endDateTime");
+        let sameDay = document.getElementById("SameDay");
+
+        let spanStartError = document.getElementById("spanStartDateError")
+        let spanEndError = document.getElementById("spanEndDateError")
+        let dateNow = new Date();
+        let checkStartDate = new Date(startDateTime.value)
+        let checkEndDate = new Date(endDateTime.value)
+
         if (startDateTime.value == endDateTime.value) {
             sameDay.checked = true;
         } else {
             sameDay.checked = false;
         }
+
+        if (checkStartDate < dateNow) {
+            spanStartError.style.display = "block";
+            startDateTime.value = dateNow;
+            
+        } else {
+            spanStartError.style.display = "none";
+        }
+
+        if (checkEndDate < checkStartDate) {
+            spanEndError.style.display = "block";
+            endDateTime.value = dateNow;
+            
+        } else {
+            spanEndError.style.display = "none";
+        }
+            CheckLimitEnrollDate();
+
     }
 
     var strings = {
@@ -265,9 +311,48 @@
         })
     }
 
-    window.onload = function () {
-        const culture = "@ViewBag.CultureInfo"
-        toggleLang(culture, "details")
-        toggleLang(culture, "name")
+    function ToggleMapBox() {
+        let ckbHaveRoute = document.getElementById("ckbHaveRoute");
+        let addressContainer = document.getElementById("AddressContainer");
+        document.getElementById("save-button").classList.remove("d-none");
+
+        if (ckbHaveRoute.checked) {
+            document.getElementById("ev").value = null;
+            document.getElementById("AddressByPath").value = null;
+            document.getElementById("map").innerHTML = "";
+            PathMapBoxConfig();
+        }
+        else {
+            document.getElementById("ev").value = null;
+            document.getElementById("AddressByPath").value = null;
+            SearchMapBoxConfig();
+        }
+    }
+
+    function CheckLimitEnrollDate() {
+        let startDateTime = document.getElementById("startDateTime");
+        let EnrollLimitDate = document.getElementById("EnrollLimitDate");
+        let spanLimiteEnrollError = document.getElementById("spanLimiteEnrollError");
+            let spanLimiteEnrollError2 = document.getElementById("spanLimiteEnrollError2");
+
+            let dateNow = new Date();
+        let startDate = new Date(startDateTime.value);
+        let enrollDate = new Date(EnrollLimitDate.value);
+
+
+
+        if (enrollDate > startDate) {
+            spanLimiteEnrollError.style.display = "block"
+                spanLimiteEnrollError2.style.display = "none"
+            EnrollLimitDate.value = new Date();
+            } else if (enrollDate < dateNow) {
+                spanLimiteEnrollError2.style.display = "block"
+                spanLimiteEnrollError.style.display = "none"
+                EnrollLimitDate.value = new Date();
+            }
+            else {
+                spanLimiteEnrollError.style.display = "none"
+                spanLimiteEnrollError2.style.display = "none"
+            }
     }
 </script>

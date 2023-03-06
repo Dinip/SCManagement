@@ -6,33 +6,99 @@
     string ShowRemoveButton() => (Model.PhotoUri != null && Model.PhotoUri.Contains("uploads")) ? "" : "d-none";
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
+<link href="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.12.0/mapbox-gl.js"></script>
+<!-- Load the `mapbox-gl-geocoder` plugin. -->
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.min.js"></script>
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v5.0.0/mapbox-gl-geocoder.css" type="text/css">
 
 <style>
     .selected {
         background-color: #00639A !important;
-        color:white;
+        color: white;
         border: 1px solid black;
     }
 
-    .lang-btn-about{
-        background-color:white;
-        border-bottom:none !important;
-        width:60px;
-        border: 1px solid black;
-    }
-
-    .lang-btn-termsandconditions{
+    .lang-btn-about {
         background-color: white;
         border-bottom: none !important;
         width: 60px;
         border: 1px solid black;
     }
 
-    .translatebtn{
+    .lang-btn-termsandconditions {
+        background-color: white;
+        border-bottom: none !important;
+        width: 60px;
+        border: 1px solid black;
+    }
+
+    .translatebtn {
         color: white;
         border-radius: 2px;
         background-color: #00639A;
         border: 1px solid black;
+    }
+
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+
+    #menu {
+        position: absolute;
+        background: white;
+        padding: 10px;
+        font-family: 'Open Sans', sans-serif;
+        left: 32%;
+        border-bottom-left-radius: 20px;
+        border-bottom-right-radius: 20px;
+    }
+
+    .mapboxgl-canvas-container {
+        height: 100vh !important;
+    }
+
+    @@media only screen and (max-width: 768px) {
+        .container-fluid {
+            margin-left: 1px;
+        }
+
+        .card {
+            width: 100% !important;
+        }
+
+        #save-btn {
+            bottom: 20px;
+            right: 20px;
+        }
+    }
+
+
+    #save-button {
+        border-radius: 100px;
+        width: 60px !important;
+        aspect-ratio: 1;
+        background-color: #00639A;
+        border-color: #00639A;
+        position: absolute !important;
+        right: 30px !important;
+        z-index: 2;
+        bottom: 30px !important;
+    }
+
+    #save-button:hover {
+        background-color: dodgerblue;
+        border-color: dodgerblue;
+    }
+
+    .toast{
+        position:absolute;
+        top:15%;
+        right:2%;
+        border: 2px solid red;
     }
 </style>
 
@@ -71,13 +137,13 @@
 
                 <hr style="margin-bottom:20px;" />
                 <div class="About">
-                    <label class="control-label">@StringLocalizer["About Us"]</label>
+                    <label class="control-label text-to-dark">@StringLocalizer["About Us"]</label>
                     <div class="language-select">
-                        
+
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
                             <input type="button" class="lang-btn lang-btn-about" id="btn-about-@lang.Name" onclick="toggleLang('@lang.Name','about')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
-                            
+
                         }
                         <input type="button" class="lang-btn translatebtn" onclick="translateFn('about')" value="translate" />
 
@@ -85,12 +151,12 @@
                     <div style="margin-left:11px; z-index:0;">
                         @Html.EditorFor(x => x.ClubTranslationsAbout)
                     </div>
-                    
+
                 </div>
 
                 <hr style="margin-bottom:20px;" />
                 <div class="TermsAndConditions">
-                    <label class="control-label">@StringLocalizer["Terms and conditions"]</label>
+                    <label class="control-label text-to-dark">@StringLocalizer["Terms and conditions"]</label>
                     <div class="language-select">
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
@@ -106,10 +172,11 @@
 
                 <hr style="margin-bottom:20px;" />
                 <div class="form-group" style="margin-bottom:20px;">
-                    <label class="control-label col-md-2">@StringLocalizer["Choose modalities"]</label>
-                    <select required multiple asp-for="ModalitiesIds" class="form-control chosen-select col-md-10 row" asp-items="ViewBag.Modalities"></select>
+                    <label class="control-label col-md-2 text-to-dark">@StringLocalizer["Choose modalities"]</label>
+                    <select required multiple asp-for="ModalitiesIds" class="form-control col-md-10 row" asp-items="ViewBag.Modalities"></select>
                     <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                 </div>
+
                 <hr style="margin-bottom:20px;" />
                 <div class="row form-floating" style="margin-bottom:20px;">
                     <input asp-for="Email" class="form-control" />
@@ -126,13 +193,14 @@
 
                 @if (Model.Address != null)
                 {
-                    <span>@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
+                    <span class="text-to-dark">@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
+
+                    
                 }
+                <i class="fa-solid fa-lg fa-pen-to-square text-to-dark ms-3" onclick="openDetails()" style="cursor:pointer;"></i>
+                <br />
+                <span id="NewAd" class="text-to-dark"></span>
 
-                <div class="row form-floating" style="margin-bottom:20px;">
-                    <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="MyClub" asp-action="NewAddress">!!!Novo Endereço!!!</a>
-
-                </div>
                 <hr style="margin-bottom:20px;" />
                 <div class="row form-floating">
                     <input type="submit" value=@StringLocalizer["Save"] class="btn btn-primary mt-2 w-100" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
@@ -141,18 +209,65 @@
                     <input id="selectedFile" asp-for="File" type="file" class="form-control d-none" accept="image/png, image/jpeg" onchange="handleUpload(this)" />
                     <input id="removeImage" asp-for="RemoveImage" type="hidden" />
                 </div>
+
+
+                <div id="modal" class="modal" style="overflow:hidden;">
+                    <div class="modal-content" style="width:90%; height:90%; padding:0; margin-top:20px; border-radius:15px !important;">
+                        <span onclick="$('#modal').hide()" class="close" style="z-index: 1; right:20px !important; position:absolute; margin-top:5px; color:black;"><i class="fa-solid fa-xmark"></i></span>
+
+                        <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    <strong id="alertText"></strong>
+                                </div>
+                                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                            </div>
+                        </div>
+
+                        <input id="coordX" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateX : "")" />
+                        <input id="coordY" type="hidden" disabled value="@(Model.Address != null ? Model.Address.CoordinateY : "")" />
+
+                        <div class="form-group">
+                            <input asp-for="AddressString" type="hidden" class="form-control" id="address" />
+                        </div>
+                        <div class="card h-100" style="border-radius:15px !important;">
+                            <div class="card-body h-100 p-0">
+                                <div id='map' style="border-radius:15px !important;"></div>
+                                <div id="menu">
+                                    <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
+                                    <label for="satellite-streets-v12">satellite streets</label>
+                                    <input id="light-v11" type="radio" name="rtoggle" value="light">
+                                    <label for="light-v11">light</label>
+                                    <input id="dark-v11" type="radio" name="rtoggle" value="dark">
+                                    <label for="dark-v11">dark</label>
+                                    <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
+                                    <label for="streets-v12">streets</label>
+                                </div>
+                                    <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
+                                
+                            </div>
+                        </div>
+                        <script src="~/js/SearchMapBox.js" asp-append-version="true"></script>
+                    </div>
+                </div>
+
             </form>
         </div>
-
-
     </div>
-
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/color-thief/2.3.0/color-thief.umd.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript">
+
+    function openDetails() {
+        $("#modal").show();
+        map.resize();
+    }
+
+    function closeToast(){
+        $(".toast").hide();
+    }
 
     function toggleLang(lang, elemento) {
 
@@ -175,31 +290,31 @@
 
         for (let ta of textareas) {
             if (ta.value == "" && ta.getAttribute("data-lang") != selectedLang) {
-                getTranslation(ta ,selectedContent.value, selectedLang, ta.getAttribute("data-lang"))
+                getTranslation(ta, selectedContent.value, selectedLang, ta.getAttribute("data-lang"))
             }
         }
     }
 
     function getTranslation(ta, content, fromLang, toLang) {
-            //ajax
-            //return do texto traduzido do pedido
-            $.ajax({
-                type: 'Post',
-                url: '/Translation/Translation',
-                data:
-                {
-                    content: content,
-                    fromLang: fromLang,
-                    toLang: toLang
-                },
-            }).done(function (response) {
-                console.log("Sucess")
-                ta.value = response[0].translations[0].text
-                
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                console.log("Erro: " + textStatus + ", " + errorThrown)
-                console.log("Resposta do servidor: " + jqXHR.responseText)
-            })
+        //ajax
+        //return do texto traduzido do pedido
+        $.ajax({
+            type: 'Post',
+            url: '/Translation/Translation',
+            data:
+            {
+                content: content,
+                fromLang: fromLang,
+                toLang: toLang
+            },
+        }).done(function (response) {
+            console.log("Sucess")
+            ta.value = response[0].translations[0].text
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log("Erro: " + textStatus + ", " + errorThrown)
+            console.log("Resposta do servidor: " + jqXHR.responseText)
+        })
     }
 
 
@@ -220,6 +335,13 @@
         document.getElementById('profilePicture').src = window.URL.createObjectURL(event.files[0])
         document.getElementById("btnRemoveImage").classList.remove("d-none")
     }
+
+
+    var strings = {
+        "newAddress": '@Html.Raw(StringLocalizer["NewAddress"].Value.ToString())',
+        "searchError": '@Html.Raw(StringLocalizer["SearchError"].Value.ToString())',
+    };
+
 </script>
 
 
@@ -228,3 +350,4 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     }
+

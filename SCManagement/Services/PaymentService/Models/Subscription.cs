@@ -89,6 +89,11 @@ namespace SCManagement.Services.PaymentService.Models
             if (frequency == SubscriptionFrequency.Yearly) return TimeSpan.FromDays(365);
             return TimeSpan.Zero;
         }
+
+        public override string ToString()
+        {
+            return $"Subscription {Id} - {UserId} - {ProductId} - {StartTime} - {NextTime} - {EndTime} - {Value} - {AutoRenew} - {Frequency} - {Status} - {SubscriptionKey} - {CardInfoData} - {ClubId} - {ConfigUrl}";
+        }
     }
 
     public enum SubscriptionFrequency : int

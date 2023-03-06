@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SCManagement.Models.User>
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <h1>Atletas</h1>
     
@@ -19,7 +20,7 @@
             </tr>
         }
     </table>
-    <button>Insert</button>
+    <button>@StringLocalizer["ButtonAdd"]</button>
 </form>
 
 @section Scripts {

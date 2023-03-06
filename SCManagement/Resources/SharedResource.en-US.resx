@@ -1236,4 +1236,27 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>The total distance is:</value>
     <comment>01-03-2023_ShowPathMapBox</comment>
   </data>
+  <data name="NewAddress" xml:space="preserve">
+    <value>New Address</value>
+    <comment>02-03-2023_SearchMapBox</comment>
+  </data>
+  <data name="Error_This_Date_Is_Not_Allowed" xml:space="preserve">
+    <value>This date is not allowed</value>
+  </data>
+  <data name="Error_Registration_limit_Event" xml:space="preserve">
+    <value>The registration limit cannot exceed the start date of the event.</value>
+  </data>
+  <data name="SearchError" xml:space="preserve">
+    <value>Make sure you are searching for a location that contains a street, city, and district.</value>
+    <comment>03-03-2023_SearchMapBox</comment>
+  </data>
+  <data name="Error_Invalid_Result" xml:space="preserve">
+    <value>Invalid Result</value>
+  </data>
+  <data name="MaxPosition" xml:space="preserve">
+    <value>Max Position</value>
+  </data>
+  <data name="ButtonAdd" xml:space="preserve">
+    <value>Add</value>
+  </data>
 </root>

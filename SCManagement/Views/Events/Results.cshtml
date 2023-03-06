@@ -1,0 +1,115 @@
+﻿@model SCManagement.Models.Event
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+
+@{
+    ViewData["Title"] = "Resultados";
+}
+
+<h1>Resultados</h1>
+<h3>@Model.EventTranslations.FirstOrDefault(c => c.Atribute == "Name").Value</h3>
+
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content">
+        </div>
+    </div>
+</div>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @StringLocalizer["Place"]
+                </th>
+                <th>
+                    @StringLocalizer["Name"]
+                </th>
+                <th>
+                    @StringLocalizer["Result"]
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (Model.Results != null && Model.Results.Count > 0)
+        {
+            @foreach (var item in Model.Results.Select((result, index) => new { Result = result, Index = index }))
+            {
+                <tr>
+                    <td>@(item.Index + 1)</td>
+                    <td>
+                        @item.Result.User.FullName
+                    </td>
+                    <td>
+                        @if (Model.EventResultType == ResultType.Time)
+                        {
+                            @item.Result.Time
+                        }
+                        else if (Model.EventResultType == ResultType.Score)
+                        {
+                            @item.Result.Score
+                        }
+                        else
+                        {
+                            @item.Result.Position
+                        }
+                    </td>
+                    <td>
+                        @if (ViewBag.IsStaff != null)
+                        {
+                            <form asp-action="DeleteResult">
+                                <input hidden name="userId" value="@item.Result.UserId" />
+                                <input hidden name="eventId" value="@Model.Id" />
+                                <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        }
+
+        @if(ViewBag.IsStaff != null) {
+            <tr>
+                <td colspan="4">
+            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Result </a>
+                </td>
+            </tr>
+        } 
+
+        </tbody>
+    </table>
+    
+    
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    let modal = document.getElementById("modal")
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $("#modal").hide();
+        }
+    }
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+    function openCreate() {
+        $.ajax({
+            url: '/Events/AddResult/@Model.Id',
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
+    }
+
+</script>

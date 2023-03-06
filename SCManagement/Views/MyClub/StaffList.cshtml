@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<SCManagement.Models.UsersRoleClub>
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "StaffList";
 }
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
 
 <div class="container-fluid ps-5 pe-5">
     <div id="modal" class="modal">
@@ -15,7 +17,7 @@
     <h1 style="margin-top:130px !important;" class="text-to-dark">Staff</h1>
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
-            <table id="table_id" class="display">
+            <table id="table_id" class="display" style="width:100%!important;">
                 <thead>
                     <tr>
                         <th class="text-to-dark">
@@ -28,22 +30,28 @@
                             @Html.DisplayNameFor(model => model.JoinDate)
                         </th>
                         <th></th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                    <tr onclick="openDetails('@item.UserId')" style="cursor:pointer">
+                        <tr>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.User.FullName)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Role.RoleName)
-                                
+
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.JoinDate)
-                                
+
+                            </td>
+                            <td>
+                                <strong onclick="openDetails('@item.UserId')" style="cursor:pointer; color: #00639A;text-decoration: underline; float:left;">
+                                    @StringLocalizer["Details"]
+                                </strong>
                             </td>
                             <td>
                                 <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "invisible")">
@@ -61,13 +69,20 @@
 </div>
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
         $("#table_id").DataTable({
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             columnDefs: [
-                { orderable: false, targets: [-1] }
+                { orderable: false, targets: [-1, -2] }
             ]
         });
     });

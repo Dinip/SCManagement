@@ -54,19 +54,25 @@
             </div>
             <div class="form-group">
                 <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
+                <span asp-validation-for="StartDate" class="text-danger" id="spanStartDate"></span>
+                <span class="text-danger" id="spanStartDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
             <div class="form-group">
                 <label asp-for="EndDate" class="control-label"></label>
-                <input asp-for="EndDate" class="form-control" />
+                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()" />
                 <span asp-validation-for="EndDate" class="text-danger"></span>
+                <span class="text-danger" id="spanEndDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
+
             <div class="form-group">
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
-                <input asp-for="EnrollLimitDate" class="form-control" />
+                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" onchange="CheckLimitEnrollDate()" />
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
+                <span class="text-danger" id="spanLimiteEnrollError" style="display:none">@StringLocalizer["Error_Registration_limit_Event"]</span>
+                <span class="text-danger" id="spanLimiteEnrollError2" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
+
             <div class="Details">
                 <label class="control-label">@StringLocalizer["Details"]</label>
                 <div class="language-select">
@@ -79,6 +85,7 @@
                 </div>
                 @Html.EditorFor(x => x.EventTranslationsDetails)
             </div>
+
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsPublic" /> @Html.DisplayNameFor(model => model.IsPublic)
@@ -95,21 +102,6 @@
                 <input asp-for="MaxEventEnrolls" class="form-control" />
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="HaveRoute" /> @Html.DisplayNameFor(model => model.HaveRoute)
-                </label>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Route" class="control-label"></label>
-                <input asp-for="Route" type="hidden" class="form-control" id="ev" />
-            </div>
-
-            <div class="form-group">
-                <label asp-for="AddressByPath" class="control-label"></label>
-                <input asp-for="AddressByPath" disabled class="form-control" id="AddressByPath" />
-            </div>
 
             <div class="form-group">
                 <label asp-for="EventResultType" class="control-label"></label>
@@ -117,14 +109,45 @@
                 <span asp-validation-for="EventResultType" class="text-danger"></span>
             </div>
 
+            <div id="LocationContainer" class="form-group">
+                <a id="btnAddLocation" onclick="AddLocation()" class="form-check-input">Inserir Lococalização</a>
+                <input asp-for="LocationString" type="hidden" id="Location" />
+
+                @if (@Model.LocationId != null && Model.Location != null)
+                {
+                    <span id="spanStreet">@Model.Location.Street, </span>
+                    <span>@Model.Location.City, </span>
+                    <span>@Model.Location.Country, </span>
+                    <span>@Model.Location.ZipCode</span>
+                }
+            </div>
+
+            <input asp-for="Route" type="hidden" class="form-control" id="ev" />
+
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input id="ckbHaveRoute" class="form-check-input" asp-for="HaveRoute" onchange="ToggleMapBox()" /> @Html.DisplayNameFor(model => model.HaveRoute)
+                </label>
+            </div>
+
+            <div id="AddressContainer" class="form-group">
+                <label asp-for="AddressByPath" class="control-label"></label>
+                <input asp-for="AddressByPath" readonly class="form-control" id="AddressByPath" />
+            </div>
+
+
             <br /> <br />
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
 
-            <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
-                <div class="card-body">
-                    <div id='map'></div>
-                    <div id="save">
-                        <button type="button" id="save-button">Save</button>
+            <div id="cardMapBox">
+                <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px;">
+                    <div class="card-body">
+                        <div id='map'></div>
+                        <div id="menu">
+                        </div>
+                        <div id="save">
+                            <button type="button" id="save-button">Save</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -143,7 +166,6 @@
 <script type="text/javascript">
 
     function toggleLang(lang, elemento) {
-
         const btns = document.querySelectorAll(`input.lang-btn-${elemento}`)
         for (let bt of btns) {
             bt.getAttribute("id") == `btn-${elemento}-${lang}` ? bt.classList.add("selected") : bt.classList.remove("selected")
@@ -189,16 +211,130 @@
             console.log("Resposta do servidor: " + jqXHR.responseText)
         })
     }
+</script>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
+
+<script>
     window.onload = function () {
         const culture = "@ViewBag.CultureInfo"
         toggleLang(culture, "details")
         toggleLang(culture, "name")
+
+        ToggleMapBox();
+        var ckbHaveRoute = document.getElementById("ckbHaveRoute");
+        if (ckbhaveRoute.checked) {
+            PathMapBoxConfig();
+        }
+    }
+
+
+    function ToggleMapBox() {
+        let mapBox = document.getElementById("cardMapBox");
+        let addressContainer = document.getElementById("AddressContainer");
+        let locationContainer = document.getElementById("LocationContainer");
+        let ckbHaveRoute = document.getElementById("ckbHaveRoute");
+
+        let spanStreet = document.getElementById("spanStreet");
+        let btnAddLocation = document.getElementById("btnAddLocation");
+
+
+        if (ckbHaveRoute.checked == true) {
+            mapBox.style.display = "block";
+            addressContainer.style.display = "block";
+            locationContainer.style.display = "none";
+
+            document.getElementById("map").innerHTML = "";
+            //Load MapBox
+            PathMapBoxConfig();
+        }
+        else {
+            mapBox.style.display = "none";
+            addressContainer.style.display = "none";
+            locationContainer.style.display = "block";
+
+            document.getElementById("ev").value = null;
+            document.getElementById("AddressByPath").value = null;
+            document.getElementById("map").innerHTML = "";
+
+            if (spanStreet.innerHTML != null) {
+                btnAddLocation.innerHTML = "Atualizar Localização"
+            } else {
+                btnAddLocation.innerHTML = "Inserir Localização"
+            }
+        }
+        CheckLimitEnrollDate();
+    }
+
+    function AddLocation() {
+        let mapBox = document.getElementById("cardMapBox");
+        let addressContainer = document.getElementById("AddressContainer");
+        let locationContainer = document.getElementById("LocationContainer");
+
+        mapBox.style.display = "block";
+        //addressContainer.style.display = "block";
+        locationContainer.style.display = "none";
+
+        SearchMapBoxConfig();
+    }
+
+
+    function HaveDiferentDate() {
+        let startDateTime = document.getElementById("startDateTime");
+        let endDateTime = document.getElementById("endDateTime");
+
+        let spanStartError = document.getElementById("spanStartDateError")
+        let spanEndError = document.getElementById("spanEndDateError")
+        let dateNow = new Date();
+        let checkStartDate = new Date(startDateTime.value)
+        let checkEndDate = new Date(endDateTime.value)
+
+
+        if (checkStartDate < dateNow) {
+            spanStartError.style.display = "block";
+            startDateTime.value = dateNow;
+        } else {
+            spanStartError.style.display = "none";
+        }
+
+        if (checkEndDate < checkStartDate) {
+            spanEndError.style.display = "block";
+            endDateTime.value = dateNow;
+        } else {
+            spanEndError.style.display = "none";
+        }
+
+        CheckLimitEnrollDate();
+    }
+
+    function CheckLimitEnrollDate() {
+        let startDateTime = document.getElementById("startDateTime");
+        let EnrollLimitDate = document.getElementById("EnrollLimitDate");
+        let spanLimiteEnrollError = document.getElementById("spanLimiteEnrollError");
+        let spanLimiteEnrollError2 = document.getElementById("spanLimiteEnrollError2");
+
+        let startDate = new Date(startDateTime.value);
+        let enrollDate = new Date(EnrollLimitDate.value);
+        let dateNow = new Date();
+
+
+        if (enrollDate > startDate) {
+            spanLimiteEnrollError.style.display = "block"
+            spanLimiteEnrollError2.style.display = "none"
+            EnrollLimitDate.value = new Date();
+        } else if (enrollDate < dateNow) {
+            spanLimiteEnrollError2.style.display = "block"
+            spanLimiteEnrollError.style.display = "none"
+            EnrollLimitDate.value = new Date();
+        }
+        else {
+            spanLimiteEnrollError.style.display = "none"
+            spanLimiteEnrollError2.style.display = "none"
+        }
     }
 </script>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="~/js/PathMapBox.js" asp-append-version="true"></script>
 
 <style>
     #map {

@@ -70,7 +70,7 @@ if (path.value !== 'null') {
 
 const btnSave = document.getElementById('save-button');
 const ev = document.getElementById("ev");
-const addressByPath = document.getElementById("AddressByPath");
+let addressByPath = document.getElementById("AddressByPath");
 const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
 
 let erMessage = "";
@@ -362,7 +362,7 @@ function errorMessage(codeMessage) {
 
 
 async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken) {
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?types=address&access_token=${accessToken}`;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?ypes=poi,address,region,district,place,country&access_token=${accessToken}`;
 
     try {
         const response = await fetch(url);
@@ -371,6 +371,9 @@ async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken
         addressByPath.value = address;
     } catch (error) {
         errorMessage("Other")
+        removeRoute();
+        draw.deleteAll();
+        return;
     }
 }
 

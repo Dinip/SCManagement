@@ -7,6 +7,8 @@
 
 <h1>Details</h1>
 
+
+
 <div>
     <h4>Event</h4>
     <hr />
@@ -54,12 +56,6 @@
             @Html.DisplayFor(model => model.Fee)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HaveRoute)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HaveRoute)
-        </dd>
-        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.MaxEventEnrolls)
         </dt>
         <dd class="col-sm-10">
@@ -71,6 +67,9 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Club.Name)
         </dd>
+        <form asp-action="Details" asp-controller="Clubs" asp-route-id="@Model.ClubId">
+            <button type="submit" class="btn btn-primary">Pagina do Clube</button>
+        </form>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EventResultType)
         </dt>
@@ -80,10 +79,27 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.AddressByPath)
         </dt>
+        @if (Model.AddressByPath != null)
+        {
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.AddressByPath)
+            </dd>
+        }
+        else if (Model.Location != null)
+        {
+            <dd class="col-sm-10">
+                <span>@Model.Location.Street, </span>
+                <span>@Model.Location.City, </span>
+                <span>@Model.Location.Country, </span>
+                <span>@Model.Location.ZipCode</span>
+            </dd>
+        }
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.HaveRoute)
+        </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.AddressByPath)
+            @Html.DisplayFor(model => model.HaveRoute)
         </dd>
-
         @if (Model.Route != null)
         {
             <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
@@ -95,6 +111,10 @@
                 <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="Edit" asp-route-id=@Model.Id>@StringLocalizer["AddPath"]</a>
             }
         }
+
+        <form asp-action="Results" asp-route-id="@Model.Id">
+            <button type="submit" class="btn btn-primary">Resultados</button>
+        </form>
 
         @*Botao para Inscrever ou pagar inscrição*@
         @if (ViewBag.IsEnrolled)
@@ -120,6 +140,17 @@
                 <button type="submit" class="btn btn-primary">Inscrever</button>
             </form>
         }
+
+        <div>
+            @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
+            {
+                <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+                <form asp-action="Delete">
+                    <input name="Id" value="@Model?.Id" class="form-control" hidden />
+                    <input type="submit" value="Delete" />
+                </form>
+            }
+        </div>
 
         @*Botao para visualizar os inscritos no evento*@
         @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
@@ -162,6 +193,7 @@
 
     </dl>
 </div>
+
 <div>
     @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
     {
@@ -173,10 +205,11 @@
     }
 </div>
 
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     }
+
+
 

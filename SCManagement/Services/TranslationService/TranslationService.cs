@@ -19,14 +19,14 @@ namespace SCManagement.Services.TranslationService
             _region = configuration["TranslatorLocation"];
             _endpoint = configuration["TranslatorAPIEndpoint"];
         }
-        
+
         public Task? Translate(IEnumerable<ITranslation> translations)
         {
-            if (translations == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
+            if (translations == null) return Task.CompletedTask;
 
             var translation = translations.FirstOrDefault(x => x.Value != "" && x.Value != null);
-            
-            if (translation == null) return Task.FromException(new ArgumentNullException(nameof(translations)));
+
+            if (translation == null) return Task.CompletedTask;
 
             var remainTranslations = translations.Where(x => x.Value == "" || x.Value == null).ToList();
 

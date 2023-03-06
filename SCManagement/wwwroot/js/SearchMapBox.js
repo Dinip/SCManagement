@@ -1,14 +1,36 @@
 ﻿
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
-const map = new mapboxgl.Map({
-    container: 'map',
-    style: 'mapbox://styles/mapbox/streets-v12',
-    center: [-8.896442, 38.533278],
-    zoom: 13
-});
 
 const layerList = document.getElementById('menu');
 const inputs = layerList.getElementsByTagName('input');
+const addressElement = document.getElementById('address');
+const newAd = document.getElementById('NewAd');
+let coordX = document.getElementById('coordX').value;
+let coordY = document.getElementById('coordY').value;
+
+let marker;
+let map;
+
+if (coordX != "" && coordY != "") {
+    coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
+    coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
+
+    map = new mapboxgl.Map({
+        container: 'map', // Specify the container ID
+        style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
+        center: [coordX, coordY], // Specify the starting position
+        zoom: 12 // Specify the starting zoom
+    });
+    addMarkers(coordX, coordY);
+} else {
+    map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/streets-v12',
+        center: [-8.896442, 38.533278],
+        zoom: 13
+    });
+}
+
 
 for (const input of inputs) {
     input.onclick = (layer) => {
@@ -34,55 +56,49 @@ map.on('load', () => {
     // makes a selection
     geocoder.on('result', (event) => {
         address = event.result;
-        
+        if (coordX != "" && coordY != "") {
+            marker.remove();
+        }
     });
 });
 
-window.onload = function () {
+const btnSave = document.getElementById('save-button');
 
-    let btn = document.getElementById("btnSave");
+btnSave.onclick = function () {
+    try {
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = strings.searchError;
+        if (address != null) {
+            let { text, geometry, context } = address;
+            let addressCode = context.find(item => item.id.startsWith('postcode')).text;
+            let city = context.find(item => item.id.startsWith('place')).text;
+            let district = context.find(item => item.id.startsWith('region')).text;
+            let country = context.find(item => item.id.startsWith('country')).text;
+            let coord = geometry.coordinates;
 
-    btn.onclick = function () {
-
-        try {
-            if (address != null) {
-
-                let { text, geometry, context } = address;
-                let addressCode = context[0].text;
-                let city = context[1].text;
-                let district = context[2].text;
-                let country = context[3].text;
-                let coord = geometry.coordinates;
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/MyClub/ReceiveAddress',
-                    dataType: 'json',
-                    data: {
-                        Address:
-                        {
-                            CoordinateY: coord[1],
-                            CoordinateX: coord[0],
-                            ZipCode: addressCode,
-                            Street: text,
-                            City: city,
-                            District: district,
-                            Country: country,
-                        }
-                    },
-                   
-                }).done(function (response) {
-                    btn.disabled = true;
-                    window.location.href = response.url;
-                        
-                }).fail(function (jqXHR, textStatus, errorThrown) {
-                    console.log("Erro: " + textStatus + ", " + errorThrown);
-                    console.log("Resposta do servidor: " + jqXHR.responseText);
-                });
-            }
-        } catch (error) {
-            errorMessage = "Terá de inserir uma localização com rua incluida";
-            alert(errorMessage);
+            addressElement.value = JSON.stringify({
+                CoordinateY: coord[1],
+                CoordinateX: coord[0],
+                ZipCode: addressCode,
+                Street: text,
+                City: city,
+                District: district,
+                Country: country,
+            })
+            $("#modal").hide();
+            newAd.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
         }
+
+    } catch (error) {
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = strings.searchError;
     }
-};
+
+}
+
+
+function addMarkers(coordX, coordY) {
+    marker = new mapboxgl.Marker({ color: '#00639A' })
+        .setLngLat([coordX, coordY])
+        .addTo(map);
+}
