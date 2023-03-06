@@ -154,9 +154,10 @@ s
             @if (Model.Route != null)
             {
                     <a class="btn btn-primary ms-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
-                
-            
             }
+            
+            <a asp-action="Index" class="btn btn-primary ms-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;">@StringLocalizer["Back"]</a>
+
         </div>
 
     </dl>
