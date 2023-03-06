@@ -5,7 +5,7 @@ function PathMapBoxConfig() {
     const path = document.getElementById("path");
     let map;
     let locationText = document.getElementById("locationText");
-    
+
 
     if (path.value !== 'null') {
         let coordsString = path.value;
@@ -370,7 +370,7 @@ function PathMapBoxConfig() {
             const data = await response.json();
             const address = data.features[0].place_name;
             addressByPath.value = address;
-            
+
         } catch (error) {
             errorMessage("Other")
             removeRoute();
@@ -424,7 +424,7 @@ function SearchMapBoxConfig() {
     });
 
 
-    
+
     let locationText = document.getElementById("locationText");
     btn.onclick = function () {
         try {
@@ -436,33 +436,10 @@ function SearchMapBoxConfig() {
                 let country = context.find(item => item.id.startsWith('country')).text;
                 let coord = geometry.coordinates;
 
-<<<<<<< HEAD
-                    let { text, geometry, context } = address;
-                    let addressCode = context[0].text;
-                    let city = context[1].text;
-                    let district = context[2].text;
-                    let country = context[3].text;
-                    let coord = geometry.coordinates;
-
-                    let Location = document.getElementById("Location");
-                    Location.value = JSON.stringify({
-                                CoordinateX: coord[0],
-                                CoordinateY: coord[1],
-                                ZipCode: addressCode,
-                                Street: text,
-                                City: city,
-                                District: district,
-                                Country: country,
-                    })
-
-                }
-            } catch (error) {
-                alert("Terá de inserir uma localização com rua incluida");
-=======
                 let location = document.getElementById("Location");
                 location.value = JSON.stringify({
-                    CoordinateY: coord[1],
                     CoordinateX: coord[0],
+                    CoordinateY: coord[1],
                     ZipCode: addressCode,
                     Street: text,
                     City: city,
@@ -471,15 +448,16 @@ function SearchMapBoxConfig() {
                 })
                 locationText.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
                 btn.classList.add("d-none");
->>>>>>> EventsFrontend
             }
-
         } catch (error) {
             $(".toast").show();
             document.getElementById('alertText').innerHTML = strings.searchError;
+
         }
 
     }
+
 }
+
 
 

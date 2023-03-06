@@ -2,31 +2,27 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM3RwOGNubTVjeGJyIn0.AIK0gyTLRqtnlYAeH5icxg';
 
 window.onload = (event) => {
-    let defaultCoords = { coords: { longitude: -8.8926, latitude: 38.5243 } };
+    let defaultCoords = { coords: { longitude: -8.896442, latitude: 38.533278 } };
 
+    navigator.geolocation.getCurrentPosition(function (position) {
+        let userCoordinates = position;
+        getMarkers(userCoordinates);
+    }, function () {
+        getMarkers(defaultCoords);
+    });
+};
+
+function getMarkers(coords) {
     $.ajax({
         type: 'GET',
         url: '/Clubs/CoordsMarkers'
     }).done(function (response) {
-        loadMap(defaultCoords, response);
+        loadMap(coords, response);
     }).fail(function (jqXHR, textStatus, errorThrown) {
         console.log("Erro: " + textStatus + ", " + errorThrown);
         console.log("Resposta do servidor: " + jqXHR.responseText);
     });
-
-    navigator.geolocation.getCurrentPosition(function (position) {
-        let userCoordinates = position;
-        $.ajax({
-            type: 'GET',
-            url: '/Clubs/CoordsMarkers'
-        }).done(function (response) {
-            loadMap(userCoordinates, response);
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.log("Erro: " + textStatus + ", " + errorThrown);
-            console.log("Resposta do servidor: " + jqXHR.responseText);
-        });
-    });
-};
+}
 
 var map;
 
@@ -41,7 +37,7 @@ function loadMap(userCoordinates, markersCoordinates) {
         container: 'map', // container ID
         style: 'mapbox://styles/mapbox/streets-v12',
         zoom: 10,
-        center: [-8.8926, 38.5243]
+        center: [userCoordinates.coords.longitude, userCoordinates.coords.latitude]
     });
 
     const layerList = document.getElementById('menu');
@@ -60,11 +56,6 @@ function loadMap(userCoordinates, markersCoordinates) {
         marker: false,
         placeholder: 'Digite um endereço ou localização'
     });
-
-    if (userCoordinates) {
-        // Define o centro do mapa para a posição do utilizador
-        map.setCenter([userCoordinates.coords.longitude, userCoordinates.coords.latitude]);
-    }
 
     map.on('load', () => {
         map.resize();

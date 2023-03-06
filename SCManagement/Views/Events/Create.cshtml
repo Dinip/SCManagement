@@ -210,15 +210,6 @@
                         <div id="menu">
                         </div>
                         <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
-                        <div id="toast" class="toast align-items-center mt-4" style="margin-right:0 !important;">
-                            <div class="d-flex">
-                                <div class="toast-body">
-                                    <span id="toastTextLocation" class="d-none">Location</span>
-                                    <span id="toastTextPath" class="d-none">Path</span>
-                                </div>
-                                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -375,20 +366,16 @@
         let ckbHaveRoute = document.getElementById("ckbHaveRoute");
         let addressContainer = document.getElementById("AddressContainer");
         document.getElementById("save-button").classList.remove("d-none");
-        $(".toast").show();
         if (ckbHaveRoute.checked) {
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
-            document.getElementById("toastTextPath").classList.remove("d-none");
-            document.getElementById("toastTextLocation").classList.add("d-none");
             PathMapBoxConfig();
         }
         else {
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
-            document.getElementById("toastTextLocation").classList.remove("d-none");
-            document.getElementById("toastTextPath").classList.add("d-none");
+            document.getElementById("map").innerHTML = "";
             SearchMapBoxConfig();
         }
     }
