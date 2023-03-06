@@ -135,11 +135,6 @@
                 <span asp-validation-for="EventResultType" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
-                <label class="control-label">@StringLocalizer["Localization"]</label>
-                <span id="lblLocalization"></span>
-            </div>
-
 
             <div class="form-group form-check">
                 <label class="form-check-label">
@@ -323,7 +318,6 @@
         let ckbHaveRoute = document.getElementById("ckbHaveRoute");
         let addressContainer = document.getElementById("AddressContainer");
         document.getElementById("save-button").classList.remove("d-none");
-            document.getElementById("lblLocalization").innerHTML = ""
 
         if (ckbHaveRoute.checked) {
             document.getElementById("ev").value = null;
