@@ -36,7 +36,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr onclick="openDetails('@item.UserId')" style="cursor:pointer">
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.User.FullName)
                             </td>

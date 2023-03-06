@@ -1398,4 +1398,24 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Localization" xml:space="preserve">
     <value>Localização</value>
   </data>
+  <data name="1DayEvent" xml:space="preserve">
+    <value>Evento de 1 dia</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancelar</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Enroll Limit Date" xml:space="preserve">
+    <value>Data limite de inscrição</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Minimum 1 character" xml:space="preserve">
+    <value>Minimo 1 caractere</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Public Event" xml:space="preserve">
+    <value>Evento público</value>
+    <comment>06-03-2023_events</comment>
+  </data>
 </root>

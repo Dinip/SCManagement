@@ -5,111 +5,108 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<style>
+    dt {
+        border: 1px solid gainsboro;
+        padding: 3px;
+    }
 
+    dd {
+        border: 1px solid gainsboro;
+        margin-bottom: 0;
+        padding: 3px;
+    }
+</style>
 
-
-<div>
-    <h4>Event</h4>
+<div class="container ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">Details</h1>
     <hr />
     <dl class="row">
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 dlBg text-to-dark">
             @StringLocalizer["Name"]
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 dlBg text-to-dark">
             @Html.DisplayFor(model => model.EventTranslations.FirstOrDefault(c => c.Atribute == "Name").Value)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 text-to-dark">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 text-to-dark">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 dlBg text-to-dark">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 dlBg text-to-dark">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2  text-to-dark">
             @Html.DisplayNameFor(model => model.EnrollLimitDate)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10  text-to-dark">
             @Html.DisplayFor(model => model.EnrollLimitDate)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 dlBg text-to-dark">
             @StringLocalizer["Details"]
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 dlBg text-to-dark">
             @Html.DisplayFor(model => model.EventTranslations.FirstOrDefault(c => c.Atribute == "Details").Value)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2  text-to-dark">
             @Html.DisplayNameFor(model => model.IsPublic)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.IsPublic)
+        <dd class="col-sm-10  text-to-dark">
+            @if (Model.IsPublic)
+            {
+                <span>YES</span>
+            }
+            else
+            {
+                <span>NO</span>
+            }
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 dlBg text-to-dark">
             @Html.DisplayNameFor(model => model.Fee)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 dlBg text-to-dark">
             @Html.DisplayFor(model => model.Fee)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 text-to-dark">
             @Html.DisplayNameFor(model => model.MaxEventEnrolls)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 text-to-dark">
             @Html.DisplayFor(model => model.MaxEventEnrolls)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 dlBg text-to-dark">
             @Html.DisplayNameFor(model => model.Club)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 dlBg text-to-dark">
             @Html.DisplayFor(model => model.Club.Name)
         </dd>
-        <form asp-action="Details" asp-controller="Clubs" asp-route-id="@Model.ClubId">
-            <button type="submit" class="btn btn-primary">Pagina do Clube</button>
-        </form>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2  text-to-dark">
             @Html.DisplayNameFor(model => model.EventResultType)
         </dt>
-        <dd class="col-sm-10">
+        <dd class="col-sm-10 text-to-dark">
             @Html.DisplayFor(model => model.EventResultType)
         </dd>
-        <dt class="col-sm-2">
+        <dt class="col-sm-2 dlBg text-to-dark">
             @Html.DisplayNameFor(model => model.AddressByPath)
         </dt>
         @if (Model.AddressByPath != null)
         {
-            <dd class="col-sm-10">
+            <dd class="col-sm-10 dlBg text-to-dark">
                 @Html.DisplayFor(model => model.AddressByPath)
             </dd>
         }
         else if (Model.Location != null)
         {
-            <dd class="col-sm-10">
-                <span>@Model.Location.Street, </span>
-                <span>@Model.Location.City, </span>
-                <span>@Model.Location.Country, </span>
-                <span>@Model.Location.ZipCode</span>
+            <dd class="col-sm-10 dlBg text-to-dark">
+                @Model.Location.Street, @Model.Location.City, @Model.Location.Country, @Model.Location.ZipCode
             </dd>
-        }
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.HaveRoute)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.HaveRoute)
-        </dd>
-        @if (Model.Route != null)
-        {
-            <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
         }
         else
         {
-            @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
-            {
-                <a class="nav-item nav-link text-to-dark" style="color:blue;" asp-controller="Events" asp-action="Edit" asp-route-id=@Model.Id>@StringLocalizer["AddPath"]</a>
-            }
+            <dd class="col-sm-10 dlBg text-to-dark"></dd>
         }
 
         <form asp-action="Results" asp-route-id="@Model.Id">
@@ -119,91 +116,113 @@
         @*Botao para Inscrever ou pagar inscrição*@
         @if (ViewBag.IsEnrolled)
         {
-            <dt class="col-sm-2">Estado da Inscrição</dt>
-            @if (ViewBag.IsPayed == true)
+            <dt class="col-sm-2 dlBg text-to-dark">Estado da Inscrição</dt>
+            @if (ViewBag.IsPayed)
             {
-                <dd class="col-sm-10">Inscrito</dd>
+                <dd class="col-sm-10 dlBg text-to-dark">Inscrito</dd>
             }
             else
             {
-                <dd class="col-sm-10">Pagamento em Falta</dd>
-                <a href="/Payment" class="btn btn-primary">Pagar Inscrição</a>
-                <form asp-action="CancelEventEnroll" asp-route-id="@Model.Id">
-                    <button type="submit" class="btn btn-primary">Cancelar Inscrição</button>
-                </form>
+                <dd class="col-sm-10 dlBg text-to-dark">
+                    Pagamento em Falta -
+                    <a href="/Payment" class="btn btn-primary mt-3"> Pagar Inscrição</a>
+                </dd>
             }
-
-        }
-        else
-        {
-            <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
-                <button type="submit" class="btn btn-primary">Inscrever</button>
-            </form>
         }
 
-        <div>
-            @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
+        <div class="mt-3 d-flex">
+            @if (ViewBag.IsStaff)
             {
-                <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+                <a asp-action="Edit" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none;">Edit</a>
                 <form asp-action="Delete">
                     <input name="Id" value="@Model?.Id" class="form-control" hidden />
-                    <input type="submit" value="Delete" />
+                    <input type="submit" value="Delete" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;" />
                 </form>
             }
+
+            @if (ViewBag.IsEnrolled)
+            {
+                @if (ViewBag.IsPayed == null)
+                {
+                    <form asp-action="CancelEventEnroll" asp-route-id="@Model.Id">
+                        <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Cancelar Inscrição</button>
+                    </form>
+                }
+                else
+                {
+                    <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
+                        <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Inscrever</button>
+                    </form>
+                }
+            }
+
+            <form asp-action="Details" asp-controller="Clubs" asp-route-id="@Model.ClubId">
+                <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Pagina do Clube</button>
+            </form>
+
+            @if (Model.Route != null)
+            {
+                <a class="btn btn-primary ms-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
+            }
+
+            <a asp-action="Index" class="btn btn-primary ms-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;">@StringLocalizer["Back"]</a>
+
         </div>
 
-        @*Botao para visualizar os inscritos no evento*@
-        @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
-        {
-            <div class="card mt-3 shadow" style="height:650px !important;  border-radius:20px;">
-                <div class="card-body">
-                    <table id="table_id" class="display">
-                        <thead>
-                            <tr>
-                                <th class="text-to-dark">
-                                    Nome
-                                    @*@StringLocalizer["Name"]*@
-                                </th>
-                                <th class="text-to-dark">
-                                    Estado da Inscrição
-                                    @*@StringLocalizer["Age"]*@
-                                </th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (ViewBag.Enrolls != null)
-                            {
-                                @foreach (EventEnroll item in ViewBag.Enrolls)
-                                {
-                                    <tr style="cursor:pointer">
-                                        <td class="text-to-dark">
-                                            @Html.DisplayFor(modelItem => item.User.FullName)
-                                        </td>
-                                        <td class="text-to-dark">
-                                            @Html.DisplayFor(modelItem => item.EnrollStatus)
-                                        </td>
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        }
-
     </dl>
-</div>
-
-<div>
+    @*Botao para visualizar os inscritos no evento*@
     @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
     {
-        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
-        <form asp-action="Delete">
-            <input name="Id" value="@Model?.Id" class="form-control" hidden />
-            <input type="submit" value="Delete" />
-        </form>
+        <div class="card mt-3 shadow" style="height:650px !important;  border-radius:20px;">
+            <div class="card-body">
+                <table id="table_id" class="display">
+                    <thead>
+                        <tr>
+                            <th class="text-to-dark">
+                                Nome
+                                @*@StringLocalizer["Name"]*@
+                            </th>
+                            <th class="text-to-dark">
+                                Estado da Inscrição
+                                @*@StringLocalizer["Age"]*@
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (ViewBag.Enrolls != null)
+                        {
+                            @foreach (EventEnroll item in ViewBag.Enrolls)
+                            {
+                                <tr style="cursor:pointer">
+                                    <td class="text-to-dark">
+                                        @Html.DisplayFor(modelItem => item.User.FullName)
+                                    </td>
+                                    <td class="text-to-dark">
+                                        @Html.DisplayFor(modelItem => item.EnrollStatus)
+                                    </td>
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     }
 </div>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+</script>
 
 @section Scripts {
     @{

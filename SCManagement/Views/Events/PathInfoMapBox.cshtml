@@ -14,22 +14,60 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
-<input type="hidden" class="form-control" id="path" value="@Model.Route" />
-
-<div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; min-width:1000px">
-    <div class="card-body">
-        <div id='map'></div>
+<div class="container ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">Event Path</h1>
+    <hr />
+    <input type="hidden" class="form-control" id="path" value="@Model.Route" />
+    <div class="d-md-flex">
+        <div class="card card-to-dark col-md-10 col-12 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; ">
+            <div class="card-body">
+                <div id='map'></div>
+            </div>
+        </div>
+        <div class="ms-md-3 mt-3">
+            <dl>
+                <dt>
+                    @StringLocalizer["TotalDistance"]
+                </dt>
+                <dd>
+                    <span id="tDistance"></span>km
+                </dd>
+                <dt>
+                    @StringLocalizer["HElevation"]
+                </dt>
+                <dd>
+                    <span id="hElevation"></span>m
+                </dd>
+                <dt>
+                    @StringLocalizer["LElevation"]
+                </dt>
+                <dd>
+                    <span id="lElevation"></span>m
+                </dd>
+                <dt>
+                    @StringLocalizer["FullAscent"]
+                </dt>
+                <dd>
+                    <span id="dMore"></span>m
+                </dd>
+                <dt>
+                    @StringLocalizer["FullDescent"]
+                </dt>
+                <dd>
+                    <span id="dLess"></span>m
+                </dd>
+            </dl>
+        </div>
     </div>
+
+    <div class="card card-to-dark col-12 mt-3" style="min-height:300px;">
+        <div class="card-body" style="margin-top:0 !important;">
+            <canvas id="myChart" class="h-100"></canvas>
+        </div>
+    </div>
+
+    <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary mt-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;">@StringLocalizer["Back"]</a>
 </div>
-
-<p>@StringLocalizer["TotalDistance"]<span id="tDistance"></span>km</p>
-<p>@StringLocalizer["HElevation"] <span id="hElevation"></span>m</p>
-<p>@StringLocalizer["LElevation"] <span id="lElevation"></span>m</p>
-<p>@StringLocalizer["FullAscent"] <span id="dMore"></span>m</p>
-<p>@StringLocalizer["FullDescent"]<span id="dLess"></span>m</p>
-
-<canvas id="myChart"></canvas>
-
 <script src="https://unpkg.com/turf/turf"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/ShowPathMapBox.js" asp-append-version="true"></script>

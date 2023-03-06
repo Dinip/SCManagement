@@ -1,6 +1,6 @@
 ﻿@model SCManagement.Models.EventTranslation
 
-<div id="@Model.Atribute.ToLower()-@Model.Language" class="row form-outline @Model.Atribute.ToLower()-lang" style="margin-bottom:20px;">
+<div id="@Model.Atribute.ToLower()-@Model.Language" class="row form-outline @Model.Atribute.ToLower()-lang">
     <textarea asp-for="Value" data-lang="@Model.Language"></textarea>
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.Language)
