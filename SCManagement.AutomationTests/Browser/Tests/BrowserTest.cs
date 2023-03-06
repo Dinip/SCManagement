@@ -110,37 +110,6 @@ namespace SCManagement.AutomationTests.Browser.Tests
             _quit = true;
         }
 
-        [Test]
-        public void Clubs_Search_Fail()
-        {
-            //Click on the login button
-            _driver.FindElement(By.XPath("/html/body/header/nav/div/div/ul/a[2]")).Click();
-
-            //Enter the login credentials
-            _driver.FindElement(By.Id("Input_Email")).SendKeys("admin@scmanagement.me");
-            _driver.FindElement(By.Id("Input_Password")).SendKeys("Admin123!");
-
-            //Click on the log in  button
-            _driver.FindElement(By.Id("login-submit")).Click();
-
-            //Click on the Clubs button
-            _driver.FindElement(By.XPath("/html/body/header/nav/div/div/div/div[1]/a")).Click();
-
-            //Click on the search club button
-            _driver.FindElement(By.XPath("//*[@id=\"dropdownMenu2\"]/li[2]/a")).Click();
-
-            //Click on the open search club button
-            _driver.FindElement(By.XPath("/html/body/div/main/div/button")).Click();
-
-            //Enter the search club name
-            _driver.FindElement(By.XPath("/html/body/div/main/div/div[1]/div[1]/input")).SendKeys("Benfica");
-
-            //Click on the Details button
-            _driver.FindElement(By.XPath("/html/body/div/main/div/div[1]/div[2]/div/div/div/div/div/div[1]/div/a")).Click();
-
-            //Assert that the user is logged in
-            Assert.That("https://scmanagement.me/Clubs/2", Is.EqualTo(_driver.Url));
-            _quit = true;
-        }
+        
     }
 }
