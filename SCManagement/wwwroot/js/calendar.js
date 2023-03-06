@@ -10,8 +10,6 @@ $(document).ready(function () {
     },
     ).done(function (response) {
         response.forEach((event) => {
-            console.log("Evento")
-            console.log(event)
             new_event_json(event)
         })
 
@@ -157,7 +155,6 @@ function show_events(events, month, day) {
     // Clear the dates container
     $(".events-container").empty();
     $(".events-container").show(250);
-    console.log(event_data["events"]);
     // If there are no events for this date, notify the user
     if (events.length === 0) {
         var event_card = $("<div class='event-card'></div>");
