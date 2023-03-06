@@ -1075,7 +1075,7 @@ namespace SCManagement.Tests.Services
             var result = await _clubService.SearchNameClubs("Test Club");
 
             // Assert
-            result.Should().BeOfType<List<Club>>();
+            result.Should().BeAssignableTo<List<Club>>();
         }
 
         [Fact]

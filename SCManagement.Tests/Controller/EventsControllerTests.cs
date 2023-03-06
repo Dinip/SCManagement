@@ -74,7 +74,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var events = new Event { Id = 1, ClubId = 1, IsPublic = true, EventTranslations = new List<EventTranslations> { new EventTranslations { EventId = 1, Language = "en", Value = "test" } } };
+            var events = new Event { Id = 1, ClubId = 1, IsPublic = true, EventTranslations = new List<EventTranslation> { new EventTranslation { EventId = 1, Language = "en", Value = "test" } } };
             var enroll = new EventEnroll { Id = 1, EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
@@ -93,7 +93,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var events = new Event { Id = 1, ClubId = 1, IsPublic = true, EventTranslations = new List<EventTranslations> { new EventTranslations { EventId = 1, Language = "en", Value = "test" } } };
+            var events = new Event { Id = 1, ClubId = 1, IsPublic = true, EventTranslations = new List<EventTranslation> { new EventTranslation { EventId = 1, Language = "en", Value = "test" } } };
             var enroll = new EventEnroll { Id = 1, EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
@@ -221,21 +221,23 @@ namespace SCManagement.Tests.Controller
             var even = new EventModel 
             { 
                 Id = 1, 
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(1),
+                StartDate = DateTime.Now.AddDays(7),
+                EndDate = DateTime.Now.AddDays(10),
+                EnrollLimitDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
-                EventTranslationsName = new List<EventTranslations> 
-                { 
-                    new EventTranslations 
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
+                EventTranslationsName = new List<EventTranslation>
+                {
+                    new EventTranslation 
                     {
                         EventId = 1,
                         Value = "Olá",
                         Language = "pt-PT",
                         Atribute = "Name",
                     },
-                    new EventTranslations
+                    new EventTranslation
                     {
                         EventId = 1,
                         Value = "",
@@ -243,16 +245,16 @@ namespace SCManagement.Tests.Controller
                         Atribute = "Name",
                     }
                 },
-                EventTranslationsDetails = new List<EventTranslations>
+                EventTranslationsDetails = new List<EventTranslation>
                 {
-                    new EventTranslations
+                    new EventTranslation
                     {
                         EventId = 1,
                         Value = "Olá",
                         Language = "pt-PT",
                         Atribute = "Details",
                     },
-                    new EventTranslations
+                    new EventTranslation
                     {
                         EventId = 1,
                         Value = "",
@@ -261,18 +263,96 @@ namespace SCManagement.Tests.Controller
                     }
                 },
             };
-            var events = new Event { Id = 1, EventTranslations = new List<EventTranslations>() };
+            var events = new Event { Id = 1, EventTranslations = new List<EventTranslation>() };
             var role = new UsersRoleClub { ClubId = 1 };
+            var address = new Address { CoordinateY = 38.5266275 ,CoordinateX = -8.8677658,ZipCode ="2910-580",Street = "Rua Libânio Braga", City = "Setúbal",
+                District = "Setúbal",Country = "Portugal" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.CreateEvent(A<Event>._)).Returns(events);
             A.CallTo(() => _paymentService.ClubHasValidKey(A<int>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateEventAddress(A<Address>._)).Returns(address);
 
             // Act
             var result = await _eventsController.Create(even);
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task EventsController_Create_Post_ReturnsErrorDate()
+        {
+            // Arrange
+            var even = new EventModel
+            {
+                Id = 1,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(10),
+                EnrollLimitDate = DateTime.Now.AddDays(5),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true,
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
+                EventTranslationsName = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
+            };
+            var events = new Event { Id = 1, EventTranslations = new List<EventTranslation>() };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateEvent(A<Event>._)).Returns(events);
+            A.CallTo(() => _paymentService.ClubHasValidKey(A<int>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateEventAddress(A<Address>._)).Returns(address);
+
+            // Act
+            var result = await _eventsController.Create(even);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_InvalidInput");
         }
 
         [Fact]
@@ -369,30 +449,30 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Edit_Post_ReturnsSuccess()
         {
             // Arrange
-            var a = new List<EventTranslations>()
+            var a = new List<EventTranslation>()
             {
-                new EventTranslations
+                new EventTranslation
                 {
                     EventId = 1,
                     Value = "Olá",
                     Language = "pt-PT",
                     Atribute = "Name",
                 },
-                new EventTranslations
+                new EventTranslation
                 {
                     EventId = 1,
                     Value = "",
                     Language = "en-US",
                     Atribute = "Name",
                 },
-                new EventTranslations
+                new EventTranslation
                 {
                     EventId = 1,
                     Value = "Olá",
                     Language = "pt-PT",
                     Atribute = "Details",
                 },
-                new EventTranslations
+                new EventTranslation
                 {
                     EventId = 1,
                     Value = "",
@@ -404,21 +484,23 @@ namespace SCManagement.Tests.Controller
             var even = new EventModel
             {
                 Id = 1,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(1),
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
                 IsPublic = true,
                 Fee = 10,
+                Route = "Lisboa",
                 HaveRoute = true,
-                EventTranslationsName = new List<EventTranslations>
+                EventTranslationsName = new List<EventTranslation>
                 {
-                    new EventTranslations
+                    new EventTranslation
                     {
                         EventId = 1,
                         Value = "Olá",
                         Language = "pt-PT",
                         Atribute = "Name",
                     },
-                    new EventTranslations
+                    new EventTranslation
                     {
                         EventId = 1,
                         Value = "",
@@ -426,16 +508,16 @@ namespace SCManagement.Tests.Controller
                         Atribute = "Name",
                     }
                 },
-                EventTranslationsDetails = new List<EventTranslations>
+                EventTranslationsDetails = new List<EventTranslation>
                 {
-                    new EventTranslations
+                    new EventTranslation
                     {
                         EventId = 1,
                         Value = "Olá",
                         Language = "pt-PT",
                         Atribute = "Details",
                     },
-                    new EventTranslations
+                    new EventTranslation
                     {
                         EventId = 1,
                         Value = "",
@@ -446,13 +528,223 @@ namespace SCManagement.Tests.Controller
             };
             
             var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1 , ClubId = 1 , EventTranslations = a };
+            var e = new Event { Id = 1 , ClubId = 1 , EventTranslations = a , LocationId = 1};
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
 
             // Act
             var result = await _eventsController.Edit(1,even);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task EventsController_Edit_Post_ReturnsUpdateLocation()
+        {
+            // Arrange
+            var a = new List<EventTranslation>()
+            {
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Details",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Details",
+                }
+            };
+
+            var even = new EventModel
+            {
+                Id = 1,
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true,
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
+                EventTranslationsName = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
+            };
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _eventService.UpdateEventAddress(A<int>._,A<Address>._)).Returns(address);
+
+            // Act
+            var result = await _eventsController.Edit(1, even);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task EventsController_Edit_Post_ReturnsCreateLocation()
+        {
+            // Arrange
+            var a = new List<EventTranslation>()
+            {
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Details",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Details",
+                }
+            };
+
+            var even = new EventModel
+            {
+                Id = 1,
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true,
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
+                EventTranslationsName = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
+            };
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = null };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _eventService.UpdateEventAddress(A<int>._, A<Address>._)).Returns(address);
+
+            // Act
+            var result = await _eventsController.Edit(1, even);
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
@@ -478,6 +770,35 @@ namespace SCManagement.Tests.Controller
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_Edit_Post_ReturnsDateError()
+        {
+            // Arrange
+            var even = new EventModel
+            {
+                Id = 1,
+                StartDate = DateTime.Now.AddDays(4),
+                EndDate = DateTime.Now.AddDays(10),
+                EnrollLimitDate = DateTime.Now,
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true,
+            };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var e = new Event { Id = 1, ClubId = 1, };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+
+
+            // Act
+            var result = await _eventsController.Edit(1, even);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_InvalidInput");
         }
 
         [Fact]
@@ -837,6 +1158,497 @@ namespace SCManagement.Tests.Controller
 
             // Act
             var result = await _eventsController.PathInfoMapBox(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateEventLocation_ReturnsSuccess()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, Route = null };
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.UpdateEventLocation(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateEventLocation_ReturnsEventNotFound()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(Task.FromResult<Event>(null));
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.UpdateEventLocation(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateEventLocation_ReturnsClubIdDiff()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 2 };
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, Route = null };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.UpdateEventLocation(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateLocation_ReturnsSuccess()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, Route = null };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateEventAddress(A<Address>._)).Returns(A.Fake<Address>());
+
+            // Act
+            var result = await _eventsController.UpdateLocation(1, address);
+
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateLocation_ReturnsRoleNull()
+        {
+            // Arrange
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
+
+            // Act
+            var result = await _eventsController.UpdateLocation(1, address);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateLocation_ReturnsEventNull()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 1 };
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(Task.FromResult<Event>(null));
+
+            // Act
+            var result = await _eventsController.UpdateLocation(1, address);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateLocation_ReturnsClubIdDiff()
+        {
+            // Arrange
+            var e = new Event { Id = 2, IsPublic = true, ClubId = 2, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, Route = null };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.UpdateLocation(1, address);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task EventsController_UpdateLocation_ReturnsSuccessUpdate()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, LocationId = 1 };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var address = new Address
+            {
+                CoordinateY = 38.5266275,
+                CoordinateX = -8.8677658,
+                ZipCode = "2910-580",
+                Street = "Rua Libânio Braga",
+                City = "Setúbal",
+                District = "Setúbal",
+                Country = "Portugal"
+            };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.UpdateLocation(1, address);
+
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_GetAllEvents_ReturnsSuccess()
+        {
+            // Arrange
+            A.CallTo(() => _eventService.GetEvents(A<string>._)).Returns(A.Fake<IEnumerable<Event>>());
+
+            // Act
+            var result = await _eventsController.GetAllEvents();
+
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_Results_ReturnsSuccess()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1,EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Time };
+            var role = new UsersRoleClub { ClubId = 1 };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetResults(A<int>._)).Returns(A.Fake<ICollection<EventResult>>());
+
+            // Act
+            var result = await _eventsController.Results(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_Results_ReturnsSuccessScore()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Score };
+            var role = new UsersRoleClub { ClubId = 1 };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetResults(A<int>._)).Returns(A.Fake<ICollection<EventResult>>());
+
+            // Act
+            var result = await _eventsController.Results(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_Results_ReturnsSuccessPosition()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Position };
+            var role = new UsersRoleClub { ClubId = 1 };
+
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetResults(A<int>._)).Returns(A.Fake<ICollection<EventResult>>());
+
+            // Act
+            var result = await _eventsController.Results(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_ReturnsSuccess()
+        { 
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Position };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var enrolls = new List<EventEnroll>() { new EventEnroll { EnrollStatus = EnrollPaymentStatus.Valid } };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetResults(A<int>._)).Returns(A.Fake<ICollection<EventResult>>());
+            A.CallTo(() => _eventService.GetEnrolls(A<int>._)).Returns(enrolls);
+
+
+            // Act
+            var result = await _eventsController.AddResult(1);
+
+            // Assert
+            result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_PartialAddResult");
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_ReturnsEventNull()
+        {
+            // Arrange
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(Task.FromResult<Event>(null));
+
+            // Act
+            var result = await _eventsController.AddResult(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_ReturnsClubIdDiff()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 2, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Position };
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.AddResult(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_ReturnsCountZero()
+        {
+            // Arrange
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Time };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var enrolls = new List<EventEnroll>() { new EventEnroll { UserId = "1",EnrollStatus = EnrollPaymentStatus.Valid } };
+            var results = new List<EventResult>() { new EventResult { UserId = "1", } };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.GetResults(A<int>._)).Returns(results);
+            A.CallTo(() => _eventService.GetEnrolls(A<int>._)).Returns(enrolls);
+
+            // Act
+            var result = await _eventsController.AddResult(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NoUsersToResult");
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_Post_Returns()
+        {
+            // Arrange
+            var res = new ResultModel { Result = "2.0", UserId = "1" };
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Time };
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateResult(A<EventResult>._)).Returns(A.Fake<EventResult>());
+
+            // Act
+            var result = await _eventsController.AddResult(1, res);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Results");
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_Post_ReturnsScore()
+        {
+            // Arrange
+            var res = new ResultModel { Result = "2", UserId = "1" };
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Score };
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateResult(A<EventResult>._)).Returns(A.Fake<EventResult>());
+
+            // Act
+            var result = await _eventsController.AddResult(1, res);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Results");
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_Post_ReturnsPosition()
+        {
+            // Arrange
+            var res = new ResultModel { Result = "2", UserId = "1" };
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Position };
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateResult(A<EventResult>._)).Returns(A.Fake<EventResult>());
+
+            // Act
+            var result = await _eventsController.AddResult(1, res);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Results");
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_Post_ReturnsEventNull()
+        {
+            // Arrange
+            var res = new ResultModel { Result = "2.0", UserId = "1" };
+            var role = new UsersRoleClub { ClubId = 1 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(Task.FromResult<Event>(null));
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.AddResult(1, res);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_AddResult_Post_ReturnsClubIdDiff()
+        {
+            // Arrange
+            var res = new ResultModel { Result = "2.0", UserId = "1" };
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Time };
+            var role = new UsersRoleClub { ClubId = 2 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.AddResult(1, res);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task EventsController_DeleteResult_ReturnsSuccess()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 2 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetResult(A<string>._, A<int>._)).Returns(A.Fake<EventResult>());
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.DeleteResult("", 1);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Results");
+        }
+
+        [Fact]
+        public async Task EventsController_DeleteResult_ReturnsUserIdNull()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventsController.DeleteResult(null, 1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task EventsController_DeleteResult_ReturnsRoleNull()
+        {
+            // Arrange
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.DeleteResult("", 1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task EventsController_DeleteResult_ReturnsDeleteNull()
+        {
+            // Arrange
+            var role = new UsersRoleClub { ClubId = 2 };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _eventService.GetResult(A<string>._, A<int>._)).Returns(Task.FromResult<EventResult>(null));
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+
+            // Act
+            var result = await _eventsController.DeleteResult("", 1);
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");

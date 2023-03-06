@@ -806,10 +806,10 @@ namespace SCManagement.Services.ClubService
             var clubs = await GetClubs();
 
             //get all clubs
-            if (name == null) return clubs;
+            if (name == null) return clubs.ToList();
 
             //get clubs with the name that user search
-            return clubs.Where(c => c.Name.Contains(name));
+            return clubs.Where(c => c.Name.Contains(name)).ToList();
         }
 
         /// <summary>
