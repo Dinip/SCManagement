@@ -37,7 +37,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form id="myForm" asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="Name">
@@ -219,6 +219,8 @@
 
 <script>
     window.onload = function () {
+        document.getElementById("myForm").addEventListener("submit", validateForm);
+
         const culture = "@ViewBag.CultureInfo"
         toggleLang(culture, "details")
         toggleLang(culture, "name")
@@ -334,6 +336,42 @@
             spanLimiteEnrollError2.style.display = "none"
         }
     }
+
+    function validateForm(event) {
+        // Verificar se pelo menos um dos campos está preenchido
+        const addressByPath = document.getElementById("AddressByPath").value;
+        const locationString = document.getElementById("Location").value;
+        const spanLocation = document.getElementById("spanStreet").innerHTML
+
+        if (addressByPath.trim() === "" && locationString.trim() === "" && spanLocation.trim()=== "") {
+            event.preventDefault();
+            alert("Por favor, coloque uma localização no evento.");
+            return false;
+        }
+
+
+        // Verificar se algum dos campos de tradução está preenchido
+        const translations = document.querySelectorAll('textarea[name^="EventTranslationsName"]');
+
+        let isTranslationFilled = false;
+        for (let i = 0; i < translations.length; i++) {
+            if (translations[i].value.trim() !== '') {
+                isTranslationFilled = true;
+                break;
+            }
+        }
+
+        // Se algum dos campos de tradução está preenchido, permite o envio do formulário
+        if (isTranslationFilled) {
+            return true;
+        }
+
+        // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
+        event.preventDefault();
+        alert("Preencha pelo menos um campo de tradução.");
+        return false;
+    }
+
 </script>
 
 <style>

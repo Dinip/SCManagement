@@ -145,9 +145,9 @@
 
             <input asp-for="Route" type="hidden" class="form-control" id="ev" />
             <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
+            <input asp-for="LocationString" type="hidden" id="Location" />
             <input type="hidden" class="form-control" id="path" value="null" />
 
-            <input asp-for="LocationString" type="hidden" id="Location" />
 
             <br /> <br />
             <div id="cardMapBox">
@@ -186,6 +186,9 @@
 
 <script>
     window.onload = function () {
+            document.getElementById("myForm").addEventListener("submit", validateForm);
+
+
         document.getElementById("startDateTime").value = new Date();
         document.getElementById("EnrollLimitDate").value = new Date();
         document.getElementById("endDateTime").value = new Date();
@@ -355,4 +358,40 @@
                 spanLimiteEnrollError2.style.display = "none"
             }
     }
+
+        function validateForm(event) {
+            // Verificar se pelo menos um dos campos está preenchido
+            const addressByPath = document.getElementById("AddressByPath").value;
+            const locationString = document.getElementById("Location").value;
+            if (addressByPath.trim() === "" && locationString.trim() === "") {
+                event.preventDefault();
+                alert("Por favor, coloque uma localização no evento.");
+                return false;
+            }
+
+
+            // Verificar se algum dos campos de tradução está preenchido
+            const translations = document.querySelectorAll('textarea[name^="EventTranslationsName"]');
+
+            let isTranslationFilled = false;
+            for (let i = 0; i < translations.length; i++) {
+                if (translations[i].value.trim() !== '') {
+                    isTranslationFilled = true;
+                    break;
+                }
+            }
+
+            // Se algum dos campos de tradução está preenchido, permite o envio do formulário
+            if (isTranslationFilled) {
+                return true;
+            }
+
+            // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
+            event.preventDefault();
+            alert("Preencha pelo menos um campo de tradução.");
+            return false;
+        }
+
+
+
 </script>
