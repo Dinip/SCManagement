@@ -4,6 +4,8 @@ function PathMapBoxConfig() {
 
     const path = document.getElementById("path");
     let map;
+    let locationText = document.getElementById("locationText");
+    
 
     if (path.value !== 'null') {
         let coordsString = path.value;
@@ -91,6 +93,7 @@ function PathMapBoxConfig() {
         if (newCoords != null) {
             ev.value = newCoords;
             btnSave.classList.add("d-none");
+            locationText.innerHTML = strings.newAddress + " " + addressByPath.value;
         }
     }
 
@@ -320,6 +323,7 @@ function PathMapBoxConfig() {
         }
 
         btnSave.classList.remove("d-none");
+        locationText.innerHTML = "";
         newCoords = null;
         ev.value = newCoords;
         addressByPath.value = null;
@@ -366,10 +370,12 @@ function PathMapBoxConfig() {
             const data = await response.json();
             const address = data.features[0].place_name;
             addressByPath.value = address;
+            
         } catch (error) {
             errorMessage("Other")
             removeRoute();
             draw.deleteAll();
+            locationText.innerHTML = "";
             return;
         }
     }
@@ -407,45 +413,49 @@ function SearchMapBoxConfig() {
     map.addControl(geocoder, 'top-left');
 
     let address;
-
+    let btn = document.getElementById("save-button");
     map.on('load', () => {
         // Listen for the `geocoder.input` event that is triggered when a user
         // makes a selection
         geocoder.on('result', (event) => {
             address = event.result;
-
+            btn.classList.remove("d-none");
         });
     });
 
 
-    let btn = document.getElementById("save-button");
-
+    
+    let locationText = document.getElementById("locationText");
     btn.onclick = function () {
-            try {
-                if (address != null) {
+        try {
+            if (address != null) {
+                let { text, geometry, context } = address;
+                let addressCode = context.find(item => item.id.startsWith('postcode')).text;
+                let city = context.find(item => item.id.startsWith('place')).text;
+                let district = context.find(item => item.id.startsWith('region')).text;
+                let country = context.find(item => item.id.startsWith('country')).text;
+                let coord = geometry.coordinates;
 
-                    let { text, geometry, context } = address;
-                    let addressCode = context[0].text;
-                    let city = context[1].text;
-                    let district = context[2].text;
-                    let country = context[3].text;
-                    let coord = geometry.coordinates;
-
-                    let Location = document.getElementById("Location");
-                    Location.value = JSON.stringify({
-                                CoordinateX: coord[0],
-                                CoordinateY: coord[1],
-                                ZipCode: addressCode,
-                                Street: text,
-                                City: city,
-                                District: district,
-                                Country: country,
-                    })
-                }
-            } catch (error) {
-                alert("Terá de inserir uma localização com rua incluida");
+                let location = document.getElementById("Location");
+                location.value = JSON.stringify({
+                    CoordinateY: coord[1],
+                    CoordinateX: coord[0],
+                    ZipCode: addressCode,
+                    Street: text,
+                    City: city,
+                    District: district,
+                    Country: country,
+                })
+                locationText.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
+                btn.classList.add("d-none");
             }
+
+        } catch (error) {
+            $(".toast").show();
+            document.getElementById('alertText').innerHTML = strings.searchError;
         }
+
+    }
 }
 
 

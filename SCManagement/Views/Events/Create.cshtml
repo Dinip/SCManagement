@@ -201,23 +201,24 @@
             <input type="hidden" class="form-control" id="path" value="null" />
 
             <input asp-for="LocationString" type="hidden" id="Location" />
-
+            <span id="locationText" class="text-to-dark"></span>
             <br />
-            <div id="cardMapBox" class="d-none">
+            <div id="cardMapBox">
                 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; width:100% !important;">
                     <div class="card-body">
                         <div id='map'></div>
                         <div id="menu">
                         </div>
                         <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
-                        
                     </div>
                 </div>
             </div>
 
-            <div class="form-group mt-3">
+            <div class="form-group mt-3 d-flex">
                 <input type="submit" value="Create" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+                <a asp-action="Index" class="btn btn-primary ms-3" style="color:black; border-radius: 10px; background-color: white; border: 2px solid red; text-decoration:none;"><strong>Cancel</strong></a>
             </div>
+            
         </form>
     </div>
 </div>
@@ -248,7 +249,7 @@
         let startDateTime = document.getElementById("startDateTime");
         let endDateTime = document.getElementById("endDateTime");
         let sameDay = document.getElementById("SameDay");
-        let spanEndError = document.getElementById("spanEndDateError")
+        let spanEndError = document.getElementById("spanEndDateError") 
         if (startDateTime.value != "") {
             if (startDateTime.value == endDateTime.value) {
                 sameDay.checked = true;
@@ -309,6 +310,8 @@
         "start": '@Html.Raw(StringLocalizer["Start"].Value.ToString())',
         "end": '@Html.Raw(StringLocalizer["End"].Value.ToString())',
         "searchLocation": '@Html.Raw(StringLocalizer["SearchLocation"].Value.ToString())',
+        "newAddress": '@Html.Raw(StringLocalizer["NewAddress"].Value.ToString())',
+        "searchError": '@Html.Raw(StringLocalizer["SearchError"].Value.ToString())',
     }
 
     function toggleLang(lang, elemento) {
@@ -361,17 +364,15 @@
     function ToggleMapBox() {
         let ckbHaveRoute = document.getElementById("ckbHaveRoute");
         let addressContainer = document.getElementById("AddressContainer");
-        
+        document.getElementById("save-button").classList.remove("d-none");
 
         if (ckbHaveRoute.checked) {
-            document.getElementById("cardMapBox").classList.remove("d-none");
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
             PathMapBoxConfig();
         }
         else {
-            document.getElementById("cardMapBox").classList.add("d-none");
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             SearchMapBoxConfig();

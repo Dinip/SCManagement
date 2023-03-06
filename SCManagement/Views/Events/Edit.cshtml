@@ -106,7 +106,7 @@
             <div class="Name">
                 <label class="control-label text-to-dark">@StringLocalizer["Name"]</label>
                 <div class="language-select">
-                    @foreach (CultureInfo lang in ViewBag.Languages)
+                    @foreach (CultureInfo lang in ViewBag.Languages) 
                     {
                         <input type="button" class="lang-btn lang-btn-name" id="btn-name-@lang.Name" onclick="toggleLang('@lang.Name','name')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
                     }
@@ -177,7 +177,7 @@
             </div>
 
             <div id="LocationContainer" class="form-group mt-3">
-                <a id="btnAddLocation" onclick="AddLocation()" class="form-check-input">Inserir Localização</a>
+                <a id="btnAddLocation" onclick="AddLocation()" class="form-check-input" style="cursor:pointer">Inserir Localização</a>
                 <input asp-for="LocationString" type="hidden" id="Location" />
 
                 @if (@Model.LocationId != null && Model.Location != null)
@@ -200,7 +200,6 @@
                 <label asp-for="AddressByPath" class="control-label"></label>
             </div>
 
-
             <br />
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
 
@@ -215,8 +214,9 @@
                 </div>
             </div>
 
-            <div class="form-group mt-3">
+            <div class="form-group mt-3 d-flex">
                 <input type="submit" value="Save" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+                <a asp-action="Index" class="btn btn-primary ms-3" style="color:black; border-radius: 10px; background-color: white; border: 2px solid red; text-decoration:none;"><strong>Cancel</strong></a>
             </div>
         </form>
     </div>
@@ -300,6 +300,8 @@
             mapBox.style.display = "block";
             addressContainer.style.display = "block";
             locationContainer.style.display = "none";
+
+            document.getElementById("map").innerHTML = "";
             //Load MapBox
             PathMapBoxConfig();
         }
@@ -310,6 +312,7 @@
 
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
+            document.getElementById("map").innerHTML = "";
 
             if (spanStreet.innerHTML != null) {
                 btnAddLocation.innerHTML = "Atualizar Localização"
