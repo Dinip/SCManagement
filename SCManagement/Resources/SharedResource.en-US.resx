@@ -1250,4 +1250,24 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Make sure you are searching for a location that contains a street, city, and district.</value>
     <comment>03-03-2023_SearchMapBox</comment>
   </data>
+  <data name="1DayEvent" xml:space="preserve">
+    <value>1 day event</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Enroll Limit Date" xml:space="preserve">
+    <value>Enroll Limit Date</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Minimum 1 character" xml:space="preserve">
+    <value>Minimum 1 character</value>
+    <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Public Event" xml:space="preserve">
+    <value>Public Event</value>
+    <comment>06-03-2023_events</comment>
+  </data>
 </root>

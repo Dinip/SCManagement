@@ -119,11 +119,11 @@
                         <input type="button" class="lang-btn lang-btn-name" id="btn-name-@lang.Name" onclick="toggleLang('@lang.Name','name')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
                     }
                     <input type="button" class="lang-btn translatebtn" onclick="translateFn('name')" value="translate" />
-
                 </div>
                 <div style="margin-left:12px; z-index:0;">
                     @Html.EditorFor(x => x.EventTranslationsName)
                 </div>
+                <span class="text-to-dark" style="top:-20px !important;">*@StringLocalizer["Minimum 1 character"]</span>
             </div>
             <div class="form-floating mt-3">
                 <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
@@ -146,7 +146,7 @@
                 <span class="text-danger" id="spanLimiteEnrollError2" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
             <div class="form-group mt-3">
-                <label class="control-label text-to-dark">Evento de 1 dia</label>
+                <label class="control-label text-to-dark">@StringLocalizer["1DayEvent"]</label>
                 @*Criar CheckBox input*@
                 <input type="checkbox" id="SameDay" name="SameDay" onchange="ApplySameDate()" />
             </div>
@@ -210,13 +210,22 @@
                         <div id="menu">
                         </div>
                         <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
+                        <div id="toast" class="toast align-items-center mt-4" style="margin-right:0 !important;">
+                            <div class="d-flex">
+                                <div class="toast-body">
+                                    <span id="toastTextLocation" class="d-none">Location</span>
+                                    <span id="toastTextPath" class="d-none">Path</span>
+                                </div>
+                                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="form-group mt-3 d-flex">
-                <input type="submit" value="Create" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
-                <a asp-action="Index" class="btn btn-primary ms-3" style="color:black; border-radius: 10px; background-color: white; border: 2px solid red; text-decoration:none;"><strong>Cancel</strong></a>
+                <input type="submit" value="@StringLocalizer["Create"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+                <a asp-action="Index" class="btn btn-primary ms-3" style="color:black; border-radius: 10px; background-color: white; border: 2px solid red; text-decoration:none;"><strong>@StringLocalizer["Cancel"]</strong></a>
             </div>
             
         </form>
@@ -365,16 +374,20 @@
         let ckbHaveRoute = document.getElementById("ckbHaveRoute");
         let addressContainer = document.getElementById("AddressContainer");
         document.getElementById("save-button").classList.remove("d-none");
-
+        $(".toast").show();
         if (ckbHaveRoute.checked) {
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
+            document.getElementById("toastTextPath").classList.remove("d-none");
+            document.getElementById("toastTextLocation").classList.add("d-none");
             PathMapBoxConfig();
         }
         else {
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
+            document.getElementById("toastTextLocation").classList.remove("d-none");
+            document.getElementById("toastTextPath").classList.add("d-none");
             SearchMapBoxConfig();
         }
     }
