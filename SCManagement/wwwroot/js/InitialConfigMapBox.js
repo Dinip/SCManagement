@@ -366,6 +366,7 @@ function PathMapBoxConfig() {
             const data = await response.json();
             const address = data.features[0].place_name;
             addressByPath.value = address;
+            document.getElementById("lblLocalization").innerHTML = address;
         } catch (error) {
             errorMessage("Other")
             removeRoute();
@@ -441,6 +442,8 @@ function SearchMapBoxConfig() {
                                 District: district,
                                 Country: country,
                     })
+
+                    document.getElementById("lblLocalization").innerHTML = text + ", " + city + ", " + district + ", " + country;
                 }
             } catch (error) {
                 alert("Terá de inserir uma localização com rua incluida");

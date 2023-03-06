@@ -1395,4 +1395,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="ButtonAdd" xml:space="preserve">
     <value>Adicionar</value>
   </data>
+  <data name="Localization" xml:space="preserve">
+    <value>Localização</value>
+  </data>
 </root>

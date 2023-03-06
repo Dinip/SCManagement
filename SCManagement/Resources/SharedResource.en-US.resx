@@ -1259,4 +1259,7 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="ButtonAdd" xml:space="preserve">
     <value>Add</value>
   </data>
+  <data name="Localization" xml:space="preserve">
+    <value>Localization</value>
+  </data>
 </root>
