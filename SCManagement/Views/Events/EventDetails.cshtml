@@ -131,7 +131,7 @@
         }
 
         <div class="mt-3 d-flex">
-            @if (ViewBag.IsStaff)
+            @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
             {
                 <a asp-action="Edit" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none;">Edit</a>
                 <form asp-action="Delete">
