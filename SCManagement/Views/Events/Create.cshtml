@@ -105,7 +105,7 @@
 }
 
 <div class="container ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Create Event</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Create Event"]</h1>
     <hr />
     <div class="row">
         <form id="myForm" asp-action="Create">
@@ -203,21 +203,55 @@
             <input asp-for="LocationString" type="hidden" id="Location" />
             <span id="locationText" class="text-to-dark"></span>
             <br />
-            <div id="cardMapBox">
+            
+            <a onclick="showTutorial()" class="mt-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
+           
+            <div id="cardMapBox" class="mt-3">
                 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; width:100% !important;">
                     <div class="card-body">
                         <div id='map'></div>
                         <div id="menu">
                         </div>
                         <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
-                        <div id="toast" class="toast align-items-center mt-4" style="margin-right:0 !important;">
-                            <div class="d-flex">
-                                <div class="toast-body">
-                                    <span id="toastTextLocation" class="d-none">Location</span>
-                                    <span id="toastTextPath" class="d-none">Path</span>
-                                </div>
-                                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal" class="modal" style="overflow:hidden;">
+                <div class="modal-content" style="width:90%; height:90%; padding:0; margin-top:20px; border-radius:15px !important; overflow:scroll;">
+                    <span onclick="$('#modal').hide()" class="close" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
+                    <div class="container mt-5">
+                        <h2>Tutorial</h2>
+                        <hr />
+                        <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["IntroTutorial"]</span>
+                        
+                        <div class="mt-3">
+                            <img src="~/img/SearchMap.png" width="100%" height="auto" />
+                        </div>
+                        
+                        <div class="row d-flex align-items-center mt-3">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["SearchTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/SearchBarMap.png" width="auto" height="auto" />
                             </div>
+                        </div>
+                        <div class="row d-flex align-items-center mt-3">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["SaveTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/SaveMap.png" width="auto" height="auto" />
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mt-3">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["DrawTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/DrawMap.png" width="auto" height="auto" />
+                            </div>  
+                        </div>
+                        <div class="row d-flex align-items-center mt-3 mb-5">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["DeleteTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/DeleteMap.png" width="auto" height="auto" />
+                            </div>  
                         </div>
                     </div>
                 </div>
@@ -225,7 +259,7 @@
 
             <div class="form-group mt-3 d-flex">
                 <input type="submit" value="@StringLocalizer["Create"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
-                <a asp-action="Index" class="btn btn-primary ms-3" style="color:black; border-radius: 10px; background-color: white; border: 2px solid red; text-decoration:none;"><strong>@StringLocalizer["Cancel"]</strong></a>
+                <a asp-action="Index" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border: 1px solid black; text-decoration:none;"><strong>@StringLocalizer["Cancel"]</strong></a>
             </div>
 
         </form>
@@ -253,6 +287,10 @@
         toggleLang(culture, "details")
         toggleLang(culture, "name")
         SearchMapBoxConfig();
+    }
+
+    function showTutorial(){
+        $('#modal').show();
     }
 
     function ApplySameDate() {
@@ -380,15 +418,11 @@
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
-            document.getElementById("toastTextPath").classList.remove("d-none");
-            document.getElementById("toastTextLocation").classList.add("d-none");
             PathMapBoxConfig();
         }
         else {
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
-            document.getElementById("toastTextLocation").classList.remove("d-none");
-            document.getElementById("toastTextPath").classList.add("d-none");
             SearchMapBoxConfig();
         }
     }

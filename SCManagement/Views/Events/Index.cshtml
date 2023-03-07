@@ -7,11 +7,11 @@
 
 
 <div class="container-fluid ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Events</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Events"]</h1>
     @if (ViewBag.IsStaff != null)
     {
         <p>
-            <a asp-action="Create">Create New</a>
+            <a asp-action="Create">@StringLocalizer["Create New"]</a>
         </p>
     }
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
@@ -37,7 +37,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr onclick="openDetails(@item.Id)" style="cursor:pointer">
+                        <tr>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(model => item.EventTranslations.FirstOrDefault(c => c.Atribute == "Name").Value)
                             </td>
@@ -51,7 +51,7 @@
                                 @Html.DisplayFor(modelItem => item.Club.Name)
                             </td>
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.Id">Details</a>
+                                <a asp-action="Details" asp-route-id="@item.Id">@StringLocalizer["Details"]</a>
                             </td>
                         </tr>
                     }
