@@ -1358,4 +1358,12 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Terms and conditions</value>
     <comment>07-03-2023_myclub</comment>
   </data>
+  <data name="Change EMD" xml:space="preserve">
+    <value>Change EMD</value>
+    <comment>08-03-2023_profile</comment>
+  </data>
+  <data name="Remove EMD" xml:space="preserve">
+    <value>Remove EMD</value>
+    <comment>08-03-2023_profile</comment>
+  </data>
 </root>
