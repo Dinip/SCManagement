@@ -56,7 +56,7 @@ function setTheme(theme) {
 
 
         for (let i = 0; i < card.length; i++) {
-            card[i].style.background = '#515151';
+            card[i].style.background = '#3d4245';
         }
         for (let i = 0; i < body.length; i++) {
             body[i].classList.add("bg-dark");

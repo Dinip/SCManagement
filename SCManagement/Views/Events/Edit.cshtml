@@ -116,6 +116,7 @@
                 <div style="margin-left:12px; z-index:0;">
                     @Html.EditorFor(x => x.EventTranslationsName)
                 </div>
+                <span class="text-to-dark" style="top:-20px !important;">*@StringLocalizer["Minimum 1 character"]</span>
             </div>
             <div class="form-floating mt-3">
                 <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
@@ -201,15 +202,59 @@
             </div>
 
             <br />
+
+            <a id="tutorialBtn" onclick="showTutorial()" class="mt-3 d-none" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
+
+
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
 
-            <div id="cardMapBox">
+            <div id="cardMapBox" class="mt-3">
                 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px;  width:100% !important;">
                     <div class="card-body">
                         <div id='map'></div>
                         <div id="menu">
                         </div>
                         <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="modal" class="modal" style="overflow:hidden;">
+                <div class="modal-content" style="width:90%; height:90%; padding:0; margin-top:20px; border-radius:15px !important; overflow:scroll;">
+                    <span onclick="$('#modal').hide()" class="close" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
+                    <div class="container mt-5">
+                        <h2>Tutorial</h2>
+                        <hr />
+                        <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["IntroTutorial"]</span>
+
+                        <div class="mt-3">
+                            <img src="~/img/SearchMap.png" width="100%" height="auto" />
+                        </div>
+
+                        <div class="row d-flex align-items-center mt-3">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["SearchTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/SearchBarMap.png" width="auto" height="auto" />
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mt-3">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["SaveTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/SaveMap.png" width="auto" height="auto" />
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mt-3">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["DrawTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/DrawMap.png" width="auto" height="auto" />
+                            </div>
+                        </div>
+                        <div class="row d-flex align-items-center mt-3 mb-5">
+                            <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["DeleteTutorial"]</span>
+                            <div class="col-4">
+                                <img src="~/img/DeleteMap.png" width="auto" height="auto" />
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -225,6 +270,10 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
 <script type="text/javascript">
+
+    function showTutorial() {
+        $('#modal').show();
+    }
 
     function toggleLang(lang, elemento) {
         const btns = document.querySelectorAll(`input.lang-btn-${elemento}`)
@@ -296,13 +345,14 @@
 
         let spanStreet = document.getElementById("spanStreet");
         let btnAddLocation = document.getElementById("btnAddLocation");
+        let tutorialBtn = document.getElementById("tutorialBtn");
 
 
         if (ckbHaveRoute.checked == true) {
             mapBox.style.display = "block";
             addressContainer.style.display = "block";
             locationContainer.style.display = "none";
-
+            tutorialBtn.classList.remove("d-none");
             document.getElementById("map").innerHTML = "";
             //Load MapBox
             PathMapBoxConfig();
@@ -311,7 +361,7 @@
             mapBox.style.display = "none";
             addressContainer.style.display = "none";
             locationContainer.style.display = "block";
-
+            tutorialBtn.classList.add("d-none");
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
@@ -329,11 +379,11 @@
         let mapBox = document.getElementById("cardMapBox");
         let addressContainer = document.getElementById("AddressContainer");
         let locationContainer = document.getElementById("LocationContainer");
-
+        let tutorialBtn = document.getElementById("tutorialBtn");
         mapBox.style.display = "block";
         //addressContainer.style.display = "block";
         locationContainer.style.display = "none";
-
+        tutorialBtn.classList.remove("d-none");
         SearchMapBoxConfig();
     }
 

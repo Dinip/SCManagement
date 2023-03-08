@@ -116,9 +116,11 @@
                        type="button"
                        style="color:red"
                        class="@ShowRemoveButton() align-self-end fa-solid fa-trash fa-2xl mb-3 col"
-                       onclick="removePhoto()">
+                       onclick="removePhoto()" 
+                       title=@StringLocalizer["RemovePhoto"]>
+                        
                     </i>
-                    <i class="fa-solid fa-2xl fa-pen-to-square ms-4 col text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
+                    <i class="fa-solid fa-2xl fa-pen-to-square ms-4 col text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;" title=@StringLocalizer["ChangePhoto"]></i>
                 </div>
             </div>
         </div>

@@ -1418,4 +1418,88 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Evento público</value>
     <comment>06-03-2023_events</comment>
   </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Perfil</value>
+    <comment>06-03-2023_LoginPartial</comment>
+  </data>
+  <data name="RemovePhoto" xml:space="preserve">
+    <value>Remover foto</value>
+    <comment>06-03-2023_LoginPartial</comment>
+  </data>
+  <data name="CancelSubscription" xml:space="preserve">
+    <value>Cancelar Inscrição</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="ChangePhoto" xml:space="preserve">
+    <value>Mudar foto</value>
+    <comment>07-03-2023_profile</comment>
+  </data>
+  <data name="ClubPage" xml:space="preserve">
+    <value>Pagina do Clube</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Create Event" xml:space="preserve">
+    <value>Criar Evento</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Apagar</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="DeleteTutorial" xml:space="preserve">
+    <value>Exclua todo o seu caminho. Se você não quiser um caminho em seu evento, este botão não aparecerá</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="DrawTutorial" xml:space="preserve">
+    <value>Desenhe linhas clicando no mapa. Clique duas vezes no último local para submeter o seu caminho. Se você não quiser um caminho em seu evento, este botão não aparecerá</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Enroll" xml:space="preserve">
+    <value>Inscrever</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Enrroled" xml:space="preserve">
+    <value>Inscrito</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="IntroTutorial" xml:space="preserve">
+    <value>Se você escolheu que deseja um caminho em seu evento, este é o mapa que você verá. Use as informações abaixo para criar o melhor caminho para o seu evento:</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="MissingPayment" xml:space="preserve">
+    <value>Pagamento em Falta -</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="PaySubscription" xml:space="preserve">
+    <value>Pagar Inscrição</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Resultados</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="SaveTutorial" xml:space="preserve">
+    <value>Guarde a sua localização antes de criar seu evento</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="SearchTutorial" xml:space="preserve">
+    <value>Use esta entrada para pesquisar a localização do seu evento</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="SubscriptionState" xml:space="preserve">
+    <value>Estado da Inscrição</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Terms and conditions" xml:space="preserve">
+    <value>Termos e condições</value>
+    <comment>07-03-2023_myclub</comment>
+  </data>
+  <data name="Change EMD" xml:space="preserve">
+    <value>Mudar EMD</value>
+    <comment>08-03-2023_profile</comment>
+  </data>
+  <data name="Remove EMD" xml:space="preserve">
+    <value>Remover EMD</value>
+    <comment>08-03-2023_profile</comment>
+  </data>
 </root>

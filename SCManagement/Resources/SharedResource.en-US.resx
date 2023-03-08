@@ -1153,8 +1153,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>28-02-2023_payments</comment>
   </data>
   <data name="PaymentsRecieved" xml:space="preserve">
-    <value>Payments Recieved</value>
-    <comment>01-03-2023_payments</comment>
+    <value>Payments Received</value>
+    <comment>07-03-2023_payments</comment>
   </data>
   <data name="AddPath" xml:space="preserve">
     <value>Add Path</value>
@@ -1281,5 +1281,89 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Public Event" xml:space="preserve">
     <value>Public Event</value>
     <comment>06-03-2023_events</comment>
+  </data>
+  <data name="Profile" xml:space="preserve">
+    <value>Profile</value>
+    <comment>06-03-2023_LoginPartial</comment>
+  </data>
+  <data name="RemovePhoto" xml:space="preserve">
+    <value>Remove photo</value>
+    <comment>06-03-2023_LoginPartial</comment>
+  </data>
+  <data name="CancelSubscription" xml:space="preserve">
+    <value>Cancel Subscription</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="ChangePhoto" xml:space="preserve">
+    <value>Change Photo</value>
+    <comment>07-03-2023_profile</comment>
+  </data>
+  <data name="ClubPage" xml:space="preserve">
+    <value>Club Page</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Create Event" xml:space="preserve">
+    <value>Create Event</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Delete</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="DeleteTutorial" xml:space="preserve">
+    <value>Delete your entire path. If you dont want a path in your event this button will not appear</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="DrawTutorial" xml:space="preserve">
+    <value>Draw lines by clicking on endpoints. Double click on the last location to submit your path. If you dont want a path in your event this button will not appear</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Enroll" xml:space="preserve">
+    <value>Enroll</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Enrroled" xml:space="preserve">
+    <value>Enrroled</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="IntroTutorial" xml:space="preserve">
+    <value>If you've chosen that you want a path at your event, this is the map you'll see. Use the information below to create the best path for your event:</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="MissingPayment" xml:space="preserve">
+    <value>Missing Payment</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="PaySubscription" xml:space="preserve">
+    <value>Pay Subscription</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Results" xml:space="preserve">
+    <value>Results</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="SaveTutorial" xml:space="preserve">
+    <value>Save your location before you create your event</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="SearchTutorial" xml:space="preserve">
+    <value>Use this input to search your event's location</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="SubscriptionState" xml:space="preserve">
+    <value>Subscription State</value>
+    <comment>07-03-2023_events</comment>
+  </data>
+  <data name="Terms and conditions" xml:space="preserve">
+    <value>Terms and conditions</value>
+    <comment>07-03-2023_myclub</comment>
+  </data>
+  <data name="Change EMD" xml:space="preserve">
+    <value>Change EMD</value>
+    <comment>08-03-2023_profile</comment>
+  </data>
+  <data name="Remove EMD" xml:space="preserve">
+    <value>Remove EMD</value>
+    <comment>08-03-2023_profile</comment>
   </data>
 </root>

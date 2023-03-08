@@ -25,8 +25,8 @@
                      class="rounded-circle col"
                      style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="col">
-                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removeFile('image')"></i>
-                    <i class="fa-solid fa-xl fa-pen-to-square row text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;"></i>
+                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removeFile('image')" title=@StringLocalizer["RemovePhoto"]></i>
+                    <i class="fa-solid fa-xl fa-pen-to-square row text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;" title=@StringLocalizer["ChangePhoto"]></i>
                 </div>
                 
             </div>
@@ -91,9 +91,9 @@
                             <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
                             
 
-                            <i id="btnRemoveEMD" class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
-                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
-                            <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;"></i>
+                            <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
+                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')" ></i>
+                            <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
                         </div>
                     </div>
                     <hr style="margin-bottom:20px;" />
@@ -121,8 +121,16 @@
             </form>
         </div>
     </div>
+    
 </div>
-
+<div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="position:absolute; top:10%; border: 2px solid red; border-right: 8px solid red; border-left:none; left:-2px;">
+    <div class="d-flex">
+        <div class="toast-body">
+            <strong id="alertText"></strong>
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+    </div>
+</div>
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
@@ -139,6 +147,11 @@
                 $("#modal").hide();
             }
         }
+
+        function closeToast() {
+            $(".toast").hide();
+        }
+
 
         function toggleModal(){
             $("#modal").show();
@@ -176,7 +189,9 @@
                 document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`).classList.remove("invisible")
             } else {
                 document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`).value = null
-                alert(only + ' ' + `${allowedTypes.join('/')}` + '' + allow); //falta traduzir
+                //alert(only + ' ' + `${allowedTypes.join('/')}` + '' + allow); //falta traduzir
+                $(".toast").show();
+                document.getElementById('alertText').innerHTML = "only" + ' ' + `${allowedTypes.join('/')}` + ' ' + "allowed";
             }
         }
     </script>

@@ -19,7 +19,7 @@
 </style>
 
 <div class="container ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Details</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Details"]</h1>
     <hr />
     <dl class="row">
         <dt class="col-sm-2 dlBg text-to-dark">
@@ -109,23 +109,20 @@
             <dd class="col-sm-10 dlBg text-to-dark"></dd>
         }
 
-        <form asp-action="Results" asp-route-id="@Model.Id">
-            <button type="submit" class="btn btn-primary">Resultados</button>
-        </form>
 
         @*Botao para Inscrever ou pagar inscrição*@
         @if (ViewBag.IsEnrolled)
         {
-            <dt class="col-sm-2 dlBg text-to-dark">Estado da Inscrição</dt>
+            <dt class="col-sm-2 dlBg text-to-dark">@StringLocalizer["SubscriptionState"]</dt>
             @if (ViewBag.IsPayed)
             {
-                <dd class="col-sm-10 dlBg text-to-dark">Inscrito</dd>
+                <dd class="col-sm-10 dlBg text-to-dark">@StringLocalizer["Enrroled"]</dd>
             }
             else
             {
                 <dd class="col-sm-10 dlBg text-to-dark">
-                    Pagamento em Falta -
-                    <a href="/Payment" class="btn btn-primary mt-3"> Pagar Inscrição</a>
+                    @StringLocalizer["MissingPayment"]
+                    <a href="/Payment" class="btn btn-primary mt-3">@StringLocalizer["PaySubscription"]</a>
                 </dd>
             }
         }
@@ -133,10 +130,10 @@
         <div class="mt-3 d-flex">
             @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
             {
-                <a asp-action="Edit" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none;">Edit</a>
+                <a asp-action="Edit" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none;">@StringLocalizer["Edit"]</a>
                 <form asp-action="Delete">
                     <input name="Id" value="@Model?.Id" class="form-control" hidden />
-                    <input type="submit" value="Delete" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;" />
+                    <input type="submit" value= "@StringLocalizer["Delete"]" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;" />
                 </form>
             }
 
@@ -145,25 +142,30 @@
                 @if (ViewBag.IsPayed == null)
                 {
                     <form asp-action="CancelEventEnroll" asp-route-id="@Model.Id">
-                        <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Cancelar Inscrição</button>
+                        <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["CancelSubscription"]</button>
                     </form>
                 }
-                else
-                {
-                    <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
-                        <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Inscrever</button>
-                    </form>
-                }
+                
+            }
+            else
+            {
+                <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
+                    <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Enroll"]</button>
+                </form>
             }
 
             <form asp-action="Details" asp-controller="Clubs" asp-route-id="@Model.ClubId">
-                <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Pagina do Clube</button>
+                <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["ClubPage"]</button>
             </form>
 
             @if (Model.Route != null)
             {
                 <a class="btn btn-primary ms-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
             }
+
+            <form asp-action="Results" asp-route-id="@Model.Id">
+                <button type="submit" class="btn btn-primary ms-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;">@StringLocalizer["Results"]</button>
+            </form>
 
             <a asp-action="Index" class="btn btn-primary ms-3" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;">@StringLocalizer["Back"]</a>
 

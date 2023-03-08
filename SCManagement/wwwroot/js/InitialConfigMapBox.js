@@ -452,12 +452,6 @@ function SearchMapBoxConfig() {
         } catch (error) {
             $(".toast").show();
             document.getElementById('alertText').innerHTML = strings.searchError;
-
         }
-
     }
-
 }
-
-
-

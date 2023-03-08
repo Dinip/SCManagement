@@ -173,7 +173,7 @@ input:checked + .slider:before {
 
 
 .card {
-    background: #e6e6e6;
+    background: #3d4245;
     backdrop-filter: blur(30px);
     max-height: 900px;
     border-radius: 20px;
