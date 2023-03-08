@@ -81,15 +81,16 @@ namespace SCManagement.Controllers
             }
 
             var userId = getUserIdFromAuthedUser();
-            var userRole = await _userService.GetSelectedRole(userId);
+
+            var userRole = await _clubService.GetUserRoleInClub(userId, myEvent.ClubId);
             //if event is not public need to check if user is in the club
-            if (!myEvent.IsPublic && userRole.ClubId != myEvent.ClubId)
+            if (!myEvent.IsPublic && userRole.RoleId == 0)
             {
                 return View("CustomError", "Error_Unauthorized");
             }
-
+            
             //if users is staff can see users enrolled
-            if (_clubService.IsClubStaff(userRole) && userRole.ClubId == myEvent.ClubId)
+            if (_clubService.IsClubStaff(userRole))
             {
                 ViewBag.IsStaff = true;
                 ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
@@ -288,13 +289,14 @@ namespace SCManagement.Controllers
             {
                 return View("CustomError", "Error_NotFound");
             }
-            var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-            if (!_clubService.IsClubStaff(role) || role.ClubId != myEvent.ClubId)
+
+            var userRole = await _clubService.GetUserRoleInClub(getUserIdFromAuthedUser(), myEvent.ClubId);
+            if (!_clubService.IsClubStaff(userRole))
             {
                 return View("CustomError", "Error_Unauthorized");
             }
 
-            ViewBag.ValidKey = await _paymentService.ClubHasValidKey(role.ClubId);
+            ViewBag.ValidKey = await _paymentService.ClubHasValidKey(userRole.ClubId);
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
@@ -358,8 +360,9 @@ namespace SCManagement.Controllers
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
 
                 //check if user is staff of the club that owns the event
-                var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-                if (!_clubService.IsClubStaff(role) || role.ClubId != eventToUpdate.ClubId)
+                var userRole = await _clubService.GetUserRoleInClub(getUserIdFromAuthedUser(), eventToUpdate.ClubId);
+
+                if (!_clubService.IsClubStaff(userRole))
                 {
                     return View("CustomError", "Error_Unauthorized");
                 }
@@ -369,7 +372,7 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_InvalidInput");
                 }
 
-                var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
+                var validKey = await _paymentService.ClubHasValidKey(userRole.ClubId);
 
                 //Quando o eventToUpdate ja tiver uma localização e o myEvent tiver um addressByPath ele vai meter a localização a null e guardar o address
                 if (eventToUpdate.LocationId != null && myEvent.Route != null)

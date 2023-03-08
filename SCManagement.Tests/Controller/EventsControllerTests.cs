@@ -386,7 +386,7 @@ namespace SCManagement.Tests.Controller
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
             var e = new Event { Id = 1 };
-            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
 

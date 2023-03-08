@@ -30,7 +30,7 @@ namespace SCManagement.Services.ClubService
         public bool IsClubPartner(string userId, int clubId);
         public bool ApproveCode(string code);
         public Task SendCodeEmail(int codeId, string email, int clubId);
-        public int GetUserRoleInClub(string userId, int clubId);
+        public Task<UsersRoleClub> GetUserRoleInClub(string userId, int clubId);
         public Task<IEnumerable<Modality>> GetModalities();
         public bool UserHasRoleInClub(string userId, int clubId, int roleId);
         public Task<IEnumerable<UsersRoleClub>> GetClubPartners(int clubId);

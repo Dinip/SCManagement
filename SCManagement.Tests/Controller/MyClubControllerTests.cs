@@ -1298,7 +1298,9 @@ namespace SCManagement.Tests.Controller
             A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubMember(id, A<int>._)).Returns(true);
             A.CallTo(() => _userService.GetUser(A<string>._)).Returns(user);
-            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(2);
+
+            var higher = new UsersRoleClub { RoleId = 2 };
+            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(higher);
 
             // Act
             var result = await _controller.UserDetails(id);
@@ -1316,7 +1318,9 @@ namespace SCManagement.Tests.Controller
             _applicationContextService.UserRole = new UsersRoleClub { RoleId = 2 };
             A.CallTo(() => _clubService.IsClubMember(A<string>._, A<int>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubMember(id, A<int>._)).Returns(true);
-            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(1);
+
+            var lower = new UsersRoleClub { RoleId = 1 };
+            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(lower);
 
             // Act
             var result = await _controller.UserDetails(id);

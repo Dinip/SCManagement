@@ -239,9 +239,10 @@ namespace SCManagement.Services.ClubService
         /// <param name="userId"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
-        public int GetUserRoleInClub(string userId, int clubId)
+        public async Task<UsersRoleClub> GetUserRoleInClub(string userId, int clubId)
         {
-            return _context.UsersRoleClub.Where(f => f.UserId == userId && f.ClubId == clubId).Select(r => r.RoleId).FirstOrDefault();
+            var result = await _context.UsersRoleClub.FirstOrDefaultAsync(u => u.UserId == userId && u.ClubId == clubId);
+            return result ?? new UsersRoleClub { Id = 0, UserId = userId, ClubId = 0, RoleId = 0, Selected = false };
         }
 
 
@@ -809,7 +810,7 @@ namespace SCManagement.Services.ClubService
             if (name == null) return clubs.ToList();
 
             //get clubs with the name that user search
-            return clubs.Where(c => c.Name.Contains(name)).ToList();
+            return clubs.Where(c => c.Name.ToLower().Contains(name.ToLower())).ToList();
         }
 
         /// <summary>

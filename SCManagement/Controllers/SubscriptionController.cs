@@ -53,10 +53,10 @@ namespace SCManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateAutoRenew(int? id)
         {
-            if (id == null) return PartialView();
+            if (id == null) return PartialView("_CustomErrorPartial", "Error_NotFound"); ;
 
             var sub = await _paymentService.GetSubscription((int)id);
-            if (sub == null) return PartialView();
+            if (sub == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
 
             if (sub.AutoRenew)
             {

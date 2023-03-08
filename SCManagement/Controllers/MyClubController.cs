@@ -840,8 +840,8 @@ namespace SCManagement.Controllers
             var user = await _userService.GetUser(id);
             if (user == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
 
-            var userRoleId = _clubService.GetUserRoleInClub(user.Id, role.ClubId);
-            if (userRoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
+            var userRole = await _clubService.GetUserRoleInClub(user.Id, role.ClubId);
+            if (userRole.RoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
 
             return PartialView("_PartialUserDetails", user);
         }

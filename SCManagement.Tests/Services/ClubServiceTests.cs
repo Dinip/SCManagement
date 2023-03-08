@@ -318,29 +318,29 @@ namespace SCManagement.Tests.Services
         }
 
         [Fact]
-        public void ClubService_GetUserRoleInClub_ReturnsSuccess()
+        public async Task ClubService_GetUserRoleInClub_ReturnsSuccess()
         {
             // Arrange
 
             // Act
-            var result = _clubService.GetUserRoleInClub("Test 1", 1);
+            var result = await _clubService.GetUserRoleInClub("Test 1", 1);
 
             // Assert
-            result.Should().Be(50);
+            result.Should().BeOfType<UsersRoleClub>().Which.RoleId.Should().Be(50);
         }
 
         [Fact]
-        public void ClubService_GetUserRoleInClub_ReturnsDefault()
+        public async Task ClubService_GetUserRoleInClub_ReturnsDefault()
         {
             // Arrange
 
             // Act
-            var resultClubIdNotExist = _clubService.GetUserRoleInClub("Test 1", 1000);
-            var resultUserIdNotExist = _clubService.GetUserRoleInClub("Tester 1", 1);
+            var resultClubIdNotExist = await _clubService.GetUserRoleInClub("Test 1", 1000);
+            var resultUserIdNotExist = await _clubService.GetUserRoleInClub("Tester 1", 1);
 
             // Assert
-            resultClubIdNotExist.Should().Be(0);
-            resultUserIdNotExist.Should().Be(0);
+            resultClubIdNotExist.Should().BeOfType<UsersRoleClub>().Which.RoleId.Should().Be(0);
+            resultUserIdNotExist.Should().BeOfType<UsersRoleClub>().Which.RoleId.Should().Be(0);
         }
 
         [Fact]
