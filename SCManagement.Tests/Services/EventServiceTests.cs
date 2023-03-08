@@ -93,8 +93,6 @@ namespace SCManagement.Tests.Services
                 {
                     Id = 1,
                     ClubId = 1,
-                    Name = "Test Event 1",
-                    Details = "Test Event 1 Details",
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddDays(5),
                     IsPublic = true,
@@ -118,11 +116,26 @@ namespace SCManagement.Tests.Services
             {
                 Id = 2,
                 ClubId = 1,
-                Name = "Test Event 2",
-                Details = "Test Event 2 Details",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
+                EventTranslations = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test desc",
+                        Language = "en-US",
+                        Atribute = "Description",
+                    }
+                }
             };
 
             // Act
@@ -140,11 +153,26 @@ namespace SCManagement.Tests.Services
             {
                 Id = 3,
                 ClubId = 1,
-                Name = "Test Event 3",
-                Details = "Test Event 3 Details",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
+                EventTranslations = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test desc",
+                        Language = "en-US",
+                        Atribute = "Description",
+                    }
+                }
             };
 
             // Act
@@ -168,30 +196,6 @@ namespace SCManagement.Tests.Services
         }
 
         [Fact]
-        public async Task EventService_GetPublicEvents_ReturnsSuccess()
-        {
-            // Arrange
-
-            // Act
-            var result = await _eventService.GetPublicEvents();
-
-            // Assert
-            result.Should().BeOfType<List<Event>>().And.NotBeNull();
-        }
-
-        [Fact]
-        public async Task EventService_GetClubEvents_ReturnsSuccess()
-        {
-            // Arrange
-
-            // Act
-            var result = await _eventService.GetClubEvents(1);
-
-            // Assert
-            result.Should().BeOfType<List<Event>>().And.NotBeNull();
-        }
-
-        [Fact]
         public async Task EventService_UpdateEvent_ReturnsSuccess()
         {
             // Arrange
@@ -199,24 +203,35 @@ namespace SCManagement.Tests.Services
             {
                 Id = 4,
                 ClubId = 1,
-                Name = "Test Event 4",
-                Details = "Test Event 4 Details",
                 StartDate = DateTime.Now,
                 EndDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
+                EventTranslations = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test desc",
+                        Language = "en-US",
+                        Atribute = "Description",
+                    }
+                }
             };
 
             // Act
             await _eventService.CreateEvent(e);
             
-            e.Name = "Test Event 4 Updated";
-            e.Details = "Test Event 4 Details Updated";
-            
             var result = await _eventService.UpdateEvent(e);
 
             // Assert
             result.Should().BeOfType<Event>().And.NotBeNull();
-            _context.Event.Where(x => x.Id == 4).FirstOrDefault().Name.Should().Be("Test Event 4 Updated");
         }
 
         [Fact]
@@ -270,5 +285,199 @@ namespace SCManagement.Tests.Services
             _context.EventEnroll.Should().NotContain(e);
         }
 
+        [Fact]
+        public async Task EventService_GetNumberOfEnrolls_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.GetNumberOfEnrolls(1);
+
+            // Assert
+            result.Should().Be(0);
+        }
+
+        [Fact]
+        public async Task EventService_GetEnrolls_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.GetEnrolls(1);
+
+            // Assert
+            result.Should().BeOfType<List<EventEnroll>>();
+        }
+
+        [Fact]
+        public async Task EventService_GetEvents_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.GetEvents("Test 1");
+
+            // Assert
+            result.Should().BeOfType<List<Event>>();
+        }
+
+        [Fact]
+        public async Task EventService_GetEvents_ReturnsUserIdNull()
+        {
+            // Arrange
+            
+            // Act
+            var result = await _eventService.GetEvents(null);
+
+            // Assert
+            result.Should().BeOfType<List<Event>>();
+        }
+
+        [Fact]
+        public async Task EventService_CreateEventAddress_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.CreateEventAddress(new Address
+            {
+                Id = 1,
+                City = "Test",
+                Country = "Test",
+                Street = "Test",
+                ZipCode = "Test",
+                District = "Test",
+                CoordinateX = 2.0d,
+                CoordinateY = 2.0d
+            });
+
+            // Assert
+            result.Should().BeOfType<Address>();
+        }
+
+        [Fact]
+        public async Task EventService_UpdateEventAddress_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            await _eventService.CreateEventAddress(new Address
+            {
+                Id = 2,
+                City = "Test",
+                Country = "Test",
+                Street = "Test",
+                ZipCode = "Test",
+                District = "Test",
+                CoordinateX = 2.0d,
+                CoordinateY = 2.0d
+            });
+            
+            var result = await _eventService.UpdateEventAddress(2,new Address { Id = 1, City = "Test", Country = "Test", Street = "Test", ZipCode = "Test" });
+
+            // Assert
+            result.Should().BeOfType<Address>();
+        }
+
+        [Fact]
+        public async Task EventService_RemoveEventAddress_ReturnsSuccess()
+        {
+            // Arrange
+            Event e = new Event()
+            {
+                Id = 5,
+                ClubId = 1,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(5),
+                IsPublic = true,
+                AddressByPath = "",
+                EventTranslations = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 4,
+                        Value = "Test desc",
+                        Language = "en-US",
+                        Atribute = "Description",
+                    }
+                }
+            };
+            
+            // Act
+            await _eventService.CreateEvent(e);
+            await _eventService.RemoveEventAddress(e);
+
+            // Assert
+            _context.Event.Where(e => e.Id == 5).First().Location.Should().BeNull();
+        }
+
+        [Fact]
+        public async Task EventService_CreateResult_ReturnsSuccess()
+        {
+            // Arrange
+            EventResult e = new EventResult()
+            {
+                Id = 1,
+                EventId = 1,
+                UserId = "Test 1",
+            };
+
+            // Act
+            var result = await _eventService.CreateResult(e);
+
+            // Assert
+            result.Should().BeOfType<EventResult>();
+        }
+
+        [Fact]
+        public async Task EventService_GetResults_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _eventService.GetResults(1);
+
+            // Assert
+            result.Should().BeOfType<List<EventResult>>();
+        }
+
+        [Fact]
+        public async Task EventService_GetResult_ReturnsSuccess()
+        {
+            // Arrange
+            
+
+            // Act
+            var result = await _eventService.GetResult("Test 1", 1);
+
+            // Assert
+            result.Should().BeOfType<EventResult>();
+        }
+
+        [Fact]
+        public async Task EventService_DeleteResult_ReturnsSuccess()
+        {
+            // Arrange
+            EventResult e = new EventResult()
+            {
+                Id = 2,
+                EventId = 1,
+                UserId = "Test 2",
+            };
+
+            // Act
+            await _eventService.CreateResult(e);
+            await _eventService.DeleteResult(e);
+
+            // Assert
+            _context.EventResult.Should().NotContain(e);
+        }
     }
 }

@@ -118,7 +118,7 @@ namespace SCManagement.Tests.Controller
             // Arrange
             
             // Act
-            var result = await _controller.Create();
+            var result = await _controller.Create(1);
 
             // Assert
             result.Should().BeOfType<ViewResult>();
@@ -295,6 +295,18 @@ namespace SCManagement.Tests.Controller
 
             // Assert
             result.Should().BeOfType<PartialViewResult>().Which.ViewName.Should().Be("_PartialSearchClub");
+        }
+
+        [Fact]
+        public async Task ClubsController_Plans_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.Plans();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>();
         }
     }
 }

@@ -145,18 +145,16 @@ namespace SCManagement.Services.EventService
 
         public async Task RemoveEventAddress(Event myEvent)
         {
-            {
-                Address ad = _context.Address.Find(myEvent.LocationId);
+            Address ad = _context.Address.Find(myEvent.LocationId);
 
-                if (ad == null) return;
+            if (ad == null) return;
 
-                //myEvent.Location = null;
-                //myEvent.LocationId = null;
-                //_context.Event.Update(myEvent);
+            //myEvent.Location = null;
+            //myEvent.LocationId = null;
+            //_context.Event.Update(myEvent);
 
-                _context.Address.Remove(ad);
-                await _context.SaveChangesAsync();
-            }
+            _context.Address.Remove(ad);
+            await _context.SaveChangesAsync();
         }
 
 

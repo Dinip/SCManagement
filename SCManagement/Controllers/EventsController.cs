@@ -560,7 +560,7 @@ namespace SCManagement.Controllers
         {
             var ev = await _eventService.GetEvent(id);
 
-            if (ev == null) View("CustomError", "Error_NotFound");
+            if (ev == null) return View("CustomError", "Error_NotFound");
             if (ev.Route == null) return View("CustomError", "Error_NotFound");
             return View(ev);
         }
@@ -570,7 +570,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> UpdateEventLocation(int id)
         {
             var myEvent = await _eventService.GetEvent(id);
-            if (myEvent == null) return NotFound();
+            if (myEvent == null) return View("CustomError", "Error_NotFound");
 
 
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
@@ -593,7 +593,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_Unauthorized");
 
             var myEvent = await _eventService.GetEvent(eventId);
-            if (myEvent == null) return NotFound();
+            if (myEvent == null) return View("CustomError", "Error_NotFound");
 
             if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
                 return View("CustomError", "Error_Unauthorized");
@@ -639,10 +639,8 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> Results(int id)
         {
-
-
             var myEvent = await _eventService.GetEvent(id);
-            if (myEvent == null) return NotFound();
+            if (myEvent == null) return View("CustomError", "Error_NotFound");
 
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (myEvent.ClubId == role.ClubId && _clubService.IsClubStaff(role))
@@ -678,7 +676,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> AddResult(int id)
         {
             var myEvent = await _eventService.GetEvent(id);
-            if (myEvent == null) return NotFound();
+            if (myEvent == null) return View("CustomError", "Error_NotFound");
 
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
             if (myEvent.ClubId != role.ClubId || !_clubService.IsClubStaff(role))
@@ -712,9 +710,7 @@ namespace SCManagement.Controllers
 
                 if(usersEnrolled.Count == 0)
                 {
-               
-                        return View("CustomError", "Error_NoUsersToResult");
-                    
+                    return View("CustomError", "Error_NoUsersToResult");
                 }
 
                 ViewBag.UsersToResult = new SelectList(usersEnrolled.Select(u => u.User).ToList(), "Id", "FullName");
@@ -779,7 +775,6 @@ namespace SCManagement.Controllers
                 if(myEvent.Results == null)
                 {
                     myEvent.Results = new List<EventResult>();
-
                 }
                 myEvent.Results.Add(resultCreated);
 
@@ -797,7 +792,7 @@ namespace SCManagement.Controllers
         {
             if(userId == null || eventId == null)
             {
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
             }
 
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
@@ -808,12 +803,11 @@ namespace SCManagement.Controllers
 
             var resultToDelete = await _eventService.GetResult(userId, (int)eventId);
             if (resultToDelete == null)
-                return NotFound();
+                return View("CustomError", "Error_NotFound");
 
             await _eventService.DeleteResult(resultToDelete);
 
             return RedirectToAction(nameof(Results), new { id = eventId });
-
         }
 
         public class ResultModel

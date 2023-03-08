@@ -12,6 +12,8 @@ using System.Data;
 using SCManagement.Services.AzureStorageService.Models;
 using System.Collections.Generic;
 using SCManagement.Services.PaymentService.Models;
+using FluentAssertions.Common;
+using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Tests.Services
 {
@@ -60,8 +62,8 @@ namespace SCManagement.Tests.Services
                             context.Modality.FirstOrDefault(m => m.Id == i) 
                         },
                         UsersRoleClub = new List<UsersRoleClub> 
-                        { 
-                            new UsersRoleClub { UserId = $"Test {i}" , RoleId = 50 }
+                        {
+                            new UsersRoleClub { UserId = $"Test {i}" , RoleId = 50 , ClubId = i}
                         },
                         ClubTranslations = new List<ClubTranslations> 
                         {
@@ -91,18 +93,30 @@ namespace SCManagement.Tests.Services
                             CoordinateX = 0,
                             CoordinateY = 0,
                         },
-                        ClubPaymentSettings = A.Fake<ClubPaymentSettings>(),
+                        ClubPaymentSettings = new ClubPaymentSettings(),
                     });
 
-                    if (i == 10)
+                    context.Subscription.Add(new Subscription
                     {
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 40 });
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 10 });
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 10 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 1", RoleId = 10 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 20 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 30 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 40 });
+                        Id = i,
+                        Frequency = SubscriptionFrequency.Monthly,
+                        ClubId = i,
+                        StartTime = DateTime.Now,
+                        EndTime = DateTime.Now.AddMonths(1),
+                        Value = i,
+                        Product = new Product { AthleteSlots = i - 1 ,Name = $"Pod {i}", ProductType = ProductType.ClubSubscription },
+                        UserId = $"Test {i}"
+                    });
+
+                    if (i == 9)
+                    {
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 40 , ClubId = 1 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 10 , ClubId = 1 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 10 , ClubId = 1 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 1", RoleId = 10 , ClubId = 5 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 20 , ClubId = 5 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 30 , ClubId = 5 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 40 , ClubId = 5 });
                     }
 
                     await context.SaveChangesAsync();
@@ -158,8 +172,27 @@ namespace SCManagement.Tests.Services
                     CreatedByUserId = "Test 1",
                     RoleId = 10,
                     ExpireDate = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59),
+                    Approved = true,
+                    UsedByUserId = "Test 2"
+                },
+                new CodeClub
+                {
+                    ClubId = 1,
+                    Code = "1241234523562456",
+                    CreatedByUserId = "Test 1",
+                    RoleId = 20,
+                    ExpireDate = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59),
                     Approved = true
-                }
+                },
+                 new CodeClub
+                 {
+                     ClubId = 10,
+                     Code = "12345214563456456734567",
+                     CreatedByUserId = "Test 1",
+                     RoleId = 20,
+                     ExpireDate = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59),
+                     Approved = true
+                 }
                 );
             }
 
@@ -342,7 +375,7 @@ namespace SCManagement.Tests.Services
             // Arrange
 
             // Act
-            var result = await _clubService.GetCodeWithInfos(1);
+            var result = await _clubService.GetCodeWithInfos(6);
 
             // Assert
             result.Should().NotBeNull();
@@ -389,7 +422,7 @@ namespace SCManagement.Tests.Services
         public async Task ClubService_UseCode_ReturnsSuccess()
         {
             // Arrange
-            var code = _context.CodeClub.Last();
+            var code = _context.CodeClub.Where(c => c.Id == 7).First();
 
             // Act
             var result = await _clubService.UseCode("Test 134234", code);
@@ -398,6 +431,21 @@ namespace SCManagement.Tests.Services
             result.Should().NotBeNull();
             result.Should().BeOfType<KeyValuePair<bool, string>>().Which.Value.Should().Be("Success");
             result.Should().BeOfType<KeyValuePair<bool, string>>().Which.Key.Should().Be(true);
+        }
+
+        [Fact]
+        public async Task ClubService_UseCode_ReturnsNoAvailableSlots()
+        {
+            // Arrange
+            var code = _context.CodeClub.Where(x => x.Id == 6).First();
+
+            // Act
+            var result = await _clubService.UseCode("Test 134234", code);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.Should().BeOfType<KeyValuePair<bool, string>>().Which.Value.Should().Be("Code_ClubFull");
+            result.Should().BeOfType<KeyValuePair<bool, string>>().Which.Key.Should().Be(false);
         }
 
         [Fact]
@@ -477,7 +525,7 @@ namespace SCManagement.Tests.Services
         public async Task ClubService_UseCode_ReturnsUserAlreadyInAClub()
         {
             // Arrange
-            var code = _context.CodeClub.Where(c => c.Id == 5).First();
+            var code = _context.CodeClub.Where(c => c.Id == 6).First();
 
             // Act
             var result = await _clubService.UseCode("Test 2", code);
@@ -806,11 +854,13 @@ namespace SCManagement.Tests.Services
             // Arrange
             var count = _context.UsersRoleClub.Count();
 
+
             // Act
-            await _clubService.RemoveClubUser(12);
+            await _clubService.AddPartnerToClub("Test 1", 10);
+            await _clubService.RemoveClubUser(count+1);
 
             // Assert
-            _context.UsersRoleClub.Count().Should().Be(count-1);
+            _context.UsersRoleClub.Count().Should().Be(count);
         }
 
         [Fact]
@@ -1025,7 +1075,7 @@ namespace SCManagement.Tests.Services
             var result = await _clubService.SearchNameClubs("Test Club");
 
             // Assert
-            result.Should().BeOfType<List<Club>>();
+            result.Should().BeAssignableTo<List<Club>>();
         }
 
         [Fact]
