@@ -1,0 +1,65 @@
+﻿@model SCManagement.Controllers.MyClubController.MyZoneModel
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+<h1>@StringLocalizer["MyZone"]</h1>
+
+@if (Model.Bioimpedance != null)
+{
+    <div>
+        <h3>Bioimpedance</h3>
+        <span> ( @Html.DisplayFor(model => model.Bioimpedance.LastUpdateDate) ) </span>
+    </div>
+    //Este botao é para ser um icon
+    <a asp-action="UpdateBioimpedance">Update</a>
+    <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.Weight)
+    </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.Weight)
+    </dd>
+    <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.Height)
+    </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.Height)
+    </dd>
+    <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.Hydration)
+    </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.Hydration)
+    </dd>
+    <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.FatMass)
+    </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.FatMass)
+    </dd>
+    <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.LeanMass)
+    </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.LeanMass)
+    </dd>
+    <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.MuscleMass)
+    </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.MuscleMass)
+    </dd>
+    <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.ViceralFat)
+    </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.ViceralFat)
+    </dd>
+            <dt class="col-sm-2 text-to-dark">
+        @Html.DisplayNameFor(model => model.Bioimpedance.BasalMetabolism)
+        </dt>
+    <dd class="col-sm-10 text-to-dark">
+        @Html.DisplayFor(model => model.Bioimpedance.BasalMetabolism)
+        </dd>
+
+}else{
+    <a asp-action="CreateBioimpedance">@StringLocalizer["CreateBioimpedance"]</a>
+}

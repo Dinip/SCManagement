@@ -38,8 +38,9 @@ namespace SCManagement.Data
         public DbSet<EventResult> EventResult { get; set; }
         public DbSet<ClubPaymentSettings> ClubPaymentSettings { get; set; }
         public DbSet<EventTranslation> EventTranslations { get; set; }
+        public DbSet<Bioimpedance> Bioimpedance { get; set; }
 
-        
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

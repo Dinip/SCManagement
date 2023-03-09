@@ -904,5 +904,118 @@ namespace SCManagement.Controllers
             return View(payments);
         }
 
+
+        public async Task<IActionResult> MyZone()
+        {
+            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
+            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var bio = await _userService.GetBioimpedance(role.UserId);
+
+            var myModel = new MyZoneModel
+            {
+                userId = role.UserId,
+                Bioimpedance = bio
+            };
+
+            return View(myModel);
+
+        }
+
+        public async Task<IActionResult> CreateBioimpedance()
+        {
+            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
+            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateBioimpedance([Bind("Id, Weight, Height, Hydration, FatMass, LeanMass, MuscleMass, ViceralFat, BasalMetabolism")] BioimpedanceModel bioimpedance)
+        {
+            if (ModelState.IsValid)
+            {
+                var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
+                if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+
+                Bioimpedance bioToCreate = new Bioimpedance
+                {
+                    UserId = role.UserId,
+                    Weight = bioimpedance.Weight,
+                    Height = bioimpedance.Height,
+                    FatMass = bioimpedance.FatMass,
+                    LeanMass = bioimpedance.LeanMass,
+                    MuscleMass = bioimpedance.MuscleMass,
+                    Hydration = bioimpedance.Hydration,
+                    ViceralFat = bioimpedance.ViceralFat,
+                    BasalMetabolism = bioimpedance.BasalMetabolims
+                };
+
+                await _userService.CreateBioimpedance(bioToCreate);
+
+            }
+            
+            return RedirectToAction(nameof(MyZone));
+
+        }
+
+        public async Task<IActionResult> UpdateBioimpedance()
+        {
+            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
+            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var bio = await _userService.GetBioimpedance(role.UserId);
+
+            if(bio == null) return View("CustomError", "Error_DontHaveBioimpedance");
+
+            return View(bio);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateBioimpedance(string UserId, [Bind("Id, Weight, Height, Hydration, FatMass, LeanMass, MuscleMass, ViceralFat, BasalMetabolism")] BioimpedanceModel bioimpedance)
+        {
+            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
+            if (UserId == null || role.UserId != UserId) return View("CustomError", "Error_Unauthorized");
+
+            var bio = await _userService.GetBioimpedance(role.UserId);
+
+            if (bio == null || bio.UserId != UserId) return View("CustomError", "Error_Unauthorized");
+
+            bio.Weight = bioimpedance.Weight;
+            bio.Height = bioimpedance.Height;
+            bio.Hydration = bioimpedance.Hydration;
+            bio.FatMass = bioimpedance.FatMass;
+            bio.LeanMass = bioimpedance.LeanMass;
+            bio.MuscleMass = bioimpedance.MuscleMass;
+            bio.ViceralFat = bioimpedance.ViceralFat;
+            bio.BasalMetabolism = bioimpedance.BasalMetabolims;
+            bio.LastUpdateDate = DateTime.Now;
+
+            await _userService.UpdateBioimpedance(bio);
+
+            return RedirectToAction(nameof(MyZone));
+
+        }
+
+        public class BioimpedanceModel
+        {
+            public double? Weight { get; set; }
+            public double? Height { get; set; }
+            public double? FatMass { get; set; }
+            public double? LeanMass { get; set; }
+            public double? MuscleMass { get; set; }
+            public double? ViceralFat { get; set; }
+            public double? BasalMetabolims { get; set; }
+            public double? Hydration { get; set; }
+        }
+
+
+        public class MyZoneModel
+        {
+            public string userId { get; set; }
+            public Bioimpedance? Bioimpedance { get; set; }
+        }
+
     }
 }

@@ -93,5 +93,26 @@ namespace SCManagement.Services.UserService
         {
             return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 20);
         }
+        
+        public async Task<Bioimpedance> CreateBioimpedance(Bioimpedance bioimpedance)
+        {
+            _context.Bioimpedance.Add(bioimpedance);
+            await _context.SaveChangesAsync();
+            return bioimpedance;
+        }
+        
+        public async Task<Bioimpedance> GetBioimpedance(string userId)
+        {
+            return await _context.Bioimpedance.FirstOrDefaultAsync(b => b.UserId == userId);
+        }
+
+
+        public async Task<Bioimpedance> UpdateBioimpedance(Bioimpedance bioimpedance)
+        {
+            _context.Bioimpedance.Update(bioimpedance);
+            await _context.SaveChangesAsync();
+            return bioimpedance;
+        }
+
     }
 }
