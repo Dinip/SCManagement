@@ -1523,7 +1523,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
   <data name="ConfigEasyPay" xml:space="preserve">
-    <value>Como configurar o seu easyPay?</value>
+    <value>Como configurar o easyPay?</value>
     <comment>10-03-2023_PaySettings</comment>
   </data>
   <data name="EventName" xml:space="preserve">
@@ -1535,7 +1535,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>10-03-2023_PathInfoMapBox</comment>
   </data>
   <data name="Fri" xml:space="preserve">
-    <value>Sab</value>
+    <value>Sex</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Futsal" xml:space="preserve">
@@ -1547,7 +1547,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
   <data name="Mon" xml:space="preserve">
-    <value>Ter</value>
+    <value>Seg</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="MTB" xml:space="preserve">
@@ -1587,7 +1587,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
   <data name="Sat" xml:space="preserve">
-    <value>Dom</value>
+    <value>Sáb</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Soccer" xml:space="preserve">
@@ -1595,7 +1595,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
   <data name="Sun" xml:space="preserve">
-    <value>Seg</value>
+    <value>Dom</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Swimming" xml:space="preserve">
@@ -1607,11 +1607,11 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
   <data name="Thu" xml:space="preserve">
-    <value>Sex</value>
+    <value>Qui</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Tue" xml:space="preserve">
-    <value>Qua</value>
+    <value>Ter</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="ViewDark" xml:space="preserve">
@@ -1635,7 +1635,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
   <data name="Wed" xml:space="preserve">
-    <value>Qui</value>
+    <value>Qua</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Administrador de Clube" xml:space="preserve">
