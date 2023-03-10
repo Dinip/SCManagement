@@ -1502,6 +1502,14 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Remover EMD</value>
     <comment>08-03-2023_profile</comment>
   </data>
+  <data name="AddEvent" xml:space="preserve">
+    <value>Adicionar Evento</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="AddNewEvent" xml:space="preserve">
+    <value>Adicionar Novo Evento</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
   <data name="AddResult" xml:space="preserve">
     <value>Adicionar Resultado</value>
     <comment>10-03-2023_Results</comment>
@@ -1514,9 +1522,17 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Basquetebol</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
+  <data name="EventName" xml:space="preserve">
+    <value>Nome Do Evento</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
   <data name="EventPath" xml:space="preserve">
     <value>Caminho do evento</value>
     <comment>10-03-2023_PathInfoMapBox</comment>
+  </data>
+  <data name="Fri" xml:space="preserve">
+    <value>Sab</value>
+    <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Futsal" xml:space="preserve">
     <value>Futsal</value>
@@ -1526,9 +1542,21 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Orientação</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
+  <data name="Mon" xml:space="preserve">
+    <value>Ter</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
   <data name="MTB" xml:space="preserve">
     <value>BTT</value>
     <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="NoEvents" xml:space="preserve">
+    <value>Não há eventos planeados para</value>
+    <comment>10-03-2023_canlendar</comment>
+  </data>
+  <data name="NumberInvite" xml:space="preserve">
+    <value>Numero de pessoas a convidar</value>
+    <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Place" xml:space="preserve">
     <value>Lugar</value>
@@ -1554,9 +1582,17 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Hóquei em Patins</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
+  <data name="Sat" xml:space="preserve">
+    <value>Dom</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
   <data name="Soccer" xml:space="preserve">
     <value>Futebol</value>
     <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Sun" xml:space="preserve">
+    <value>Seg</value>
+    <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="Swimming" xml:space="preserve">
     <value>Natação</value>
@@ -1565,6 +1601,14 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Taekwondo" xml:space="preserve">
     <value>Taekwondo</value>
     <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Thu" xml:space="preserve">
+    <value>Sex</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Tue" xml:space="preserve">
+    <value>Qua</value>
+    <comment>10-03-2023_InfoPartial</comment>
   </data>
   <data name="ViewDark" xml:space="preserve">
     <value>Escuro</value>
@@ -1585,5 +1629,9 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Volleyball" xml:space="preserve">
     <value>Voleibol</value>
     <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Wed" xml:space="preserve">
+    <value>Qui</value>
+    <comment>10-03-2023_InfoPartial</comment>
   </data>
 </root>
