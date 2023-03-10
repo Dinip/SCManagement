@@ -5,7 +5,7 @@ function PathMapBoxConfig() {
     const path = document.getElementById("path");
     let map;
     let locationText = document.getElementById("locationText");
-
+    let tradPlaceholder = document.getElementById('tradPlaceholder');
 
     if (path.value !== 'null') {
         let coordsString = path.value;
@@ -84,7 +84,7 @@ function PathMapBoxConfig() {
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
         marker: false,
-        placeholder: 'Digite um endereço ou localização'
+        placeholder: tradPlaceholder.value,
     });
 
     map.addControl(geocoder, 'top-left');
@@ -385,6 +385,7 @@ function PathMapBoxConfig() {
 }
 
 function SearchMapBoxConfig() {
+    let tradPlaceholder = document.getElementById('tradPlaceholder');
 
     const map = new mapboxgl.Map({
         container: 'map',
@@ -406,8 +407,9 @@ function SearchMapBoxConfig() {
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
+        placeholder: tradPlaceholder.value,
         types: 'address',
-        layers: ['address']
+        layers: ['address'],   
     });
 
     map.addControl(geocoder, 'top-left');

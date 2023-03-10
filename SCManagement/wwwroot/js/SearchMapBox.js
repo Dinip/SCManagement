@@ -7,6 +7,7 @@ const addressElement = document.getElementById('address');
 const newAd = document.getElementById('NewAd');
 let coordX = document.getElementById('coordX').value;
 let coordY = document.getElementById('coordY').value;
+let tradPlaceholder = document.getElementById('tradPlaceholder');
 
 let marker;
 let map;
@@ -42,8 +43,10 @@ for (const input of inputs) {
 const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
+    placeholder: tradPlaceholder.value,
     types: 'address',
-    layers: ['address']
+    layers: ['address'],
+    
 });
 
 map.addControl(geocoder, 'top-left');

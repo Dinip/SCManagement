@@ -1366,4 +1366,28 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Remove EMD</value>
     <comment>08-03-2023_profile</comment>
   </data>
+  <data name="Placeholder" xml:space="preserve">
+    <value>Search</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="PlaceholderAddress" xml:space="preserve">
+    <value>Enter an address or street</value>
+    <comment>09-03-2023_MyClubEdit</comment>
+  </data>
+  <data name="ViewDark" xml:space="preserve">
+    <value>Dark</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewLight" xml:space="preserve">
+    <value>Light</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewSatellite" xml:space="preserve">
+    <value>Satellite Streets</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewStreets" xml:space="preserve">
+    <value>Streets</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
 </root>

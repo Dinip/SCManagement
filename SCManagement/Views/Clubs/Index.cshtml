@@ -92,7 +92,7 @@
         padding: 10px;
         font-family: 'Open Sans', sans-serif;
         right: 0;
-        z-index:1;
+        z-index: 1;
     }
 
 </style>
@@ -122,22 +122,22 @@
         @await Html.PartialAsync("_PartialSearchClub",Model)
 
     </div>
-    
+
     <button id="openbtn" onmouseover="openNav()"><i class="fa-solid fa-chevron-right"></i></button>
     <div id='map' style="border-radius:0 !important;">
         <div id="menu">
             <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
-            <label for="satellite-streets-v12">satellite streets</label>
+            <label for="satellite-streets-v12">@StringLocalizer["ViewSatellite"]</label>
             <input id="light-v11" type="radio" name="rtoggle" value="light">
-            <label for="light-v11">light</label>
+            <label for="light-v11">@StringLocalizer["ViewLight"]</label>
             <input id="dark-v11" type="radio" name="rtoggle" value="dark">
-            <label for="dark-v11">dark</label>
+            <label for="dark-v11">@StringLocalizer["ViewDark"]</label>
             <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
-            <label for="streets-v12">streets</label>
+            <label for="streets-v12">@StringLocalizer["ViewStreets"]</label>
         </div>
     </div>
-    
-   
+
+
 </div>
 
 
@@ -146,6 +146,11 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
+    var strings = {
+        "placeholder": '@Html.Raw(StringLocalizer["Placeholder"].Value.ToString())',
+    }
+    console.log(strings.placeholder);
+
     function openNav() {
         if (window.innerWidth <= 768) {
             document.getElementById("mySidebar").style.width = "100%"
