@@ -533,10 +533,11 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            var code = new CreateCodeModel { ExpireDate = DateTime.Now.AddDays(1) };
             A.CallTo(() => _clubService.IsClubManager(A<UsersRoleClub>._)).Returns(false);
             
             // Act
-            var result = await _controller.CreateCode(A.Fake<CreateCodeModel>());
+            var result = await _controller.CreateCode(code);
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");

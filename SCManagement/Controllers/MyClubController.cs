@@ -379,7 +379,7 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCode([Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
         {
-            if (!ModelState.IsValid) return RedirectToAction("Codes");
+            if (!ModelState.IsValid || codeClub.ExpireDate.Date < DateTime.Now) return RedirectToAction("Codes");
 
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
@@ -387,20 +387,12 @@ namespace SCManagement.Controllers
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
 
-
-            //generate a code
-            DateTime? expireDate = codeClub.ExpireDate;
-            if (expireDate != null)
-            {
-                expireDate.Value.AddHours(23).AddMinutes(59).AddSeconds(59);
-            }
-
             CodeClub codeToBeCreated = new CodeClub
             {
                 ClubId = role.ClubId,
                 CreatedByUserId = _applicationContextService.UserId,
                 RoleId = codeClub.RoleId,
-                ExpireDate = expireDate,
+                ExpireDate = codeClub.ExpireDate,
                 Approved = !(_clubService.IsClubSecretary(role) && codeClub.RoleId >= 40)
             };
             CodeClub generatedCode = await _clubService.GenerateCode(codeToBeCreated);
@@ -416,7 +408,7 @@ namespace SCManagement.Controllers
 
             [Display(Name = "Expire Date")]
             [DataType(DataType.Date)]
-            public DateTime? ExpireDate { get; set; }
+            public DateTime ExpireDate { get; set; }
         }
 
         /// <summary>
