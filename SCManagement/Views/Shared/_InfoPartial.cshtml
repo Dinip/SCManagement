@@ -35,13 +35,13 @@
             </table> 
         
             <table class="days-table"> 
-              <td class="day">Sun</td> 
-              <td class="day">Mon</td> 
-              <td class="day">Tue</td> 
-              <td class="day">Wed</td> 
-              <td class="day">Thu</td> 
-              <td class="day">Fri</td> 
-              <td class="day">Sat</td>
+              <td class="day">@StringLocalizer["Sun"]</td> 
+              <td class="day">@StringLocalizer["Mon"]</td>
+              <td class="day">@StringLocalizer["Tue"]</td>
+              <td class="day">@StringLocalizer["Wed"]</td>
+              <td class="day">@StringLocalizer["Thu"]</td>
+              <td class="day">@StringLocalizer["Fri"]</td>
+              <td class="day">@StringLocalizer["Sat"]</td>
             </table> 
             <div class="frame"> 
               <table class="dates-table"> 
@@ -49,18 +49,18 @@
                   </tbody> 
               </table>
             </div> 
-            <button class="button" id="add-button">Add Event</button>
+            <button class="button" id="add-button">@StringLocalizer["AddEvent"]</button>
           </div>
         </div>
         <div class="events-container">
         </div>
         <div class="dialog" id="dialog">
-                <h2 class="dialog-header"> Add New Event </h2>
+                <h2 class="dialog-header"> @StringLocalizer["AddNewEvent"] </h2>
                 <form class="form" id="form">
                   <div class="form-container" align="center">
-                    <label class="form-label" id="valueFromMyButton" for="name">Event name</label>
+                        <label class="form-label" id="valueFromMyButton" for="name">@StringLocalizer["EventName"]</label>
                     <input class="input" type="text" id="name" maxlength="36">
-                    <label class="form-label" id="valueFromMyButton" for="count">Number of people to invite</label>
+                    <label class="form-label" id="valueFromMyButton" for="count">@StringLocalizer["NumberInvite"]</label>
                     <input class="input" type="number" id="count" min="0" max="1000000" maxlength="7">
                     <input type="button" value="Cancel" class="button" id="cancel-button">
                     <input type="button" value="OK" class="button" id="ok-button">
@@ -80,7 +80,9 @@
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
 <script src="~/js/calendar.js" asp-append-version="true"></script>
 <script>
-
+    var strings = {
+        "noEvents": '@Html.Raw(StringLocalizer["NoEvents"].Value.ToString())',
+    };
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {

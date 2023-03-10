@@ -1366,4 +1366,163 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Remove EMD</value>
     <comment>08-03-2023_profile</comment>
   </data>
+  <data name="AddEvent" xml:space="preserve">
+    <value>Add Event</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="AddNewEvent" xml:space="preserve">
+    <value>Add New Event</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="AddResult" xml:space="preserve">
+    <value>Add Result</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Athletics" xml:space="preserve">
+    <value>Athletics</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Basketball" xml:space="preserve">
+    <value>Basketball</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="ConfigEasyPay" xml:space="preserve">
+    <value>How to configure your easyPay?</value>
+    <comment>10-03-2023_PaySettings</comment>
+  </data>
+  <data name="EventName" xml:space="preserve">
+    <value>Event Name</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="EventPath" xml:space="preserve">
+    <value>Event Path</value>
+    <comment>10-03-2023_PathInfoMapBox</comment>
+  </data>
+  <data name="Fri" xml:space="preserve">
+    <value>Fri</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Futsal" xml:space="preserve">
+    <value>Futsal</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Guidance" xml:space="preserve">
+    <value>Guidance</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Mon" xml:space="preserve">
+    <value>Mon</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="MTB" xml:space="preserve">
+    <value>MTB</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="NoEvents" xml:space="preserve">
+    <value>There are no events planned for</value>
+    <comment>10-03-2023_canlendar</comment>
+  </data>
+  <data name="NumberInvite" xml:space="preserve">
+    <value>Number of people to invite</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Place</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Placeholder" xml:space="preserve">
+    <value>Search</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="PlaceholderAddress" xml:space="preserve">
+    <value>Enter an address or street</value>
+    <comment>09-03-2023_MyClubEdit</comment>
+  </data>
+  <data name="RemoveParticipant" xml:space="preserve">
+    <value>Remove Participant</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Roller hockey" xml:space="preserve">
+    <value>Roller hockey</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="s" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sat" xml:space="preserve">
+    <value>Sat</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Soccer" xml:space="preserve">
+    <value>Soccer</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Sun" xml:space="preserve">
+    <value>Sun</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Swimming" xml:space="preserve">
+    <value>Swimming</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Taekwondo" xml:space="preserve">
+    <value>Taekwondo</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Thu" xml:space="preserve">
+    <value>Thu</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Tue" xml:space="preserve">
+    <value>Tue</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="ViewDark" xml:space="preserve">
+    <value>Dark</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewLight" xml:space="preserve">
+    <value>Light</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewSatellite" xml:space="preserve">
+    <value>Satellite Streets</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewStreets" xml:space="preserve">
+    <value>Streets</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="Volleyball" xml:space="preserve">
+    <value>Volleyball</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Wed" xml:space="preserve">
+    <value>Wed</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Administrador de Clube" xml:space="preserve">
+    <value>Club Administrator</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Atleta" xml:space="preserve">
+    <value>Athlete</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Secretaria" xml:space="preserve">
+    <value>Secretary</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Sócio" xml:space="preserve">
+    <value>Partner</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Treinador" xml:space="preserve">
+    <value>Trainer</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
 </root>

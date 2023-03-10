@@ -3,6 +3,7 @@ using FakeItEasy.Creation;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Newtonsoft.Json.Linq;
 using SCManagement.Controllers;
 using SCManagement.Models;
@@ -59,6 +60,7 @@ namespace SCManagement.Tests.Controller
         private readonly ITranslationService _translationService;
         private readonly IPaymentService _paymentService;
         private readonly ApplicationContextService _applicationContextService;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
         public MyClubControllerTests()
         {
@@ -69,9 +71,10 @@ namespace SCManagement.Tests.Controller
             _translationService = A.Fake<ITranslationService>();
             _paymentService = A.Fake<IPaymentService>();
             _applicationContextService = A.Fake<ApplicationContextService>();
+            _stringLocalizer = A.Fake<IStringLocalizer<SharedResource>>();
 
             //SUT (system under test)
-            _controller = new MyClubController(_userManager, _clubService, _userService, _teamService, _translationService, _paymentService, _applicationContextService);
+            _controller = new MyClubController(_userManager, _clubService, _userService, _teamService, _translationService, _paymentService, _applicationContextService, _stringLocalizer);
         }
 
         [Fact]
