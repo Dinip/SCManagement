@@ -1502,4 +1502,20 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Remover EMD</value>
     <comment>08-03-2023_profile</comment>
   </data>
+  <data name="All" xml:space="preserve">
+    <value>Todos</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Terminados</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="Futures" xml:space="preserve">
+    <value>Futuros</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>Em Andamento</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
 </root>
