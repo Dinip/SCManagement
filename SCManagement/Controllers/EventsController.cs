@@ -50,7 +50,7 @@ namespace SCManagement.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? filterEvent)
         {
             var userId = getUserIdFromAuthedUser();
 
@@ -61,11 +61,25 @@ namespace SCManagement.Controllers
 
             ViewBag.IsStaff = _clubService.IsClubStaff(role);
 
+            switch (filterEvent)
+            {
+                case 1: // Em andamento
+                    events = events.Where(e => e.StartDate <= DateTime.Now && e.EndDate >= DateTime.Now).ToList();
+                    break;
+                case 2: // Terminados
+                    events = events.Where(e => e.EndDate < DateTime.Now).ToList();
+                    break;
+                case 3: // Futuros
+                    events = events.Where(e => e.StartDate > DateTime.Now).ToList();
+                    break;
+                default: // Todos (0)
+                    break;
+            }
+
             events.OrderBy(e => e.StartDate);
 
             return View(events);
         }
-
 
         public async Task<IActionResult> Details(int? id)
         {

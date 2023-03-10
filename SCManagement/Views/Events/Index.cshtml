@@ -14,6 +14,20 @@
             <a asp-action="Create">@StringLocalizer["Create New"]</a>
         </p>
     }
+    <div>
+        <input id="FilterEvent0" name="FilterEvent" value="0" type="radio">
+        <label for="FilterEvent0">@StringLocalizer["All"]</label>
+        
+        <input id="FilterEvent1" name="FilterEvent" value="1" type="radio">
+        <label for="FilterEvent1">@StringLocalizer["InProgress"]</label>
+        
+        <input id="FilterEvent2" name="FilterEvent" value="2" type="radio">
+        <label for="FilterEvent2">@StringLocalizer["Finished"]</label>
+        
+        <input id="FilterEvent3" name="FilterEvent" value="3" type="radio">
+        <label for="FilterEvent3">@StringLocalizer["Futures"]</label>
+    </div>
+
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
             <table id="table_id" class="display">
@@ -72,8 +86,37 @@
                 { orderable: false, targets: [-1] }
             ]
         });
+
+        // Adiciona um evento onchange aos botões de opção
+        let radioButtons = document.querySelectorAll('input[type="radio"][name="FilterEvent"]');
+        for (let i = 0; i < radioButtons.length; i++) {
+            radioButtons[i].addEventListener('change', filterEvents);
+        }
+
+        // Mantém o botão de opção verificado de acordo com o parâmetro "filterEvent" na URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterValue = urlParams.get('filterEvent');
+        if (filterValue !== null) {
+            document.getElementById(`FilterEvent${filterValue}`).checked = true;
+        }else{
+            document.getElementById(`FilterEvent0`).checked = true;
+        }
     });
+
+    // Filtra a lista de eventos com base no botão de opção selecionado
+    function filterEvents() {
+        var filterValue = this.value;
+        window.location.href = `/Events/?filterEvent=${ filterValue }`;
+           
+    }
+    
+    
 </script>
+
+
+
+
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
