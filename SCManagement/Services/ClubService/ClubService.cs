@@ -286,9 +286,9 @@ namespace SCManagement.Services.ClubService
         /// to a user in a club
         /// </summary>
         /// <returns>list of roles</returns>
-        public Task<IEnumerable<RoleClub>> GetRoles()
+        public async Task<IEnumerable<RoleClub>> GetRoles()
         {
-            return Task.FromResult(_context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).AsEnumerable());
+            return await _context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).ToListAsync();
         }
 
         /// <summary>
@@ -804,13 +804,28 @@ namespace SCManagement.Services.ClubService
         /// <returns></returns>
         public async Task<IEnumerable<Club>> SearchNameClubs(string? name)
         {
-            var clubs = await GetClubs();
-
-            //get all clubs
-            if (name == null) return clubs.ToList();
-
-            //get clubs with the name that user search
-            return clubs.Where(c => c.Name.ToLower().Contains(name.ToLower())).ToList();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            return await _context.Club
+               .Include(c => c.Modalities)
+               .Include(c => c.Photography)
+               .Include(c => c.Address)
+               .Include(c => c.ClubTranslations)
+               .Where(c => string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower()))
+               .Select(s =>
+               new Club
+               {
+                   Id = s.Id,
+                   Name = s.Name,
+                   Email = s.Email,
+                   PhoneNumber = s.PhoneNumber,
+                   PhotographyId = s.PhotographyId,
+                   Photography = s.Photography,
+                   AddressId = s.AddressId,
+                   Address = s.Address,
+                   Modalities = s.Modalities,
+                   ClubTranslations = s.ClubTranslations!.Where(cc => cc.Language == cultureInfo).ToList(),
+               })
+               .ToListAsync();
         }
 
         /// <summary>

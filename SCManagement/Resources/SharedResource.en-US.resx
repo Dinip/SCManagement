@@ -1505,4 +1505,24 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Wed</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
+  <data name="Administrador de Clube" xml:space="preserve">
+    <value>Club Administrator</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Atleta" xml:space="preserve">
+    <value>Athlete</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Secretaria" xml:space="preserve">
+    <value>Secretary</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Sócio" xml:space="preserve">
+    <value>Partner</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Treinador" xml:space="preserve">
+    <value>Trainer</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
 </root>

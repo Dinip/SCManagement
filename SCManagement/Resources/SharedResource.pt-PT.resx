@@ -1638,4 +1638,24 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Qui</value>
     <comment>10-03-2023_InfoPartial</comment>
   </data>
+  <data name="Administrador de Clube" xml:space="preserve">
+    <value>Administrador de Clube</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Atleta" xml:space="preserve">
+    <value>Atleta</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Secretaria" xml:space="preserve">
+    <value>Secretaria</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Sócio" xml:space="preserve">
+    <value>Sócio</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Treinador" xml:space="preserve">
+    <value>Treinador</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
 </root>

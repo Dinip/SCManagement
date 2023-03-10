@@ -10,11 +10,13 @@ namespace SCManagement.ViewComponents
     {
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
+        private readonly IStringLocalizer<SharedResource> _localizer;
 
-        public UserClubContext(IUserService userService, UserManager<User> userManager)
+        public UserClubContext(IUserService userService, UserManager<User> userManager, IStringLocalizer<SharedResource> localizer)
         {
             _userService = userService;
             _userManager = userManager;
+            _localizer = localizer;
         }
 
         public async Task<IViewComponentResult> InvokeAsync()
@@ -27,7 +29,7 @@ namespace SCManagement.ViewComponents
             if (user.UsersRoleClub == null || !user.UsersRoleClub.Any(r => r.RoleId != 10)) return View("UserClubRoles");
 
             //remove partner roles from list
-            var rolesWithNames = user.UsersRoleClub.Where(r => r.RoleId != 10).Select(s => new { Id = s.Id, Name = $"{s.Club.Name} ({s.Role.RoleName})" });
+            var rolesWithNames = user.UsersRoleClub.Where(r => r.RoleId != 10).Select(s => new { Id = s.Id, Name = $"{s.Club.Name} ({_localizer[s.Role.RoleName]})" });
 
             //check if the user has a selected role and if not, set to first one that has available
             //and update the user on db
