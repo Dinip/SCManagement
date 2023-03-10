@@ -103,12 +103,13 @@ namespace SCManagement.Services.UserService
         
         public async Task<Bioimpedance> GetBioimpedance(string userId)
         {
-            return await _context.Bioimpedance.FirstOrDefaultAsync(b => b.UserId == userId);
+            return await _context.Bioimpedance.FirstOrDefaultAsync(b => b.BioimpedanceId == userId);
         }
 
 
         public async Task<Bioimpedance> UpdateBioimpedance(Bioimpedance bioimpedance)
         {
+            bioimpedance.LastUpdateDate = DateTime.Now;
             _context.Bioimpedance.Update(bioimpedance);
             await _context.SaveChangesAsync();
             return bioimpedance;

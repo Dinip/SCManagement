@@ -1472,12 +1472,12 @@ namespace SCManagement.Tests.Controller
             
             var bioimpedance = new Bioimpedance
             {
-                Weight = 80,
-                Height = 185
+                Weight = "80kg",
+                Height = "185cm"
             };
 
             // Act
-            var result = await _controller.CreateBioimpedance(A.Fake<BioimpedanceModel>());
+            var result = await _controller.CreateBioimpedance(A.Fake<Bioimpedance>());
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("MyZone");
@@ -1493,12 +1493,12 @@ namespace SCManagement.Tests.Controller
 
             var bioimpedance = new Bioimpedance
             {
-                Weight = 80,
-                Height = 185
+                Weight = "80kg",
+                Height = "185cm"
             };
 
             // Act
-            var result = await _controller.CreateBioimpedance(A.Fake<BioimpedanceModel>());
+            var result = await _controller.CreateBioimpedance(A.Fake<Bioimpedance>());
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");

@@ -1,28 +1,39 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCManagement.Models
 {
     public class Bioimpedance
     {
-        public int Id { get; set; }
-        public string UserId { get; set; }
-        public User? User { get; set; }
-        [Display(Name ="Height")]
-        public double? Weight { get; set; }
+        [ForeignKey("User")]
+        public string BioimpedanceId { get; set; }
+
+        [Display(Name = "Height")]
+        [RegularExpression("^((([1-9][0-9]{0,2})?'?([1-9][0-9]{0,2})(\"([1-9][0-9]{0,2})?|'')?)|([1-9][0-9]{0,2}((\\.|\\,)[0-9]{1,2})?(cm|m)))$")]
+        public string? Weight { get; set; }
+
         [Display(Name = "Weight")]
-        public double? Height { get; set; }
+        [RegularExpression("^([1-9][0-9]{0,2}((\\.|\\,)[0-9]{1,2})?(kg|lb|lbs))$")]
+        public string? Height { get; set; }
+
         [Display(Name = "FatMass")]
-        public double? FatMass { get; set; }
+        public float? FatMass { get; set; }
+
         [Display(Name = "LeanMass")]
-        public double? LeanMass { get; set; }
+        public float? LeanMass { get; set; }
+
         [Display(Name = "MuscleMass")]
-        public double? MuscleMass { get; set; }
+        public float? MuscleMass { get; set; }
+
         [Display(Name = "ViceralFat")]
-        public double? ViceralFat { get; set; }
+        public float? ViceralFat { get; set; }
+
         [Display(Name = "BasalMetabolism")]
-        public double? BasalMetabolism { get; set; }
+        public float? BasalMetabolism { get; set; }
+
         [Display(Name = "Hydration")]
-        public double? Hydration { get; set; }
+        public float? Hydration { get; set; }
+
         public DateTime LastUpdateDate { get; set; } = DateTime.Now;
     }
 }

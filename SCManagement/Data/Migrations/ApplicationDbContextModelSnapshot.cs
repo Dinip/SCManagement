@@ -210,46 +210,37 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Models.Bioimpedance", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("BioimpedanceId")
+                        .HasColumnType("nvarchar(450)");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    b.Property<float?>("BasalMetabolism")
+                        .HasColumnType("real");
 
-                    b.Property<double?>("BasalMetabolism")
-                        .HasColumnType("float");
+                    b.Property<float?>("FatMass")
+                        .HasColumnType("real");
 
-                    b.Property<double?>("FatMass")
-                        .HasColumnType("float");
+                    b.Property<string>("Height")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Height")
-                        .HasColumnType("float");
-
-                    b.Property<double?>("Hydration")
-                        .HasColumnType("float");
+                    b.Property<float?>("Hydration")
+                        .HasColumnType("real");
 
                     b.Property<DateTime>("LastUpdateDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<double?>("LeanMass")
-                        .HasColumnType("float");
+                    b.Property<float?>("LeanMass")
+                        .HasColumnType("real");
 
-                    b.Property<double?>("MuscleMass")
-                        .HasColumnType("float");
+                    b.Property<float?>("MuscleMass")
+                        .HasColumnType("real");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<float?>("ViceralFat")
+                        .HasColumnType("real");
 
-                    b.Property<double?>("ViceralFat")
-                        .HasColumnType("float");
+                    b.Property<string>("Weight")
+                        .HasColumnType("nvarchar(max)");
 
-                    b.Property<double?>("Weight")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasKey("BioimpedanceId");
 
                     b.ToTable("Bioimpedance");
                 });
@@ -3551,17 +3542,6 @@ namespace SCManagement.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("SCManagement.Models.Bioimpedance", b =>
-                {
-                    b.HasOne("SCManagement.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Club", b =>

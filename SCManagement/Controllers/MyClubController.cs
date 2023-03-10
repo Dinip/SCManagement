@@ -179,7 +179,8 @@ namespace SCManagement.Controllers
 
             await _clubService.UpdateClubModalities(actualClub, club.ModalitiesIds!);
 
-            if (club.AddressString != null) {
+            if (club.AddressString != null)
+            {
                 Address newLocation = JsonConvert.DeserializeObject<Address>(club.AddressString);
 
                 if (actualClub.AddressId != null)
@@ -192,7 +193,7 @@ namespace SCManagement.Controllers
                     //create address
                     await _clubService.CreateAddress(newLocation, actualClub.Id);
                 }
-                
+
             }
 
             //updates to the settings of club
@@ -595,8 +596,8 @@ namespace SCManagement.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         public async Task<IActionResult> EditTeam(int? id)
-        { 
-            if(id == null) return View("CustomError", "Error_NotFound");
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
 
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
@@ -608,7 +609,7 @@ namespace SCManagement.Controllers
 
             //check role
             if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
-            
+
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
 
@@ -632,7 +633,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,TrainerId,ModalityId")] TeamModel team)
         {
             if (id == null) return View("CustomError", "Error_NotFound");
-            
+
             //check model state
             if (!ModelState.IsValid) return View(team);
 
@@ -642,7 +643,7 @@ namespace SCManagement.Controllers
             //Update Team Atributes
             Team teamToUpdate = await _teamService.GetTeam((int)id);
             if (teamToUpdate == null) return View("CustomError", "Error_NotFound");
-            
+
             //check roles
             if (!_clubService.IsClubStaff(role) || teamToUpdate.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
 
@@ -907,14 +908,14 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> MyZone()
         {
-            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
-            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
             var bio = await _userService.GetBioimpedance(role.UserId);
 
             var myModel = new MyZoneModel
             {
-                userId = role.UserId,
+                UserId = role.UserId,
                 Bioimpedance = bio
             };
 
@@ -924,64 +925,50 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> CreateBioimpedance()
         {
-            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
-            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-
-            return View();
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            return View(new Bioimpedance { BioimpedanceId = role.UserId });
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateBioimpedance([Bind("Id, Weight, Height, Hydration, FatMass, LeanMass, MuscleMass, ViceralFat, BasalMetabolism")] BioimpedanceModel bioimpedance)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateBioimpedance([Bind("BioimpedanceId,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] Bioimpedance bioimpedance)
         {
-            if (ModelState.IsValid)
-            {
-                var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
-                if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
+            if (!ModelState.IsValid) return View(bioimpedance);
 
-                Bioimpedance bioToCreate = new Bioimpedance
-                {
-                    UserId = role.UserId,
-                    Weight = bioimpedance.Weight,
-                    Height = bioimpedance.Height,
-                    FatMass = bioimpedance.FatMass,
-                    LeanMass = bioimpedance.LeanMass,
-                    MuscleMass = bioimpedance.MuscleMass,
-                    Hydration = bioimpedance.Hydration,
-                    ViceralFat = bioimpedance.ViceralFat,
-                    BasalMetabolism = bioimpedance.BasalMetabolims
-                };
+            bioimpedance.BioimpedanceId = role.UserId;
 
-                await _userService.CreateBioimpedance(bioToCreate);
+            await _userService.CreateBioimpedance(bioimpedance);
 
-            }
-            
             return RedirectToAction(nameof(MyZone));
 
         }
 
         public async Task<IActionResult> UpdateBioimpedance()
         {
-            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
-            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
             var bio = await _userService.GetBioimpedance(role.UserId);
 
-            if(bio == null) return View("CustomError", "Error_DontHaveBioimpedance");
+            if (bio == null) return View("CustomError", "Error_DontHaveBioimpedance");
 
             return View(bio);
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateBioimpedance(string UserId, [Bind("Id, Weight, Height, Hydration, FatMass, LeanMass, MuscleMass, ViceralFat, BasalMetabolism")] BioimpedanceModel bioimpedance)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateBioimpedance([Bind("BioimpedanceId,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] Bioimpedance bioimpedance)
         {
-            var role = await _userService.GetSelectedRole(_applicationContextService.UserId);
-            if (UserId == null || role.UserId != UserId) return View("CustomError", "Error_Unauthorized");
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
             var bio = await _userService.GetBioimpedance(role.UserId);
 
-            if (bio == null || bio.UserId != UserId) return View("CustomError", "Error_Unauthorized");
-
+            bio.BioimpedanceId = role.UserId;
             bio.Weight = bioimpedance.Weight;
             bio.Height = bioimpedance.Height;
             bio.Hydration = bioimpedance.Hydration;
@@ -989,31 +976,16 @@ namespace SCManagement.Controllers
             bio.LeanMass = bioimpedance.LeanMass;
             bio.MuscleMass = bioimpedance.MuscleMass;
             bio.ViceralFat = bioimpedance.ViceralFat;
-            bio.BasalMetabolism = bioimpedance.BasalMetabolims;
-            bio.LastUpdateDate = DateTime.Now;
+            bio.BasalMetabolism = bioimpedance.BasalMetabolism;
 
             await _userService.UpdateBioimpedance(bio);
 
             return RedirectToAction(nameof(MyZone));
-
         }
-
-        public class BioimpedanceModel
-        {
-            public double? Weight { get; set; }
-            public double? Height { get; set; }
-            public double? FatMass { get; set; }
-            public double? LeanMass { get; set; }
-            public double? MuscleMass { get; set; }
-            public double? ViceralFat { get; set; }
-            public double? BasalMetabolims { get; set; }
-            public double? Hydration { get; set; }
-        }
-
 
         public class MyZoneModel
         {
-            public string userId { get; set; }
+            public string UserId { get; set; }
             public Bioimpedance? Bioimpedance { get; set; }
         }
 
