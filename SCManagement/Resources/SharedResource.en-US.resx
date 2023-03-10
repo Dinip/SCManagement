@@ -1525,4 +1525,44 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Trainer</value>
     <comment>10-03-2023_translations</comment>
   </data>
+  <data name="BasalMetabolism" xml:space="preserve">
+    <value>Basal Metabolism</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="CreateBioimpedance" xml:space="preserve">
+    <value>Create Bioimpedance</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="FatMass" xml:space="preserve">
+    <value>Fat Mass</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Hydration" xml:space="preserve">
+    <value>Hydration</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="LeanMass" xml:space="preserve">
+    <value>Lean Mass</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="MuscleMass" xml:space="preserve">
+    <value>Muscle Mass</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="MyZone" xml:space="preserve">
+    <value>MyZone</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="ViceralFat" xml:space="preserve">
+    <value>Viceral Fat</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
 </root>

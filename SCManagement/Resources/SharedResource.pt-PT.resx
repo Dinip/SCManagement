@@ -1658,4 +1658,44 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Treinador</value>
     <comment>10-03-2023_translations</comment>
   </data>
+  <data name="BasalMetabolism" xml:space="preserve">
+    <value>Metabolismo Basal</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="CreateBioimpedance" xml:space="preserve">
+    <value>Criar Bioimpedancia</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="FatMass" xml:space="preserve">
+    <value>Massa Gorda</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Altura</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Hydration" xml:space="preserve">
+    <value>Hidratação</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="LeanMass" xml:space="preserve">
+    <value>Massa Magra</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="MuscleMass" xml:space="preserve">
+    <value>Massa Muscular</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="MyZone" xml:space="preserve">
+    <value>A Minha Zona</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="ViceralFat" xml:space="preserve">
+    <value>Gordura Oculta</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Peso</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
 </root>

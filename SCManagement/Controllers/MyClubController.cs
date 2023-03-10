@@ -902,5 +902,89 @@ namespace SCManagement.Controllers
             return View(payments);
         }
 
+
+        public async Task<IActionResult> MyZone()
+        {
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var bio = await _userService.GetBioimpedance(role.UserId);
+
+            var myModel = new MyZoneModel
+            {
+                UserId = role.UserId,
+                Bioimpedance = bio
+            };
+
+            return View(myModel);
+
+        }
+
+        public async Task<IActionResult> CreateBioimpedance()
+        {
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            return View(new Bioimpedance { BioimpedanceId = role.UserId });
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateBioimpedance([Bind("BioimpedanceId,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] Bioimpedance bioimpedance)
+        {
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            if (!ModelState.IsValid) return View(bioimpedance);
+
+            bioimpedance.BioimpedanceId = role.UserId;
+
+            await _userService.CreateBioimpedance(bioimpedance);
+
+            return RedirectToAction(nameof(MyZone));
+
+        }
+
+        public async Task<IActionResult> UpdateBioimpedance()
+        {
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var bio = await _userService.GetBioimpedance(role.UserId);
+
+            if (bio == null) return View("CustomError", "Error_DontHaveBioimpedance");
+
+            return View(bio);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateBioimpedance([Bind("BioimpedanceId,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] Bioimpedance bioimpedance)
+        {
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var bio = await _userService.GetBioimpedance(role.UserId);
+
+            bio.BioimpedanceId = role.UserId;
+            bio.Weight = bioimpedance.Weight;
+            bio.Height = bioimpedance.Height;
+            bio.Hydration = bioimpedance.Hydration;
+            bio.FatMass = bioimpedance.FatMass;
+            bio.LeanMass = bioimpedance.LeanMass;
+            bio.MuscleMass = bioimpedance.MuscleMass;
+            bio.ViceralFat = bioimpedance.ViceralFat;
+            bio.BasalMetabolism = bioimpedance.BasalMetabolism;
+
+            await _userService.UpdateBioimpedance(bio);
+
+            return RedirectToAction(nameof(MyZone));
+        }
+
+        public class MyZoneModel
+        {
+            public string UserId { get; set; }
+            public Bioimpedance? Bioimpedance { get; set; }
+        }
+
     }
 }
