@@ -33,6 +33,7 @@ namespace SCManagement.Controllers
         private readonly ITranslationService _translationService;
         private readonly IPaymentService _paymentService;
         private readonly ApplicationContextService _applicationContextService;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -51,7 +52,8 @@ namespace SCManagement.Controllers
             ITeamService teamService,
             ITranslationService translationService,
             IPaymentService paymentService,
-            ApplicationContextService applicationContextService)
+            ApplicationContextService applicationContextService,
+            IStringLocalizer<SharedResource> stringLocalizer)
         {
             _userManager = userManager;
             _clubService = clubService;
@@ -60,6 +62,7 @@ namespace SCManagement.Controllers
             _translationService = translationService;
             _paymentService = paymentService;
             _applicationContextService = applicationContextService;
+            _stringLocalizer = stringLocalizer;
         }
 
         public async Task<IActionResult> Unavailable()
@@ -179,7 +182,8 @@ namespace SCManagement.Controllers
 
             await _clubService.UpdateClubModalities(actualClub, club.ModalitiesIds!);
 
-            if (club.AddressString != null) {
+            if (club.AddressString != null)
+            {
                 Address newLocation = JsonConvert.DeserializeObject<Address>(club.AddressString);
 
                 if (actualClub.AddressId != null)
@@ -192,7 +196,7 @@ namespace SCManagement.Controllers
                     //create address
                     await _clubService.CreateAddress(newLocation, actualClub.Id);
                 }
-                
+
             }
 
             //updates to the settings of club
@@ -365,7 +369,9 @@ namespace SCManagement.Controllers
             //check user role
             if (!_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.Roles = new SelectList(await _clubService.GetRoles(), "Id", "RoleName");
+            var roles = (await _clubService.GetRoles()).Select(s => new RoleClub { Id = s.Id, RoleName = _stringLocalizer[s.RoleName] });
+
+            ViewBag.Roles = new SelectList(roles, "Id", "RoleName");
 
             return PartialView("_PartialCreateCode");
         }
@@ -379,7 +385,14 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCode([Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
         {
-            if (!ModelState.IsValid) return RedirectToAction("Codes");
+            if (!ModelState.IsValid)
+            {
+                var roles = (await _clubService.GetRoles()).Select(s => new RoleClub { Id = s.Id, RoleName = _stringLocalizer[s.RoleName] });
+
+                ViewBag.Roles = new SelectList(roles, "Id", "RoleName");
+
+                return RedirectToAction("Codes");
+            }
 
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
@@ -595,8 +608,8 @@ namespace SCManagement.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         public async Task<IActionResult> EditTeam(int? id)
-        { 
-            if(id == null) return View("CustomError", "Error_NotFound");
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
 
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
@@ -608,7 +621,7 @@ namespace SCManagement.Controllers
 
             //check role
             if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
-            
+
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
 
@@ -632,7 +645,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,TrainerId,ModalityId")] TeamModel team)
         {
             if (id == null) return View("CustomError", "Error_NotFound");
-            
+
             //check model state
             if (!ModelState.IsValid) return View(team);
 
@@ -642,7 +655,7 @@ namespace SCManagement.Controllers
             //Update Team Atributes
             Team teamToUpdate = await _teamService.GetTeam((int)id);
             if (teamToUpdate == null) return View("CustomError", "Error_NotFound");
-            
+
             //check roles
             if (!_clubService.IsClubStaff(role) || teamToUpdate.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
 
@@ -854,7 +867,7 @@ namespace SCManagement.Controllers
             //Check if is staff
             if (!_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = sf.ToString() }, "Id", "Name");
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name");
 
             var settings = await _clubService.GetClubPaymentSettings(role.ClubId);
 
@@ -864,7 +877,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> PaymentSettings(ClubPaymentSettings paymentSettings)
         {
-            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = sf.ToString() }, "Id", "Name");
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name");
 
             if (!ModelState.IsValid) return View(paymentSettings);
 
