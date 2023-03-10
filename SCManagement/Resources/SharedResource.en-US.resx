@@ -1386,6 +1386,10 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Basketball</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
+  <data name="ConfigEasyPay" xml:space="preserve">
+    <value>How to configure your easyPay?</value>
+    <comment>10-03-2023_PaySettings</comment>
+  </data>
   <data name="EventName" xml:space="preserve">
     <value>Event Name</value>
     <comment>10-03-2023_InfoPartial</comment>
@@ -1445,6 +1449,9 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Roller hockey" xml:space="preserve">
     <value>Roller hockey</value>
     <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="s" xml:space="preserve">
+    <value />
   </data>
   <data name="Sat" xml:space="preserve">
     <value>Sat</value>

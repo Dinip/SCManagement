@@ -25,13 +25,13 @@
 </style>
 
 <div class="container">
-    <h1 class="text-to-dark ms-4" style="margin-top:130px !important">Payment Settings</h1>
+    <h1 class="text-to-dark ms-4" style="margin-top:130px !important">@StringLocalizer["PaymentSettings"]</h1>
 
     <hr />
     <div class="card">
         <div class="card-body p-4" style="margin-top: 0 !important;">
             <div id="callback" class="text-to-dark"></div>
-            <a href="https://scribehow.com/shared/Setting_Up_SCManagement_Webhooks_in_EasyPay__avj8EiSHTQKFHYjZJtszAw" target="_blank">How to configure your easyPay?</a>
+            <a href="https://scribehow.com/shared/Setting_Up_SCManagement_Webhooks_in_EasyPay__avj8EiSHTQKFHYjZJtszAw" target="_blank">@StringLocalizer["ConfigEasyPay"]</a>
             <form asp-action="PaymentSettings">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="ClubPaymentSettingsId" />
@@ -65,7 +65,7 @@
                 </div>
 
                 <div class="form-group mt-3">
-                    <input type="submit" value="Save" class="btn btn-primary" style="border-radius: 10px;
+                    <input type="submit" value="@StringLocalizer["Save"]" class="btn btn-primary" style="border-radius: 10px;
                                                                                 float:right;
                                                                                 padding: 5px 25px 5px 25px;
                                                                                 background-color: #00639A;

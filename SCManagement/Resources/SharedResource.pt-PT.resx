@@ -1522,6 +1522,10 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Basquetebol</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
+  <data name="ConfigEasyPay" xml:space="preserve">
+    <value>Como configurar o seu easyPay?</value>
+    <comment>10-03-2023_PaySettings</comment>
+  </data>
   <data name="EventName" xml:space="preserve">
     <value>Nome Do Evento</value>
     <comment>10-03-2023_InfoPartial</comment>
