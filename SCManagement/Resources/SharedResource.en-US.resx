@@ -1366,6 +1366,38 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Remove EMD</value>
     <comment>08-03-2023_profile</comment>
   </data>
+  <data name="AddResult" xml:space="preserve">
+    <value>Add Result</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Athletics" xml:space="preserve">
+    <value>Athletics</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Basketball" xml:space="preserve">
+    <value>Basketball</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="EventPath" xml:space="preserve">
+    <value>Event Path</value>
+    <comment>10-03-2023_PathInfoMapBox</comment>
+  </data>
+  <data name="Futsal" xml:space="preserve">
+    <value>Futsal</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Guidance" xml:space="preserve">
+    <value>Guidance</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="MTB" xml:space="preserve">
+    <value>MTB</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Place</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
   <data name="Placeholder" xml:space="preserve">
     <value>Search</value>
     <comment>09-03-2023_IndexClubs</comment>
@@ -1373,6 +1405,30 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="PlaceholderAddress" xml:space="preserve">
     <value>Enter an address or street</value>
     <comment>09-03-2023_MyClubEdit</comment>
+  </data>
+  <data name="RemoveParticipant" xml:space="preserve">
+    <value>Remove Participant</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Roller hockey" xml:space="preserve">
+    <value>Roller hockey</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Soccer" xml:space="preserve">
+    <value>Soccer</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Swimming" xml:space="preserve">
+    <value>Swimming</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Taekwondo" xml:space="preserve">
+    <value>Taekwondo</value>
+    <comment>09-03-2023_Modalities</comment>
   </data>
   <data name="ViewDark" xml:space="preserve">
     <value>Dark</value>
@@ -1389,5 +1445,9 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="ViewStreets" xml:space="preserve">
     <value>Streets</value>
     <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="Volleyball" xml:space="preserve">
+    <value>Volleyball</value>
+    <comment>09-03-2023_Modalities</comment>
   </data>
 </root>
