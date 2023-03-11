@@ -32,6 +32,7 @@ function setTheme(theme) {
     let modal = document.getElementsByClassName('modal-content');
     let dlBg = document.getElementsByClassName('dlBg');
     let noClubImg = document.getElementById('swapImage');
+    let sidebar = document.getElementById('mySidebar');
     if (theme === "dark") {
         darkToggle.checked = true
         darkToggle1.checked = true
@@ -74,6 +75,11 @@ function setTheme(theme) {
             dlBg[i].style.background = '#1a1a1a';
         }
 
+        if (sidebar) {
+            sidebar.classList.add("bg-dark");
+        }
+        
+
     } else {
         darkToggle.checked = false
         darkToggle1.checked = false
@@ -93,7 +99,9 @@ function setTheme(theme) {
             texts[i].style.color = 'black';
         }
 
-
+        if (sidebar) {
+            sidebar.classList.remove("bg-dark");
+        }
 
         for (let i = 0; i < card.length; i++) {
             card[i].style.background = '#D9D9D9';
