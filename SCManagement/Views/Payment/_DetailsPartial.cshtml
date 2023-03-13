@@ -133,7 +133,11 @@
         </div>
     }
     <div class="mt-3">
-        @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
+        @if (Model.PaymentStatus == SCManagement.Services.PaymentService.Models.PaymentStatus.Pending)
+        {
+            <p>Payment is processing!</p>
+        }
+        else if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
         {
             @await Html.PartialAsync("_PaymentPartial", new SCManagement.Services.PaymentService.Models.PayPayment {Id = Model.Id})
         }
