@@ -125,18 +125,18 @@
                 <span class="text-to-dark" style="top:-20px !important;">*@StringLocalizer["Minimum 1 character"]</span>
             </div>
             <div class="form-floating mt-3">
-                <input asp-for="StartDate" id="startDateTime" class="form-control" value="@DateTime.Now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" onChange="changedStart(this)" />
+                <input asp-for="StartDate" id="startDateTime" class="form-control" value="@DateTime.Now.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" onChange="changedStart(this)" />
                 <label asp-for="StartDate" class="control-label"></label>
                 <span asp-validation-for="StartDate" class="text-danger" id="spanStartDate"></span>
             </div>
             <div class="form-floating mt-3">
-                <input asp-for="EndDate" id="endDateTime" class="form-control" value="@DateTime.Now.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddMinutes(100).ToString("yyyy-MM-ddTHH:mm")" />
+                <input asp-for="EndDate" id="endDateTime" class="form-control" value="@DateTime.Now.AddMinutes(15).ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.AddMinutes(15).ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" />
                 <label asp-for="EndDate" class="control-label"></label>
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
 
             <div class="form-floating mt-3">
-                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" />
+                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" value="@DateTime.Now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm")" min="@DateTime.Now.AddMinutes(5).ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm")" />
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
             </div>

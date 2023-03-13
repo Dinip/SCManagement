@@ -119,20 +119,20 @@
                 <span class="text-to-dark" style="top:-20px !important;">*@StringLocalizer["Minimum 1 character"]</span>
             </div>
             <div class="form-floating mt-3">
-                <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
+                <input asp-for="StartDate" id="startDateTime" class="form-control" min="@Model.CreationDate.Value.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" onChange="changedStart(this)" />
                 <label asp-for="StartDate" class="control-label"></label>
                 <span asp-validation-for="StartDate" class="text-danger" id="spanStartDate"></span>
                 <span class="text-danger" id="spanStartDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
             <div class="form-floating mt-3">
-                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()" />
+                <input asp-for="EndDate" id="endDateTime" class="form-control" min="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" />
                 <label asp-for="EndDate" class="control-label"></label>
                 <span asp-validation-for="EndDate" class="text-danger"></span>
                 <span class="text-danger" id="spanEndDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
 
             <div class="form-floating mt-3">
-                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" onchange="CheckLimitEnrollDate()" />
+                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" min="@Model.CreationDate.Value.ToString("yyyy-MM-ddTHH:mm")" max="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" onchange="CheckLimitEnrollDate()" />
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
                 <span class="text-danger" id="spanLimiteEnrollError" style="display:none">@StringLocalizer["Error_Registration_limit_Event"]</span>
@@ -165,7 +165,7 @@
                 <span style="color: orange;">@(ViewBag.ValidKey == false ? StringLocalizer["Warning_InvalidKey"] : "")</span>
             </div>
             <div class="form-floating mt-3">
-                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" value="0" />
+                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" />
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
@@ -205,7 +205,7 @@
 
             <a id="tutorialBtn" onclick="showTutorial()" class="mt-3 d-none" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
 
-
+            
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
 
             <div id="cardMapBox" class="mt-3">
@@ -258,11 +258,14 @@
                     </div>
                 </div>
             </div>
+
             <input type="hidden" disabled id="tradPlaceholder" value="@StringLocalizer["PlaceholderAddress"].Value.ToString()" />
             <div class="form-group mt-3 d-flex">
                 <input type="submit" value="Save" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                 <a asp-action="Index" class="btn btn-primary ms-3" style="color:black; border-radius: 10px; background-color: white; border: 2px solid red; text-decoration:none;"><strong>Cancel</strong></a>
             </div>
+
+            <input type="hidden" asp-for="EventAux" id="EventAux"/>
         </form>
     </div>
 </div>
@@ -273,6 +276,11 @@
 
     function showTutorial() {
         $('#modal').show();
+    }
+
+    function changedStart(event) {
+        document.getElementById("endDateTime").setAttribute("min", event.value)
+        document.getElementById("EnrollLimitDate").setAttribute("max", event.value)
     }
 
     function toggleLang(lang, elemento) {
@@ -388,35 +396,7 @@
     }
 
 
-    function HaveDiferentDate() {
-        let startDateTime = document.getElementById("startDateTime");
-        let endDateTime = document.getElementById("endDateTime");
-
-        let spanStartError = document.getElementById("spanStartDateError")
-        let spanEndError = document.getElementById("spanEndDateError")
-        let dateNow = new Date();
-        let checkStartDate = new Date(startDateTime.value)
-        let checkEndDate = new Date(endDateTime.value)
-
-
-        if (checkStartDate < dateNow) {
-            spanStartError.style.display = "block";
-            startDateTime.value = dateNow;
-        } else {
-            spanStartError.style.display = "none";
-        }
-
-        if (checkEndDate < checkStartDate) {
-            spanEndError.style.display = "block";
-            endDateTime.value = dateNow;
-        } else {
-            spanEndError.style.display = "none";
-        }
-
-        CheckLimitEnrollDate();
-    }
-
-    function CheckLimitEnrollDate() {
+        function CheckLimitEnrollDate() {
         let startDateTime = document.getElementById("startDateTime");
         let EnrollLimitDate = document.getElementById("EnrollLimitDate");
         let spanLimiteEnrollError = document.getElementById("spanLimiteEnrollError");

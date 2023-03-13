@@ -53,6 +53,8 @@ namespace SCManagement.Models
         public ICollection<EventResult>? Results { get; set; }
         [Display(Name= "Event Location")]
         public string? AddressByPath { get; set; }
+        public DateTime CreationDate { get; set; }
+
     }
 
     public enum ResultType : int
