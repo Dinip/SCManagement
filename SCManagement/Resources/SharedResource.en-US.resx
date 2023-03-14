@@ -1565,7 +1565,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Weight</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
-    <data name="All" xml:space="preserve">
+  <data name="All" xml:space="preserve">
     <value>All</value>
     <comment>10-03-2023_EventFilter</comment>
   </data>
@@ -1580,5 +1580,9 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="InProgress" xml:space="preserve">
     <value>In Progress</value>
     <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="NoLimit" xml:space="preserve">
+    <value>No Limit</value>
+    <comment>14-03-2023_FixEditEvent</comment>
   </data>
 </root>

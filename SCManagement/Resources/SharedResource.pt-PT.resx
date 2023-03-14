@@ -1714,4 +1714,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Em Andamento</value>
     <comment>10-03-2023_EventFilter</comment>
   </data>
+  <data name="NoLimit" xml:space="preserve">
+    <value>Sem Limite</value>
+    <comment>14-03-2023_FixEditEvent</comment>
+  </data>
 </root>

@@ -224,7 +224,7 @@ namespace SCManagement.Controllers
                     LocationId = newLocation == null ? null : newLocation.Id,
                     EventResultType = myEvent.EventResultType,
                     EnrollLimitDate = myEvent.EnrollLimitDate,
-                    MaxEventEnrolls = myEvent.MaxEventEnrolls,
+                    MaxEventEnrolls = myEvent.MaxEventEnrolls == 0 ? int.MaxValue : myEvent.MaxEventEnrolls,
                     ClubId = role.ClubId,
                     AddressByPath = myEvent.AddressByPath,
                     EventTranslations = new List<EventTranslation>(),
@@ -281,7 +281,7 @@ namespace SCManagement.Controllers
 
             public ResultType EventResultType { get; set; }
             [Display(Name = "Max Enrolls")]
-            [Range(1, int.MaxValue, ErrorMessage = "Please enter a value between 1 and 214783647")]
+            [Range(0, int.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
             public int MaxEventEnrolls { get; set; }
             [Display(Name = "Event Location")]
             public string? AddressByPath { get; set; }
