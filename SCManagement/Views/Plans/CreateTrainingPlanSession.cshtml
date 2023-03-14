@@ -1,0 +1,105 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+@model SCManagement.Services.PlansService.Models.TrainingPlan
+
+<h1>CreateTrainingPlanSession</h1>
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content">
+
+        </div>
+    </div>
+</div>
+<form method="post" asp-action="TrainingSession">
+    <table class="table">
+    <thead>
+        <tr>
+            <th>
+                @StringLocalizer["ExerciseName"]
+            </th>
+            <th>
+                @StringLocalizer["ExerciseDescription"]
+            </th>
+            <th>
+                @StringLocalizer["Repetitions"]
+            </th>
+            <th>
+                @StringLocalizer["Duration"]
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.TrainingPlanSessions != null && Model.TrainingPlanSessions.Count > 0)
+        {
+            @foreach (var item in Model.TrainingPlanSessions)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExerciseName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ExerciseDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Repetitions)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Duration)
+                    </td>
+                    <td>
+                        @*@if (ViewBag.IsStaff != null)
+                        {
+                            <form asp-action="DeleteResult">
+                                <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
+                            </form>
+                        }*@
+                    </td>
+                </tr>
+            }
+        }
+        <tr>
+            <td colspan="4">
+                <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add PlanSession </a>
+            </td>
+        </tr>
+    </tbody>
+    </table>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    let modal = document.getElementById("modal")
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $("#modal").hide();
+        }
+    }
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+    
+    function openCreate() {
+        $.ajax({
+            url: '/Plans/AddTrainingSession/@Model.Id',
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal-inner-content").html(result);
+                $("#modal").show();
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,36 @@
+﻿@model SCManagement.Services.PlansService.Models.TrainingPlanSession
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddTrainingSession">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(x => x.TrainingPlanId)
+            <div class="form-group">
+                <label asp-for="ExerciseName" class="control-label"></label>
+                <input asp-for="ExerciseName" class="form-control" />
+                <span asp-validation-for="ExerciseName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ExerciseDescription" class="control-label"></label>
+                <input asp-for="ExerciseDescription" class="form-control" />
+                <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Repetitions" class="control-label"></label>
+                <input asp-for="Repetitions" class="form-control" />
+                <span asp-validation-for="Repetitions" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input asp-for="Duration" class="form-control" />
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

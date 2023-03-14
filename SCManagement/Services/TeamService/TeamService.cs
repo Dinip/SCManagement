@@ -122,5 +122,23 @@ namespace SCManagement.Services.TeamService
             return await _context.Team.Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
                 .Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
         }
+
+        /// <summary>
+        /// Get all the teams that are coached by the user
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Team>> GetTeamsByTrainer(string userId)
+        {
+            return await _context.Team.Where(t => t.TrainerId == userId)
+                .Include(t => t.Modality)
+                .Include(t => t.Trainer)
+                .Include(t => t.Athletes)
+                .ThenInclude(a => a.TrainingPlans)
+                .Include(t => t.Athletes)
+                .ThenInclude(a => a.MealPlans)
+                .ToListAsync();
+        }
     }
 }

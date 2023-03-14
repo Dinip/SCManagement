@@ -1,0 +1,50 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+@model IEnumerable<SCManagement.Models.Team>
+
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["MyZone"]</h1>
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <table id="table_id" class="display" style="width:100%!important;">
+                <thead>
+                    <tr>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Modality.Name)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var teams in Model)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(model => teams.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(model => teams.Modality.Name)
+                            </td>
+                        </tr>
+                        @foreach (var athlete in teams.Athletes)
+                        {
+                            <tr>
+                                <td class="text-to-dark">
+                                    @Html.DisplayFor(model => athlete.FullName)
+                                </td>
+                                <td class="text-to-dark">
+                                    @Html.DisplayFor(model => athlete.DateOfBirth)
+                                </td>
+                                <td class="d-flex justify-content-end align-items-center">
+                                    <a asp-controller="Plans" asp-action="Create" asp-route-plan="2" asp-route-athleteId="@athlete.Id" class="me-2">Add Meal Plan</a>
+                                    <a asp-controller="Plans" asp-action="Create" asp-route-plan="1" asp-route-athleteId="@athlete.Id" class="me-2">Add Training Plan</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

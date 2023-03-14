@@ -1,0 +1,61 @@
+﻿@model SCManagement.Services.PlansService.Models.TrainingPlan
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "CreateTrainingPlan";
+}
+
+<h1>CreateTrainingPlan</h1>
+
+<h4>TrainingPlan</h4>
+<hr />
+<div id="modal" class="modal">
+    <div class="modal-content" style="margin-top:7%; margin-bottom:0; max-width:50%;">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <div id="modal-inner-content" class="w-auto">
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-4">
+        <form id="form"  asp-action="CreateTrainingPlan" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TrainerId" />
+            <input type="hidden" asp-for="AthleteId" />
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <span>@StringLocalizer["Choose modalities"]:</span>
+                <select required data-placeholder=" " style="width: fit-content !important;" asp-for="ModalityId" class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
+                <span asp-validation-for="ModalityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create and Add sessions" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+

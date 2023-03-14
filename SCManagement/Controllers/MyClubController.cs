@@ -904,5 +904,15 @@ namespace SCManagement.Controllers
             return View(payments);
         }
 
+        public async Task<IActionResult> TrainingZone()
+        {
+            //get the user selected role
+            UsersRoleClub role = _applicationContextService.UserRole;
+
+            //Check if is trainer
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            return View(await _teamService.GetTeamsByTrainer(role.UserId));
+        }
     }
 }
