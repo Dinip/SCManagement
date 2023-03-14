@@ -75,7 +75,11 @@
             @StringLocalizer["Enrolls"]
         </dt>
         <dd class="col-sm-10 text-to-dark">
-            @ViewBag.Enrolls.Count / @Html.DisplayFor(model => model.MaxEventEnrolls)
+            @ViewBag.Enrolls.Count / @if (Model.MaxEventEnrolls == int.MaxValue) {
+                <span>@StringLocalizer["NoLimit"]</span>
+            } else {
+                @Html.DisplayFor(model => model.MaxEventEnrolls)
+            }
         </dd>
         <dt class="col-sm-2 dlBg text-to-dark">
             @Html.DisplayNameFor(model => model.Club)

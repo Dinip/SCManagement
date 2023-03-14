@@ -47,7 +47,7 @@ namespace SCManagement.Tests.Controller
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
 
             // Act
-            var result = await _eventsController.Index();
+            var result = await _eventsController.Index(null);
 
             // Assert
             result.Should().BeOfType<ViewResult>();
@@ -63,7 +63,7 @@ namespace SCManagement.Tests.Controller
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
 
             // Act
-            var result = await _eventsController.Index();
+            var result = await _eventsController.Index(null);
 
             // Assert
             result.Should().BeOfType<ViewResult>();

@@ -14,6 +14,8 @@ using SCManagement.Services.EventService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
+using System.Text.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace SCManagement.Controllers
 {
@@ -222,10 +224,11 @@ namespace SCManagement.Controllers
                     LocationId = newLocation == null ? null : newLocation.Id,
                     EventResultType = myEvent.EventResultType,
                     EnrollLimitDate = myEvent.EnrollLimitDate,
-                    MaxEventEnrolls = myEvent.MaxEventEnrolls,
+                    MaxEventEnrolls = myEvent.MaxEventEnrolls == 0 ? int.MaxValue : myEvent.MaxEventEnrolls,
                     ClubId = role.ClubId,
                     AddressByPath = myEvent.AddressByPath,
-                    EventTranslations = new List<EventTranslation>()
+                    EventTranslations = new List<EventTranslation>(),
+                    CreationDate = DateTime.Now,
                 };
 
                 await UpdateTranslations(myEvent.EventTranslationsName, createdEvent);
@@ -278,13 +281,16 @@ namespace SCManagement.Controllers
 
             public ResultType EventResultType { get; set; }
             [Display(Name = "Max Enrolls")]
-            [Range(1, int.MaxValue, ErrorMessage = "Please enter a value between 1 and 214783647")]
+            [Range(0, int.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
             public int MaxEventEnrolls { get; set; }
             [Display(Name = "Event Location")]
             public string? AddressByPath { get; set; }
             public string? LocationString { get; set; }
             public int? LocationId { get; set; }
             public Address? Location { get; set; }
+
+            public string? EventAux { get; set; }
+            public DateTime? CreationDate { get; set; }
 
 
 
@@ -320,6 +326,24 @@ namespace SCManagement.Controllers
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
 
+            ViewBag.NumberOfEnrolls = (await _eventService.GetEnrolls(myEvent.Id)).Count(); 
+
+            Event eventCopy = new Event
+            {
+                StartDate = myEvent.StartDate,
+                EndDate = myEvent.EndDate,
+                EnrollLimitDate = myEvent.EnrollLimitDate,
+                IsPublic = myEvent.IsPublic,
+                Fee = myEvent.Fee,
+                HaveRoute = myEvent.HaveRoute,
+                Route = myEvent.Route,
+                EventResultType = myEvent.EventResultType,
+                MaxEventEnrolls = myEvent.MaxEventEnrolls,
+                AddressByPath = myEvent.AddressByPath,
+                Location = myEvent.Location,
+                LocationId = myEvent.LocationId,
+            };
+
             EventModel eventToEdit = new EventModel
             {
                 StartDate = myEvent.StartDate,
@@ -335,7 +359,9 @@ namespace SCManagement.Controllers
                 EventTranslationsName = myEvent.EventTranslations.Where(e => e.Atribute == "Name").ToList(),
                 EventTranslationsDetails = myEvent.EventTranslations.Where(e => e.Atribute == "Details").ToList(),
                 Location = myEvent.Location,
-                LocationId = myEvent.LocationId
+                LocationId = myEvent.LocationId,
+                CreationDate = myEvent.CreationDate,
+                EventAux = JsonSerializer.Serialize(eventCopy)
             };
 
             return View(eventToEdit);
@@ -361,7 +387,7 @@ namespace SCManagement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath,LocationString")] EventModel myEvent)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EnrollLimitDate,EventResultType,MaxEventEnrolls,AddressByPath,LocationString, EventAux")] EventModel myEvent)
         {
             if (id != myEvent.Id)
             {
@@ -381,7 +407,13 @@ namespace SCManagement.Controllers
                     return View("CustomError", "Error_Unauthorized");
                 }
 
-                if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
+                Event eventCopy = JsonSerializer.Deserialize<Event>(myEvent.EventAux);
+                if (eventCopy == null) return View("CustomError", "Error_NotFound");
+                if (myEvent.StartDate == eventCopy.StartDate && myEvent.EndDate == eventCopy.EndDate && myEvent.EnrollLimitDate == eventCopy.EnrollLimitDate)
+                {
+                    
+                }
+                else if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
                 {
                     return View("CustomError", "Error_InvalidInput");
                 }
