@@ -165,7 +165,7 @@
                 <span style="color: orange;">@(ViewBag.ValidKey == false ? StringLocalizer["Warning_InvalidKey"] : "")</span>
             </div>
             <div class="form-floating mt-3">
-                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" />
+                <input type="number" step="1" min="@ViewBag.NumberOfEnrolls" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" />
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
