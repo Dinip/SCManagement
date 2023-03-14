@@ -1714,4 +1714,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Em Andamento</value>
     <comment>10-03-2023_EventFilter</comment>
   </data>
+  <data name="No address saved" xml:space="preserve">
+    <value>Sem localização guardada</value>
+    <comment>11-03-2023_myclubEdit</comment>
+  </data>
 </root>

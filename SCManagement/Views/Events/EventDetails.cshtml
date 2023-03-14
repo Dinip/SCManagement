@@ -72,10 +72,10 @@
             @Html.DisplayFor(model => model.Fee)
         </dd>
         <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.MaxEventEnrolls)
+            @StringLocalizer["Enrolls"]
         </dt>
         <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.MaxEventEnrolls)
+            @ViewBag.Enrolls.Count / @Html.DisplayFor(model => model.MaxEventEnrolls)
         </dd>
         <dt class="col-sm-2 dlBg text-to-dark">
             @Html.DisplayNameFor(model => model.Club)
@@ -145,13 +145,21 @@
                         <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["CancelSubscription"]</button>
                     </form>
                 }
-                
+
             }
             else
             {
-                <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
-                    <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Enroll"]</button>
-                </form>
+                
+                    <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
+                    @if (ViewBag.EnrollLimitDate <= DateTime.Now)
+                    {
+                        <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Enroll"]</button>
+                    }else
+                    {    
+                        <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" disabled>@StringLocalizer["Enroll"]</button>     
+                    }
+                    </form>
+                
             }
 
             <form asp-action="Details" asp-controller="Clubs" asp-route-id="@Model.ClubId">
@@ -224,6 +232,7 @@
             ]
         });
     });
+
 </script>
 
 @section Scripts {

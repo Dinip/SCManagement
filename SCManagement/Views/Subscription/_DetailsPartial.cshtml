@@ -181,6 +181,10 @@
             async: false,
             success: function (result) {
                 $("#modal-inner-content").html(result);
+                console.log(document.getElementsByClassName("modal-content").length);
+                document.getElementsByClassName("modal-content")[0].classList.remove("w-50");
+                document.getElementsByClassName("modal-content")[0].classList.add("w-25");
+                $(".modal-content");
                 $("#modal").show();
             }
         });

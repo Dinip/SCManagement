@@ -14,20 +14,22 @@
 
 <style>
     .selected {
-        background-color: #00639A !important;
-        color: white;
+        background-color: white !important;
+        color: black !important;
         border: 1px solid black;
     }
 
     .lang-btn-about {
-        background-color: white;
+        background-color: #00639A;
+        color: white;
         border-bottom: none !important;
         width: 60px;
         border: 1px solid black;
     }
 
     .lang-btn-termsandconditions {
-        background-color: white;
+        background-color: #00639A;
+        color: white;
         border-bottom: none !important;
         width: 60px;
         border: 1px solid black;
@@ -196,8 +198,10 @@
                 @if (Model.Address != null)
                 {
                     <span class="text-to-dark">@Model.Address.Street, @Model.Address.ZipCode, @Model.Address.City, @Model.Address.Country</span>
-
-                    
+                }
+                else
+                {
+                     <span class="text-to-dark">@StringLocalizer["No address saved"]</span>
                 }
                 <i class="fa-solid fa-lg fa-pen-to-square text-to-dark ms-3" onclick="openDetails()" style="cursor:pointer;"></i>
                 <br />
