@@ -67,7 +67,7 @@ btnSave.onclick = function () {
                 CoordinateX: coord[0],
                 CoordinateY: coord[1],
                 AddressString: address,
-               
+
             })
             $("#modal").hide();
             newAd.innerHTML = strings.newAddress + ": " + address;
@@ -77,7 +77,6 @@ btnSave.onclick = function () {
         $(".toast").show();
         document.getElementById('alertText').innerHTML = strings.resultError;
     }
-
 }
 
 
@@ -87,51 +86,68 @@ function addMarkers(coordX, coordY) {
         .addTo(map);
 }
 
+let marker = null;
 
 function MarkerWithAddress() {
-    let marker = null;
-
     map.on('click', function (e) {
         // Capture the coordinates of the clicked point
         if (marker !== null) {
             marker.remove();
         }
         coord = e.lngLat.toArray();
-        console.log(map.getStyle().layers)
+
         // Add the marker to the map
         marker = new mapboxgl.Marker({ color: "#00639A" })
             .setLngLat([coord[0], coord[1]])
             .addTo(map);
 
-        // Send an HTTP request to the Geocoding API
-        let geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + coord[0] + ',' + coord[1] + '.json?ypes=poi,address,region,district,place,country&access_token=' + mapboxgl.accessToken;
-        fetch(geocodeUrl)
-            .then(response => response.json())
-            .then(data => {
-                let features = null;
-                console.log(data)
-                console.log(map.getStyle().name)
+        // put address
+        addAddress(e);
+    });
+}
+
+function addAddress(epoint) {
+    // Send an HTTP request to the Geocoding API
+    let geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + coord[0] + ',' + coord[1] + '.json?ypes=poi,address,region,district,place,country&access_token=' + mapboxgl.accessToken;
+
+    fetch(geocodeUrl)
+        .then(response => response.json())
+        .then(data => {
+            let features = null;
+
+            try {
                 if (map.getStyle().name === 'Mapbox Satellite Streets') {
-                    console.log("saS")
-                    features = map.queryRenderedFeatures(e.point);
-                    console.log(features)
+
+                    address = data.features[0].place_name;
+                    if (coordX != "" && coordY != "") {
+                        markers.remove();
+                    }
+
                 } else {
-                    features = map.queryRenderedFeatures(e.point, { layers: ['water'] });
-                    console.log(features)
-                }
-                
-                if (features.length > 0) {
-                    alert(strings.searchError)
-                    marker.remove();
-                } else {
-                    // Extract the address information from the JSON response
-                    if (data.features && data.features.length > 0) {
-                        address = data.features[0].place_name;
-                        if (coordX != "" && coordY != "") {
-                            markers.remove();
+                    features = map.queryRenderedFeatures(epoint.point, { layers: ['water'] });
+                    if (features.length > 0) {
+                        errorRemoveMarker(strings.searchError);
+                    } else {
+                        // Extract the address information from the JSON response
+                        if (data.features && data.features.length > 0) {
+                            address = data.features[0].place_name;
+                            if (coordX != "" && coordY != "") {
+                                markers.remove();
+                            }
                         }
                     }
                 }
-            });
-    });
+            } catch (error) {
+                errorRemoveMarker(strings.resultError);
+                address = null;
+            }
+
+        });
 }
+
+
+function errorRemoveMarker(errorMessage) {
+    alert(errorMessage);
+    marker.remove();
+}
+
