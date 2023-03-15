@@ -1,12 +1,10 @@
 ﻿@model IEnumerable<SCManagement.Models.Club>
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
-<div class="overflow-auto mt-4" style="max-height:400px;">
-    <div id="search-results-partial">
+
         @foreach (var item in Model)
         {
-
-            <div class="card card-to-dark shadow-sm mt-2" id="@item.Id" onclick="flyToClub('@item.Address?.CoordinateX','@item.Address?.CoordinateY')" style="cursor:pointer;">
+            <div class="card shadow-sm mt-2" id="@item.Id" onclick="flyToClub('@item.Address?.CoordinateX','@item.Address?.CoordinateY')" style="cursor:pointer;">
                 <div class="card-body d-flex justify-content-between" style="margin-top:0 !important;">
                     <div class="col-8">
                         <h3 class="text-to-dark">
@@ -27,9 +25,6 @@
                 </div>
             </div>
         }
-    </div>
-</div>
-
-
+    
 
 <script src="~/js/Mapbox.js" asp-append-version="true"></script>

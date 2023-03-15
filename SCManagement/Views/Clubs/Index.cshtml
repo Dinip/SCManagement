@@ -118,9 +118,11 @@
                 <i class="fas fa-search"></i>
             </span>
         </div>
-
-        @await Html.PartialAsync("_PartialSearchClub",Model)
-
+        <div class="overflow-auto mt-4" style="max-height:400px;">
+            <div id="search-results-partial">
+                 @await Html.PartialAsync("_PartialSearchClub",Model)
+            </div>
+        </div>
     </div>
 
     <button id="openbtn" onmouseover="openNav()"><i class="fa-solid fa-chevron-right"></i></button>

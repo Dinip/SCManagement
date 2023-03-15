@@ -14,22 +14,23 @@
             <a asp-action="Create">@StringLocalizer["Create New"]</a>
         </p>
     }
-    <div>
-        <input id="FilterEvent0" name="FilterEvent" value="0" type="radio">
-        <label for="FilterEvent0">@StringLocalizer["All"]</label>
-        
-        <input id="FilterEvent1" name="FilterEvent" value="1" type="radio">
-        <label for="FilterEvent1">@StringLocalizer["InProgress"]</label>
-        
-        <input id="FilterEvent2" name="FilterEvent" value="2" type="radio">
-        <label for="FilterEvent2">@StringLocalizer["Finished"]</label>
-        
-        <input id="FilterEvent3" name="FilterEvent" value="3" type="radio">
-        <label for="FilterEvent3">@StringLocalizer["Futures"]</label>
-    </div>
-
+    
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
+            <div class="mb-4 mt-2">
+                <input id="FilterEvent0" name="FilterEvent" value="0" type="radio" style="accent-color: #00639A">
+                <label for="FilterEvent0">@StringLocalizer["All"]</label>
+
+                <input id="FilterEvent1" name="FilterEvent" value="1" type="radio" style="accent-color: #00639A" class="ms-2">
+                <label for="FilterEvent1">@StringLocalizer["InProgress"]</label>
+
+                <input id="FilterEvent2" name="FilterEvent" value="2" type="radio" style="accent-color: #00639A" class="ms-2">
+                <label for="FilterEvent2">@StringLocalizer["Finished"]</label>
+
+                <input id="FilterEvent3" name="FilterEvent" value="3" type="radio" style="accent-color: #00639A" class="ms-2">
+                <label for="FilterEvent3">@StringLocalizer["Futures"]</label>
+            </div>
+
             <table id="table_id" class="display">
                 <thead>
                     <tr>
