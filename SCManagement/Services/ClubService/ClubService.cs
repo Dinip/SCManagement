@@ -739,11 +739,7 @@ namespace SCManagement.Services.ClubService
             {
                 CoordinateX = address.CoordinateX,
                 CoordinateY = address.CoordinateY,
-                ZipCode = address.ZipCode,
-                Street = address.Street,
-                City = address.City,
-                District = address.District,
-                Country = address.Country
+                AddressString = address.AddressString,
             };
 
             _context.Address.Add(ad);
@@ -774,11 +770,7 @@ namespace SCManagement.Services.ClubService
             Address ad = await _context.Address.FindAsync(addressId);
             ad.CoordinateX = address.CoordinateX;
             ad.CoordinateY = address.CoordinateY;
-            ad.ZipCode = address.ZipCode;
-            ad.Street = address.Street;
-            ad.City = address.City;
-            ad.District = address.District;
-            ad.Country = address.Country;
+            ad.AddressString = address.AddressString;
             _context.Address.Update(ad);
             await _context.SaveChangesAsync();
         }

@@ -8,10 +8,6 @@ namespace SCManagement.Models
         public int Id { get; set; }
         public double CoordinateX { get; set; }
         public double CoordinateY { get; set; }
-        public string? ZipCode { get; set; }
-        public string Street { get; set; }
-        public string City { get; set; }
-        public string District { get; set; }
-        public string Country { get; set; }
+        public string AddressString { get; set; }
     }
 }

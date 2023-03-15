@@ -9,7 +9,7 @@ let coordX = document.getElementById('coordX').value;
 let coordY = document.getElementById('coordY').value;
 let tradPlaceholder = document.getElementById('tradPlaceholder');
 
-let marker;
+let markers;
 let map;
 
 if (coordX != "" && coordY != "") {
@@ -43,53 +43,36 @@ for (const input of inputs) {
 const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
+    marker: false,
     placeholder: tradPlaceholder.value,
-    types: 'address',
-    layers: ['address'],
-    
 });
 
 map.addControl(geocoder, 'top-left');
 
-let address;
+
 let errorMessage;
+let coord;
 
 map.on('load', () => {
-    // Listen for the `geocoder.input` event that is triggered when a user
-    // makes a selection
-    geocoder.on('result', (event) => {
-        address = event.result;
-        if (coordX != "" && coordY != "") {
-            marker.remove();
-        }
-    });
+    MarkerWithAddress();
 });
 
 const btnSave = document.getElementById('save-button');
+let address = null;
 
 btnSave.onclick = function () {
     try {
-        $(".toast").show();
-        document.getElementById('alertText').innerHTML = strings.searchError;
+        console.log(address)
         if (address != null) {
-            let { text, geometry, context } = address;
-            let addressCode = context.find(item => item.id.startsWith('postcode')).text;
-            let city = context.find(item => item.id.startsWith('place')).text;
-            let district = context.find(item => item.id.startsWith('region')).text;
-            let country = context.find(item => item.id.startsWith('country')).text;
-            let coord = geometry.coordinates;
-
+            console.log(address)
             addressElement.value = JSON.stringify({
-                CoordinateY: coord[1],
                 CoordinateX: coord[0],
-                ZipCode: addressCode,
-                Street: text,
-                City: city,
-                District: district,
-                Country: country,
+                CoordinateY: coord[1],
+                AddressString: address,
+               
             })
             $("#modal").hide();
-            newAd.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
+            newAd.innerHTML = strings.newAddress + ": " + address;
         }
 
     } catch (error) {
@@ -101,7 +84,51 @@ btnSave.onclick = function () {
 
 
 function addMarkers(coordX, coordY) {
-    marker = new mapboxgl.Marker({ color: '#00639A' })
+    markers = new mapboxgl.Marker({ color: '#00639A' })
         .setLngLat([coordX, coordY])
         .addTo(map);
+}
+
+
+function MarkerWithAddress() {
+    
+    
+    let marker = null;
+
+    map.on('click', function (e) {
+        // Capturar as coordenadas do ponto clicado
+        if (marker !== null) {
+            marker.remove();
+        }
+        coord = e.lngLat.toArray();
+
+        // Adicionar o pin ao mapa
+        marker = new mapboxgl.Marker({ color: "#00639A" })
+            .setLngLat([coord[0], coord[1]])
+            .addTo(map);
+
+
+        // Enviar uma solicitação HTTP para a API Geocoding
+        let geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + coord[0] + ',' + coord[1] + '.json?ypes=poi,address,region,district,place,country&access_token=' + mapboxgl.accessToken;
+        fetch(geocodeUrl)
+            .then(response => response.json())
+            .then(data => {
+
+                let features = map.queryRenderedFeatures(e.point, { layers: ['water'] });
+                if (features.length > 0) {
+                    alert("Não pode inserir a morada no mar neee!!!")
+                    marker.remove();
+                } else {
+                    alert("Ta Top, Mete ai!!!")
+                    // Extrair as informações de endereço da resposta JSON
+                    if (data.features && data.features.length > 0) {
+                        address = data.features[0].place_name;
+                        if (coordX != "" && coordY != "") {
+                            markers.remove();
+                        }
+                        console.log(address)
+                    }
+                }
+            });
+    });
 }

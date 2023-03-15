@@ -183,7 +183,7 @@
 
                 @if (@Model.LocationId != null && Model.Location != null)
                 {
-                    <span id="spanStreet" class="text-to-dark">@Model.Location.Street, @Model.Location.City, @Model.Location.Country, @Model.Location.ZipCode</span>
+                    <span id="spanStreet" class="text-to-dark">@Model.Location.AddressString</span>
 
                 }
             </div>
