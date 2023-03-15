@@ -16,6 +16,7 @@ using SCManagement.Services.EventService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.Location;
 using SCManagement.Services.CronJobService;
+using SCManagement.Services.StatisticsService;
 
 namespace SCManagement.Services
 {
@@ -138,11 +139,12 @@ namespace SCManagement.Services
             services.AddTransient<IPaymentService, SCManagement.Services.PaymentService.PaymentService>();
             services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
             services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
-            #endregion
-
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
+            services.AddTransient<IStatisticService, SCManagement.Services.StatisticsService.StatisticService>();
+            #endregion
 
+            #region cronjobs
             //daily checker @ 1 min past midnight
             services.AddCronJob<DailySubscriptionChecker>(c =>
             {
@@ -163,6 +165,7 @@ namespace SCManagement.Services
                 c.TimeZoneInfo = TimeZoneInfo.Utc;
                 c.CronExpression = @"5 * * * *";
             });
+            #endregion
         }
     }
 }
