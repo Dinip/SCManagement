@@ -8,6 +8,7 @@ using Unidecode.NET;
 using System.Reflection.Emit;
 using Microsoft.Extensions.Hosting;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Data
 {
@@ -39,7 +40,10 @@ namespace SCManagement.Data
         public DbSet<ClubPaymentSettings> ClubPaymentSettings { get; set; }
         public DbSet<EventTranslation> EventTranslations { get; set; }
         public DbSet<Bioimpedance> Bioimpedance { get; set; }
-
+        public DbSet<ClubEventStatistic> ClubEventStatistic { get; set; }
+        public DbSet<ClubModalityStatistic> ClubModalityStatistic { get; set; }
+        public DbSet<ClubPaymentStatistic> ClubPaymentStatistic { get; set; }
+        public DbSet<ClubUserStatistic> ClubUserStatistic { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
