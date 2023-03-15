@@ -98,6 +98,13 @@
         background-color: #00639A;
         border: 1px solid black;
     }
+
+    .toast {
+        position: absolute;
+        top: 15%;
+        right: 2%;
+        border: 2px solid red;
+    }
 </style>
 
 @{
@@ -196,8 +203,16 @@
             <span id="locationText" class="text-to-dark"></span>
             <br />
 
-            <a onclick="showTutorial()" class="mt-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
+            <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong id="alertText"></strong>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                </div>
+            </div>
 
+            <a onclick="showTutorial()" class="mt-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
             <div id="cardMapBox" class="mt-3">
                 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; width:100% !important;">
                     <div class="card-body">
@@ -262,139 +277,144 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
     }
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
+    <script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
 
 
-<script>
-    window.onload = function () {
-        document.getElementById("myForm").addEventListener("submit", validateForm);
+    <script>
+        window.onload = function () {
+            document.getElementById("myForm").addEventListener("submit", validateForm);
 
-        const culture = "@ViewBag.CultureInfo"
-        toggleLang(culture, "details")
-        toggleLang(culture, "name")
-        SearchMapBoxConfig();
-    }
-
-    function changedStart(event) {
-        document.getElementById("endDateTime").setAttribute("min", event.value)
-        document.getElementById("EnrollLimitDate").setAttribute("max", event.value)
-    }
-
-    function showTutorial() {
-        $('#modal').show();
-    }
-
-    var strings = {
-        "noMatch": '@Html.Raw(StringLocalizer["NoMatch"].Value.ToString())',
-        "noSegment": '@Html.Raw(StringLocalizer["NoSegment"].Value.ToString())',
-        "tooManyCoordinates": '@Html.Raw(StringLocalizer["TooManyCoordinates"].Value.ToString())',
-        "profileNotFound": '@Html.Raw(StringLocalizer["ProfileNotFound"].Value.ToString())',
-        "invalidInput": '@Html.Raw(StringLocalizer["InvalidInput"].Value.ToString())',
-        "other": '@Html.Raw(StringLocalizer["Other"].Value.ToString())',
-        "start": '@Html.Raw(StringLocalizer["Start"].Value.ToString())',
-        "end": '@Html.Raw(StringLocalizer["End"].Value.ToString())',
-        "searchLocation": '@Html.Raw(StringLocalizer["SearchLocation"].Value.ToString())',
-        "newAddress": '@Html.Raw(StringLocalizer["NewAddress"].Value.ToString())',
-        "searchError": '@Html.Raw(StringLocalizer["SearchError"].Value.ToString())',
-    }
-
-    function toggleLang(lang, elemento) {
-
-        const btns = document.querySelectorAll(`input.lang-btn-${elemento}`)
-        for (let bt of btns) {
-            bt.getAttribute("id") == `btn-${elemento}-${lang}` ? bt.classList.add("selected") : bt.classList.remove("selected")
-        }
-
-        const textareas = document.querySelectorAll(`div.${elemento}-lang`)
-        for (let ta of textareas) {
-            ta.getAttribute("id") == `${elemento}-${lang}` ? ta.classList.remove("d-none") : ta.classList.add("d-none")
-        }
-    }
-
-    function translateFn(elemento) {
-        const textareas = document.querySelectorAll(`div.${elemento}-lang > textarea`)
-        const selectedLang = document.querySelectorAll(`input.selected.lang-btn-${elemento}`)[0].getAttribute("data-lang")
-        const selectedContent = document.querySelectorAll(`div#${elemento}-${selectedLang} > textarea`)[0]
-
-        for (let ta of textareas) {
-            if (ta.value == "" && ta.getAttribute("data-lang") != selectedLang) {
-                getTranslation(ta, selectedContent.value, selectedLang, ta.getAttribute("data-lang"))
-            }
-        }
-    }
-
-    function getTranslation(ta, content, fromLang, toLang) {
-        //ajax
-        //return do texto traduzido do pedido
-        $.ajax({
-            type: 'Post',
-            url: '/Translation/Translation',
-            data:
-            {
-                content: content,
-                fromLang: fromLang,
-                toLang: toLang
-            },
-        }).done(function (response) {
-            console.log("Sucess")
-            ta.value = response[0].translations[0].text
-
-        }).fail(function (jqXHR, textStatus, errorThrown) {
-            console.log("Erro: " + textStatus + ", " + errorThrown)
-            console.log("Resposta do servidor: " + jqXHR.responseText)
-        })
-    }
-
-    function ToggleMapBox() {
-        let ckbHaveRoute = document.getElementById("ckbHaveRoute");
-        let addressContainer = document.getElementById("AddressContainer");
-        document.getElementById("save-button").classList.remove("d-none");
-        if (ckbHaveRoute.checked) {
-            document.getElementById("ev").value = null;
-            document.getElementById("AddressByPath").value = null;
-            document.getElementById("map").innerHTML = "";
-            PathMapBoxConfig();
-        }
-        else {
-            document.getElementById("ev").value = null;
-            document.getElementById("AddressByPath").value = null;
-            document.getElementById("map").innerHTML = "";
+            const culture = "@ViewBag.CultureInfo"
+            toggleLang(culture, "details")
+            toggleLang(culture, "name")
             SearchMapBoxConfig();
         }
-    }
 
-    function validateForm(event) {
-        // Verificar se pelo menos um dos campos está preenchido
-        const addressByPath = document.getElementById("AddressByPath").value;
-        const locationString = document.getElementById("Location").value;
-        if (addressByPath.trim() === "" && locationString.trim() === "") {
-            event.preventDefault();
-            alert("Por favor, coloque uma localização no evento.");
-            return false;
+        function closeToast() {
+            $(".toast").hide();
         }
 
+        function changedStart(event) {
+            document.getElementById("endDateTime").setAttribute("min", event.value)
+            document.getElementById("EnrollLimitDate").setAttribute("max", event.value)
+        }
 
-        // Verificar se algum dos campos de tradução está preenchido
-        const translations = document.querySelectorAll('textarea[name^="EventTranslationsName"]');
+        function showTutorial() {
+            $('#modal').show();
+        }
 
-        let isTranslationFilled = false;
-        for (let i = 0; i < translations.length; i++) {
-            if (translations[i].value.trim() !== '') {
-                isTranslationFilled = true;
-                break;
+        var strings = {
+            "noMatch": '@Html.Raw(StringLocalizer["NoMatch"].Value.ToString())',
+            "noSegment": '@Html.Raw(StringLocalizer["NoSegment"].Value.ToString())',
+            "tooManyCoordinates": '@Html.Raw(StringLocalizer["TooManyCoordinates"].Value.ToString())',
+            "profileNotFound": '@Html.Raw(StringLocalizer["ProfileNotFound"].Value.ToString())',
+            "invalidInput": '@Html.Raw(StringLocalizer["InvalidInput"].Value.ToString())',
+            "other": '@Html.Raw(StringLocalizer["Other"].Value.ToString())',
+            "start": '@Html.Raw(StringLocalizer["Start"].Value.ToString())',
+            "end": '@Html.Raw(StringLocalizer["End"].Value.ToString())',
+            "searchLocation": '@Html.Raw(StringLocalizer["SearchLocation"].Value.ToString())',
+            "newAddress": '@Html.Raw(StringLocalizer["NewAddress"].Value.ToString())',
+            "searchError": '@Html.Raw(StringLocalizer["SearchError"].Value.ToString())',
+            "resultError": '@Html.Raw(StringLocalizer["ResultError"].Value.ToString())',
+        }
+
+        function toggleLang(lang, elemento) {
+
+            const btns = document.querySelectorAll(`input.lang-btn-${elemento}`)
+            for (let bt of btns) {
+                bt.getAttribute("id") == `btn-${elemento}-${lang}` ? bt.classList.add("selected") : bt.classList.remove("selected")
+            }
+
+            const textareas = document.querySelectorAll(`div.${elemento}-lang`)
+            for (let ta of textareas) {
+                ta.getAttribute("id") == `${elemento}-${lang}` ? ta.classList.remove("d-none") : ta.classList.add("d-none")
             }
         }
 
-        // Se algum dos campos de tradução está preenchido, permite o envio do formulário
-        if (isTranslationFilled) {
-            return true;
+        function translateFn(elemento) {
+            const textareas = document.querySelectorAll(`div.${elemento}-lang > textarea`)
+            const selectedLang = document.querySelectorAll(`input.selected.lang-btn-${elemento}`)[0].getAttribute("data-lang")
+            const selectedContent = document.querySelectorAll(`div#${elemento}-${selectedLang} > textarea`)[0]
+
+            for (let ta of textareas) {
+                if (ta.value == "" && ta.getAttribute("data-lang") != selectedLang) {
+                    getTranslation(ta, selectedContent.value, selectedLang, ta.getAttribute("data-lang"))
+                }
+            }
         }
 
-        // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
-        event.preventDefault();
-        alert("Preencha pelo menos um campo de tradução.");
-        return false;
-    }
-</script>
+        function getTranslation(ta, content, fromLang, toLang) {
+            //ajax
+            //return do texto traduzido do pedido
+            $.ajax({
+                type: 'Post',
+                url: '/Translation/Translation',
+                data:
+                {
+                    content: content,
+                    fromLang: fromLang,
+                    toLang: toLang
+                },
+            }).done(function (response) {
+                console.log("Sucess")
+                ta.value = response[0].translations[0].text
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("Erro: " + textStatus + ", " + errorThrown)
+                console.log("Resposta do servidor: " + jqXHR.responseText)
+            })
+        }
+
+        function ToggleMapBox() {
+            let ckbHaveRoute = document.getElementById("ckbHaveRoute");
+            let addressContainer = document.getElementById("AddressContainer");
+            document.getElementById("save-button").classList.remove("d-none");
+            if (ckbHaveRoute.checked) {
+                document.getElementById("ev").value = null;
+                document.getElementById("AddressByPath").value = null;
+                document.getElementById("map").innerHTML = "";
+                PathMapBoxConfig();
+            }
+            else {
+                document.getElementById("ev").value = null;
+                document.getElementById("AddressByPath").value = null;
+                document.getElementById("map").innerHTML = "";
+                SearchMapBoxConfig();
+            }
+        }
+
+        function validateForm(event) {
+            // Verificar se pelo menos um dos campos está preenchido
+            const addressByPath = document.getElementById("AddressByPath").value;
+            const locationString = document.getElementById("Location").value;
+            if (addressByPath.trim() === "" && locationString.trim() === "") {
+                event.preventDefault();
+                alert("Por favor, coloque uma localização no evento.");
+                return false;
+            }
+
+
+            // Verificar se algum dos campos de tradução está preenchido
+            const translations = document.querySelectorAll('textarea[name^="EventTranslationsName"]');
+
+            let isTranslationFilled = false;
+            for (let i = 0; i < translations.length; i++) {
+                if (translations[i].value.trim() !== '') {
+                    isTranslationFilled = true;
+                    break;
+                }
+            }
+
+            // Se algum dos campos de tradução está preenchido, permite o envio do formulário
+            if (isTranslationFilled) {
+                return true;
+            }
+
+            // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
+            event.preventDefault();
+            alert("Preencha pelo menos um campo de tradução.");
+            return false;
+        }
+    </script>

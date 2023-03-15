@@ -62,9 +62,7 @@ let address = null;
 
 btnSave.onclick = function () {
     try {
-        console.log(address)
         if (address != null) {
-            console.log(address)
             addressElement.value = JSON.stringify({
                 CoordinateX: coord[0],
                 CoordinateY: coord[1],
@@ -77,7 +75,7 @@ btnSave.onclick = function () {
 
     } catch (error) {
         $(".toast").show();
-        document.getElementById('alertText').innerHTML = strings.searchError;
+        document.getElementById('alertText').innerHTML = strings.resultError;
     }
 
 }
@@ -91,42 +89,47 @@ function addMarkers(coordX, coordY) {
 
 
 function MarkerWithAddress() {
-    
-    
     let marker = null;
 
     map.on('click', function (e) {
-        // Capturar as coordenadas do ponto clicado
+        // Capture the coordinates of the clicked point
         if (marker !== null) {
             marker.remove();
         }
         coord = e.lngLat.toArray();
-
-        // Adicionar o pin ao mapa
+        console.log(map.getStyle().layers)
+        // Add the marker to the map
         marker = new mapboxgl.Marker({ color: "#00639A" })
             .setLngLat([coord[0], coord[1]])
             .addTo(map);
 
-
-        // Enviar uma solicitação HTTP para a API Geocoding
+        // Send an HTTP request to the Geocoding API
         let geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + coord[0] + ',' + coord[1] + '.json?ypes=poi,address,region,district,place,country&access_token=' + mapboxgl.accessToken;
         fetch(geocodeUrl)
             .then(response => response.json())
             .then(data => {
-
-                let features = map.queryRenderedFeatures(e.point, { layers: ['water'] });
+                let features = null;
+                console.log(data)
+                console.log(map.getStyle().name)
+                if (map.getStyle().name === 'Mapbox Satellite Streets') {
+                    console.log("saS")
+                    features = map.queryRenderedFeatures(e.point);
+                    console.log(features)
+                } else {
+                    features = map.queryRenderedFeatures(e.point, { layers: ['water'] });
+                    console.log(features)
+                }
+                
                 if (features.length > 0) {
-                    alert("Não pode inserir a morada no mar neee!!!")
+                    alert(strings.searchError)
                     marker.remove();
                 } else {
-                    alert("Ta Top, Mete ai!!!")
-                    // Extrair as informações de endereço da resposta JSON
+                    // Extract the address information from the JSON response
                     if (data.features && data.features.length > 0) {
                         address = data.features[0].place_name;
                         if (coordX != "" && coordY != "") {
                             markers.remove();
                         }
-                        console.log(address)
                     }
                 }
             });
