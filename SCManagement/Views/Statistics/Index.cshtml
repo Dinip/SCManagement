@@ -1,0 +1,21 @@
+﻿@model ICollection<SCManagement.Services.StatisticsService.Models.ClubCurrentUsers>
+
+@{
+    ViewBag.Title = "Statistics";
+}
+
+@foreach (var current in Model)
+{
+    @if (current.MaxValue == null)
+    {
+        <div>
+            @current.Value @current.RoleName
+        </div>
+    }
+    else
+    {
+        <div>
+            @current.Value of @current.MaxValue @current.RoleName
+        </div>
+    }
+}

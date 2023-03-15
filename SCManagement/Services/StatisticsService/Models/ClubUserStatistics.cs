@@ -2,7 +2,7 @@
 
 namespace SCManagement.Services.StatisticsService.Models
 {
-    public class ClubUserStatistic : IClubStatistic
+    public class ClubUserStatistics : IClubStatistics
     {
         public int Id { get; set; }
         public int Value { get; set; }
@@ -13,7 +13,7 @@ namespace SCManagement.Services.StatisticsService.Models
         public int ClubId { get; set; }
         public Club? Club { get; set; }
 
-        public StatisticRange StatisticRange { get; set; }
+        public StatisticsRange StatisticsRange { get; set; }
         public DateTime Timestamp { get; set; }
     }
 }

@@ -3463,39 +3463,7 @@ namespace SCManagement.Data.Migrations
                     b.ToTable("Subscription");
                 });
 
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubEventStatistic", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("ClubId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EventId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("StatisticRange")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ClubId");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("ClubEventStatistic");
-                });
-
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubModalityStatistic", b =>
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubModalityStatistics", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3509,7 +3477,7 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("ModalityId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatisticRange")
+                    b.Property<int>("StatisticsRange")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
@@ -3524,10 +3492,10 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ModalityId");
 
-                    b.ToTable("ClubModalityStatistic");
+                    b.ToTable("ClubModalityStatistics");
                 });
 
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubPaymentStatistic", b =>
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubPaymentStatistics", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3544,7 +3512,7 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("ProductType")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatisticRange")
+                    b.Property<int>("StatisticsRange")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
@@ -3559,10 +3527,10 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("ClubPaymentStatistic");
+                    b.ToTable("ClubPaymentStatistics");
                 });
 
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubUserStatistic", b =>
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubUserStatistics", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3576,7 +3544,7 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
 
-                    b.Property<int>("StatisticRange")
+                    b.Property<int>("StatisticsRange")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
@@ -3591,7 +3559,7 @@ namespace SCManagement.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("ClubUserStatistic");
+                    b.ToTable("ClubUserStatistics");
                 });
 
             modelBuilder.Entity("TeamUser", b =>
@@ -3961,26 +3929,7 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubEventStatistic", b =>
-                {
-                    b.HasOne("SCManagement.Models.Club", "Club")
-                        .WithMany()
-                        .HasForeignKey("ClubId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SCManagement.Models.Event", "Event")
-                        .WithMany()
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Club");
-
-                    b.Navigation("Event");
-                });
-
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubModalityStatistic", b =>
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubModalityStatistics", b =>
                 {
                     b.HasOne("SCManagement.Models.Club", "Club")
                         .WithMany()
@@ -3999,7 +3948,7 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("Modality");
                 });
 
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubPaymentStatistic", b =>
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubPaymentStatistics", b =>
                 {
                     b.HasOne("SCManagement.Models.Club", "Club")
                         .WithMany()
@@ -4016,7 +3965,7 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubUserStatistic", b =>
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubUserStatistics", b =>
                 {
                     b.HasOne("SCManagement.Models.Club", "Club")
                         .WithMany()

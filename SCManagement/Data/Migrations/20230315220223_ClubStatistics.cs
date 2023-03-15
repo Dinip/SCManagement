@@ -5,41 +5,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace SCManagement.Data.Migrations
 {
-    public partial class ClubStatistic : Migration
+    public partial class ClubStatistics : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "ClubEventStatistic",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<int>(type: "int", nullable: false),
-                    ClubId = table.Column<int>(type: "int", nullable: false),
-                    EventId = table.Column<int>(type: "int", nullable: false),
-                    StatisticRange = table.Column<int>(type: "int", nullable: false),
-                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ClubEventStatistic", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_ClubEventStatistic_Club_ClubId",
-                        column: x => x.ClubId,
-                        principalTable: "Club",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                    table.ForeignKey(
-                        name: "FK_ClubEventStatistic_Event_EventId",
-                        column: x => x.EventId,
-                        principalTable: "Event",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.NoAction);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ClubModalityStatistic",
+                name: "ClubModalityStatistics",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -47,20 +18,20 @@ namespace SCManagement.Data.Migrations
                     Value = table.Column<int>(type: "int", nullable: false),
                     ModalityId = table.Column<int>(type: "int", nullable: false),
                     ClubId = table.Column<int>(type: "int", nullable: false),
-                    StatisticRange = table.Column<int>(type: "int", nullable: false),
+                    StatisticsRange = table.Column<int>(type: "int", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClubModalityStatistic", x => x.Id);
+                    table.PrimaryKey("PK_ClubModalityStatistics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClubModalityStatistic_Club_ClubId",
+                        name: "FK_ClubModalityStatistics_Club_ClubId",
                         column: x => x.ClubId,
                         principalTable: "Club",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClubModalityStatistic_Modality_ModalityId",
+                        name: "FK_ClubModalityStatistics_Modality_ModalityId",
                         column: x => x.ModalityId,
                         principalTable: "Modality",
                         principalColumn: "Id",
@@ -68,36 +39,36 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClubPaymentStatistic",
+                name: "ClubPaymentStatistics",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Value = table.Column<float>(type: "real", nullable: false),
                     ClubId = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    StatisticRange = table.Column<int>(type: "int", nullable: false),
+                    ProductId = table.Column<int>(type: "int", nullable: true),
+                    ProductType = table.Column<int>(type: "int", nullable: false),
+                    StatisticsRange = table.Column<int>(type: "int", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClubPaymentStatistic", x => x.Id);
+                    table.PrimaryKey("PK_ClubPaymentStatistics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClubPaymentStatistic_Club_ClubId",
+                        name: "FK_ClubPaymentStatistics_Club_ClubId",
                         column: x => x.ClubId,
                         principalTable: "Club",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClubPaymentStatistic_Product_ProductId",
+                        name: "FK_ClubPaymentStatistics_Product_ProductId",
                         column: x => x.ProductId,
                         principalTable: "Product",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "ClubUserStatistic",
+                name: "ClubUserStatistics",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -105,20 +76,20 @@ namespace SCManagement.Data.Migrations
                     Value = table.Column<int>(type: "int", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     ClubId = table.Column<int>(type: "int", nullable: false),
-                    StatisticRange = table.Column<int>(type: "int", nullable: false),
+                    StatisticsRange = table.Column<int>(type: "int", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ClubUserStatistic", x => x.Id);
+                    table.PrimaryKey("PK_ClubUserStatistics", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ClubUserStatistic_Club_ClubId",
+                        name: "FK_ClubUserStatistics_Club_ClubId",
                         column: x => x.ClubId,
                         principalTable: "Club",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ClubUserStatistic_RoleClub_RoleId",
+                        name: "FK_ClubUserStatistics_RoleClub_RoleId",
                         column: x => x.RoleId,
                         principalTable: "RoleClub",
                         principalColumn: "Id",
@@ -126,59 +97,46 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClubEventStatistic_ClubId",
-                table: "ClubEventStatistic",
+                name: "IX_ClubModalityStatistics_ClubId",
+                table: "ClubModalityStatistics",
                 column: "ClubId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClubEventStatistic_EventId",
-                table: "ClubEventStatistic",
-                column: "EventId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClubModalityStatistic_ClubId",
-                table: "ClubModalityStatistic",
-                column: "ClubId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ClubModalityStatistic_ModalityId",
-                table: "ClubModalityStatistic",
+                name: "IX_ClubModalityStatistics_ModalityId",
+                table: "ClubModalityStatistics",
                 column: "ModalityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClubPaymentStatistic_ClubId",
-                table: "ClubPaymentStatistic",
+                name: "IX_ClubPaymentStatistics_ClubId",
+                table: "ClubPaymentStatistics",
                 column: "ClubId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClubPaymentStatistic_ProductId",
-                table: "ClubPaymentStatistic",
+                name: "IX_ClubPaymentStatistics_ProductId",
+                table: "ClubPaymentStatistics",
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClubUserStatistic_ClubId",
-                table: "ClubUserStatistic",
+                name: "IX_ClubUserStatistics_ClubId",
+                table: "ClubUserStatistics",
                 column: "ClubId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ClubUserStatistic_RoleId",
-                table: "ClubUserStatistic",
+                name: "IX_ClubUserStatistics_RoleId",
+                table: "ClubUserStatistics",
                 column: "RoleId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "ClubEventStatistic");
+                name: "ClubModalityStatistics");
 
             migrationBuilder.DropTable(
-                name: "ClubModalityStatistic");
+                name: "ClubPaymentStatistics");
 
             migrationBuilder.DropTable(
-                name: "ClubPaymentStatistic");
-
-            migrationBuilder.DropTable(
-                name: "ClubUserStatistic");
+                name: "ClubUserStatistics");
         }
     }
 }

@@ -3,7 +3,7 @@ using SCManagement.Services.PaymentService.Models;
 
 namespace SCManagement.Services.StatisticsService.Models
 {
-    public class ClubPaymentStatistic : IClubStatistic
+    public class ClubPaymentStatistics : IClubStatistics
     {
         public int Id { get; set; }
         public float Value { get; set; }
@@ -16,7 +16,7 @@ namespace SCManagement.Services.StatisticsService.Models
 
         public ProductType ProductType { get; set; }
 
-        public StatisticRange StatisticRange { get; set; }
+        public StatisticsRange StatisticsRange { get; set; }
         public DateTime Timestamp { get; set; }
     }
 }

@@ -141,7 +141,7 @@ namespace SCManagement.Services
             services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
-            services.AddTransient<IStatisticService, SCManagement.Services.StatisticsService.StatisticService>();
+            services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();
             #endregion
 
             #region cronjobs
@@ -164,6 +164,13 @@ namespace SCManagement.Services
             {
                 c.TimeZoneInfo = TimeZoneInfo.Utc;
                 c.CronExpression = @"5 * * * *";
+            });
+
+            // daily statistics generator @ 30 min past midnight
+            services.AddCronJob<DailyStatisticsGenerator>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Utc;
+                c.CronExpression = @"30 0 * * *";
             });
             #endregion
         }
