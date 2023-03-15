@@ -3435,14 +3435,13 @@ namespace SCManagement.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AthleteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsTemplate")
@@ -3452,16 +3451,16 @@ namespace SCManagement.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TrainerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AthleteId");
+                    b.HasIndex("TrainerId");
 
                     b.ToTable("MealPlans");
                 });
@@ -3485,8 +3484,8 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("MealPlanId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Time")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("time");
 
                     b.HasKey("Id");
 
@@ -3504,14 +3503,13 @@ namespace SCManagement.Data.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AthleteId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsTemplate")
@@ -3524,18 +3522,18 @@ namespace SCManagement.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("TrainerId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AthleteId");
-
                     b.HasIndex("ModalityId");
+
+                    b.HasIndex("TrainerId");
 
                     b.ToTable("TrainingPlans");
                 });
@@ -3941,13 +3939,13 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlan", b =>
                 {
-                    b.HasOne("SCManagement.Models.User", "Athlete")
+                    b.HasOne("SCManagement.Models.User", "Trainer")
                         .WithMany("MealPlans")
-                        .HasForeignKey("AthleteId")
+                        .HasForeignKey("TrainerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Athlete");
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlanSession", b =>
@@ -3963,21 +3961,21 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Services.PlansService.Models.TrainingPlan", b =>
                 {
-                    b.HasOne("SCManagement.Models.User", "Athlete")
-                        .WithMany("TrainingPlans")
-                        .HasForeignKey("AthleteId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("SCManagement.Models.Modality", "Modality")
                         .WithMany("TrainingPlans")
                         .HasForeignKey("ModalityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Athlete");
+                    b.HasOne("SCManagement.Models.User", "Trainer")
+                        .WithMany("TrainingPlans")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Modality");
+
+                    b.Navigation("Trainer");
                 });
 
             modelBuilder.Entity("SCManagement.Services.PlansService.Models.TrainingPlanSession", b =>

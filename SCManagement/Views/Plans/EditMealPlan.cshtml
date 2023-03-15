@@ -1,41 +1,32 @@
 ﻿@model SCManagement.Services.PlansService.Models.MealPlan
-@inject IStringLocalizer<SharedResource> StringLocalizer
+
 @{
-    ViewData["Title"] = "CreateMealPlan";
+    ViewData["Title"] = "EditMealPlan";
 }
 
-<h1>CreateMealPlan</h1>
+<h1>EditMealPlan</h1>
 
 <h4>MealPlan</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="CreateMealPlan">
+        <form asp-action="EditMealPlan">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="TrainerId" />
             <input type="hidden" asp-for="AthleteId" />
             <input type="hidden" asp-for="IsTemplate" />
-            
-            @if (!ViewBag.Apply)
-            {
-                <div class="form-group">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Description" class="control-label"></label>
-                    <input asp-for="Description" class="form-control" />
-                    <span asp-validation-for="Description" class="text-danger"></span>
-                </div>
-            }
-            else
-            {
-                <input type="hidden" asp-for="Description" />
-                <input type="hidden" asp-for="Name" />
-            }
-            
-            @if (!ViewBag.IsTemplate || ViewBag.Apply)
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @if (!ViewBag.IsTemplate)
             {
                 <div class="form-group">
                     <label asp-for="StartDate" class="control-label"></label>
@@ -48,7 +39,6 @@
                     <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
             }
-            
             <div id="sessions" class="row">
                 <div class="form-group col-md-3">
                     <label class="control-label">MealName</label>
@@ -61,24 +51,12 @@
                 </div>
                 @Html.EditorFor(x => x.MealPlanSessions)
             </div>
-            
             <div class="form-group">
                 <button type="submit" name="action" value="Add sessions" class="btn btn-primary">Add sessions</button>
             </div>
-            
-            @if (ViewBag.Apply)
-            {
-                <input type="hidden" name="apply" value="true" />
-                <div class="form-group">
-                    <button type="submit" name="action" value="Apply" class="btn btn-primary">Apply</button>
-                </div>
-            }
-            else
-            {
-                <div class="form-group">
-                    <button type="submit" name="action" value="Create" class="btn btn-primary">Create</button>
-                </div>
-            }
+            <div class="form-group">
+                <button type="submit" name="action" value="Edit" class="btn btn-primary">Edit</button>
+            </div>
         </form>
     </div>
 </div>

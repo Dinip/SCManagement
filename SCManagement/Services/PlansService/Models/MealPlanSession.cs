@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCManagement.Services.PlansService.Models
 {
@@ -9,6 +10,8 @@ namespace SCManagement.Services.PlansService.Models
         public MealPlan? MealPlan { get; set; }
         public string MealName { get; set; }
         public string MealDescription { get; set; }
-        public DateTime Time { get; set; }
+        
+        [DataType(DataType.Time)]
+        public TimeSpan Time { get; set; }
     }
 }

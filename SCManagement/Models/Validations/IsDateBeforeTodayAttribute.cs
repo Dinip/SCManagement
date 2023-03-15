@@ -18,7 +18,7 @@ namespace SCManagement.Models.Validations
 
             var val = (DateTime)value;
 
-            if (val < DateTime.Now)
+            if (val < DateTime.Now.Date)
                 return new ValidationResult(GetErrorMessage(validationContext));
 
             return ValidationResult.Success;

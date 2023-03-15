@@ -19,10 +19,10 @@ namespace SCManagement.Models.Validations
                 return ValidationResult.Success;
 
             var model = (Services.PlansService.Models.Plan)validationContext.ObjectInstance;
-            DateTime startDate = model.StartDate;
+            DateTime? startDate = model.StartDate;
             var val = (DateTime)value;
 
-            if (val < startDate)
+            if (val.Date <= startDate.Value.Date)
                 return new ValidationResult(GetErrorMessage(validationContext));
 
             return ValidationResult.Success;

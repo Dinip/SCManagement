@@ -37,8 +37,10 @@
                                     @Html.DisplayFor(model => athlete.DateOfBirth)
                                 </td>
                                 <td class="d-flex justify-content-end align-items-center">
-                                    <a asp-controller="Plans" asp-action="Create" asp-route-plan="2" asp-route-athleteId="@athlete.Id" class="me-2">Add Meal Plan</a>
-                                    <a asp-controller="Plans" asp-action="Create" asp-route-plan="1" asp-route-athleteId="@athlete.Id" class="me-2">Add Training Plan</a>
+                                    <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="me-2">Add Meal Plan</a>
+                                    <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="me-2">Add Training Plan</a>
+                                    <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-athleteId="@athlete.Id" class="me-2">Apply Training Template </a>
+                                    <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-athleteId="@athlete.Id" class="me-2">Apply Meal Template </a>
                                 </td>
                             </tr>
                         }

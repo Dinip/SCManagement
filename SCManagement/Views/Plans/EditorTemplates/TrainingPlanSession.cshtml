@@ -1,6 +1,10 @@
 ﻿@model SCManagement.Services.PlansService.Models.TrainingPlanSession
 
-<div class="row">
+@{
+    string guid = Guid.NewGuid().ToString();
+}
+
+<div id="@guid" class="row">
     <hr/>
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.TrainingPlanId)
@@ -20,6 +24,13 @@
         <input asp-for="Duration" class="form-control" />
         <span asp-validation-for="Duration" class="text-danger"></span>
     </div>
+    <button onClick='removeElement("@guid")' class="btn btn-primary">Remove</button>
 </div>
 
-
+<script>
+    function removeElement(id) {
+    let elem = document.getElementById(id);
+    return elem.parentNode.removeChild(elem);
+    } 
+</script>
+   

@@ -19,18 +19,18 @@ namespace SCManagement.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TrainerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AthleteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TrainerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AthleteId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsTemplate = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MealPlans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MealPlans_AspNetUsers_AthleteId",
-                        column: x => x.AthleteId,
+                        name: "FK_MealPlans_AspNetUsers_TrainerId",
+                        column: x => x.TrainerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -42,21 +42,21 @@ namespace SCManagement.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ModalityId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TrainerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AthleteId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ModalityId = table.Column<int>(type: "int", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    TrainerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AthleteId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     IsTemplate = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TrainingPlans", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TrainingPlans_AspNetUsers_AthleteId",
-                        column: x => x.AthleteId,
+                        name: "FK_TrainingPlans_AspNetUsers_TrainerId",
+                        column: x => x.TrainerId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -77,7 +77,7 @@ namespace SCManagement.Data.Migrations
                     MealPlanId = table.Column<int>(type: "int", nullable: false),
                     MealName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MealDescription = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Time = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    Time = table.Column<TimeSpan>(type: "time", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -114,9 +114,9 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MealPlans_AthleteId",
+                name: "IX_MealPlans_TrainerId",
                 table: "MealPlans",
-                column: "AthleteId");
+                column: "TrainerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MealPlanSession_MealPlanId",
@@ -124,14 +124,14 @@ namespace SCManagement.Data.Migrations
                 column: "MealPlanId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TrainingPlans_AthleteId",
-                table: "TrainingPlans",
-                column: "AthleteId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_TrainingPlans_ModalityId",
                 table: "TrainingPlans",
                 column: "ModalityId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TrainingPlans_TrainerId",
+                table: "TrainingPlans",
+                column: "TrainerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TrainingPlanSession_TrainingPlanId",

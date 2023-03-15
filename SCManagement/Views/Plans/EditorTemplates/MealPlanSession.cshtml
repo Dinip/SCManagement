@@ -1,0 +1,31 @@
+﻿@model SCManagement.Services.PlansService.Models.MealPlanSession
+
+@{
+    string guid = Guid.NewGuid().ToString();
+}
+
+<div id="@guid" class="row">
+    <hr />
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.MealPlanId)
+    <div class="form-group col-md-3">
+        <input asp-for="MealName" class="form-control" />
+        <span asp-validation-for="MealName" class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-3">
+        <input asp-for="MealDescription" class="form-control" />
+        <span asp-validation-for="MealDescription" class="text-danger"></span>
+    </div>
+    <div class="form-group col-md-3">
+        <input type="time" asp-for="Time" class="form-control" />
+        <span asp-validation-for="Time" class="text-danger"></span>
+    </div>
+    <button onClick='removeElement("@guid")' class="btn btn-primary">Remove</button>
+</div>
+
+<script>
+    function removeElement(id) {
+        let elem = document.getElementById(id);
+        return elem.parentNode.removeChild(elem);
+    }
+</script>

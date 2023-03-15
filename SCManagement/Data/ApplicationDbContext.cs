@@ -120,7 +120,7 @@ namespace SCManagement.Data
             .HasForeignKey(tp => tp.AthleteId);
 
             builder.Entity<TrainingPlan>()
-            .Ignore(tp => tp.Trainer);
+            .Ignore(tp => tp.Athlete);
 
             builder.Entity<MealPlan>()
             .HasOne(tp => tp.Athlete)
@@ -128,7 +128,7 @@ namespace SCManagement.Data
             .HasForeignKey(tp => tp.AthleteId);
 
             builder.Entity<MealPlan>()
-            .Ignore(tp => tp.Trainer);
+            .Ignore(tp => tp.Athlete);
         }
 
 

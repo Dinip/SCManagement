@@ -1,0 +1,43 @@
+﻿@model SCManagement.Controllers.PlansController.ChooseMealTemplate
+@inject IStringLocalizer<SharedResource> StringLocalizer
+    
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @StringLocalizer["Name"]
+            </th>
+            <th>
+                @StringLocalizer["Description"]
+            </th>
+            <th>
+                @StringLocalizer["Trainer"]
+            </th>
+            <th>
+                @StringLocalizer["IsTemplate"]
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.MealPlans) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Trainer.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsTemplate)
+            </td>
+            <td>
+                <a asp-action="CreateMealPlan" asp-route-id="@item.Id" asp-route-athleteId="@Model.AthleteId">Apply</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

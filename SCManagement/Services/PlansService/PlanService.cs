@@ -31,7 +31,7 @@ namespace SCManagement.Services.PlansService
         {
             return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId)
                 .Include(p => p.Modality)
-                .Include(p => p.Athlete)
+                .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .ToListAsync();
         }
@@ -39,7 +39,7 @@ namespace SCManagement.Services.PlansService
         public async Task<IEnumerable<MealPlan?>> GetMealPlans(string trainerId)
         {
             return await _context.MealPlans.Where(p => p.TrainerId == trainerId)
-                .Include(p => p.Athlete)
+                .Include(p => p.Trainer)
                 .Include(p => p.MealPlanSessions)
                 .ToListAsync();
         }
@@ -47,7 +47,7 @@ namespace SCManagement.Services.PlansService
         {
             return await _context.TrainingPlans.Where(p => p.Id == planId)
                 .Include(p => p.Modality)
-                .Include(p => p.Athlete)
+                .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .FirstOrDefaultAsync();
         }
@@ -55,7 +55,7 @@ namespace SCManagement.Services.PlansService
         public async Task<MealPlan?> GetMealPlan(int planId)
         {
             return await _context.MealPlans.Where(p => p.Id == planId)
-                .Include(p => p.Athlete)
+                .Include(p => p.Trainer)
                 .Include(p => p.MealPlanSessions)
                 .FirstOrDefaultAsync();
         }
@@ -84,6 +84,39 @@ namespace SCManagement.Services.PlansService
         {
             _context.MealPlans.Remove(plan);
             return _context.SaveChangesAsync();
+        }
+
+        public async Task<TrainingPlan?> GetTemplateTrainingPlan(int templateId)
+        {
+            return await _context.TrainingPlans.Where(p => p.Id == templateId && p.IsTemplate == true)
+                .Include(p => p.Modality)
+                .Include(p => p.Trainer)
+                .Include(p => p.TrainingPlanSessions)
+                .FirstAsync();
+        }
+
+        public async Task<MealPlan?> GetTemplateMealPlan(int templateId)
+        {
+            return await _context.MealPlans.Where(p => p.Id == templateId && p.IsTemplate == true)
+                .Include(p => p.Trainer)
+                .Include(p => p.MealPlanSessions)
+                .FirstAsync();
+        }
+
+        public async Task<IEnumerable<TrainingPlan?>> GetTemplateTrainingPlans(string trainerId)
+        {
+            return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId && p.IsTemplate == true)
+                .Include(p => p.Modality)
+                .Include(p => p.Trainer)
+                .Include(p => p.TrainingPlanSessions)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<MealPlan?>> GetTemplateMealPlans(string trainerId)
+        {
+            return await _context.MealPlans.Where(p => p.TrainerId == trainerId && p.IsTemplate == true)
+                .Include(p => p.Trainer)
+                .Include(p => p.MealPlanSessions)
+                .ToListAsync();
         }
     }
 }
