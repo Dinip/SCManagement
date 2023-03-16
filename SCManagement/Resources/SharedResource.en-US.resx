@@ -1247,8 +1247,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>The registration limit cannot exceed the start date of the event.</value>
   </data>
   <data name="SearchError" xml:space="preserve">
-    <value>Make sure you are searching for a location that contains a street, city, and district.</value>
-    <comment>03-03-2023_SearchMapBox</comment>
+    <value>You cannot make an address in water</value>
+    <comment>15-03-2023_SearchMapBox</comment>
   </data>
   <data name="Error_Invalid_Result" xml:space="preserve">
     <value>Invalid Result</value>
@@ -1595,5 +1595,9 @@ I have experience in the area and I am very focused on my goals.</value>
   </data>
   <data name="Futebol" xml:space="preserve">
     <value>Football</value>
+  </data>
+  <data name="ResultError" xml:space="preserve">
+    <value>Please try again, we could not capture your address</value>
+    <comment>15/03/2023_SearchMapBox</comment>
   </data>
 </root>

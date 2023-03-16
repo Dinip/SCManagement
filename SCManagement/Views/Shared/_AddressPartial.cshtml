@@ -6,18 +6,18 @@
 }
 
 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-<div class="form-group mt-2">
+@*<div class="form-group mt-2">
     <input asp-for="Street" placeholder="Street" class="form-control" />
     <span asp-validation-for="Street" class="text-danger"></span>
-</div>
+</div>*@
 @*<div class="form-group mt-2">
     <input asp-for="Number" placeholder="Number" class="form-control" />
     <span asp-validation-for="Number" class="text-danger"></span>
 </div>*@
-<div class="form-group mt-2">
+@*<div class="form-group mt-2">
     <input asp-for="ZipCode" placeholder="ZipCode" class="form-control" />
     <span asp-validation-for="ZipCode" class="text-danger"></span>
-</div>
+</div>*@
             
 @await Component.InvokeAsync("Address", Model)
 

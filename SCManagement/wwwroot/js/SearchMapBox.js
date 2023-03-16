@@ -9,7 +9,7 @@ let coordX = document.getElementById('coordX').value;
 let coordY = document.getElementById('coordY').value;
 let tradPlaceholder = document.getElementById('tradPlaceholder');
 
-let marker;
+let markers;
 let map;
 
 if (coordX != "" && coordY != "") {
@@ -43,65 +43,111 @@ for (const input of inputs) {
 const geocoder = new MapboxGeocoder({
     accessToken: mapboxgl.accessToken,
     mapboxgl: mapboxgl,
+    marker: false,
     placeholder: tradPlaceholder.value,
-    types: 'address',
-    layers: ['address'],
-    
 });
 
 map.addControl(geocoder, 'top-left');
 
-let address;
+
 let errorMessage;
+let coord;
 
 map.on('load', () => {
-    // Listen for the `geocoder.input` event that is triggered when a user
-    // makes a selection
-    geocoder.on('result', (event) => {
-        address = event.result;
-        if (coordX != "" && coordY != "") {
-            marker.remove();
-        }
-    });
+    MarkerWithAddress();
 });
 
 const btnSave = document.getElementById('save-button');
+let address = null;
 
 btnSave.onclick = function () {
     try {
-        $(".toast").show();
-        document.getElementById('alertText').innerHTML = strings.searchError;
         if (address != null) {
-            let { text, geometry, context } = address;
-            let addressCode = context.find(item => item.id.startsWith('postcode')).text;
-            let city = context.find(item => item.id.startsWith('place')).text;
-            let district = context.find(item => item.id.startsWith('region')).text;
-            let country = context.find(item => item.id.startsWith('country')).text;
-            let coord = geometry.coordinates;
-
             addressElement.value = JSON.stringify({
-                CoordinateY: coord[1],
                 CoordinateX: coord[0],
-                ZipCode: addressCode,
-                Street: text,
-                City: city,
-                District: district,
-                Country: country,
+                CoordinateY: coord[1],
+                AddressString: address,
+
             })
             $("#modal").hide();
-            newAd.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
+            newAd.innerHTML = strings.newAddress + ": " + address;
         }
 
     } catch (error) {
         $(".toast").show();
-        document.getElementById('alertText').innerHTML = strings.searchError;
+        document.getElementById('alertText').innerHTML = strings.resultError;
     }
-
 }
 
 
 function addMarkers(coordX, coordY) {
-    marker = new mapboxgl.Marker({ color: '#00639A' })
+    markers = new mapboxgl.Marker({ color: '#00639A' })
         .setLngLat([coordX, coordY])
         .addTo(map);
 }
+
+let marker = null;
+
+function MarkerWithAddress() {
+    map.on('click', function (e) {
+        // Capture the coordinates of the clicked point
+        if (marker !== null) {
+            marker.remove();
+        }
+        coord = e.lngLat.toArray();
+
+        // Add the marker to the map
+        marker = new mapboxgl.Marker({ color: "#00639A" })
+            .setLngLat([coord[0], coord[1]])
+            .addTo(map);
+
+        // put address
+        addAddress(e);
+    });
+}
+
+function addAddress(epoint) {
+    // Send an HTTP request to the Geocoding API
+    let geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + coord[0] + ',' + coord[1] + '.json?ypes=poi,address,region,district,place,country&access_token=' + mapboxgl.accessToken;
+
+    fetch(geocodeUrl)
+        .then(response => response.json())
+        .then(data => {
+            let features = null;
+
+            try {
+                if (map.getStyle().name === 'Mapbox Satellite Streets') {
+
+                    address = data.features[0].place_name;
+                    if (coordX != "" && coordY != "") {
+                        markers.remove();
+                    }
+
+                } else {
+                    features = map.queryRenderedFeatures(epoint.point, { layers: ['water'] });
+                    if (features.length > 0) {
+                        errorRemoveMarker(strings.searchError);
+                    } else {
+                        // Extract the address information from the JSON response
+                        if (data.features && data.features.length > 0) {
+                            address = data.features[0].place_name;
+                            if (coordX != "" && coordY != "") {
+                                markers.remove();
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                errorRemoveMarker(strings.resultError);
+                address = null;
+            }
+
+        });
+}
+
+
+function errorRemoveMarker(errorMessage) {
+    alert(errorMessage);
+    marker.remove();
+}
+

@@ -1383,8 +1383,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>O limite de inscrição não pode exceder a data de inicio do evento</value>
   </data>
   <data name="SearchError" xml:space="preserve">
-    <value>Certifique-se que esta a pesquisar um local que contenha uma rua, cidade, e distrito</value>
-    <comment>03-03-2023_SearchMapBox</comment>
+    <value>Não pode iserir uma morada na água</value>
+    <comment>15-03-2023_SearchMapBox</comment>
   </data>
   <data name="Error_Invalid_Result" xml:space="preserve">
     <value>Resultado Invalido</value>
@@ -1725,5 +1725,9 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Staff" xml:space="preserve">
     <value>Equipa</value>
     <comment>15-03-2023_statistics</comment>
+  </data>
+  <data name="ResultError" xml:space="preserve">
+    <value>Por favor tente novamente, não conseguimos capturar a sua morada</value>
+    <comment>15/03/2023_SearchMapBox</comment>
   </data>
 </root>

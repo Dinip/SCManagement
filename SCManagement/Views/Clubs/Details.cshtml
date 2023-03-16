@@ -93,10 +93,7 @@
                     <div class="col-10">
                         @if (Model.Address != null)
                         {
-                            <span class="text-to-dark">@Model.Address.Street, </span>
-                            <span class="text-to-dark">@Model.Address.City, </span>
-                            <span class="text-to-dark">@Model.Address.Country, </span>
-                            <span class="text-to-dark">@Model.Address.ZipCode</span>
+                            <span class="text-to-dark">@Model.Address.AddressString</span>
                         }
                     </div>
                 </div>
