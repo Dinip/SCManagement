@@ -266,7 +266,7 @@ namespace SCManagement.Services.StatisticsService
                     RoleName = _stringLocalizer["Staff"].ToString(),
                     Value = r.Count()
                 })
-                .FirstAsync() ?? new ClubCurrentUsers { RoleName = _stringLocalizer["Staff"].ToString(), Value = 0 };
+                .FirstOrDefaultAsync() ?? new ClubCurrentUsers { RoleName = _stringLocalizer["Staff"].ToString(), Value = 0 };
 
             users.Add(staff);
 
@@ -281,11 +281,12 @@ namespace SCManagement.Services.StatisticsService
                 })
                 .ToListAsync();
 
+
             var partners = new ClubCurrentUsers
             {
                 RoleName = _stringLocalizer["Partners"].ToString(),
-                Value = partnersValues.First(p => p.Status == UserRoleStatus.Active)?.Value ?? 0,
-                MaxValue = partnersValues.Sum(p => p.Value)
+                Value = partnersValues.Count != 0 ? partnersValues?.First(p => p.Status == UserRoleStatus.Active)?.Value ?? 0 : 0,
+                MaxValue = partnersValues.Count != 0 ? partnersValues?.Sum(p => p.Value) ?? 0 : 0
             };
 
             users.Add(partners);
@@ -390,7 +391,7 @@ namespace SCManagement.Services.StatisticsService
             {
                 return await _context
                     .ClubModalityStatistics
-                    .Include(c=>c.Modality)
+                    .Include(c => c.Modality)
                     .Where(c =>
                         c.Timestamp.Year == year &&
                         c.Timestamp.Month == month &&
