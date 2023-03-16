@@ -24,7 +24,7 @@ namespace SCManagement.AutomationTests.Browser.Tests
             _driver.FindElement(By.Id("login-submit")).Click();
 
             //Assert that the user is logged in
-            Assert.That("https://scmanagement.me/", Is.EqualTo(_driver.Url));
+            Assert.That("https://localhost:7111/", Is.EqualTo(_driver.Url));
             _quit = true;
         }
 

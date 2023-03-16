@@ -27,7 +27,7 @@ namespace SCManagement.Tests.Browser.Core
         public void Setup()
         {
             OpenChrome();
-            _driver.Navigate().GoToUrl("https://scmanagement.me/");
+            _driver.Navigate().GoToUrl("https://localhost:7111/");
             _quit = false;
         }
 
