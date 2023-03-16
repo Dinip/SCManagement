@@ -27,6 +27,7 @@ namespace SCManagement.Models
         public SubscriptionFrequency QuotaFrequency { get; set; } = SubscriptionFrequency.Monthly;
 
         [Display(Name = "Quota Value")]
+        [Range(0, 1000000)]
         public float QuotaFee { get; set; } = 0.0f;
     }
 }
