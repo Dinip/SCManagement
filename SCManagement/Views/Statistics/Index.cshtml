@@ -1,21 +1,102 @@
 ﻿@model ICollection<SCManagement.Services.StatisticsService.Models.ClubCurrentUsers>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 
 @{
     ViewBag.Title = "Statistics";
 }
 
-@foreach (var current in Model)
-{
-    @if (current.MaxValue == null)
+<h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Events"]</h1>
+
+<div class="row mt-5">
+    @foreach (var current in Model)
     {
-        <div>
-            @current.Value @current.RoleName
-        </div>
+        @if (current.MaxValue == null)
+        {
+            <div class="col-xs-12 col-sm-12 col-md-4 mb-3 d-flex flex-column justify-content-center align-items-center">
+                <div class="circle">
+                    <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center">@current.Value</span>
+                </div>
+                <div class="text-black fw-bold text-center mt-3 fs-2 fs-sm-3" style="width: 100%;">
+                    @current.RoleName
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="col-xs-12 col-sm-12 col-md-4 mb-3 d-flex flex-column justify-content-center align-items-center">
+                <div class="circle">
+                    <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @current.Value <br> <span class="fs-6">of</span> <br> @current.MaxValue</span>
+                </div>
+                <div class="text-black fw-bold text-center mt-3 text-sm fs-2 fs-sm-3" style="width: 100%;">
+                    @current.RoleName
+                </div>
+            </div>
+        }
     }
-    else
-    {
-        <div>
-            @current.Value of @current.MaxValue @current.RoleName
-        </div>
+</div>
+
+<style>
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateX(-50%);
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out;
     }
-}
+
+        .circle span {
+            text-align: center;
+        }
+
+        .circle.show {
+            opacity: 1;
+            transform: translateX(0%);
+        }
+
+        .circle:nth-child(1) {
+            transition-delay: 0.2s;
+        }
+
+        .circle:nth-child(2) {
+            transition-delay: 0.4s;
+        }
+
+        .circle:nth-child(3) {
+            transition-delay: 0.6s;
+        }
+
+</style>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script>
+
+    var animated = false;
+
+    $(document).ready(function () {
+        $(".circle").each(function (index) {
+            setTimeout(function () {
+                $(this).addClass("show");
+            }.bind(this), 500 * index);
+        });
+    });
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 1000 && !animated) {
+            $(".circle").each(function (index) {
+                setTimeout(function () {
+                    $(this).addClass("show");
+                }.bind(this), 500 * index);
+            });
+            animated = true;
+        }
+    });
+</script>
