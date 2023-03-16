@@ -1589,4 +1589,11 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>No Limit</value>
     <comment>14-03-2023_FixEditEvent</comment>
   </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Staff</value>
+    <comment>15-03-2023_statistics</comment>
+  </data>
+  <data name="Futebol" xml:space="preserve">
+    <value>Football</value>
+  </data>
 </root>

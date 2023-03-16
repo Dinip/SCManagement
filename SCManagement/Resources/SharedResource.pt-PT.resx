@@ -1722,4 +1722,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Sem Limite</value>
     <comment>14-03-2023_FixEditEvent</comment>
   </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Equipa</value>
+    <comment>15-03-2023_statistics</comment>
+  </data>
 </root>
