@@ -60,7 +60,6 @@
                     </tr>
                 </thead>
                 <tbody id="tBodyEntriesMonth">
-                 
                 </tbody>
             </table>
         </div>
@@ -75,12 +74,14 @@
                     </tr>
                 </thead>
                 <tbody id="tBodyEntries">
-                    
-
                 </tbody>
             </table>
         </div>
     </div>
+    <input type="radio" id="cotas" name="chart-type" value="cotas" checked>
+    <label for="cotas">Cotas</label>
+    <input type="radio" id="eventos" name="chart-type" value="eventos">
+    <label for="eventos">Eventos</label>
     <div class="col-xs-12 col-sm-12 col-md-6 mt-sm-4 mt-md-4">
         <canvas id="myChart"></canvas>
     </div>
@@ -138,7 +139,7 @@
         width: 50%;
         margin-left: 0;
         padding: 10px;
-        margin-bottom:5%;
+        margin-bottom: 5%;
     }
 
     .tabs {
@@ -188,7 +189,7 @@
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script>
 
-    var animated = false;
+    let animated = false;
 
     $(document).ready(function () {
         $(".circle").each(function (index) {
@@ -215,7 +216,7 @@
     });
 
     function openTab(evt, tabName) {
-        var i, tabcontent, tablinks;
+        let i, tabcontent, tablinks;
         tabcontent = document.getElementsByClassName("tabcontent");
         for (i = 0; i < tabcontent.length; i++) {
             tabcontent[i].style.display = "none";
@@ -229,79 +230,35 @@
     }
 
 
-    var ctx = document.getElementById("myChart").getContext("2d");
+    let ctx = document.getElementById("myChart").getContext("2d");
     const months = [];
-
     // Cria um novo gráfico de barras
-    var myChart = new Chart(ctx, {
+    let myChart = new Chart(ctx, {
         type: "bar",
         data: {
             // Define os rótulos do eixo X
             labels: months,
-            datasets: [
-                {
-                    // Define o conjunto de dados para os eventos
-                    label: "Eventos",
-                    backgroundColor: "orange",
-                    data: [10, 8],
-                },
-            ],
-        },
-        options: {
-            scales: {
-                yAxes: [
-                    {
-                        ticks: {
-                            // Define o intervalo do eixo Y
-                            suggestedMin: 0,
-                            suggestedMax: 150,
-                        },
-                    },
-                ],
-            },
+            datasets: [],
         },
     });
 
-    window.onload = function(){
+    let newObjEvents;
+    let newObj;
+
+    window.onload = function () {
         $.ajax({
             type: 'GET',
             url: "/Statistics/PaymentsDetailed"
         }).done(function (response) {
-            console.log(response);
-            var data = response.data;
-            var tbody = $("#tBodyEntries");
-            var dates = [];
-            var values = [];
+            let data = response.data;
+            let tbody = $("#tBodyEntries");
             data.forEach(function (obj) {
-                var row = $("<tr>");
+                let row = $("<tr>");
                 row.append($("<td>").text(obj.productName));
                 row.append($("<td>").text(obj.timeInText));
                 row.append($("<td>").text(obj.value));
                 tbody.append(row);
-                dates.push(obj.timeInText);
-                values.push(obj.value);
             })
-            console.log(dates);
-            console.log(values);
-
-            var newObj = { x: dates, y: values }
-
-            console.log(newObj)
-
-            // Adiciona as datas em 'dates' ao eixo X
-            months.push.apply(months, dates);
-
-            // Adiciona um novo conjunto de dados com os valores em 'values'
-            myChart.data.datasets.push({
-                label: 'Cotas',
-                backgroundColor: 'blue',
-                data: values
-            });
-
-
-            // Atualiza o gráfico
-            myChart.update();
-
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log("Erro: " + textStatus + ", " + errorThrown);
@@ -312,48 +269,79 @@
             type: 'GET',
             url: "/Statistics/Payments"
         }).done(function (response) {
-            console.log(response);
-            var data = response.data;
-            var tBodyEntriesMonth = $("#tBodyEntriesMonth");
-            var datesEvents = [];
-            var valuesEvents = [];
+            let data = response.data;
+            let tBodyEntriesMonth = $("#tBodyEntriesMonth");
+            let valuesEvents = [];
+            let dates = [];
+            let values = [];
 
             data.forEach(function (obj) {
-                var row = $("<tr>");
+                let row = $("<tr>");
                 row.append($("<td>").text(obj.timeInText));
                 row.append($("<td>").text(obj.clubFee));
                 row.append($("<td>").text(obj.events));
                 tBodyEntriesMonth.append(row);
-                datesEvents.push(obj.timeInText);
                 valuesEvents.push(obj.events);
+                dates.push(obj.timeInText);
+                values.push(obj.clubFee);
             })
 
-            console.log(datesEvents);
-            console.log(valuesEvents);
+            newObjEvents = { x: dates, y: valuesEvents }
+            newObj = { x: dates, y: values }
 
-            var newObjEvents = { x: datesEvents, y: valuesEvents }
-            
-            console.log(newObjEvents)
+            updateChart(newObj, 'Cotas', 'blue');
 
-            // Adiciona as datas em 'dates' ao eixo X
-            months.push.apply(months, datesEvents);
+            //months.push.apply(months, dates);
 
-            // Adiciona um novo conjunto de dados com os valores em 'values'
-            myChart.data.datasets.push({
-                label: 'Eventos',
-                backgroundColor: 'orange',
-                data: valuesEvents
-            });
+            //myChart.data.datasets.push({
+            //    label: 'Eventos',
+            //    backgroundColor: 'orange',
+            //    data: valuesEvents,
+            //});
 
-            // Atualiza o gráfico
-            myChart.update();
-
+            //myChart.update();
 
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log("Erro: " + textStatus + ", " + errorThrown);
             console.log("Resposta do servidor: " + jqXHR.responseText);
         });
 
+    }
+
+    // Adicione um evento "change" aos radio buttons
+    $('input[name="chart-type"]').on('change', function () {
+        // Obtenha o valor do radio button selecionado
+        var chartType = $('input[name="chart-type"]:checked').val();
+
+        // Atualize o gráfico com os dados corretos
+        if (chartType === 'cotas') {
+            updateChart(newObj, 'Cotas', 'blue');
+        } else {
+            updateChart(newObjEvents, 'Eventos', 'orange');
+        }
+    });
+
+    // Defina uma função de atualização do gráfico
+    function updateChart(data, label, color) {
+        // Destrua o gráfico atual
+        myChart.destroy();
+
+        // Crie um novo gráfico com os dados fornecidos
+        var ctx = document.getElementById("myChart").getContext("2d");
+        let myNewChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+                labels: data.x,
+                datasets: [{
+                    data: data.y,
+                    label: label,
+                    backgroundColor: color,
+                }],
+            },
+        });
+
+        // Atualize a variável myChart para o novo gráfico
+        myChart = myNewChart;
     }
 
 </script>

@@ -110,7 +110,6 @@ async function getElevation(coordsArray) {
     }
 
     hElevation.textContent = highestElevation;
-    lElevation.textContent = lowestElevation;
     dMore.textContent = totalAscent;
     dLess.textContent = totalDescent;
     createChartAltimetry(elevtsAux, distances);
