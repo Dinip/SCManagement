@@ -462,7 +462,7 @@ namespace SCManagement.Controllers
                 eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
-                eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
+                eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls == 0 ? int.MaxValue : myEvent.MaxEventEnrolls;
                 eventToUpdate.AddressByPath = myEvent.AddressByPath;
 
                 await UpdateTranslations(myEvent.EventTranslationsName, eventToUpdate);
