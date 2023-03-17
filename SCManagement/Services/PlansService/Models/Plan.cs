@@ -12,7 +12,6 @@ namespace SCManagement.Services.PlansService.Models
         public string Description { get; set; }
 
         [DataType(DataType.Date)]
-        [IsDateBeforeToday]
         public DateTime? StartDate { get; set; }
 
         [DataType(DataType.Date)]

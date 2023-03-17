@@ -29,23 +29,40 @@ namespace SCManagement.Services.PlansService
 
         public async Task<IEnumerable<TrainingPlan?>> GetTrainingPlans(string trainerId)
         {
-            return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId)
+            return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId && p.IsTemplate == false)
                 .Include(p => p.Modality)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<TrainingPlan?>> GetTrainingPlans(string trainerId, string athleteId)
+        {
+            return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId && p.AthleteId == athleteId && p.IsTemplate == false)
+                .Include(p => p.Modality)
+                .Include(p => p.Trainer)
+                .Include(p => p.TrainingPlanSessions)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<MealPlan?>> GetMealPlans(string trainerId, string athleteId)
+        {
+            return await _context.MealPlans.Where(p => p.TrainerId == trainerId && p.AthleteId == athleteId && p.IsTemplate == false)
+                .Include(p => p.Trainer)
+                .Include(p => p.MealPlanSessions)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<MealPlan?>> GetMealPlans(string trainerId)
         {
-            return await _context.MealPlans.Where(p => p.TrainerId == trainerId)
+            return await _context.MealPlans.Where(p => p.TrainerId == trainerId && p.IsTemplate == false)
                 .Include(p => p.Trainer)
                 .Include(p => p.MealPlanSessions)
                 .ToListAsync();
         }
         public async Task<TrainingPlan?> GetTrainingPlan(int planId)
         {
-            return await _context.TrainingPlans.Where(p => p.Id == planId)
+            return await _context.TrainingPlans.Where(p => p.Id == planId && p.IsTemplate == false)
                 .Include(p => p.Modality)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
@@ -54,7 +71,7 @@ namespace SCManagement.Services.PlansService
 
         public async Task<MealPlan?> GetMealPlan(int planId)
         {
-            return await _context.MealPlans.Where(p => p.Id == planId)
+            return await _context.MealPlans.Where(p => p.Id == planId && p.IsTemplate == false)
                 .Include(p => p.Trainer)
                 .Include(p => p.MealPlanSessions)
                 .FirstOrDefaultAsync();

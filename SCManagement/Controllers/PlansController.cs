@@ -2,31 +2,39 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.IdentityModel.Tokens;
+using SCManagement.Data.Migrations;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
+using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers
 {
+    [Authorize]
     public class PlansController : Controller
     {
         private readonly UserManager<User> _userManager;
         private readonly IClubService _clubService;
         private readonly IUserService _userService;
         private readonly IPlanService _planService;
+        private readonly ITeamService _teamService;
 
         public PlansController(
             UserManager<User> userManager,
             IClubService clubService,
             IUserService userService,
-            IPlanService planService)
+            IPlanService planService,
+            ITeamService teamService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
             _planService = planService;
+            _teamService = teamService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -35,46 +43,84 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> TrainingTemplates()
         {   
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.IsTemplate = true;
+
+            var trains = await _planService.GetTemplateTrainingPlans(userId);
+
+            if (trains.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+
+            return View("TrainingPlans", trains);
+        }
+
+        public async Task<IActionResult> AthleteTrainingPlans(string id)
+        {
+            string userId = getUserIdFromAuthedUser();
             
-            return View(await _planService.GetTemplateTrainingPlans(userId));
+            var role = await _userService.GetSelectedRole(userId);
+            
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.IsTemplate = false;
+            ViewBag.AthleteName = (await _userService.GetUser(id)).FullName;
+
+            var trains = await _planService.GetTrainingPlans(userId, id);
+
+            if (trains.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+
+            return View("TrainingPlans", trains);
         }
 
         public async Task<IActionResult> MealTemplates()
         {
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
             
-            //Check if is Trainer of the active club
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
             
-            return View(await _planService.GetTemplateMealPlans(userId));
+            ViewBag.IsTemplate = true;
+
+            var meals = await _planService.GetTemplateMealPlans(userId);
+
+            if (meals.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+
+            return View("MealPlans" , meals);
+        }
+
+        public async Task<IActionResult> AthleteMealPlans(string id)
+        {
+            string userId = getUserIdFromAuthedUser();
+            
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.IsTemplate = false;
+            ViewBag.AthleteName = (await _userService.GetUser(id)).FullName;
+
+            var meals = await _planService.GetMealPlans(userId, id);
+
+            if(meals.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+
+            return View("MealPlans", meals);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> DeleteTrainingPlan(int? id)
         {
-            //get id of the user
+            if (id == null) return View("CustomError", "Error_NotFound");
+
             string userId = getUserIdFromAuthedUser();
 
-            //Check if is Trainer of the active club
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -87,6 +133,8 @@ namespace SCManagement.Controllers
 
             await _planService.DeleteTrainingPlan(plan);
 
+            if(!plan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
+
             return RedirectToAction(nameof(TrainingTemplates));
         }
 
@@ -95,10 +143,10 @@ namespace SCManagement.Controllers
         [Authorize]
         public async Task<IActionResult> DeleteMealPlan(int? id)
         {
-            //get id of the user
+            if (id == null) return View("CustomError", "Error_NotFound");
+            
             string userId = getUserIdFromAuthedUser();
 
-            //Check if is Trainer of the active club
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -111,15 +159,15 @@ namespace SCManagement.Controllers
 
             await _planService.DeleteMealPlan(plan);
 
+            if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
+
             return RedirectToAction(nameof(MealTemplates));
         }
 
-        public async Task<IActionResult> CreateTrainingPlan(string? athleteId, string? isTemplate,int? id)
+        public async Task<IActionResult> CreateTrainingPlan(string? athleteId, string? isTemplate,int? id, int? teamId)
         {
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -173,19 +221,24 @@ namespace SCManagement.Controllers
 
                 ViewBag.Apply = true;
             }
-            
+
+            ViewBag.IsTeam = false;
+            if (teamId != null)
+            {
+                ViewBag.IsTeam = true;
+                ViewBag.TeamId = teamId;
+            }
+
             return View("CreateTrainingPlan", trains);
         }
 
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateTrainingPlan([Bind("Name, Description, StartDate, EndDate, TrainerId, AthleteId, ModalityId, IsTemplate, TrainingPlanSessions")] TrainingPlan trainingPlan, string action, string? apply)
+        public async Task<IActionResult> CreateTrainingPlan([Bind("Name, Description, StartDate, EndDate, TrainerId, AthleteId, ModalityId, IsTemplate, TrainingPlanSessions")] TrainingPlan trainingPlan, string action, string? apply, int? teamId)
         {
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -193,6 +246,8 @@ namespace SCManagement.Controllers
             ViewBag.Modalities = new SelectList(await _clubService.GetClubModalities(role.ClubId), "Id", "Name");
             ViewBag.IsTemplate = trainingPlan.IsTemplate;
             ViewBag.Apply = Convert.ToBoolean(apply);
+            ViewBag.IsTeam = teamId != null;
+            ViewBag.TeamId = teamId;
 
             if (action == "Add sessions")
             {
@@ -209,7 +264,41 @@ namespace SCManagement.Controllers
             {
                 if (!ModelState.IsValid) return View(trainingPlan);
 
-                await _planService.CreateTrainingPlan(trainingPlan);
+                if (teamId != null)
+                {
+                    var team = await _teamService.GetTeam((int)teamId);
+
+                    if (team == null) return View("CustomError", "Error_NotFound");
+                    if (team.Trainer.Id != userId) return View("CustomError", "Error_Unauthorized");
+
+                    foreach (User athlete in team.Athletes)
+                    {
+                        var trains = new TrainingPlan()
+                        {
+                            Name = trainingPlan.Name,
+                            Description = trainingPlan.Description,
+                            TrainerId = trainingPlan.TrainerId,
+                            AthleteId = athlete.Id,
+                            IsTemplate = false,
+                            StartDate = trainingPlan.StartDate,
+                            EndDate = trainingPlan.EndDate,
+                            ModalityId = trainingPlan.ModalityId,
+                            TrainingPlanSessions = trainingPlan.TrainingPlanSessions.Select(s => new TrainingPlanSession()
+                            {
+                                ExerciseName = s.ExerciseName,
+                                ExerciseDescription = s.ExerciseDescription,
+                                Duration = s.Duration,
+                                Repetitions = s.Repetitions,
+                            }).ToList()
+                        };
+
+                        await _planService.CreateTrainingPlan(trains);
+                    }
+                }
+                else
+                {
+                    await _planService.CreateTrainingPlan(trainingPlan);
+                }
 
                 if (trainingPlan.IsTemplate) return RedirectToAction("TrainingTemplates");
 
@@ -219,12 +308,10 @@ namespace SCManagement.Controllers
             return View("CustomError", "Error_NotFound");
         }
 
-        public async Task<IActionResult> CreateMealPlan(string? athleteId, string? isTemplate, int? id)
+        public async Task<IActionResult> CreateMealPlan(string? athleteId, string? isTemplate, int? id, int? teamId)
         {
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -275,25 +362,31 @@ namespace SCManagement.Controllers
                 ViewBag.Apply = true;
             }
 
+            ViewBag.IsTeam = false;
+            if (teamId != null)
+            {
+                ViewBag.IsTeam = true;
+                ViewBag.TeamId = teamId;
+            }
+
 
             return View("CreateMealPlan", meals);
         }
-
-        [Authorize]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateMealPlan([Bind("Name, Description, StartDate, EndDate, TrainerId, AthleteId, IsTemplate, MealPlanSessions")] MealPlan mealPlan, string action, string? apply)
+        public async Task<IActionResult> CreateMealPlan([Bind("Name, Description, StartDate, EndDate, TrainerId, AthleteId, IsTemplate, MealPlanSessions")] MealPlan mealPlan, string action, string? apply, int? teamId)
         {
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
 
             ViewBag.IsTemplate = mealPlan.IsTemplate;
             ViewBag.Apply = Convert.ToBoolean(apply);
+            ViewBag.IsTeam = teamId != null;
+            ViewBag.TeamId = teamId;
 
             if (action == "Add sessions")
             {
@@ -310,7 +403,39 @@ namespace SCManagement.Controllers
             {
                 if (!ModelState.IsValid) return View(mealPlan);
 
-                await _planService.CreateMealPlan(mealPlan);
+                if (teamId != null)
+                {
+                    var team = await _teamService.GetTeam((int)teamId);
+
+                    if (team == null) return View("CustomError", "Error_NotFound");
+                    if (team.Trainer.Id != userId) return View("CustomError", "Error_Unauthorized");
+
+                    foreach(User athlete in team.Athletes)
+                    {
+                        var meal = new MealPlan()
+                        {
+                            Name = mealPlan.Name,
+                            Description = mealPlan.Description,
+                            TrainerId = mealPlan.TrainerId,
+                            AthleteId = athlete.Id,
+                            IsTemplate = false,
+                            StartDate = mealPlan.StartDate,
+                            EndDate = mealPlan.EndDate,
+                            MealPlanSessions = mealPlan.MealPlanSessions.Select(s => new MealPlanSession()
+                            {
+                                MealName = s.MealName,
+                                MealDescription = s.MealDescription,
+                                Time = s.Time,
+                            }).ToList()
+                        };
+
+                        await _planService.CreateMealPlan(meal);
+                    }
+                }
+                else
+                {
+                    await _planService.CreateMealPlan(mealPlan);
+                }
 
                 if(mealPlan.IsTemplate) return RedirectToAction("MealTemplates");
 
@@ -322,10 +447,10 @@ namespace SCManagement.Controllers
         
         public async Task<IActionResult> EditTrainingPlan(int? id)
         {
-            //get id of the user
-            string userId = getUserIdFromAuthedUser();
+            if (id == null) return View("CustomError", "Error_NotFound");
 
-            //Check if is Trainer of the active club
+            string userId = getUserIdFromAuthedUser();
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -341,16 +466,13 @@ namespace SCManagement.Controllers
             
             return View(trainingPlan);
         }
-
-        [Authorize]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditTrainingPlan([Bind("Id, Name, Description, StartDate, EndDate, TrainerId, AthleteId, ModalityId, IsTemplate, TrainingPlanSessions")] TrainingPlan trainingPlan, string action)
         {
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -413,6 +535,8 @@ namespace SCManagement.Controllers
 
                 await _planService.UpdateTrainingPlan(actualTrainingPlan);
 
+                if (!actualTrainingPlan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = actualTrainingPlan.AthleteId });
+
                 return RedirectToAction("TrainingTemplates");
             }
 
@@ -421,10 +545,10 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> EditMealPlan(int? id)
         {
-            //get id of the user
+            if (id == null) return View("CustomError", "Error_NotFound");
+            
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
@@ -439,8 +563,7 @@ namespace SCManagement.Controllers
 
             return View(mealPlan);
         }
-
-        [Authorize]
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditMealPlan([Bind("Id, Name, Description, StartDate, EndDate, TrainerId, AthleteId, IsTemplate, MealPlanSessions")] MealPlan mealPlan, string action)
@@ -510,6 +633,8 @@ namespace SCManagement.Controllers
 
                 await _planService.UpdateMealPlan(actualMealPlan);
 
+                if (!actualMealPlan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = actualMealPlan.AthleteId });
+
                 return RedirectToAction("MealTemplates");
             }
 
@@ -522,17 +647,22 @@ namespace SCManagement.Controllers
             public string AthleteId { get; set; }
         }
 
-        public async Task<IActionResult> ChooseTrainingTemplates(string athleteId)
+        public async Task<IActionResult> ChooseTrainingTemplates(string id)
         {
-            //get id of the user
+            if (id == null) return View("CustomError", "Error_NotFound");
+            
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
 
-            return View(new ChooseTrainingTemplate { TrainingPlans = await _planService.GetTemplateTrainingPlans(userId), AthleteId = athleteId } );
+            var template = await _planService.GetTemplateTrainingPlans(userId);
+
+            if (template == null) return View("CustomError", "Error_NotFound");
+            
+
+            return View(new ChooseTrainingTemplate { TrainingPlans = template, AthleteId = id } );
         }
 
         public class ChooseMealTemplate
@@ -541,7 +671,42 @@ namespace SCManagement.Controllers
             public string AthleteId { get; set; }
         }
 
-        public async Task<IActionResult> ChooseMealTemplates(string athleteId)
+        public async Task<IActionResult> ChooseMealTemplates(string id)
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
+            
+            string userId = getUserIdFromAuthedUser();
+            
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            var template = await _planService.GetTemplateMealPlans(userId);
+
+            if (template == null) return View("CustomError", "Error_NotFound");
+
+            return View(new ChooseMealTemplate { MealPlans = template, AthleteId = id });
+        }
+
+
+        public async Task<IActionResult> TrainingDetails(int id)
+        {
+            string userId = getUserIdFromAuthedUser();
+            
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var actualTrainingPlan = await _planService.GetTrainingPlan(id);
+
+            if (actualTrainingPlan == null) return View("CustomError", "Error_NotFound");
+
+            if (actualTrainingPlan.TrainerId != userId && actualTrainingPlan.AthleteId != userId) return View("CustomError", "Error_Unauthorized");
+
+            return View(actualTrainingPlan);
+        }
+
+        public async Task<IActionResult> MealDetails(int id)
         {
             //get id of the user
             string userId = getUserIdFromAuthedUser();
@@ -549,12 +714,17 @@ namespace SCManagement.Controllers
             //Check if is Trainer of the active club
             var role = await _userService.GetSelectedRole(userId);
 
-            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-            return View(new ChooseMealTemplate { MealPlans = await _planService.GetTemplateMealPlans(userId), AthleteId = athleteId });
+            var actualMealPlan = await _planService.GetMealPlan(id);
+
+            if (actualMealPlan == null) return View("CustomError", "Error_NotFound");
+
+            if (actualMealPlan.TrainerId != userId && actualMealPlan.AthleteId != userId) return View("CustomError", "Error_Unauthorized");
+
+            return View(actualMealPlan);
         }
-
     }
-
+    
     
 }

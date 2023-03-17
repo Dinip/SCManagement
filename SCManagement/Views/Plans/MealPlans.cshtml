@@ -1,20 +1,33 @@
-﻿@model IEnumerable<SCManagement.Services.PlansService.Models.TrainingPlan>
+﻿@model IEnumerable<SCManagement.Services.PlansService.Models.MealPlan>
 
 @{
-    ViewData["Title"] = "TrainingTemplates";
+    ViewData["Title"] = "MealTemplates";
 }
 
-<h1>TrainingTemplates</h1>
+@if (ViewBag.IsTemplate)
+{
+    <h1>MealPlans</h1>
+}
+else
+{
+    <h1>@ViewBag.AthleteName Meal Plans</h1>
+}
 
-<p>
-    <a asp-route-isTemplate="true" asp-action="CreateTrainingPlan">Create New Template</a>
-</p>
+@if (ViewBag.IsTemplate)
+{
+    <p>
+        <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
+    </p>
+}
+@*else tem que se fazer aquela view de escolher se e para aplicar ou nao o template
+{
+    <p>
+        <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
+            </p>
+}*@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Modality)
-            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Name)
             </th>
@@ -24,18 +37,13 @@
             <th>
                 @Html.DisplayNameFor(model => model.Trainer)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsTemplate)
-            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model) 
+    {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modality.Id)
-            </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
@@ -43,19 +51,17 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Trainer.Id)
+                @Html.DisplayFor(modelItem => item.Trainer.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsTemplate)
-            </td>
-            <td>
-                <a asp-action="EditTrainingPlan" asp-route-id="@item.Id">Edit</a> |
-                <form asp-action="DeleteTrainingPlan">
+                <a asp-action="EditMealPlan" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="MealDetails" asp-route-id="@item.Id">Details</a> |
+                <form asp-action="DeleteMealPlan">
                     <input type="hidden" name="id" value="@item.Id" />
                     <button type="submit" class="btn btn-primary">Delete</button>
                 </form>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

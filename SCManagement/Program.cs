@@ -58,6 +58,16 @@ app.MapControllerRoute(
     constraints: new { id = @"\d+" });
 
 app.MapControllerRoute(
+    name: "create meal plan for athlete",
+    pattern: "Plans/CreateMealPlan/{athleteId?}",
+    defaults: new { controller = "Plans", action = "CreateMealPlan" });
+
+app.MapControllerRoute(
+    name: "create training plan for athlete",
+    pattern: "Plans/CreateTrainingPlan/{athleteId?}",
+    defaults: new { controller = "Plans", action = "CreateTrainingPlan" });
+
+app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 

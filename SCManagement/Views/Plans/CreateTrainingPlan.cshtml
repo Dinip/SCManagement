@@ -18,6 +18,11 @@
             <input type="hidden" asp-for="AthleteId" />
             <input type="hidden" asp-for="IsTemplate" />
 
+            @if (ViewBag.IsTeam)
+            {
+                <input type="hidden" name="teamId" value="@(ViewBag.TeamId)" />
+            }
+
             @if (!ViewBag.Apply)
             {
                 <div class="form-group">
@@ -40,13 +45,13 @@
             @if (!ViewBag.IsTemplate || ViewBag.Apply)
             {
                 <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
+                    <label asp-for="StartDate" class="control-label"></label>
+                    <input required asp-for="StartDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
                 </div>
                 <div class="form-group">
                     <label asp-for="EndDate" class="control-label"></label>
-                    <input asp-for="EndDate" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                    <input required asp-for="EndDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
                     <span asp-validation-for="EndDate" class="text-danger"></span>
                 </div>
             }

@@ -1,0 +1,94 @@
+﻿@model SCManagement.Services.PlansService.Models.TrainingPlan
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "TrainingDetails";
+}
+
+<h1>TrainingDetails</h1>
+
+<div>
+    <h4>TrainingPlan</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Modality)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Modality.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        @if (!Model.IsTemplate)
+        {
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.StartDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.StartDate)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.EndDate)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.EndDate)
+            </dd>
+            <dt class = "col-sm-2">
+                @Html.DisplayNameFor(model => model.AthleteId)
+            </dt>
+            <dd class = "col-sm-10">
+                @Html.DisplayFor(model => model.AthleteId)
+            </dd>
+        }
+    </dl>
+    <table id="table_id" class="display" style="width:100%!important;">
+        <thead>
+            <tr>
+                <th class="text-to-dark">
+                    @StringLocalizer["Name"]
+                </th>
+                <th class="text-to-dark">
+                    @StringLocalizer["Description"]
+                </th>
+                <th class="text-to-dark">
+                    @StringLocalizer["Repetitions"]
+                </th>
+                <th class="text-to-dark">
+                    @StringLocalizer["Duration"]
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.TrainingPlanSessions)
+            {
+                <tr>
+                    <td class="text-to-dark">
+                        @Html.DisplayFor(modelItem => item.ExerciseName)
+                    </td>
+                    <td class="text-to-dark">
+                        @Html.DisplayFor(modelItem => item.ExerciseDescription)
+                    </td>
+                    <td class="text-to-dark">
+                        @Html.DisplayFor(modelItem => item.Repetitions)
+                    </td>
+                <td class="text-to-dark">
+                        @Html.DisplayFor(modelItem => item.Duration)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="EditTrainingPlan" asp-route-id="@Model?.Id">Edit</a>
+</div>

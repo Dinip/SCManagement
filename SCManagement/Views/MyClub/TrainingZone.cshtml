@@ -26,7 +26,10 @@
                             <td class="text-to-dark">
                                 @Html.DisplayFor(model => teams.Modality.Name)
                             </td>
+                            <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-teamId="@teams.Id" class="me-2">Add Meal Plan</a>
+                            <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-teamId="@teams.Id" class="me-2">Add Training Plan</a>
                         </tr>
+                        
                         @foreach (var athlete in teams.Athletes)
                         {
                             <tr>
@@ -39,8 +42,10 @@
                                 <td class="d-flex justify-content-end align-items-center">
                                     <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="me-2">Add Meal Plan</a>
                                     <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="me-2">Add Training Plan</a>
-                                    <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-athleteId="@athlete.Id" class="me-2">Apply Training Template </a>
-                                    <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-athleteId="@athlete.Id" class="me-2">Apply Meal Template </a>
+                                    <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="me-2">Apply Training Template </a>
+                                    <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="me-2">Apply Meal Template </a>
+                                    <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="me-2">See Training Plans</a>
+                                    <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="me-2">See Meal Plans </a>
                                 </td>
                             </tr>
                         }
