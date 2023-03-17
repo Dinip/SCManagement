@@ -109,9 +109,9 @@ namespace SCManagement.Controllers
             if (_clubService.IsClubStaff(userRole))
             {
                 ViewBag.IsStaff = true;
-                ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
+                
             }
-
+            ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
             //check if user is already enrolled
             var enroll = await _eventService.GetEnroll(myEvent.Id, userId);
             if (enroll != null)
@@ -462,7 +462,7 @@ namespace SCManagement.Controllers
                 eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
-                eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls;
+                eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls == 0 ? int.MaxValue : myEvent.MaxEventEnrolls;
                 eventToUpdate.AddressByPath = myEvent.AddressByPath;
 
                 await UpdateTranslations(myEvent.EventTranslationsName, eventToUpdate);

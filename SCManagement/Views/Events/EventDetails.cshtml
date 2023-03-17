@@ -169,7 +169,7 @@
             {
                 
                     <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
-                    @if (ViewBag.EnrollLimitDate <= DateTime.Now)
+                    @if (Model.EnrollLimitDate > DateTime.Now)
                     {
                         <button type="submit" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Enroll"]</button>
                     }else
