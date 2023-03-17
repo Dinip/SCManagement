@@ -51,7 +51,7 @@
         </div>
 
         <div id="month" class="tabcontent active my-custom-scrollbar" style="overflow-x: auto;">
-            <table class="mx-auto" style="width: 100%; max-height: 400px; overflow-y: auto;">
+            <table class="mx-auto" style="width: 100%; max-height: 300px; overflow-y: auto;">
                 <thead>
                     <tr>
                         <th>@StringLocalizer["Month"]</th>
@@ -65,7 +65,7 @@
         </div>
 
         <div id="entries" class="tabcontent my-custom-scrollbar" style="overflow-x: auto;">
-            <table class="mx-auto" style="width: 100%;">
+            <table class="mx-auto" style="width: 100%; max-height: 300px; overflow-y: auto;">
                 <thead>
                     <tr>
                         <th>@StringLocalizer["ProductName"]</th>
@@ -78,11 +78,18 @@
             </table>
         </div>
     </div>
-    <input type="radio" id="cotas" name="chart-type" value="cotas" checked>
-    <label for="cotas">Cotas</label>
-    <input type="radio" id="eventos" name="chart-type" value="eventos">
-    <label for="eventos">Eventos</label>
+
     <div class="col-xs-12 col-sm-12 col-md-6 mt-sm-4 mt-md-4">
+        <div class="mt-lg-0 mt-4">
+            <label for="cotas" class="btn btn-secondary grapButton">
+                Cotas
+            </label>
+            <input type="radio" id="cotas" name="chart-type" value="cotas" checked style="display:none;">
+            <label for="eventos" class="btn btn-secondary grapButton">
+                Eventos
+            </label>
+            <input type="radio" id="eventos" name="chart-type" value="eventos" style="display:none;">
+        </div>
         <canvas id="myChart"></canvas>
     </div>
 
@@ -173,7 +180,7 @@
 
     .my-custom-scrollbar {
         position: relative;
-        height: 400px;
+        height: 300px;
         overflow: auto;
     }
 
@@ -182,6 +189,18 @@
         padding: 8px;
         border-bottom: 1px solid #ddd;
     }
+
+    .grapButton {
+        background-color: #f1f1f1;
+        color: black;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+        .grapButton:hover {
+            background-color: #ddd;
+        }
 
 </style>
 
@@ -291,16 +310,6 @@
 
             updateChart(newObj, 'Cotas', 'blue');
 
-            //months.push.apply(months, dates);
-
-            //myChart.data.datasets.push({
-            //    label: 'Eventos',
-            //    backgroundColor: 'orange',
-            //    data: valuesEvents,
-            //});
-
-            //myChart.update();
-
         }).fail(function (jqXHR, textStatus, errorThrown) {
             console.log("Erro: " + textStatus + ", " + errorThrown);
             console.log("Resposta do servidor: " + jqXHR.responseText);
@@ -308,12 +317,10 @@
 
     }
 
-    // Adicione um evento "change" aos radio buttons
     $('input[name="chart-type"]').on('change', function () {
-        // Obtenha o valor do radio button selecionado
+
         var chartType = $('input[name="chart-type"]:checked').val();
 
-        // Atualize o gráfico com os dados corretos
         if (chartType === 'cotas') {
             updateChart(newObj, 'Cotas', 'blue');
         } else {
@@ -321,12 +328,10 @@
         }
     });
 
-    // Defina uma função de atualização do gráfico
     function updateChart(data, label, color) {
-        // Destrua o gráfico atual
+
         myChart.destroy();
 
-        // Crie um novo gráfico com os dados fornecidos
         var ctx = document.getElementById("myChart").getContext("2d");
         let myNewChart = new Chart(ctx, {
             type: "bar",
@@ -340,7 +345,6 @@
             },
         });
 
-        // Atualize a variável myChart para o novo gráfico
         myChart = myNewChart;
     }
 

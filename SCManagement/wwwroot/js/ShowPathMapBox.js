@@ -4,7 +4,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM
 
 const path = document.getElementById("path");
 const hElevation = document.getElementById("hElevation");
-const lElevation = document.getElementById("lElevation");
 const tDistance = document.getElementById("tDistance");
 const dMore = document.getElementById("dMore");
 const dLess = document.getElementById("dLess");
