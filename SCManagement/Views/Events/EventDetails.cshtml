@@ -18,6 +18,19 @@
     }
 </style>
 
+<div id="modal1" class="modal">
+    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+        <span class="text-to-dark">@StringLocalizer["Are u sure you want to delete?"]</span>
+        <div class="d-flex justify-content-end mt-3">
+            <button onclick="$('#modal1').hide()" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Cancel"]</button>
+            <form asp-action="Delete" class="w-auto">
+                <input name="Id" value="@Model?.Id" class="form-control" hidden />
+                <input type="submit" value="@StringLocalizer["Delete"]" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;"/>
+            </form>
+        </div>
+    </div>
+</div>
+
 <div class="container ps-5 pe-5">
     <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Details"]</h1>
     <hr />
@@ -135,10 +148,11 @@
             @if (ViewBag.IsStaff != null && ViewBag.IsStaff)
             {
                 <a asp-action="Edit" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none;">@StringLocalizer["Edit"]</a>
-                <form asp-action="Delete">
-                    <input name="Id" value="@Model?.Id" class="form-control" hidden />
-                    <input type="submit" value= "@StringLocalizer["Delete"]" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;" />
-                </form>
+
+
+                <button onclick="toggleRemoveModal()" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
+                    
+                    
             }
 
             @if (ViewBag.IsEnrolled)
@@ -189,6 +203,8 @@
     {
         <div class="card mt-3 shadow" style="height:650px !important;  border-radius:20px;">
             <div class="card-body">
+                <h5 class="text-to-dark mt-2 ms-2">Inscritos</h5>
+                <hr />
                 <table id="table_id" class="display">
                     <thead>
                         <tr>
@@ -236,6 +252,10 @@
             ]
         });
     });
+
+    function toggleRemoveModal() {
+        $("#modal1").show();
+    }
 
 </script>
 

@@ -19,19 +19,19 @@
         <div class="card-body">
             <div class="mb-4 mt-2">
                 <input id="FilterEvent0" name="FilterEvent" value="0" type="radio" style="accent-color: #00639A">
-                <label for="FilterEvent0">@StringLocalizer["All"]</label>
+                <label for="FilterEvent0" class="text-to-dark">@StringLocalizer["All"]</label>
 
                 <input id="FilterEvent1" name="FilterEvent" value="1" type="radio" style="accent-color: #00639A" class="ms-2">
-                <label for="FilterEvent1">@StringLocalizer["InProgress"]</label>
+                <label for="FilterEvent1" class="text-to-dark">@StringLocalizer["InProgress"]</label>
 
                 <input id="FilterEvent2" name="FilterEvent" value="2" type="radio" style="accent-color: #00639A" class="ms-2">
-                <label for="FilterEvent2">@StringLocalizer["Finished"]</label>
+                <label for="FilterEvent2" class="text-to-dark">@StringLocalizer["Finished"]</label>
 
                 <input id="FilterEvent3" name="FilterEvent" value="3" type="radio" style="accent-color: #00639A" class="ms-2">
-                <label for="FilterEvent3">@StringLocalizer["Futures"]</label>
+                <label for="FilterEvent3" class="text-to-dark">@StringLocalizer["Futures"]</label>
             </div>
 
-            <table id="table_id" class="display">
+            <table id="table_id" class="display" style="width:100%!important;">
                 <thead>
                     <tr>
                         <th class="text-to-dark">
@@ -78,11 +78,17 @@
 
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
         $("#table_id").DataTable({
+            responsive: true,
+            rowReorder: {
+                selector: 'td:nth-child(2)'
+            },
             columnDefs: [
                 { orderable: false, targets: [-1] }
             ]
@@ -102,6 +108,9 @@
         }else{
             document.getElementById(`FilterEvent0`).checked = true;
         }
+
+        let table_id_info = document.getElementById("table_id_info");
+        table_id_info.classList.add("text-to-dark");
     });
 
     // Filtra a lista de eventos com base no botão de opção selecionado

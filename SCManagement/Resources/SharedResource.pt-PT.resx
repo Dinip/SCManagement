@@ -1722,4 +1722,12 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Sem Limite</value>
     <comment>14-03-2023_FixEditEvent</comment>
   </data>
+  <data name="Are u sure you want to delete?" xml:space="preserve">
+    <value>Tem a certeza que deseja apagar?</value>
+    <comment>17-03-2023_profile</comment>
+  </data>
+  <data name="Are you sure you want to cancel? All progress will be lost!" xml:space="preserve">
+    <value>Tem a certeza que deseja cancelar? Todo o progresso será perdido!</value>
+    <comment>17-03-2023_profile</comment>
+  </data>
 </root>

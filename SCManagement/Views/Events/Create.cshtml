@@ -98,11 +98,24 @@
         background-color: #00639A;
         border: 1px solid black;
     }
+
+    .toast {
+        position: fixed;
+        top: 10%;
+        left: 0;
+        border: 2px solid red;
+        transform: translateY(-100px);
+        animation: slideRight 1s ease forwards .5s;
+    }
+
+
 </style>
 
 @{
     ViewData["Title"] = "Create";
 }
+
+
 
 <div class="container ps-5 pe-5">
     <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Create Event"]</h1>
@@ -251,9 +264,26 @@
             <input type="hidden" disabled id="tradPlaceholder" value="@StringLocalizer["PlaceholderAddress"].Value.ToString()" />
             <div class="form-group mt-3 d-flex">
                 <input type="submit" value="@StringLocalizer["Create"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
-                <a asp-action="Index" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border: 1px solid black; text-decoration:none;"><strong>@StringLocalizer["Cancel"]</strong></a>
+                <div id="modal1" class="modal">
+                    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+                        <span class="text-to-dark">@StringLocalizer["Are you sure you want to cancel? All progress will be lost!"]</span>
+                        <div class="d-flex justify-content-end mt-3">
+                            <a onclick="$('#modal1').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Back"]</a>
+                            <a asp-action="Index" class="btn btn-primary ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;"><strong>@StringLocalizer["Cancel"]</strong></a>
+                        </div>
+                    </div>
+                </div>
+                <a onclick="toggleRemoveModal()" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red; text-decoration:none;">@StringLocalizer["Cancel"]</a>
+                
             </div>
-
+            <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong id="alertText"></strong>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                </div>
+            </div>
         </form>
     </div>
 </div>
@@ -268,6 +298,14 @@
 
 
 <script>
+    function closeToast(){
+        $(".toast").hide();
+    }
+
+    function toggleRemoveModal() {
+        $("#modal1").show();
+    }
+
     window.onload = function () {
         document.getElementById("myForm").addEventListener("submit", validateForm);
 
@@ -371,7 +409,8 @@
         const locationString = document.getElementById("Location").value;
         if (addressByPath.trim() === "" && locationString.trim() === "") {
             event.preventDefault();
-            alert("Por favor, coloque uma localização no evento.");
+            $(".toast").show();
+            document.getElementById('alertText').innerHTML = "Por favor, coloque uma localização no evento.";
             return false;
         }
 
@@ -394,7 +433,8 @@
 
         // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
         event.preventDefault();
-        alert("Preencha pelo menos um campo de tradução.");
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = "Preencha pelo menos um campo de tradução.";
         return false;
     }
 </script>
