@@ -5,8 +5,7 @@ namespace SCManagement.Models.Validations
 {
     public class DateGreaterThanAttribute : ValidationAttribute
     {
-        public string StartDate { get; set; }
-
+        public string Model { get; set; }
         private string GetErrorMessage(ValidationContext validationContext)
         {
             SharedResourceService errorTranslation = validationContext.GetService(typeof(SharedResourceService)) as SharedResourceService;
@@ -18,8 +17,18 @@ namespace SCManagement.Models.Validations
             if (value == null)
                 return ValidationResult.Success;
 
-            var model = (Services.PlansService.Models.Plan)validationContext.ObjectInstance;
-            DateTime? startDate = model.StartDate;
+            DateTime? startDate;
+            if (Model != null)
+            {
+                var obj = (Services.PlansService.Models.Goal)validationContext.ObjectInstance;
+                startDate = obj.StartDate;
+            }
+            else
+            {
+                var model = (Services.PlansService.Models.Plan)validationContext.ObjectInstance;
+                startDate = model.StartDate;
+            }
+            
             var val = (DateTime)value;
 
             if (val.Date <= startDate.Value.Date)

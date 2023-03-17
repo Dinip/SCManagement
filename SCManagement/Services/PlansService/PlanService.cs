@@ -135,5 +135,35 @@ namespace SCManagement.Services.PlansService
                 .Include(p => p.MealPlanSessions)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<Goal?>> GetGoals(string trainerId)
+        {
+            return await _context.Goals.Where(g => g.TrainerId == trainerId).ToListAsync();
+        }
+        public async Task<IEnumerable<Goal?>> GetGoals(string trainerId, string athleteId)
+        {
+            return await _context.Goals.Where(g => g.TrainerId == trainerId && g.AthleteId == athleteId).ToListAsync();
+        }
+        public async Task<Goal?> GetGoal(int goalId)
+        {
+            return await _context.Goals.Where(g => g.Id == goalId).FirstOrDefaultAsync();
+        }
+        public async Task<Goal> CreateGoal(Goal goal)
+        {
+            _context.Goals.Add(goal);
+            await _context.SaveChangesAsync();
+            return goal;
+        }
+        public async Task<Goal> UpdateGoal(Goal goal)
+        {
+            _context.Goals.Update(goal);
+            await _context.SaveChangesAsync();
+            return goal;
+        }
+        public async Task DeleteGoal(Goal goal)
+        {
+            _context.Goals.Remove(goal);
+            await _context.SaveChangesAsync();
+        }
     }
 }

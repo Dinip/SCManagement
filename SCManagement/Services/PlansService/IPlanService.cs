@@ -20,5 +20,11 @@ namespace SCManagement.Services.PlansService
         public Task<MealPlan> UpdateMealPlan(MealPlan plan);
         public Task DeleteTrainingPlan(TrainingPlan plan);
         public Task DeleteMealPlan(MealPlan plan);
+        public Task<IEnumerable<Goal?>> GetGoals(string trainerId);
+        public Task<IEnumerable<Goal?>> GetGoals(string trainerId, string athleteId);
+        public Task<Goal?> GetGoal(int goalId);
+        public Task<Goal> CreateGoal(Goal goal);
+        public Task<Goal> UpdateGoal(Goal goal);
+        public Task DeleteGoal(Goal goal);
     }
 }
