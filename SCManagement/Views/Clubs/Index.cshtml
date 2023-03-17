@@ -88,11 +88,12 @@
 
     #menu {
         position: absolute;
-        background: #efefef;
+        background: white;
         padding: 10px;
-        font-family: 'Open Sans', sans-serif;
-        right: 0;
-        z-index: 1;
+        z-index:2;
+        right:0;
+        border-bottom-left-radius: 20px;
+        font-size:16px;
     }
 
 </style>
@@ -118,21 +119,23 @@
                 <i class="fas fa-search"></i>
             </span>
         </div>
-
-        @await Html.PartialAsync("_PartialSearchClub",Model)
-
+        <div class="overflow-auto mt-4">
+            <div id="search-results-partial">
+                 @await Html.PartialAsync("_PartialSearchClub",Model)
+            </div>
+        </div>
     </div>
 
     <button id="openbtn" onmouseover="openNav()"><i class="fa-solid fa-chevron-right"></i></button>
     <div id='map' style="border-radius:0 !important;">
         <div id="menu">
-            <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
+            <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite" style="accent-color: #00639A">
             <label for="satellite-streets-v12">@StringLocalizer["ViewSatellite"]</label>
-            <input id="light-v11" type="radio" name="rtoggle" value="light">
+            <input id="light-v11" type="radio" name="rtoggle" value="light" style="accent-color: #00639A" class="ms-2">
             <label for="light-v11">@StringLocalizer["ViewLight"]</label>
-            <input id="dark-v11" type="radio" name="rtoggle" value="dark">
+            <input id="dark-v11" type="radio" name="rtoggle" value="dark" style="accent-color: #00639A" class="ms-2">
             <label for="dark-v11">@StringLocalizer["ViewDark"]</label>
-            <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
+            <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked" style="accent-color: #00639A" class="ms-2">
             <label for="streets-v12">@StringLocalizer["ViewStreets"]</label>
         </div>
     </div>

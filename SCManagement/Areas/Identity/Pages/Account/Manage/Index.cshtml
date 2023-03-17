@@ -15,6 +15,16 @@
     </div>
 </div>
 
+<div id="modal1" class="modal">
+    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+        <span class="text-to-dark">@StringLocalizer["Are u sure you want to delete?"]</span>
+        <div class="d-flex justify-content-end mt-3">
+            <button onclick="$('#modal1').hide()" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Cancel"]</button>
+            <button onclick="removeFile('image')" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Remove"]</button>
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid row justify-content-evenly">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div id="card1" class="col-md-3 col-8 card-to-dark card-style card mt-5">
@@ -25,7 +35,7 @@
                      class="rounded-circle col"
                      style="max-width:100%; max-height:300px; object-fit:cover; aspect-ratio:1;" />
                 <div class="col">
-                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="removeFile('image')" title=@StringLocalizer["RemovePhoto"]></i>
+                    <i id="btnRemoveImage" class="fa-solid fa-xl fa-trash row @(!Model.ProfilePictureUrl.Contains("public") ? "" : "invisible")" style="color:red; cursor:pointer; margin-right:20px; margin-top:10%;" onclick="toggleRemoveModal()" title=@StringLocalizer["RemovePhoto"]></i>
                     <i class="fa-solid fa-xl fa-pen-to-square row text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;" title=@StringLocalizer["ChangePhoto"]></i>
                 </div>
                 
@@ -157,6 +167,10 @@
             $("#modal").show();
         }
 
+        function toggleRemoveModal() {
+            $("#modal1").show();
+        }
+
         function removeFile(fileType) {
             let fileElement = document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`)
             let removeButton = document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`)
@@ -172,6 +186,7 @@
             fileElement.value = ""
             removeButton.classList.add("invisible")
             document.getElementById(`remove${fileType === 'image' ? 'Image' : 'EMD'}`).value = true
+            $('#modal1').hide()
         }
 
         function handleUpload(event, fileType) {

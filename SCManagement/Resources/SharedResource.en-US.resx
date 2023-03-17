@@ -1600,4 +1600,12 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Please try again, we could not capture your address</value>
     <comment>15/03/2023_SearchMapBox</comment>
   </data>
+  <data name="Are u sure you want to delete?" xml:space="preserve">
+    <value>Are u sure you want to delete?</value>
+    <comment>17-03-2023_profile</comment>
+  </data>
+  <data name="Are you sure you want to cancel? All progress will be lost!" xml:space="preserve">
+    <value>Are you sure you want to cancel? All progress will be lost!</value>
+    <comment>17-03-2023_profile</comment>
+  </data>
 </root>

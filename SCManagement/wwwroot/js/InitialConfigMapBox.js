@@ -345,20 +345,17 @@ function PathMapBoxConfig() {
     function errorMessage(codeMessage) {
         if (codeMessage == "NoMatch") {
             erMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
-            alert(erMessage);
         } else if (codeMessage == "NoSegment") {
             erMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
-            alert(erMessage);
         } else if (codeMessage == "TooManyCoordinates") {
             erMessage = "There are more than 100 points in the request."
-            alert(erMessage);
         } else if (codeMessage == "ProfileNotFound") {
             erMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
-            alert(erMessage);
         } else if (codeMessage == "InvalidInput") {
             erMessage = "message will hold an explanation of the invalid input.";
-            alert(erMessage);
         }
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = erMessage;
     }
 
 
@@ -379,9 +376,6 @@ function PathMapBoxConfig() {
             return;
         }
     }
-
-
-
 }
 
 function SearchMapBoxConfig() {

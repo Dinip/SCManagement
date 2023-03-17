@@ -33,18 +33,42 @@ function setTheme(theme) {
     let dlBg = document.getElementsByClassName('dlBg');
     let noClubImg = document.getElementById('swapImage');
     let sidebar = document.getElementById('mySidebar');
+    let calendarBG = document.getElementById('calendar-container');
+    let eventCardBG = document.getElementById('event-card');
+    let inputs = document.getElementsByClassName('form-control');
+    let clabels = document.getElementsByClassName('control-label');
+    let flabels = document.getElementsByClassName('form-label');
+    let textareas = document.getElementsByTagName('textarea');
     if (theme === "dark") {
         darkToggle.checked = true
         darkToggle1.checked = true
         element.classList.add("navbar-dark");
         element.classList.remove("navbar-light");
-
         element.classList.add("bg-dark");
+
         if (noClubImg) {
             noClubImg.src = "../img/NoClubWhite.png";
         }
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].classList.add("bg-dark");
+        }
+
+        for (let i = 0; i < clabels.length; i++) {
+            clabels[i].style.color = 'white';
+        }
+
+        for (let i = 0; i < flabels.length; i++) {
+            flabels[i].style.color = 'white';
+        }
+
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].classList.add("bg-dark");
+            inputs[i].style.color = 'white';
+        }
+
+        for (let i = 0; i < textareas.length; i++) {
+            textareas[i].classList.add("bg-dark");
+            textareas[i].style.color = 'white';
         }
 
         element.classList.remove("bg-white");
@@ -78,15 +102,20 @@ function setTheme(theme) {
         if (sidebar) {
             sidebar.classList.add("bg-dark");
         }
-        
 
+        if (calendarBG) {
+            calendarBG.classList.add("bg-dark");
+        }
+
+        if (eventCardBG) {
+            eventCardBG.classList.add("bg-dark");
+        }
     } else {
         darkToggle.checked = false
         darkToggle1.checked = false
         element.classList.add("navbar-light");
         element.classList.remove("navbar-dark");
         element.classList.remove("bg-dark");
-
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].classList.remove("bg-dark");
         }
@@ -97,6 +126,19 @@ function setTheme(theme) {
 
         for (let i = 0; i < texts.length; i++) {
             texts[i].style.color = 'black';
+        }
+
+        for (let i = 0; i < clabels.length; i++) {
+            clabels[i].style.color = 'black';
+        }
+
+        for (let i = 0; i < flabels.length; i++) {
+            flabels[i].style.color = 'black';
+        }
+
+        for (let i = 0; i < inputs.length; i++) {
+            inputs[i].classList.remove("bg-dark");
+            inputs[i].style.color = 'black';
         }
 
         if (sidebar) {
@@ -124,6 +166,11 @@ function setTheme(theme) {
             logoText1.style.fill = 'black';
         }
 
-        
+        if (calendarBG) {
+            calendarBG.classList.remove("bg-dark");
+        }
+        if (eventCardBG) {
+            eventCardBG.classList.remove("bg-dark");
+        }
     }
 }
