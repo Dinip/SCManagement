@@ -53,12 +53,12 @@ namespace SCManagement.Services
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[]
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("pt-PT"),
-                };
-                options.DefaultRequestCulture = new RequestCulture("en-US");
+                var pt = new CultureInfo("pt-PT");
+                var en = new CultureInfo("en-US");
+                en.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+
+                var supportedCultures = new[] { pt, en };
+                options.DefaultRequestCulture = new RequestCulture(en);
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
                 options.FallBackToParentCultures = true;
