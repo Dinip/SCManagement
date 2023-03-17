@@ -1730,4 +1730,40 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Por favor tente novamente, não conseguimos capturar a sua morada</value>
     <comment>15/03/2023_SearchMapBox</comment>
   </data>
+  <data name="Date" xml:space="preserve">
+    <value>Data</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Entries" xml:space="preserve">
+    <value>Entradas</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Cotas</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Rendimentos</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Mês</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>De</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Nome Do Produto</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Estatísticas</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="UpdatePlan" xml:space="preserve">
+    <value>Atualizar Plano</value>
+    <comment>17-03-2023_StatisticsView</comment>
+  </data>
 </root>

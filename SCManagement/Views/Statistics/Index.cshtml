@@ -3,12 +3,13 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 
 @{
-    ViewBag.Title = "Statistics";
+    ViewBag.Title = @StringLocalizer["Statistics"];
 }
 
-<h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Events"]</h1>
+<h1 style="margin-top:130px !important; margin-left:18px" class="text-to-dark">@StringLocalizer["Statistics"]</h1>
 
 <div class="row mt-5">
     @foreach (var current in Model)
@@ -19,7 +20,7 @@
                 <div class="circle">
                     <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center">@current.Value</span>
                 </div>
-                <div class="text-black fw-bold text-center mt-3 fs-2 fs-sm-3" style="width: 100%;">
+                <div class="text-black text-animation fw-bold text-center mt-3 fs-2 fs-sm-3" style="width: 100%;">
                     @current.RoleName
                 </div>
             </div>
@@ -28,14 +29,62 @@
         {
             <div class="col-xs-12 col-sm-12 col-md-4 mb-3 d-flex flex-column justify-content-center align-items-center">
                 <div class="circle">
-                    <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @current.Value <br> <span class="fs-6">of</span> <br> @current.MaxValue</span>
+                    <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @current.Value <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @current.MaxValue</span>
                 </div>
-                <div class="text-black fw-bold text-center mt-3 text-sm fs-2 fs-sm-3" style="width: 100%;">
+                <div class="text-black text-animation fw-bold text-center mt-3 text-sm fs-2 fs-sm-3" style="width: 100%;">
                     @current.RoleName
                 </div>
             </div>
         }
     }
+</div>
+
+<a class="btn btn-primary ms-4 mt-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["UpdatePlan"]</a>
+
+<h2 style="margin-top:130px !important; margin-left:18px" class="text-to-dark">@StringLocalizer["Income"]</h2>
+
+<div class="row mt-5 flex-column flex-md-row p-4" style="display: flex; align-items: flex-start;">
+    <div class="col-xs-12 col-sm-12 col-md-6">
+        <div class="tabs">
+            <button class="tablinks active show" onclick="openTab(event, 'month')">@StringLocalizer["Month"]</button>
+            <button class="tablinks" onclick="openTab(event, 'entries')">@StringLocalizer["Entries"]</button>
+        </div>
+
+        <div id="month" class="tabcontent active my-custom-scrollbar" style="overflow-x: auto;">
+            <table class="mx-auto" style="width: 100%; max-height: 400px; overflow-y: auto;">
+                <thead>
+                    <tr>
+                        <th>@StringLocalizer["Month"]</th>
+                        <th>@StringLocalizer["Fee"]</th>
+                        <th>@StringLocalizer["Events"]</th>
+                    </tr>
+                </thead>
+                <tbody id="tBodyEntriesMonth">
+                 
+                </tbody>
+            </table>
+        </div>
+
+        <div id="entries" class="tabcontent my-custom-scrollbar" style="overflow-x: auto;">
+            <table class="mx-auto" style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>@StringLocalizer["ProductName"]</th>
+                        <th>@StringLocalizer["Date"]</th>
+                        <th>@StringLocalizer["Value"]</th>
+                    </tr>
+                </thead>
+                <tbody id="tBodyEntries">
+                    
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-6 mt-sm-4 mt-md-4">
+        <canvas id="myChart"></canvas>
+    </div>
+
 </div>
 
 <style>
@@ -74,8 +123,68 @@
             transition-delay: 0.6s;
         }
 
+    .text-animation {
+        opacity: 0;
+        transform: translateY(50%);
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    }
+
+        .text-animation.show {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+
+    .container {
+        width: 50%;
+        margin-left: 0;
+        padding: 10px;
+        margin-bottom:5%;
+    }
+
+    .tabs {
+        overflow: hidden;
+    }
+
+    .tablinks {
+        width: 50%;
+        background-color: #f1f1f1;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: background-color 0.3s ease;
+    }
+
+        .tablinks:hover {
+            background-color: #ddd;
+        }
+
+        .tablinks.active {
+            background-color: #ccc;
+        }
+
+    .tabcontent {
+        display: none;
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+
+    .my-custom-scrollbar {
+        position: relative;
+        height: 400px;
+        overflow: auto;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
 </style>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script>
 
@@ -83,6 +192,11 @@
 
     $(document).ready(function () {
         $(".circle").each(function (index) {
+            setTimeout(function () {
+                $(this).addClass("show");
+            }.bind(this), 500 * index);
+        });
+        $(".text-animation").each(function (index) {
             setTimeout(function () {
                 $(this).addClass("show");
             }.bind(this), 500 * index);
@@ -99,4 +213,147 @@
             animated = true;
         }
     });
+
+    function openTab(evt, tabName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].classList.remove("active");
+        }
+        document.getElementById(tabName).style.display = "block";
+        evt.currentTarget.classList.add("active");
+    }
+
+
+    var ctx = document.getElementById("myChart").getContext("2d");
+    const months = [];
+
+    // Cria um novo gráfico de barras
+    var myChart = new Chart(ctx, {
+        type: "bar",
+        data: {
+            // Define os rótulos do eixo X
+            labels: months,
+            datasets: [
+                {
+                    // Define o conjunto de dados para os eventos
+                    label: "Eventos",
+                    backgroundColor: "orange",
+                    data: [10, 8],
+                },
+            ],
+        },
+        options: {
+            scales: {
+                yAxes: [
+                    {
+                        ticks: {
+                            // Define o intervalo do eixo Y
+                            suggestedMin: 0,
+                            suggestedMax: 150,
+                        },
+                    },
+                ],
+            },
+        },
+    });
+
+    window.onload = function(){
+        $.ajax({
+            type: 'GET',
+            url: "/Statistics/PaymentsDetailed"
+        }).done(function (response) {
+            console.log(response);
+            var data = response.data;
+            var tbody = $("#tBodyEntries");
+            var dates = [];
+            var values = [];
+            data.forEach(function (obj) {
+                var row = $("<tr>");
+                row.append($("<td>").text(obj.productName));
+                row.append($("<td>").text(obj.timeInText));
+                row.append($("<td>").text(obj.value));
+                tbody.append(row);
+                dates.push(obj.timeInText);
+                values.push(obj.value);
+            })
+            console.log(dates);
+            console.log(values);
+
+            var newObj = { x: dates, y: values }
+
+            console.log(newObj)
+
+            // Adiciona as datas em 'dates' ao eixo X
+            months.push.apply(months, dates);
+
+            // Adiciona um novo conjunto de dados com os valores em 'values'
+            myChart.data.datasets.push({
+                label: 'Cotas',
+                backgroundColor: 'blue',
+                data: values
+            });
+
+
+            // Atualiza o gráfico
+            myChart.update();
+
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log("Erro: " + textStatus + ", " + errorThrown);
+            console.log("Resposta do servidor: " + jqXHR.responseText);
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: "/Statistics/Payments"
+        }).done(function (response) {
+            console.log(response);
+            var data = response.data;
+            var tBodyEntriesMonth = $("#tBodyEntriesMonth");
+            var datesEvents = [];
+            var valuesEvents = [];
+
+            data.forEach(function (obj) {
+                var row = $("<tr>");
+                row.append($("<td>").text(obj.timeInText));
+                row.append($("<td>").text(obj.clubFee));
+                row.append($("<td>").text(obj.events));
+                tBodyEntriesMonth.append(row);
+                datesEvents.push(obj.timeInText);
+                valuesEvents.push(obj.events);
+            })
+
+            console.log(datesEvents);
+            console.log(valuesEvents);
+
+            var newObjEvents = { x: datesEvents, y: valuesEvents }
+            
+            console.log(newObjEvents)
+
+            // Adiciona as datas em 'dates' ao eixo X
+            months.push.apply(months, datesEvents);
+
+            // Adiciona um novo conjunto de dados com os valores em 'values'
+            myChart.data.datasets.push({
+                label: 'Eventos',
+                backgroundColor: 'orange',
+                data: valuesEvents
+            });
+
+            // Atualiza o gráfico
+            myChart.update();
+
+
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            console.log("Erro: " + textStatus + ", " + errorThrown);
+            console.log("Resposta do servidor: " + jqXHR.responseText);
+        });
+
+    }
+
 </script>
