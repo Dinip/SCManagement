@@ -35,6 +35,10 @@
 
 <div class="row mt-5 flex-column flex-md-row p-4" style="display: flex; align-items: flex-start;">
 
+    <div>
+        <select id="selectYear" onchange="changeYear(this)"></select>
+    </div>
+
     <ul id="tab-selector" class="nav nav-pills">
         <li class="nav-item">
             <button id="btn-tab-Payments" class="btn-tab-change nav-link active" onClick="changeTab('Payments')">Income</button>
@@ -244,6 +248,7 @@
     $(document).ready(async function () {
         $.noConflict()
         animateCircles()
+        loadYears()
 
         const d = await loadData("Payments")
         dataToTables("Payments", d)
@@ -261,6 +266,33 @@
                 $(this).addClass("show");
             }.bind(this), 500 * index);
         });
+    }
+
+    function loadYears() {
+        const sel = document.getElementById('selectYear')
+        const currentYear = new Date().getFullYear()
+        const startYear = currentYear - 3
+        for (let i = currentYear; i >= startYear; i--) {
+            const opt = document.createElement('option')
+            if (i == currentYear) {
+                opt.selected = true
+            }
+            opt.value = i
+            opt.innerHTML = i
+            sel.appendChild(opt)
+        }
+    }
+
+    async function changeYear(elem) {
+        const activeTab = $("button.btn-tab-change.active")
+        console.log(activeTab, activeTab.length)
+        if (activeTab.length != 0) {
+            const btnId = activeTab.get(0).id
+            const tab = btnId.replace('btn-tab-', '')
+            const d = await loadData(tab, elem.value);
+            dataToTables(tab, d)
+            dataToGraphs(tab, d)
+        }
     }
 
     $(window).scroll(function () {
@@ -292,18 +324,20 @@
             }
         })
 
-        const d = await loadData(tab);
+        const year = document.getElementById("selectYear").value
+
+        const d = await loadData(tab, year);
         console.log(d)
         dataToTables(tab, d)
         dataToGraphs(tab, d)
     }
 
 
-    function loadData(tab) {
+    function loadData(tab, year = new Date().getFullYear()) {
         return new Promise((resolve, reject) => {
             $.ajax({
                 type: 'GET',
-                url: `/Statistics/${tab}`,
+                url: `/Statistics/${tab}?year=${year}`,
                 datatype: "json",
                 success: function (data) {
                     resolve(data.data)
@@ -333,7 +367,7 @@
 
         if (tab == "PaymentsDetailed") {
             $(`#table-${tab}`).DataTable({
-                data: data.filter(f=>f.productName != "None"),
+                data: data.filter(f => f.productName != "None"),
                 columns: [
                     { "data": "timeInText" },
                     { "data": "productName" },

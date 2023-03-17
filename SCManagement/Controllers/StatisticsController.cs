@@ -72,7 +72,7 @@ namespace SCManagement.Controllers
                 })
                 .ToList();
 
-            var months = computeAllMonths();
+            var months = computeAllMonths(year);
             foreach (var month in months)
             {
 
@@ -105,7 +105,7 @@ namespace SCManagement.Controllers
                 })
                 .ToList();
 
-            var months = computeAllMonths();
+            var months = computeAllMonths(year);
             foreach (var month in months)
             {
 
@@ -136,7 +136,7 @@ namespace SCManagement.Controllers
                 })
                 .ToList();
 
-            var months = computeAllMonths();
+            var months = computeAllMonths(year);
             foreach (var month in months)
             {
 
@@ -167,7 +167,7 @@ namespace SCManagement.Controllers
                 })
                 .ToList();
 
-            var months = computeAllMonths();
+            var months = computeAllMonths(year);
             foreach (var month in months)
             {
 
@@ -200,7 +200,7 @@ namespace SCManagement.Controllers
                 })
                 .ToList();
 
-            var months = computeAllMonths();
+            var months = computeAllMonths(year);
             foreach (var month in months)
             {
 
