@@ -687,8 +687,7 @@ namespace SCManagement.Controllers
 
             return View(new ChooseMealTemplate { MealPlans = template, AthleteId = id });
         }
-
-
+        
         public async Task<IActionResult> TrainingDetails(int id)
         {
             string userId = getUserIdFromAuthedUser();
@@ -708,10 +707,8 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> MealDetails(int id)
         {
-            //get id of the user
             string userId = getUserIdFromAuthedUser();
-
-            //Check if is Trainer of the active club
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
@@ -723,6 +720,23 @@ namespace SCManagement.Controllers
             if (actualMealPlan.TrainerId != userId && actualMealPlan.AthleteId != userId) return View("CustomError", "Error_Unauthorized");
 
             return View(actualMealPlan);
+        }
+
+        public async Task<IActionResult> CreateGoals(string id)
+        {
+            string userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            var goal = new Goal
+            {
+                AthleteId = id,
+                TrainerId = userId
+            };
+
+            return View(goal);
         }
     }
     

@@ -3426,6 +3426,43 @@ namespace SCManagement.Data.Migrations
                     b.ToTable("Subscription");
                 });
 
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.Goal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AthleteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrainerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.ToTable("Goals");
+                });
+
             modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlan", b =>
                 {
                     b.Property<int>("Id")
@@ -3937,6 +3974,17 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.Goal", b =>
+                {
+                    b.HasOne("SCManagement.Models.User", "Athlete")
+                        .WithMany("Goals")
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+                });
+
             modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlan", b =>
                 {
                     b.HasOne("SCManagement.Models.User", "Trainer")
@@ -4044,6 +4092,8 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Models.User", b =>
                 {
+                    b.Navigation("Goals");
+
                     b.Navigation("MealPlans");
 
                     b.Navigation("TrainingPlans");

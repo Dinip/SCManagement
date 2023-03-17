@@ -12,6 +12,30 @@ namespace SCManagement.Data.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Goals",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TrainerId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AthleteId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Goals", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Goals_AspNetUsers_AthleteId",
+                        column: x => x.AthleteId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "MealPlans",
                 columns: table => new
                 {
@@ -114,6 +138,11 @@ namespace SCManagement.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Goals_AthleteId",
+                table: "Goals",
+                column: "AthleteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MealPlans_TrainerId",
                 table: "MealPlans",
                 column: "TrainerId");
@@ -142,6 +171,9 @@ namespace SCManagement.Data.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "Goals");
+
             migrationBuilder.DropTable(
                 name: "MealPlanSession");
 

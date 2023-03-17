@@ -41,8 +41,7 @@ namespace SCManagement.Data
         public DbSet<EventTranslation> EventTranslations { get; set; }
         public DbSet<TrainingPlan> TrainingPlans { get; set; }
         public DbSet<MealPlan> MealPlans { get; set; }
-
-
+        public DbSet<Goal> Goals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -129,11 +128,19 @@ namespace SCManagement.Data
 
             builder.Entity<MealPlan>()
             .Ignore(tp => tp.Athlete);
+
+            builder.Entity<Goal>()
+            .HasOne(tp => tp.Athlete)
+            .WithMany(u => u.Goals)
+            .HasForeignKey(tp => tp.AthleteId);
+
+            builder.Entity<Goal>()
+            .Ignore(tp => tp.Trainer);
         }
 
 
 
-        public DbSet<SCManagement.Services.PlansService.Models.TrainingPlanSession> TrainingPlanSession { get; set; }
+        
     }
 }
 
