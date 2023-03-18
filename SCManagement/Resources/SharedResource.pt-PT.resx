@@ -758,9 +758,6 @@
     <value>De momento, como estamos em fase de desenvolvimento ainda não conseguimos mostrar as nossas principais funcionalidades.
 Pedimos desculpa pelo incomodo.</value>
   </data>
-  <data name="Partners" xml:space="preserve">
-    <value>Sócios</value>
-  </data>
   <data name="Public Page" xml:space="preserve">
     <value>Página pública</value>
   </data>
@@ -1765,5 +1762,20 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="UpdatePlan" xml:space="preserve">
     <value>Atualizar Plano</value>
     <comment>17-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Income Detailed" xml:space="preserve">
+    <value>Rendimentos Detalhados</value>
+    <comment>17-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Partners" xml:space="preserve">
+    <value>Sócios</value>
+  </data>
+  <data name="PartnersV2" xml:space="preserve">
+    <value>Socios</value>
+    <comment>18-03-2023_StatisticsView</comment>
+  </data>
+  <data name="SelectYear" xml:space="preserve">
+    <value>Selecione o Ano de Pesquisa</value>
+    <comment>18-03-2023_StatisticsView</comment>
   </data>
 </root>
