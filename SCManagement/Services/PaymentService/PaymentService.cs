@@ -457,6 +457,7 @@ namespace SCManagement.Services.PaymentService
             var payment = await _context.Payment.FirstOrDefaultAsync(p => p.SubscriptionId == subscription.Id && p.PaymentStatus != PaymentStatus.Paid);
             if (payment != null)
             {
+                payment.PaymentStatus = PaymentStatus.Waiting;
                 payment.PaymentMethod = PaymentMethod.CreditCard;
                 _context.Payment.Update(payment);
             }
@@ -631,9 +632,20 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateProductEvent(Event myEvent)
+        public async Task UpdateProductEvent(Event myEvent, bool delete = false)
         {
             var oldProduct = await _context.Product.Where(p => p.OriginalId == myEvent.Id && p.ClubId == myEvent.ClubId && p.ProductType == ProductType.Event).FirstOrDefaultAsync();
+
+            if (delete)
+            {
+                if (oldProduct == null) return;
+                oldProduct.Enabled = false;
+                _context.Product.Update(oldProduct);
+                await _context.SaveChangesAsync();
+                return;
+            }
+
+            var name = myEvent.EventTranslations.Where(e => e.Language == "en-US" && e.Atribute == "Name").Select(e => e.Value).FirstOrDefault();
 
             if (oldProduct == null)
             {
@@ -642,7 +654,7 @@ namespace SCManagement.Services.PaymentService
                     ClubId = myEvent.ClubId,
                     IsSubscription = false,
                     Enabled = true,
-                    Name = myEvent.EventTranslations.Where(e => e.Language == "en-US" && e.Atribute == "Name").Select(e => e.Value).FirstOrDefault(),
+                    Name = name,
                     OriginalId = myEvent.Id,
                     ProductType = ProductType.Event,
                     Value = myEvent.Fee
@@ -653,11 +665,15 @@ namespace SCManagement.Services.PaymentService
 
             if (oldProduct != null && myEvent.Fee == 0)
             {
-                _context.Product.Remove(oldProduct);
-                await _context.SaveChangesAsync();
-                return;
+                oldProduct.Enabled = false;
             }
 
+            if (oldProduct != null && myEvent.Fee > 0)
+            {
+                oldProduct.Enabled = true;
+            }
+
+            oldProduct.Name = name;
             oldProduct.Value = myEvent.Fee;
             _context.Update(oldProduct);
 
@@ -666,7 +682,7 @@ namespace SCManagement.Services.PaymentService
 
         public async Task<Payment?> CreateEventPayment(EventEnroll enroll)
         {
-            var product = await _context.Product.Where(p => p.ProductType == ProductType.Event && p.OriginalId == enroll.EventId).FirstOrDefaultAsync();
+            var product = await _context.Product.Where(p => p.ProductType == ProductType.Event && p.OriginalId == enroll.EventId && p.Enabled && p.Value != 0).FirstOrDefaultAsync();
             if (product == null) return null;
 
             var pay = new Payment
@@ -702,7 +718,7 @@ namespace SCManagement.Services.PaymentService
             payment.MbEntity = content.method.entity;
             payment.MbReference = content.method.reference;
             payment.Url = content.method.url;
-            payment.PaymentStatus = PaymentStatus.Pending;
+            payment.PaymentStatus = PaymentStatus.Waiting;
 
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();
@@ -712,6 +728,7 @@ namespace SCManagement.Services.PaymentService
         public async Task UpdateProductClubMembership(ClubPaymentSettings clubPaymentSettings)
         {
             var oldProduct = await _context.Product.Where(p => p.ClubId == clubPaymentSettings.ClubPaymentSettingsId && p.ProductType == ProductType.ClubMembership).FirstOrDefaultAsync();
+            var clubName = await _context.Club.Where(c => c.Id == clubPaymentSettings.ClubPaymentSettingsId).Select(c => c.Name).FirstAsync();
 
             if (oldProduct == null)
             {
@@ -723,18 +740,18 @@ namespace SCManagement.Services.PaymentService
                     ProductType = ProductType.ClubMembership,
                     Value = clubPaymentSettings.QuotaFee,
                     Frequency = clubPaymentSettings.QuotaFrequency,
-                    Name = "Club Quota"
+                    Name = $"Club Quota ({clubName})"
                 });
                 await _context.SaveChangesAsync();
                 return;
             }
 
+            oldProduct.Name = $"Club Quota ({clubName})";
             oldProduct.Value = clubPaymentSettings.QuotaFee;
             oldProduct.Frequency = clubPaymentSettings.QuotaFrequency;
             _context.Update(oldProduct);
 
             await _context.SaveChangesAsync();
-
         }
 
         private async Task<EasypayConfigResponse?> easypayConfigRequest(string id, string key)
@@ -782,7 +799,7 @@ namespace SCManagement.Services.PaymentService
                 StartTime = now,
                 NextTime = now,
                 Value = product.Value,
-                Status = SubscriptionStatus.Waiting,
+                Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
                 UserId = partner.UserId,
                 AutoRenew = false,
@@ -798,7 +815,7 @@ namespace SCManagement.Services.PaymentService
                 ProductId = product.Id,
                 Value = product.Value,
                 CreatedAt = now,
-                PaymentStatus = PaymentStatus.Pending,
+                PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
                 UserId = partner.UserId,
                 SubscriptionId = sub.Id,
                 PaymentKey = Guid.NewGuid().ToString(),

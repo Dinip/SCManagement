@@ -10,6 +10,7 @@ using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService.Models;
 using SCManagement.Services.Location;
+using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services.ClubService
 {
@@ -20,19 +21,23 @@ namespace SCManagement.Services.ClubService
         private readonly IHttpContextAccessor _httpContext;
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
+        private readonly IPaymentService _paymentService;
 
         public ClubService(
             ApplicationDbContext context,
             IEmailSender emailSender,
             IHttpContextAccessor httpContext,
             SharedResourceService sharedResource,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            IPaymentService paymentService
+            )
         {
             _context = context;
             _emailSender = emailSender;
             _httpContext = httpContext;
             _sharedResource = sharedResource;
             _azureStorage = azureStorage;
+            _paymentService = paymentService;
         }
 
         /// <summary>
@@ -915,6 +920,18 @@ namespace SCManagement.Services.ClubService
 
             foreach (var partner in partners)
             {
+                var sub = await _context.Subscription
+                    .Include(p => p.Product)
+                    .FirstOrDefaultAsync(f =>
+                    f.UserId == partner.UserId &&
+                    f.Product.ClubId == clubId &&
+                    f.Product.ProductType == PaymentService.Models.ProductType.ClubMembership
+                );
+                if (sub != null && sub.AutoRenew)
+                {
+                    await _paymentService.CancelAutoSubscription(sub.Id);
+                }
+
                 if (!partner.User.Email.ToLower().Contains("scmanagement"))
                 {
                     string lang = partner.User.Language;
@@ -926,7 +943,7 @@ namespace SCManagement.Services.ClubService
                     { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.ToString(), lang) },
                     { "_PRICE_", $"{settings.QuotaFee.ToString()}€"},
                     { "_CLUB_", club.Name },
-                    { "_SUBSCRIPTION_", $"{hostUrl}/Subscription"},
+                    { "_SUBSCRIPTION_", sub != null ? $"{hostUrl}/Subscription?subId={sub.Id}" : $"{hostUrl}/Subscription"},
                     };
 
                     foreach (KeyValuePair<string, string> entry in values)
