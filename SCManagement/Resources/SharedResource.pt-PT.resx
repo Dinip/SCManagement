@@ -1034,9 +1034,9 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
                       Atualização de quota de clube&lt;/h1&gt; &lt;span
                       style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                     &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;O clube _CLUB_ recentemente atualizou o valor das suas quotas. A quota atualmente é
-                      de _PRICE_ pago _FREQUENCY_. Isto apenas te irá afetar no próximo ciclo de pagamento. Se tiveres pagamentos automáticos, será renovado
-                    tendo em conta os novos valores, ou então podes sempre ir à tua &lt;a href="_SUBSCRIPTION_"&gt;página de subscrições&lt;/a&gt; e cancelar, que irá manter ativo até
-                  ao final do ciclo atual.&lt;/p&gt; 
+                      de _PRICE_ pago _FREQUENCY_. Se a tua subscrição estava com a renovação automática ativa, esta foi desativada, para evitar pagamentos não esperados.
+                      A tua subscrição atual irá manter-se ativa até ao final do ciclo. Podes ir à tua &lt;a href="_SUBSCRIPTION_"&gt;página de subscrições&lt;/a&gt; e atualizar a tua 
+                      subscrição para voltares a ativar a renovação automática ou cancelar, caso não concordes com os novos valores.&lt;/p&gt;
                   &lt;/td&gt;
                 &lt;/tr&gt;
                 &lt;tr&gt;

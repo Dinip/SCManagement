@@ -198,6 +198,13 @@ namespace SCManagement.Controllers
 
             await _paymentService.SubscribeClubToPlan(createdClub.Id, userId, clubInput.PlanId);
 
+            await _paymentService.UpdateProductClubMembership(new ClubPaymentSettings
+            {
+                ClubPaymentSettingsId = createdClub.Id,
+                QuotaFee = 0,
+                QuotaFrequency = Services.PaymentService.Models.SubscriptionFrequency.Monthly
+            });
+
             await _userService.UpdateSelectedRole(userId, createdClub.UsersRoleClub!.First().Id);
 
             return RedirectToAction("Index", "Subscription");

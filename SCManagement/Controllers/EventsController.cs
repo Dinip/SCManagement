@@ -102,7 +102,7 @@ namespace SCManagement.Controllers
             {
                 return View("CustomError", "Error_Unauthorized");
             }
-            
+
             //if users is staff can see users enrolled
             if (_clubService.IsClubStaff(userRole))
             {
@@ -478,6 +478,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_Unauthorized");
             }
 
+            await _paymentService.UpdateProductEvent(myEvent, true);
             await _eventService.RemoveEventAddress(myEvent);
             await _eventService.DeleteEvent(myEvent);
 
@@ -536,7 +537,7 @@ namespace SCManagement.Controllers
 
             if (pay != null) return RedirectToAction("Index", "Payment", new { payId = pay.Id });
 
-            return RedirectToAction(nameof(Details), new { id = id });
+            return RedirectToAction(nameof(Details), new { id });
         }
 
 
@@ -647,7 +648,7 @@ namespace SCManagement.Controllers
                 Translate = e.EventTranslations.Where(et => et.Atribute == "Name").Select(e => e.Value).FirstOrDefault(),
                 StartDate = e.StartDate,
                 ClubName = e.Club.Name
-                
+
             });
 
 
@@ -705,7 +706,7 @@ namespace SCManagement.Controllers
             var enrolls = await _eventService.GetEnrolls(myEvent.Id);
 
             if (enrolls != null)
-            { 
+            {
                 var usersEnrolled = enrolls.Where(e => e.EnrollStatus == EnrollPaymentStatus.Valid).ToList();
 
                 if (myEvent.EventResultType == ResultType.Time)
@@ -719,13 +720,14 @@ namespace SCManagement.Controllers
                 }
 
                 var usersEnrolledWithResult = await _eventService.GetResults(myEvent.Id);
-                if (usersEnrolledWithResult != null) {
+                if (usersEnrolledWithResult != null)
+                {
                     var usersStrng = usersEnrolledWithResult.Select(er => er.UserId).ToList();
 
                     usersEnrolled.RemoveAll(u => usersStrng.Contains(u.UserId));
                 }
 
-                if(usersEnrolled.Count == 0)
+                if (usersEnrolled.Count == 0)
                 {
                     return View("CustomError", "Error_NoUsersToResult");
                 }
@@ -734,7 +736,7 @@ namespace SCManagement.Controllers
 
 
             }
-            
+
             return PartialView("_PartialAddResult");
 
         }
@@ -742,10 +744,11 @@ namespace SCManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> AddResult(int id, [Bind("Id,UserId,Result")] ResultModel userResult)
         {
-            if (ModelState.IsValid) { 
+            if (ModelState.IsValid)
+            {
                 var myEvent = await _eventService.GetEvent(id);
 
-                if(myEvent == null)
+                if (myEvent == null)
                 {
                     return View("CustomError", "Error_NotFound");
                 }
@@ -767,7 +770,7 @@ namespace SCManagement.Controllers
                         Time = Convert.ToDouble(userResult.Result.Replace(".", ","))
                     };
                 }
-                else if(myEvent.EventResultType == ResultType.Score)
+                else if (myEvent.EventResultType == ResultType.Score)
                 {
                     resultToCreate = new EventResult
                     {
@@ -789,7 +792,7 @@ namespace SCManagement.Controllers
                 var resultCreated = await _eventService.CreateResult(resultToCreate);
 
                 //Update Result events
-                if(myEvent.Results == null)
+                if (myEvent.Results == null)
                 {
                     myEvent.Results = new List<EventResult>();
                 }
@@ -807,13 +810,13 @@ namespace SCManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteResult(string? userId, int? eventId)
         {
-            if(userId == null || eventId == null)
+            if (userId == null || eventId == null)
             {
                 return View("CustomError", "Error_NotFound");
             }
 
             var role = await _userService.GetSelectedRole(getUserIdFromAuthedUser());
-            if(role == null || !_clubService.IsClubStaff(role))
+            if (role == null || !_clubService.IsClubStaff(role))
             {
                 return View("CustomError", "Error_Unauthorized");
             }

@@ -902,9 +902,9 @@ I have experience in the area and I am very focused on my goals.</value>
                       Club Quota Change&lt;/h1&gt; &lt;span
                       style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                     &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;The club _CLUB_ recently updated their quota values. The quota now
-                      is _PRICE_ payed _FREQUENCY_. This will only affect you in your next payment cycle. If you have auto renew, it will be renewed
-                    with the new values in mind or you can go to your &lt;a href="_SUBSCRIPTION_"&gt;subscription page&lt;/a&gt; and cancel it now and it will remain active
-                  until the end of the cycle.&lt;/p&gt; 
+                      is _PRICE_ payed _FREQUENCY_. If you have your subscription to auto renew, it was automatically disabled to prevent unwanted payments.
+                      The current subscription will remain active until the end of the cycle. You can go to your &lt;a href="_SUBSCRIPTION_"&gt;subscription page&lt;/a&gt; and
+                      updated it to enable auto renew again or cancel it, if you don't agree with the new values.&lt;/p&gt; 
                   &lt;/td&gt;
                 &lt;/tr&gt;
                 &lt;tr&gt;
@@ -1565,7 +1565,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Weight</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
-    <data name="All" xml:space="preserve">
+  <data name="All" xml:space="preserve">
     <value>All</value>
     <comment>10-03-2023_EventFilter</comment>
   </data>

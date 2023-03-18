@@ -28,7 +28,7 @@ namespace SCManagement.Services.PaymentService
         public Task CancelSubscription(int id);
 
         public Task CreateProductEvent(Event myEvent);
-        public Task UpdateProductEvent(Event myEvent);
+        public Task UpdateProductEvent(Event myEvent, bool delete = false);
 
         public Task<Payment?> CreateEventPayment(EventEnroll enroll);
         public Task CancelEventPayment(EventEnroll enroll);

@@ -25,6 +25,7 @@ namespace SCManagement.Tests.Services
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
         private readonly ClubService _clubService;
+        private readonly IPaymentService _paymentService;
 
         public ClubServiceTests()
         {
@@ -33,9 +34,10 @@ namespace SCManagement.Tests.Services
             _httpContext = A.Fake<IHttpContextAccessor>();
             _sharedResource = A.Fake<SharedResourceService>();
             _azureStorage = A.Fake<IAzureStorage>();
+            _paymentService = A.Fake<IPaymentService>();
 
             //SUT (system under test)
-            _clubService = new ClubService(_context, _emailSender, _httpContext, _sharedResource, _azureStorage);
+            _clubService = new ClubService(_context, _emailSender, _httpContext, _sharedResource, _azureStorage, _paymentService);
         }
 
         private async Task<ApplicationDbContext> GetDbContext()
@@ -1112,26 +1114,6 @@ namespace SCManagement.Tests.Services
                 AccountId = "Test Account",
                 AccountKey = "Test Key",
                 ValidCredentials = true,
-            };
-
-            // Act
-            var result = await _clubService.UpdateClubPaymentSettings(settings);
-
-            // Assert
-            result.Should().BeOfType<ClubPaymentSettings>();
-        }
-
-        [Fact]
-        public async Task ClubService_UpdateClubPaymentSettings_ReturnsNotifyPartnersQuotaChange()
-        {
-            // Arrange
-            var settings = new ClubPaymentSettings()
-            {
-                ClubPaymentSettingsId = 1,
-                AccountId = "Test Account",
-                AccountKey = "Test Key",
-                ValidCredentials = true,
-                QuotaFrequency = SubscriptionFrequency.Weekly,
             };
 
             // Act

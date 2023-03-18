@@ -64,18 +64,9 @@
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Status)
                             </td>
-                            @if (item.Club != null)
-                            {
-                                <td class="text-to-dark">
-                                    @item.Product.Name (@item.Club.Name)
-                                </td>
-                            }
-                            else
-                            {
-                                <td class="text-to-dark">
-                                    @Html.DisplayFor(modelItem => item.Product.Name)
-                                </td>
-                            }
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Product.Name)
+                            </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.AutoRenew)
                             </td>
