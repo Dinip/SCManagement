@@ -3,63 +3,194 @@
 
 <h1>@StringLocalizer["MyZone"]</h1>
 
+<div id="modal" class="modal">
+    <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
+        <span onclick="$('#modal').hide()" class="close">&times;</span>
+        <iframe id="frame" src="@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : Model.EMDUrl)" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%"></iframe>
+    </div>
+</div>
+
+<div id="modal1" class="modal">
+    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+        <span class="text-to-dark">@StringLocalizer["Are u sure you want to delete?"]</span>
+        <div class="d-flex justify-content-end mt-3">
+            <button onclick="$('#modal1').hide()" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Cancel"]</button>
+            <button onclick="removeFile('image')" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Remove"]</button>
+        </div>
+    </div>
+</div>
+
+
 @if (Model.Bioimpedance != null)
 {
     <div>
-        <h3>Bioimpedance</h3>
-        <span> ( @Html.DisplayFor(model => model.Bioimpedance.LastUpdateDate) ) </span>
-    </div>
-    //Este botao é para ser um icon
-    <a asp-action="UpdateBioimpedance">Update</a>
-    <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.Weight)
-    </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.Weight)
-    </dd>
-    <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.Height)
-    </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.Height)
-    </dd>
-    <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.Hydration)
-    </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.Hydration)
-    </dd>
-    <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.FatMass)
-    </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.FatMass)
-    </dd>
-    <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.LeanMass)
-    </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.LeanMass)
-    </dd>
-    <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.MuscleMass)
-    </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.MuscleMass)
-    </dd>
-    <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.ViceralFat)
-    </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.ViceralFat)
-    </dd>
-            <dt class="col-sm-2 text-to-dark">
-        @Html.DisplayNameFor(model => model.Bioimpedance.BasalMetabolism)
+        <div>
+            <h3>Bioimpedance</h3>
+            <span> ( @Html.DisplayFor(model => model.Bioimpedance.LastUpdateDate) ) </span>
+        </div>
+        //Este botao é para ser um icon
+        <a asp-action="UpdateBioimpedance">Update</a>
+        <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.Weight)
         </dt>
-    <dd class="col-sm-10 text-to-dark">
-        @Html.DisplayFor(model => model.Bioimpedance.BasalMetabolism)
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.Weight)
         </dd>
+        <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.Height)
+        </dt>
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.Height)
+        </dd>
+        <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.Hydration)
+        </dt>
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.Hydration)
+        </dd>
+        <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.FatMass)
+        </dt>
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.FatMass)
+        </dd>
+        <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.LeanMass)
+        </dt>
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.LeanMass)
+        </dd>
+        <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.MuscleMass)
+        </dt>
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.MuscleMass)
+        </dd>
+        <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.ViceralFat)
+        </dt>
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.ViceralFat)
+        </dd>
+                <dt class="col-sm-2 text-to-dark">
+            @Html.DisplayNameFor(model => model.Bioimpedance.BasalMetabolism)
+            </dt>
+        <dd class="col-sm-10 text-to-dark">
+            @Html.DisplayFor(model => model.Bioimpedance.BasalMetabolism)
+            </dd>
+
+    </div>
+
+    <div>
+        <h3>Medica Exam</h3>
+            @*<form asp-action="RemoveEMD">*@
+            <div class="row h-auto">
+                <div class="col-2">
+                    <strong class="text-to-dark">EMD</strong>
+                </div>
+                <div class="col-10 text-end">
+
+                <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
+                    <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
+                    <button id="saveInsertEmd" type="submit" style="display:none">Save</button>
+                </form>
+
+                    <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" style="margin-right:20px;" onclick="toggleModal()"></i>
+
+
+
+                    <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
+
+                    
+                    <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
+               style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
+                    <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
+                </div>
+            </div>
+            <hr style="margin-bottom:20px;" />
+
+
+
+        <div>
+                
+            <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
+        </div>
+
+        @*</form>*@
+        
+    </div>
 
 }else{
     <a asp-action="CreateBioimpedance">@StringLocalizer["CreateBioimpedance"]</a>
 }
+
+<script type="text/javascript">
+    const modal = document.getElementById("modal")
+
+
+    window.onclick = function (event) {
+        if (event.target == modal) {
+            $("#modal").hide();
+        }
+    }
+
+    function closeToast() {
+        $(".toast").hide();
+    }
+
+
+    function toggleModal() {
+        $("#modal").show();
+    }
+
+    function toggleRemoveModal() {
+        $("#modal1").show();
+    }
+
+    function handleUpload(event, fileType) {
+        let allowedTypes = fileType === 'image' ? ['jpg', 'jpeg', 'png'] : ['pdf']
+        let selectedFile = document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`).value
+        let idxDot = selectedFile.lastIndexOf(".") + 1
+        let extFile = selectedFile.substr(idxDot, selectedFile.length).toLowerCase()
+        const savePend = '@Html.Raw(StringLocalizer["Pending_Save"].Value.ToString())'
+
+        if (allowedTypes.includes(extFile)) {
+            if (fileType === 'pdf') {
+                document.getElementById('emdText').textContent = savePend
+                document.getElementById('emd').className = "fa-solid fa-file fa-xl text-to-dark"
+            }
+            document.getElementById(fileType === 'image' ? 'profilePicture' : 'frame').src = window.URL.createObjectURL(event.files[0])
+            document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`).classList.remove("invisible")
+            document.getElementById("saveInsertEmd").style.display = "block";
+        } else {
+            document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`).value = null
+            //alert(only + ' ' + `${allowedTypes.join('/')}` + '' + allow); //falta traduzir
+            $(".toast").show();
+            document.getElementById('alertText').innerHTML = "only" + ' ' + `${allowedTypes.join('/')}` + ' ' + "allowed";
+            document.getElementById("saveInsertEmd").style.display = "none";
+        }
+    }
+
+    function removeFile(fileType) {
+        const removePend = '@Html.Raw(StringLocalizer["Pending_Remove"].Value.ToString())'
+        const placeholder = "https://cdn.scmanagement.me/public/user_placeholder.png"
+
+        let fileElement = document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`)
+        let removeButton = document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`)
+
+        if (fileType === 'pdf') {
+            document.getElementById('emd').className = "fa-solid fa-file fa-xl text-to-dark invisible"
+            document.getElementById('emdText').textContent = removePend
+            $("#modal").hide();
+            document.getElementById("saveInsertEmd").style.display = "block";
+        }
+        else {
+            document.getElementById('profilePicture').src = placeholder
+        }
+        fileElement.value = ""
+        removeButton.classList.add("invisible")
+        document.getElementById(`remove${fileType === 'image' ? 'Image' : 'EMD'}`).value = true
+        $('#modal1').hide()
+    }
+
+</script>
