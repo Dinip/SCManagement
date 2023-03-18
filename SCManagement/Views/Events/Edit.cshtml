@@ -141,7 +141,7 @@
                 <span class="text-danger" id="spanEndDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
 
-            <div class="form-floating mt-3">
+            <div id="LimitEnrollContainer" class="form-floating mt-3">
                 <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" min="@Model.CreationDate.Value.ToString("yyyy-MM-ddTHH:mm")" max="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" onchange="CheckLimitEnrollDate()" />
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
@@ -372,18 +372,34 @@
         })
     }
 
+    function checkLimitEnrollDateIsValid(){
+        let startDate = new Date('@Model.StartDate');
+        let currentDate = new Date();
+
+        if (startDate <= currentDate) {
+            document.getElementById("LimitEnrollContainer").style.display = "none"
+            console.log(currentDate);
+        }else{
+            document.getElementById("LimitEnrollContainer").style.display = "block"
+        }
+    }
+
     window.onload = function () {
         document.getElementById("myForm").addEventListener("submit", validateForm);
-
+        
         const culture = "@ViewBag.CultureInfo"
         toggleLang(culture, "details")
         toggleLang(culture, "name")
 
+        checkLimitEnrollDateIsValid();
+
         ToggleMapBox();
-        var ckbHaveRoute = document.getElementById("ckbHaveRoute");
-        if (ckbhaveRoute.checked) {
+        let ckbHaveRoute = document.getElementById("ckbHaveRoute");
+        if (ckbHaveRoute.checked) {
             PathMapBoxConfig();
         }
+
+        
     }
 
 

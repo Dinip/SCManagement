@@ -16,6 +16,7 @@ using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Security.Cryptography.Xml;
 
 namespace SCManagement.Controllers
 {
@@ -384,6 +385,13 @@ namespace SCManagement.Controllers
             }
         }
 
+        private bool CheckEnroll(EventModel myEvent)
+        {
+            //Check if StartDate,EndDate,EventTranslationsName,EventTranslationsDetails,IsPublic,Fee,HaveRoute,Route,EventResultType,MaxEventEnrolls,AddressByPath,LocationString, EventAux is not null
+            //then return true else return false
+            return (myEvent.StartDate != null && myEvent.EndDate != null && myEvent.EventTranslationsName != null && myEvent.EventTranslationsDetails != null && myEvent.IsPublic != null && myEvent.Fee != null && myEvent.HaveRoute != null && myEvent.EventResultType != null && myEvent.MaxEventEnrolls != null && myEvent.EventAux != null);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -394,7 +402,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate==new DateTime()))
             {
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
@@ -409,7 +417,7 @@ namespace SCManagement.Controllers
 
                 Event eventCopy = JsonSerializer.Deserialize<Event>(myEvent.EventAux);
                 if (eventCopy == null) return View("CustomError", "Error_NotFound");
-                if (myEvent.StartDate == eventCopy.StartDate && myEvent.EndDate == eventCopy.EndDate && myEvent.EnrollLimitDate == eventCopy.EnrollLimitDate)
+                if (myEvent.StartDate == eventCopy.StartDate && myEvent.EndDate == eventCopy.EndDate && (myEvent.EnrollLimitDate == eventCopy.EnrollLimitDate || myEvent.EnrollLimitDate == new DateTime() ))
                 {
                     
                 }
@@ -461,7 +469,7 @@ namespace SCManagement.Controllers
                 eventToUpdate.HaveRoute = myEvent.AddressByPath != null;
                 eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
-                eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate;
+                eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate == new DateTime() ? eventCopy.EnrollLimitDate : myEvent.EnrollLimitDate;
                 eventToUpdate.MaxEventEnrolls = myEvent.MaxEventEnrolls == 0 ? int.MaxValue : myEvent.MaxEventEnrolls;
                 eventToUpdate.AddressByPath = myEvent.AddressByPath;
 
