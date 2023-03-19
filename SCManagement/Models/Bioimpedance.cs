@@ -10,11 +10,11 @@ namespace SCManagement.Models
 
         [Display(Name = "Height")]
         [RegularExpression("^((([1-9][0-9]{0,2})?'?([1-9][0-9]{0,2})(\"([1-9][0-9]{0,2})?|'')?)|([1-9][0-9]{0,2}((\\.|\\,)[0-9]{1,2})?(cm|m)))$")]
-        public string? Weight { get; set; }
+        public string? Height { get; set; }
 
         [Display(Name = "Weight")]
         [RegularExpression("^([1-9][0-9]{0,2}((\\.|\\,)[0-9]{1,2})?(kg|lb|lbs))$")]
-        public string? Height { get; set; }
+        public string? Weight{ get; set; }
 
         [Display(Name = "FatMass")]
         public float? FatMass { get; set; }
