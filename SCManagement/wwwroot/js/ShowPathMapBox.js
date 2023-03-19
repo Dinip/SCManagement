@@ -4,7 +4,6 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGF2aWRiZWxjaGlvciIsImEiOiJjbGMxMXZvdWYxMDFtM
 
 const path = document.getElementById("path");
 const hElevation = document.getElementById("hElevation");
-const lElevation = document.getElementById("lElevation");
 const tDistance = document.getElementById("tDistance");
 const dMore = document.getElementById("dMore");
 const dLess = document.getElementById("dLess");
@@ -37,8 +36,8 @@ const map = new mapboxgl.Map({
 map.on('load', function () {
     map.resize();
     if (path.value != null) {
-        getMatch(path.value);
-    } 
+        addRoute(coordsArray);
+    }
 });
 
 
@@ -69,8 +68,7 @@ const elevtsAux = [];
 
 //Get the max and min elevation in a path
 async function getElevation(coordsArray) {
-    
-    
+
     for (let i = 0; i < coordsArray.length; i++) {
         // Make the API request for each coordinate.
         const query = await fetch(
@@ -84,7 +82,7 @@ async function getElevation(coordsArray) {
         const allFeatures = data.features;
         // For each returned feature, add elevation data to the elevations array.
         const elevations = allFeatures.map((feature) => feature.properties.ele);
-        
+
         // Find the largest and smallest elevation in the elevations array.
         const highestCoordElevation = Math.max(...elevations);
         const lowestCoordElevation = Math.min(...elevations);
@@ -110,58 +108,12 @@ async function getElevation(coordsArray) {
     }
 
     hElevation.textContent = highestElevation;
-    lElevation.textContent = lowestElevation;
     dMore.textContent = totalAscent;
     dLess.textContent = totalDescent;
     createChartAltimetry(elevtsAux, distances);
 }
 
 getElevation(coordsArray);
-
-
-
-// Make a Map Matching request
-async function getMatch(coordinates) {
-    const profile = 'walking';
-
-    // Set the radius for each coordinate pair to 50 meters
-    const radius = coordsArray.map(() => 50);
-
-    // Separate the radiuses with semicolons
-    const radiuses = radius.join(';');
-
-    // Create the query
-    const query = await fetch(
-        `https://api.mapbox.com/matching/v5/mapbox/${profile}/${coordinates}?geometries=geojson&radiuses=${radiuses}&steps=true&access_token=${mapboxgl.accessToken}`,
-        { method: 'GET' }
-    );
-    response = await query.json();
-    // Handle errors
-    if (response.code !== 'Ok') {
-        if (response.code == "NoMatch") {
-            errorMessage = strings.noMatch;
-            alert(errorMessage);
-        } else if (response.code == "NoSegment") {
-            errorMessage = strings.noSegment;
-            alert(errorMessage);
-        } else if (response.code == "TooManyCoordinates") {
-            errorMessage = strings.tooManyCoordinates;
-            alert(errorMessage);
-        } else if (response.code == "ProfileNotFound") {
-            errorMessage = strings.profileNotFound;
-            alert(errorMessage);
-        } else if (response.code == "InvalidInput") {
-            errorMessage = strings.invalidInput;
-            alert(errorMessage);
-        }
-        return;
-    }
-    const coords = response.matchings[0].geometry;
-
-    // Draw the route on the map
-    addRoute(coords);
-}
-
 
 // Draw the Map Matching route as a new layer on the map
 function addRoute(coords) {
@@ -171,29 +123,45 @@ function addRoute(coords) {
         map.removeLayer('route');
         map.removeSource('route');
     } else {
+        // Create a GeoJSON object with the coordinates
+        const geojson = {
+            type: 'FeatureCollection',
+            features: [
+                {
+                    type: 'Feature',
+                    geometry: {
+                        type: 'LineString',
+                        coordinates: coords,
+                    },
+                    properties: {},
+                },
+            ],
+        };
+
+        // Add the GeoJSON object as the data for the source
+        map.addSource('route', {
+            type: 'geojson',
+            data: geojson,
+        });
+
+        // Add the layer for the line
         map.addLayer({
-            'id': 'route',
-            'type': 'line',
-            'source': {
-                'type': 'geojson',
-                'data': {
-                    'type': 'Feature',
-                    'properties': {},
-                    'geometry': coords
-                }
-            },
-            'layout': {
+            id: 'route',
+            type: 'line',
+            source: 'route',
+            layout: {
                 'line-join': 'round',
-                'line-cap': 'round'
+                'line-cap': 'round',
             },
-            'paint': {
+            paint: {
                 'line-color': '#03AA46',
                 'line-width': 8,
-                'line-opacity': 0.8
-            }
+                'line-opacity': 0.8,
+            },
         });
+
     }
-    addMarkers(coords.coordinates[0], coords.coordinates[coords.coordinates.length - 1]);
+    addMarkers(coords[0], coords[coords.length - 1]);
 
 }
 

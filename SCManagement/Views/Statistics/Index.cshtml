@@ -1,21 +1,674 @@
 ﻿@model ICollection<SCManagement.Services.StatisticsService.Models.ClubCurrentUsers>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
 
 @{
-    ViewBag.Title = "Statistics";
+    ViewBag.Title = @StringLocalizer["Statistics"];
 }
 
-@foreach (var current in Model)
-{
-    @if (current.MaxValue == null)
-    {
-        <div>
-            @current.Value @current.RoleName
+
+<div class="container-fluid w-100">
+    <h1 style="margin-top:130px !important; margin-left:6%" class="text-to-dark">@StringLocalizer["Statistics"]</h1>
+
+    <div class="row mt-5">
+        @{
+            bool isFirst = true;
+
+            foreach (var current in Model)
+            {
+                <div class="col-xs-12 col-sm-12 col-md-4 mb-3 d-flex flex-column justify-content-center align-items-center">
+                    <div class="@((isFirst && current.Value == current.MaxValue) ? "first-circle" : "circle")">
+                        @if (current.MaxValue == null)
+                        {
+                            <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center">@current.Value</span>
+                        }
+                        else
+                        {
+                            <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @current.Value <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @current.MaxValue</span>
+                        }
+                    </div>
+
+                    <div class="text-to-dark text-animation fw-bold text-center mt-3 fs-2 fs-sm-3" style="width: 100%;">
+                        @current.RoleName
+                    </div>
+                </div>
+
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+            }
+        }
+
+    </div>
+
+    <a class="btn btn-primary ms-4 mt-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["UpdatePlan"]</a>
+
+    <div class="row mt-5">
+
+        <div style="display: flex; justify-content: center; width: 100%;">
+            <ul id="tab-selector" class="nav nav-pills">
+                <li class="nav-item">
+                    <button id="btn-tab-Payments" class="btn-tab-change nav-link active text-to-dark" onClick="changeTab('Payments')">@StringLocalizer["Income"]</button>
+                </li>
+                <li class="nav-item">
+                    <button id="btn-tab-PaymentsDetailed" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('PaymentsDetailed')">@StringLocalizer["Income Detailed"]</button>
+                </li>
+                <li class="nav-item">
+                    <button id="btn-tab-Athletes" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('Athletes')">@StringLocalizer["Athletes"]</button>
+                </li>
+                <li class="nav-item">
+                    <button id="btn-tab-Partners" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('Partners')">@StringLocalizer["Partners"]</button>
+                </li>
+                <li class="nav-item">
+                    <button id="btn-tab-Modalities" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('Modalities')">@StringLocalizer["Modalities"]</button>
+                </li>
+            </ul>
         </div>
-    }
-    else
-    {
-        <div>
-            @current.Value of @current.MaxValue @current.RoleName
+
+        <div class="ms-3 mt-4">
+            <span class="text-to-dark">@StringLocalizer["SelectYear"]</span>
+            <select id="selectYear" onchange="changeYear(this)" class="text-to-dark"></select>
         </div>
+
+
+        <div class="w-100">
+            <div class="tab-content p-4">
+
+                <div class="tables-list tab-pane active p-0 " id="div-table-Payments" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Payments" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Fee"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Events"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Payments"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tables-list tab-pane p-0" id="div-table-PaymentsDetailed" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-PaymentsDetailed" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["ProductName"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Value"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-PaymentsDetailed"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tables-list tab-pane p-0" id="div-table-Athletes" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Athletes" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Athletes"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Athletes"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tables-list tab-pane p-0" id="div-table-Partners" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Partners" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Partners"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Partners"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tables-list tab-pane p-0" id="div-table-Modalities" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Modalities" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Modality"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Value"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Modalities"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateX(-50%);
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out;
     }
-}
+
+        .circle span {
+            text-align: center;
+        }
+
+        .circle.show {
+            opacity: 1;
+            transform: translateX(0%);
+        }
+
+        .circle:nth-child(1) {
+            transition-delay: 0.2s;
+        }
+
+        .circle:nth-child(2) {
+            transition-delay: 0.4s;
+        }
+
+        .circle:nth-child(3) {
+            transition-delay: 0.6s;
+        }
+
+    .text-animation {
+        opacity: 0;
+        transform: translateY(50%);
+        transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+    }
+
+        .text-animation.show {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+
+    .container {
+        width: 50%;
+        margin-left: 0;
+        padding: 10px;
+        margin-bottom: 5%;
+    }
+
+    .tabs {
+        overflow: hidden;
+    }
+
+    .tablinks {
+        width: 50%;
+        background-color: #f1f1f1;
+        float: left;
+        border: none;
+        outline: none;
+        cursor: pointer;
+        padding: 14px 16px;
+        transition: background-color 0.3s ease;
+    }
+
+        .tablinks:hover {
+            background-color: #ddd;
+        }
+
+        .tablinks.active {
+            background-color: #ccc;
+        }
+
+    .tabcontent {
+        display: none;
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+
+    .my-custom-scrollbar {
+        position: relative;
+        height: 300px;
+        overflow: auto;
+    }
+
+    th, td {
+        text-align: left;
+        padding: 8px;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #selectYear {
+        font-size: 16px;
+        padding: 8px 24px 8px 12px;
+        border-radius: 4px;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: lightgray;
+        color: #333;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+        selectYear:hover {
+            background-color: #e0e0e0;
+        }
+
+        selectYear:hover option {
+                display: block;
+            }
+
+        selectYear option {
+            display: none;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 8px 12px;
+        }
+
+
+            selectYear option:checked:hover {
+                background-color: #2196f3;
+                color: #fff;
+            }
+
+    selectYear:focus {
+            outline: none;
+        }
+
+    .first-circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        opacity: 1;
+        border: 2px solid red;
+    }
+
+        .first-circle span {
+            text-align: center;
+        }
+
+        .first-circle.show {
+            opacity: 1;
+            transform: translateX(0%);
+        }
+
+        .first-circle:nth-child(1) {
+            transition-delay: 0.2s;
+        }
+
+</style>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+
+<script>
+
+    let animated = false;
+
+    $(document).ready(async function () {
+        $.noConflict()
+        animateCircles()
+        loadYears()
+
+        const d = await loadData("Payments")
+        dataToTables("Payments", d)
+        dataToGraphs("Payments", d)
+    });
+
+    function animateCircles() {
+        $(".circle").each(function (index) {
+            setTimeout(function () {
+                $(this).addClass("show");
+            }.bind(this), 500 * index);
+        });
+        $(".text-animation").each(function (index) {
+            setTimeout(function () {
+                $(this).addClass("show");
+            }.bind(this), 500 * index);
+        });
+    }
+
+    function loadYears() {
+        const sel = document.getElementById('selectYear')
+        const currentYear = new Date().getFullYear()
+        const startYear = currentYear - 3
+        for (let i = currentYear; i >= startYear; i--) {
+            const opt = document.createElement('option')
+            if (i == currentYear) {
+                opt.selected = true
+            }
+            opt.value = i
+            opt.innerHTML = i
+            sel.appendChild(opt)
+        }
+    }
+
+    async function changeYear(elem) {
+        const activeTab = $("button.btn-tab-change.active")
+        console.log(activeTab, activeTab.length)
+        if (activeTab.length != 0) {
+            const btnId = activeTab.get(0).id
+            const tab = btnId.replace('btn-tab-', '')
+            const d = await loadData(tab, elem.value);
+            dataToTables(tab, d)
+            dataToGraphs(tab, d)
+        }
+    }
+
+    $(window).scroll(function () {
+        if ($(window).scrollTop() + $(window).height() > $(document).height() - 1000 && !animated) {
+            $(".circle").each(function (index) {
+                setTimeout(function () {
+                    $(this).addClass("show");
+                }.bind(this), 500 * index);
+            });
+            animated = true;
+        }
+    });
+
+
+    async function changeTab(tab) {
+        $(".btn-tab-change").each(function () {
+            if (this.id == `btn-tab-${tab}`) {
+                $(this).addClass("active")
+            } else {
+                $(this).removeClass("active")
+            }
+        })
+
+        $('.tables-list').each(function () {
+            if (this.id == `div-table-${tab}`) {
+                $(this).addClass("active")
+            } else {
+                $(this).removeClass("active")
+            }
+        })
+
+        const year = document.getElementById("selectYear").value
+
+        const d = await loadData(tab, year);
+        console.log(d)
+        dataToTables(tab, d)
+        dataToGraphs(tab, d)
+    }
+
+
+    function loadData(tab, year = new Date().getFullYear()) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/Statistics/${tab}?year=${year}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function dataToTables(tab, data) {
+        if (tab == "Payments") {
+            $(`#table-${tab}`).DataTable({
+                data,
+                columns: [
+                    { "data": "timeInText" },
+                    { "data": "clubFee" },
+                    { "data": "events" },
+                ],
+                destroy: true,
+                lengthMenu: [[2, 6, 12, -1], [2, 6, 12, "All"]],
+                pageLength: 12,
+                order: []
+            });
+        }
+
+        if (tab == "PaymentsDetailed") {
+            $(`#table-${tab}`).DataTable({
+                data: data.filter(f => f.productName != "None"),
+                columns: [
+                    { "data": "timeInText" },
+                    { "data": "productName" },
+                    { "data": "value" },
+                ],
+                destroy: true,
+                lengthMenu: [[2, 6, 12, 24, 48, -1], [2, 6, 12, 24, 48, "All"]],
+                pageLength: 24,
+                order: []
+            });
+        }
+
+        if (tab == "Athletes" || tab == "Partners") {
+            $(`#table-${tab}`).DataTable({
+                data,
+                columns: [
+                    { "data": "timeInText" },
+                    { "data": "value" },
+                ],
+                destroy: true,
+                lengthMenu: [[2, 6, 12, -1], [2, 6, 12, "All"]],
+                pageLength: 12,
+                order: []
+            });
+        }
+
+        if (tab == "Modalities") {
+            $(`#table-${tab}`).DataTable({
+                data: data.filter(f => f.modalityName != "None"),
+                columns: [
+                    { "data": "timeInText" },
+                    { "data": "modalityName" },
+                    { "data": "value" },
+                ],
+                destroy: true,
+                lengthMenu: [[2, 6, 12, -1], [2, 6, 12, "All"]],
+                pageLength: 12,
+                order: []
+            });
+        }
+    }
+
+    function dataToGraphs(tab, data) {
+
+        const ctx = document.getElementById(`chart-${tab}`);
+        let cfg
+
+        let chartStatus = Chart.getChart(`chart-${tab}`);
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+
+        const newData = data.map(d => ({ ...d, x: d.timeInText }))
+
+        if (tab == "Payments") {
+            cfg = {
+                type: 'bar',
+                data: {
+                    datasets: [{
+                        label: '@StringLocalizer["Fee"]',
+                        data: newData,
+                        parsing: {
+                            yAxisKey: 'clubFee'
+                        }
+                    },
+                    {
+                        label: '@StringLocalizer["Events"]',
+                        data: newData,
+                        parsing: {
+                            yAxisKey: 'events'
+                        }
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    }
+                }
+            };
+        }
+
+        if (tab == "PaymentsDetailed") {
+
+            const customData = data.reduce((acc, item) => {
+                const { timeInDate, timeInText, productId, productName, value } = item;
+                const index = acc.findIndex((i) => i.timeInDate === timeInDate);
+                if (index === -1) {
+                    acc.push({
+                        timeInDate,
+                        timeInText,
+                        [productName]: value,
+                        x: timeInText,
+                    });
+                } else {
+                    acc[index][productName] = value;
+                }
+                return acc;
+            }, []);
+
+            const productNames = [...new Set(data.map((i) => i.productName))];
+
+            cfg = {
+                type: 'bar',
+                data: {
+                    datasets: productNames.filter(f => f != "None").map(m => (
+                        {
+                            label: m,
+                            data: customData,
+                            parsing: {
+                                yAxisKey: m
+                            }
+                        }))
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    }
+                }
+            }
+        }
+
+        if (tab == "Athletes") {
+            const customData = data.map(d => ({ ...d, x: d.timeInText, y: d.value }))
+            cfg = {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: '@StringLocalizer["Athletes"]',
+                        data: customData,
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+            };
+        }
+
+        if (tab == "Partners") {
+            const customData = data.map(d => ({ ...d, x: d.timeInText, y: d.value }))
+            cfg = {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: '@StringLocalizer["PartnersV2"]',
+                        data: customData,
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+            };
+        }
+
+        if (tab == "Modalities") {
+
+            const customData = data.reduce((acc, item) => {
+                const { timeInDate, timeInText, modalityId, modalityName, value } = item;
+                const index = acc.findIndex((i) => i.timeInDate === timeInDate);
+                if (index === -1) {
+                    acc.push({
+                        timeInDate,
+                        timeInText,
+                        [modalityName]: value,
+                        x: timeInText,
+                    });
+                } else {
+                    acc[index][modalityName] = value;
+                }
+                return acc;
+            }, []);
+
+            const modalitiesName = [...new Set(data.map((i) => i.modalityName))];
+
+            cfg = {
+                type: 'bar',
+                data: {
+                    datasets: modalitiesName.filter(f => f != "None").map(m => (
+                        {
+                            label: m,
+                            data: customData,
+                            parsing: {
+                                yAxisKey: m
+                            }
+                        }))
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    }
+                }
+            }
+        }
+
+        new Chart(ctx, cfg)
+    }
+
+</script>

@@ -296,7 +296,7 @@ namespace SCManagement.Services.StatisticsService
 
         public async Task<ICollection<ClubPaymentStatistics>> GetClubPaymentStatistics(int clubId, int? year = null, int? month = null)
         {
-            if (year == null) year = DateTime.Now.Year;
+            year ??= DateTime.Now.Year;
 
             if (month != null && month > 0 && month < 13)
             {

@@ -627,9 +627,6 @@
     <value>At the moment, as we are in the development phase, we are not yet able to show you our main features.
 We apologize for the inconvenience.</value>
   </data>
-  <data name="Partners" xml:space="preserve">
-    <value>Partners</value>
-  </data>
   <data name="Public Page" xml:space="preserve">
     <value>Public Page</value>
   </data>
@@ -1607,5 +1604,56 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Are you sure you want to cancel? All progress will be lost!" xml:space="preserve">
     <value>Are you sure you want to cancel? All progress will be lost!</value>
     <comment>17-03-2023_profile</comment>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Entries" xml:space="preserve">
+    <value>Entries</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Fee</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Income</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>Of</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product Name</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="UpdatePlan" xml:space="preserve">
+    <value>Update Plan</value>
+    <comment>17-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Income Detailed" xml:space="preserve">
+    <value>Income Detailed</value>
+    <comment>17-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Partners" xml:space="preserve">
+    <value>Partners</value>
+  </data>
+  <data name="PartnersV2" xml:space="preserve">
+    <value>Partners</value>
+    <comment>18-03-2023_StatisticsView</comment>
+  </data>
+  <data name="SelectYear" xml:space="preserve">
+    <value>Select Research Year</value>
+    <comment>18-03-2023_StatisticsView</comment>
   </data>
 </root>
