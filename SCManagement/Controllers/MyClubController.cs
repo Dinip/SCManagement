@@ -15,6 +15,8 @@ using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services;
+using SCManagement.Services.PlansService;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SCManagement.Controllers
 {
@@ -32,6 +34,7 @@ namespace SCManagement.Controllers
         private readonly ITeamService _teamService;
         private readonly ITranslationService _translationService;
         private readonly IPaymentService _paymentService;
+        private readonly IPlanService _planService;
         private readonly ApplicationContextService _applicationContextService;
 
         /// <summary>
@@ -51,6 +54,7 @@ namespace SCManagement.Controllers
             ITeamService teamService,
             ITranslationService translationService,
             IPaymentService paymentService,
+            IPlanService planService,
             ApplicationContextService applicationContextService)
         {
             _userManager = userManager;
@@ -60,6 +64,7 @@ namespace SCManagement.Controllers
             _translationService = translationService;
             _paymentService = paymentService;
             _applicationContextService = applicationContextService;
+            _planService = planService;
         }
 
         public async Task<IActionResult> Unavailable()
@@ -911,6 +916,9 @@ namespace SCManagement.Controllers
 
             //Check if is trainer
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.HaveMealTemplate = (await _planService.GetTemplateMealPlans(role.UserId)).IsNullOrEmpty();
+            ViewBag.HaveTrainingTemplate = (await _planService.GetTemplateTrainingPlans(role.UserId)).IsNullOrEmpty();
 
             return View(await _teamService.GetTeamsByTrainer(role.UserId));
         }

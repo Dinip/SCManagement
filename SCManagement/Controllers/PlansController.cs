@@ -56,7 +56,7 @@ namespace SCManagement.Controllers
 
             var trains = await _planService.GetTemplateTrainingPlans(userId);
 
-            if (trains.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+            if (trains == null) return View("CustomError", "Error_NotFound");
 
             return View("TrainingPlans", trains);
         }
@@ -74,7 +74,7 @@ namespace SCManagement.Controllers
 
             var trains = await _planService.GetTrainingPlans(userId, id);
 
-            if (trains.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+            if (trains == null) return View("CustomError", "Error_NotFound");
 
             return View("TrainingPlans", trains);
         }
@@ -91,7 +91,7 @@ namespace SCManagement.Controllers
 
             var meals = await _planService.GetTemplateMealPlans(userId);
 
-            if (meals.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+            if (meals == null) return View("CustomError", "Error_NotFound");
 
             return View("MealPlans", meals);
         }
@@ -109,7 +109,7 @@ namespace SCManagement.Controllers
 
             var meals = await _planService.GetMealPlans(userId, id);
 
-            if (meals.IsNullOrEmpty()) return View("CustomError", "Error_NotFound");
+            if (meals == null) return View("CustomError", "Error_NotFound");
 
             return View("MealPlans", meals);
         }

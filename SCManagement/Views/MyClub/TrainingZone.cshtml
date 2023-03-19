@@ -66,7 +66,10 @@
                                     <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons me-2">Apply Training Template </a>
                                     <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons me-2">Apply Meal Template </a>
                                     <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2">See Training Plans</a>
-                                    <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">See Meal Plans </a>
+                                    @if(athlete.MealPlans.Count() != 0)
+                                    {
+                                        <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">See Meal Plans </a>
+                                    }
                                 </td>
                             </tr>
                         }
