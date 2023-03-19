@@ -426,7 +426,7 @@ namespace SCManagement.Controllers
                             {
                                 MealName = s.MealName,
                                 MealDescription = s.MealDescription,
-                                Time = TimeSpan.Parse(s.Time.ToString()),
+                                Time = s.Time,
                             }).ToList()
                         };
 
@@ -635,11 +635,6 @@ namespace SCManagement.Controllers
                     actualMealPlan.EndDate = mealPlan.EndDate;
                 }
 
-                foreach (MealPlanSession p in mealPlan.MealPlanSessions!)
-                {
-                    p.Time = TimeSpan.Parse(p.Time.ToString());
-                }
-
                 await _planService.UpdateMealPlan(actualMealPlan);
 
                 if (!actualMealPlan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = actualMealPlan.AthleteId });
@@ -733,6 +728,8 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> CreateGoal(string id)
         {
+            if(id == null) return View("CustomError", "Error_NotFound");
+
             string userId = getUserIdFromAuthedUser();
 
             var role = await _userService.GetSelectedRole(userId);
@@ -764,7 +761,8 @@ namespace SCManagement.Controllers
 
             await _planService.CreateGoal(goal);
 
-            return View("TrainingZone", "MyClub");
+            //if u need u can change this 
+            return RedirectToAction("TrainingZone", "MyClub");
         }
 
         public async Task<IActionResult> EditGoal(int id)
@@ -800,7 +798,8 @@ namespace SCManagement.Controllers
 
             await _planService.UpdateGoal(goal);
 
-            return View("TrainingZone", "MyClub");
+            //if u need u can change this 
+            return RedirectToAction("TrainingZone", "MyClub");
         }
         
         public async Task<IActionResult> GoalDetails(int id)
@@ -838,7 +837,8 @@ namespace SCManagement.Controllers
 
             await _planService.DeleteGoal(goal);
 
-            return View("TrainingZone", "MyClub");
+            //if u need u can change this 
+            return RedirectToAction("TrainingZone", "MyClub");
         }
 
 

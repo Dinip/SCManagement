@@ -15,9 +15,9 @@ namespace SCManagement.Services.PlansService.Models
         [DataType(DataType.Date)]
         [DateGreaterThan(Model = "Goal")]
         public DateTime EndDate { get; set; }
-        public User Trainer { get; set; }
+        public User? Trainer { get; set; }
         public string TrainerId { get; set; }
-        public User Athlete { get; set; }
+        public User? Athlete { get; set; }
         public string AthleteId { get; set; }
 
     }
