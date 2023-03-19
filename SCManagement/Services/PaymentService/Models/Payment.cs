@@ -101,7 +101,7 @@ namespace SCManagement.Services.PaymentService.Models
         Failed = 3,
         Error = 4,
         Canceled = 5,
-        Waiting = 6
+        Processing = 6
     }
 
     public enum PaymentMethod : int

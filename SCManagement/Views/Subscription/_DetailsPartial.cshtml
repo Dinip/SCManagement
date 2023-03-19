@@ -77,6 +77,9 @@
             <dd class="col-sm-8 dlBg text-to-dark">
                 @Html.DisplayFor(model => model.Club.Name)
             </dd>
+        }
+        @if (Model.Product?.AthleteSlots != null)
+        {
             <dt class="col-sm-4 text-to-dark">
                 @Html.DisplayNameFor(model => model.Product.AthleteSlots)
             </dt>

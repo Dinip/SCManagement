@@ -457,7 +457,7 @@ namespace SCManagement.Services.PaymentService
             var payment = await _context.Payment.FirstOrDefaultAsync(p => p.SubscriptionId == subscription.Id && p.PaymentStatus != PaymentStatus.Paid);
             if (payment != null)
             {
-                payment.PaymentStatus = PaymentStatus.Waiting;
+                payment.PaymentStatus = PaymentStatus.Processing;
                 payment.PaymentMethod = PaymentMethod.CreditCard;
                 _context.Payment.Update(payment);
             }
@@ -485,17 +485,26 @@ namespace SCManagement.Services.PaymentService
             if (DateTime.Now.Date == subscription.NextTime.Date)
             {
                 subscription.Status = SubscriptionStatus.Pending;
-                var payment = new Payment
+                var oldPayment = await _context.Payment.FirstOrDefaultAsync(p => p.SubscriptionId == subscription.Id && p.PaymentStatus != PaymentStatus.Paid);
+                if (oldPayment == null)
                 {
-                    ProductId = subscription.Product.Id,
-                    Value = subscription.Product.Value,
-                    PaymentMethod = null,
-                    PaymentStatus = PaymentStatus.Pending,
-                    UserId = subscription.UserId,
-                    PaymentKey = Guid.NewGuid().ToString(),
-                    SubscriptionId = subscription.Id,
-                };
-                _context.Payment.Add(payment);
+                    var payment = new Payment
+                    {
+                        ProductId = subscription.Product.Id,
+                        Value = subscription.Product.Value,
+                        PaymentMethod = null,
+                        PaymentStatus = PaymentStatus.Pending,
+                        UserId = subscription.UserId,
+                        PaymentKey = Guid.NewGuid().ToString(),
+                        SubscriptionId = subscription.Id,
+                    };
+                    _context.Payment.Add(payment);
+                } else
+                {
+                    oldPayment.PaymentMethod = null;
+                    oldPayment.PaymentStatus = PaymentStatus.Pending;
+                    _context.Payment.Update(oldPayment);
+                }
             }
 
             _context.Subscription.Update(subscription);
@@ -718,7 +727,7 @@ namespace SCManagement.Services.PaymentService
             payment.MbEntity = content.method.entity;
             payment.MbReference = content.method.reference;
             payment.Url = content.method.url;
-            payment.PaymentStatus = PaymentStatus.Waiting;
+            payment.PaymentStatus = PaymentStatus.Processing;
 
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();

@@ -110,8 +110,14 @@
             @if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
             {
                 <dt class="col-sm-4 dlBg text-to-dark">@Html.DisplayNameFor(model => model.Url)</dt>
-                <dd class="col-sm-4 dlBg text-to-dark">@Html.DisplayFor(model => model.Url)</dd>
-                <dd class="col-sm-4 dlBg text-to-dark"><a href="@Model.Url">Click here to pay</a></dd>
+                @if (Model.SubscriptionId != null)
+                {
+                    <dd class="col-sm-4 dlBg text-to-dark"><a href="/Subscription?subId=@Model.SubscriptionId">@StringLocalizer["Click To Pay"]</a></dd>
+                }
+                else
+                {
+                    <dd class="col-sm-4 dlBg text-to-dark"><a href="@Model.Url">@StringLocalizer["Click To Pay"]</a></dd>
+                }
             }
             else
             {
@@ -133,7 +139,7 @@
         </div>
     }
     <div class="mt-3">
-        @if (Model.PaymentStatus == SCManagement.Services.PaymentService.Models.PaymentStatus.Waiting)
+        @if (Model.PaymentStatus == SCManagement.Services.PaymentService.Models.PaymentStatus.Processing)
         {
             <p>Payment is processing!</p>
         }

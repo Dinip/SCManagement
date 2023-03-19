@@ -46,7 +46,7 @@ namespace SCManagement.Services.CronJobService
             var payments = subs.Select(s => new Payment
             {
                 Value = s.Value,
-                PaymentStatus = s.Value > 0 ? (s.AutoRenew ? PaymentStatus.Waiting : PaymentStatus.Pending) : PaymentStatus.Paid,
+                PaymentStatus = s.Value > 0 ? (s.AutoRenew ? PaymentStatus.Processing : PaymentStatus.Pending) : PaymentStatus.Paid,
                 SubscriptionId = s.Id,
                 UserId = s.UserId,
                 ProductId = s.ProductId,
