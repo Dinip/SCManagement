@@ -4,27 +4,35 @@
     string guid = Guid.NewGuid().ToString();
 }
 
-<div id="@guid" class="row">
-    <hr/>
+<div id="@guid">
+    <hr class="mt-4" />
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.TrainingPlanId)
-    <div class="form-group col-md-3">
-        <input asp-for="ExerciseName" class="form-control" />
-        <span asp-validation-for="ExerciseName" class="text-danger"></span>
+    <div class="d-flex" style="justify-content:space-evenly; align-items:center;">
+        <div class="form-floating">
+            <input asp-for="ExerciseName" class="form-control" />
+            <label asp-for="ExerciseName" class="control-label"></label>
+            <span asp-validation-for="ExerciseName" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <input asp-for="ExerciseDescription" class="form-control" />
+            <label asp-for="ExerciseDescription" class="control-label"></label>
+            <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <input asp-for="Repetitions" min="0" class="form-control" />
+            <label asp-for="Repetitions" class="control-label"></label>
+            <span asp-validation-for="Repetitions" class="text-danger"></span>
+        </div>
+        <div class="form-floating">
+            <input asp-for="Duration" min="0" class="form-control" />
+            <label asp-for="Duration" class="control-label"></label>
+            <span asp-validation-for="Duration" class="text-danger"></span>
+        </div>
+        <div>
+            <button onClick='removeElement("@guid")' class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Remove</button>
+        </div>
     </div>
-    <div class="form-group col-md-3">
-        <input asp-for="ExerciseDescription" class="form-control" />
-        <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-3">
-        <input asp-for="Repetitions" class="form-control" />
-        <span asp-validation-for="Repetitions" class="text-danger"></span>
-    </div>
-    <div class="form-group col-md-3">
-        <input asp-for="Duration" class="form-control" />
-        <span asp-validation-for="Duration" class="text-danger"></span>
-    </div>
-    <button onClick='removeElement("@guid")' class="btn btn-primary">Remove</button>
 </div>
 
 <script>

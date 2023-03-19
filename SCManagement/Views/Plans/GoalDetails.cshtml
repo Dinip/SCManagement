@@ -5,38 +5,57 @@
 }
 
 <h1>GoalDetails</h1>
+<style>
+    dt {
+        border: 1px solid gainsboro;
+        padding: 3px;
+    }
 
-<div>
-    <h4>Goal</h4>
+    dd {
+        border: 1px solid gainsboro;
+        margin-bottom: 0;
+        padding: 3px;
+    }
+
+    dl {
+        border: 1px solid gainsboro;
+    }
+</style>
+<div class="container ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">Goal</h1>
     <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="EditGoal" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="card mt-5 shadow" style="border-radius:20px;">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-2 dlBg text-to-dark">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-10 dlBg text-to-dark">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+                <dt class="col-sm-2 text-to-dark ">
+                    @Html.DisplayNameFor(model => model.Description)
+                </dt>
+                <dd class="col-sm-10 text-to-dark">
+                    @Html.DisplayFor(model => model.Description)
+                </dd>
+                <dt class="col-sm-2 dlBg text-to-dark">
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </dt>
+                <dd class="col-sm-10 dlBg text-to-dark">
+                    @Html.DisplayFor(model => model.StartDate)
+                </dd>
+                <dt class="col-sm-2 text-to-dark">
+                    @Html.DisplayNameFor(model => model.EndDate)
+                </dt>
+                <dd class="col-sm-10 text-to-dark">
+                    @Html.DisplayFor(model => model.EndDate)
+                </dd>
+            </dl>
+        </div>
+        <div class="d-flex justify-content-end me-3 mb-3">
+            <a asp-action="EditGoal" asp-route-id="@Model?.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a> |
+            <a asp-action="Index" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Back to List</a>
+        </div>
+    </div>
 </div>

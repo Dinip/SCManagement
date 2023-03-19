@@ -3,65 +3,91 @@
 @{
     ViewData["Title"] = "MealTemplates";
 }
-
-@if (ViewBag.IsTemplate)
-{
-    <h1>MealPlans</h1>
-}
-else
-{
-    <h1>@ViewBag.AthleteName Meal Plans</h1>
-}
-
-@if (ViewBag.IsTemplate)
-{
-    <p>
-        <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
-    </p>
-}
-@*else tem que se fazer aquela view de escolher se e para aplicar ou nao o template
-{
-    <p>
-        <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
-            </p>
-}*@
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trainer)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model) 
+<div class="container-fluid ps-5 pe-5">
+    @if (ViewBag.IsTemplate)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Trainer.FullName)
-            </td>
-            <td>
-                <a asp-action="EditMealPlan" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="MealDetails" asp-route-id="@item.Id">Details</a> |
-                <form asp-action="DeleteMealPlan">
-                    <input type="hidden" name="id" value="@item.Id" />
-                    <button type="submit" class="btn btn-primary">Delete</button>
-                </form>
-            </td>
-        </tr>
+        <h1 style="margin-top:130px !important;"  class="text-to-dark">MealPlans</h1>
     }
-    </tbody>
-</table>
+    else
+    {
+        <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Meal Plans</h1>
+    }
+
+    @if (ViewBag.IsTemplate)
+    {
+        <p>
+            <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
+        </p>
+    }
+    @*else tem que se fazer aquela view de escolher se e para aplicar ou nao o template
+    {
+    <p>
+    <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
+    </p>
+    }*@
+    <hr />
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                    <tr>
+                        <th class="text-to-dark">
+                                @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="text-to-dark">
+                                @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th class="text-to-dark">
+                                @Html.DisplayNameFor(model => model.Trainer)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <a asp-action="EditMealPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
+                                    <a asp-action="MealDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">Details</a>
+                                    <form asp-action="DeleteMealPlan">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Delete</button>
+                                    </form>
+                                </div>
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+</script>
