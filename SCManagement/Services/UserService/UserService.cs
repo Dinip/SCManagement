@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
+using SCManagement.Services.AzureStorageService;
 
 namespace SCManagement.Services.UserService
 {
@@ -9,12 +10,15 @@ namespace SCManagement.Services.UserService
     {
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<User> _signInManager;
+        private readonly IAzureStorage _azureStorage;
 
         public UserService(ApplicationDbContext context,
-            SignInManager<User> signInManager)
+            SignInManager<User> signInManager,
+            IAzureStorage azureStorage)
         {
             _context = context;
             _signInManager = signInManager;
+            _azureStorage = azureStorage;
         }
 
         /// <summary>
@@ -113,6 +117,23 @@ namespace SCManagement.Services.UserService
             _context.Bioimpedance.Update(bioimpedance);
             await _context.SaveChangesAsync();
             return bioimpedance;
+        }
+
+        public async Task<User> GetUserWithEMD(string userId)
+        {
+            return await _context.Users.Include(u => u.EMD).FirstOrDefaultAsync(u => u.Id == userId);
+        }
+        public async Task CheckAndDeleteEMD(User user)
+        {
+            if (user.EMD != null)
+            {
+                await _azureStorage.DeleteAsync(user.EMD.Uuid);
+                _context.BlobDto.Remove(user.EMD);
+                user.EMD = null;
+                //update user and save changes
+                _context.Update(user);
+                await _context.SaveChangesAsync();
+            }
         }
 
     }

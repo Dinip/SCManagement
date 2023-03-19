@@ -15,6 +15,9 @@ using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services;
+using SCManagement.Data.Migrations;
+using Microsoft.EntityFrameworkCore;
+using SCManagement.Services.AzureStorageService;
 
 namespace SCManagement.Controllers
 {
@@ -34,6 +37,7 @@ namespace SCManagement.Controllers
         private readonly IPaymentService _paymentService;
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
+        private readonly IAzureStorage _azureStorage;
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -53,7 +57,8 @@ namespace SCManagement.Controllers
             ITranslationService translationService,
             IPaymentService paymentService,
             ApplicationContextService applicationContextService,
-            IStringLocalizer<SharedResource> stringLocalizer)
+            IStringLocalizer<SharedResource> stringLocalizer,
+            IAzureStorage azureStorage)
         {
             _userManager = userManager;
             _clubService = clubService;
@@ -63,6 +68,7 @@ namespace SCManagement.Controllers
             _paymentService = paymentService;
             _applicationContextService = applicationContextService;
             _stringLocalizer = stringLocalizer;
+            _azureStorage = azureStorage;
         }
 
         public async Task<IActionResult> Unavailable()
@@ -910,11 +916,15 @@ namespace SCManagement.Controllers
 
             var bio = await _userService.GetBioimpedance(role.UserId);
 
+            var EMDUrl = await PrepareUserEMD(role.UserId);
+
             var myModel = new MyZoneModel
             {
                 UserId = role.UserId,
+                EMDUrl = EMDUrl,
                 Bioimpedance = bio
             };
+
 
             return View(myModel);
 
@@ -980,10 +990,89 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(MyZone));
         }
 
+        //public async Task<IActionResult> RemoveEMD()
+        //{
+        //    await _userService.CheckAndDeleteEMD(await _userService.GetUserWithEMD(_applicationContextService.UserRole.UserId));
+
+        //    return RedirectToAction(nameof(MyZone));
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> MyZoneEMDUpdate(IFormFile FileEMD)
+        {
+            UsersRoleClub role = _applicationContextService.UserRole;
+            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var user = await _userService.GetUserWithEMD(role.UserId);
+
+            if (FileEMD != null && FileEMD.Length > 0)
+            {
+                BlobResponseDto uploadResult = await _azureStorage.UploadAsync(FileEMD);
+                if (uploadResult.Error)
+                {
+                    return View("CustomError", "Something wrong");
+                }
+                await _userService.CheckAndDeleteEMD(user);
+
+                user.EMD = uploadResult.Blob;
+                var result = await _userManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return View("CustomError", "Something wrong");
+                }
+            }
+            else
+            {
+                await _userService.CheckAndDeleteEMD(user);
+            }
+
+            return RedirectToAction(nameof(MyZone));
+        }
+
+
+
+        //[HttpPost]
+        //public async Task<IActionResult> InsertEMD(IFormFile FileEMD)
+        //{
+        //    if(FileEMD != null || FileEMD.Length == 0) { 
+        //        BlobResponseDto uploadResult = await _azureStorage.UploadAsync(FileEMD);
+        //        if (uploadResult.Error)
+        //        {
+        //            return View("CustomError", "Something wrong");
+        //        }
+        //        await _userService.CheckAndDeleteEMD(await _userService.GetUserWithEMD(_applicationContextService.UserRole.UserId));
+
+        //        var user = await _userService.GetUserWithEMD(_applicationContextService.UserRole.UserId);
+        //        user.EMD = uploadResult.Blob;
+        //        var result = await _userManager.UpdateAsync(user);
+        //        if (!result.Succeeded)
+        //        {
+        //            return View("CustomError", "Something wrong");
+        //        }
+        //    }
+
+        //    return RedirectToAction(nameof(MyZone));
+        //}
+
+        private async Task<string> PrepareUserEMD(string userId)
+        {
+            var userWithEMD = await _userService.GetUserWithEMD(userId);
+            return userWithEMD.EMD == null ? _stringLocalizer["Pending_Add"] : userWithEMD.EMD.Uri;
+
+        }
+
+
+
+
         public class MyZoneModel
         {
             public string UserId { get; set; }
+            public User? User {get; set; }
             public Bioimpedance? Bioimpedance { get; set; }
+
+            public string? EMDUrl { get; set; }
+            public bool RemoveEMD { get; set; } = false;
+            public IFormFile? FileEMD { get; set; }
         }
 
     }
