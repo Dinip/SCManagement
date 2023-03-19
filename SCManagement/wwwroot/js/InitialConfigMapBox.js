@@ -77,6 +77,7 @@ function PathMapBoxConfig() {
 
     let erMessage = "";
     let newCoords = null;
+    let coordsPath = null;
     let initialMarker = null;
     let endMarker = null;
 
@@ -90,8 +91,8 @@ function PathMapBoxConfig() {
     map.addControl(geocoder, 'top-left');
 
     btnSave.onclick = function () {
-        if (newCoords != null) {
-            ev.value = newCoords;
+        if (coordsPath != null) {
+            ev.value = coordsPath;
             btnSave.classList.add("d-none");
             locationText.innerHTML = strings.newAddress + " " + addressByPath.value;
         }
@@ -217,6 +218,8 @@ function PathMapBoxConfig() {
             return;
         }
         const coords = response.matchings[0].geometry;
+        coordsPath = coords.coordinates.join(';');
+
         // Draw the route on the map
         addRoute(coords);
     }
@@ -411,10 +414,10 @@ function SearchMapBoxConfig() {
     });
 
     map.addControl(geocoder, 'top-left');
-    
+
 
     let result = null;
-    
+
     let btn = document.getElementById("save-button")
     map.on('load', () => {
         result = MarkerWithAddress(map);
