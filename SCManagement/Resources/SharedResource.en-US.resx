@@ -1656,4 +1656,12 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Select Research Year</value>
     <comment>18-03-2023_StatisticsView</comment>
   </data>
+  <data name="LocationEvent" xml:space="preserve">
+    <value>You will need to enter a location in the event</value>
+    <comment>19-03-2023_Events</comment>
+  </data>
+  <data name="NameEvent" xml:space="preserve">
+    <value>You will have to give the event a name</value>
+    <comment>19-03-2023_Events</comment>
+  </data>
 </root>

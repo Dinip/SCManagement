@@ -1380,7 +1380,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>O limite de inscrição não pode exceder a data de inicio do evento</value>
   </data>
   <data name="SearchError" xml:space="preserve">
-    <value>Não pode iserir uma morada na água</value>
+    <value>Não pode inserir uma morada na água</value>
     <comment>15-03-2023_SearchMapBox</comment>
   </data>
   <data name="Error_Invalid_Result" xml:space="preserve">
@@ -1785,5 +1785,13 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="SelectYear" xml:space="preserve">
     <value>Selecione o Ano de Pesquisa</value>
     <comment>18-03-2023_StatisticsView</comment>
+  </data>
+  <data name="LocationEvent" xml:space="preserve">
+    <value>Terá de inserir uma localização no evento</value>
+    <comment>19-03-2023_Events</comment>
+  </data>
+  <data name="NameEvent" xml:space="preserve">
+    <value>Terá de dar um nome ao evento</value>
+    <comment>19-03-2023_Events</comment>
   </data>
 </root>

@@ -147,7 +147,8 @@ function addAddress(epoint) {
 
 
 function errorRemoveMarker(errorMessage) {
-    alert(errorMessage);
+    $(".toast").show();
+    document.getElementById('alertText').innerHTML = errorMessage;
     marker.remove();
 }
 
