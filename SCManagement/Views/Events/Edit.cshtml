@@ -374,11 +374,10 @@
 
     function checkLimitEnrollDateIsValid(){
         let startDate = new Date('@Model.StartDate');
-        let currentDate = new Date();
+        let currentDate = new Date().toLocaleString();;
 
         if (startDate <= currentDate) {
             document.getElementById("LimitEnrollContainer").style.display = "none"
-            console.log(currentDate);
         }else{
             document.getElementById("LimitEnrollContainer").style.display = "block"
         }
@@ -462,7 +461,7 @@
 
         let startDate = new Date(startDateTime.value);
         let enrollDate = new Date(EnrollLimitDate.value);
-        let dateNow = new Date();
+        let dateNow = new Date().toLocaleString();;
 
 
         if (enrollDate > startDate) {
