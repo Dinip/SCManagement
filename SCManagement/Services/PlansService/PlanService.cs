@@ -45,6 +45,15 @@ namespace SCManagement.Services.PlansService
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<TrainingPlan?>> GetMyTrainingPlans(string userId)
+        {
+            return await _context.TrainingPlans.Where(p=> p.AthleteId == userId && p.IsTemplate == false)
+                .Include(p => p.Modality)
+                .Include(p => p.Trainer)
+                .Include(p => p.TrainingPlanSessions)
+                .ToListAsync();
+        }
+
         public async Task<IEnumerable<MealPlan?>> GetMealPlans(string trainerId, string athleteId)
         {
             return await _context.MealPlans.Where(p => p.TrainerId == trainerId && p.AthleteId == athleteId && p.IsTemplate == false)
@@ -56,6 +65,14 @@ namespace SCManagement.Services.PlansService
         public async Task<IEnumerable<MealPlan?>> GetMealPlans(string trainerId)
         {
             return await _context.MealPlans.Where(p => p.TrainerId == trainerId && p.IsTemplate == false)
+                .Include(p => p.Trainer)
+                .Include(p => p.MealPlanSessions)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<MealPlan?>> GetMyMealPlans(string userId)
+        {
+            return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false)
                 .Include(p => p.Trainer)
                 .Include(p => p.MealPlanSessions)
                 .ToListAsync();

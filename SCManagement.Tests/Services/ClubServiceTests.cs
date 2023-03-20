@@ -15,10 +15,8 @@ using SCManagement.Services.PaymentService.Models;
 using FluentAssertions.Common;
 using SCManagement.Services.PaymentService;
 
-namespace SCManagement.Tests.Services
-{
-    public class ClubServiceTests
-    {
+namespace SCManagement.Tests.Services {
+    public class ClubServiceTests {
         private readonly ApplicationDbContext _context;
         private readonly IEmailSender _emailSender;
         private readonly IHttpContextAccessor _httpContext;
@@ -59,17 +57,17 @@ namespace SCManagement.Tests.Services
                         Id = i,
                         Name = $"Test Club {i}",
                         CreationDate = DateTime.Now,
-                        Modalities = new List<Modality> 
-                        { 
-                            context.Modality.FirstOrDefault(m => m.Id == i) 
+                        Modalities = new List<Modality>
+                        {
+                            context.Modality.FirstOrDefault(m => m.Id == i)
                         },
-                        UsersRoleClub = new List<UsersRoleClub> 
+                        UsersRoleClub = new List<UsersRoleClub>
                         {
                             new UsersRoleClub { UserId = $"Test {i}" , RoleId = 50 , ClubId = i}
                         },
-                        ClubTranslations = new List<ClubTranslations> 
+                        ClubTranslations = new List<ClubTranslations>
                         {
-                            new ClubTranslations 
+                            new ClubTranslations
                             {
                                 ClubId = i,
                                 Value = "",
@@ -87,15 +85,11 @@ namespace SCManagement.Tests.Services
                         Address = new Address
                         {
                             Id = i,
-                            Street = "Test Street",
-                            District = "Test District",
-                            City = "Test City",
-                            Country = "Test Country",
-                            ZipCode = "Test ZipCode",
+                            AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal",
                             CoordinateX = 0,
                             CoordinateY = 0,
                         },
-                        ClubPaymentSettings = new ClubPaymentSettings(),
+                    ClubPaymentSettings = new ClubPaymentSettings(),
                     });
 
                     context.Subscription.Add(new Subscription
@@ -106,27 +100,27 @@ namespace SCManagement.Tests.Services
                         StartTime = DateTime.Now,
                         EndTime = DateTime.Now.AddMonths(1),
                         Value = i,
-                        Product = new Product { AthleteSlots = i - 1 ,Name = $"Pod {i}", ProductType = ProductType.ClubSubscription },
+                        Product = new Product { AthleteSlots = i - 1, Name = $"Pod {i}", ProductType = ProductType.ClubSubscription },
                         UserId = $"Test {i}"
                     });
 
                     if (i == 9)
                     {
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 40 , ClubId = 1 });
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 10 , ClubId = 1 });
-                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 10 , ClubId = 1 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 1", RoleId = 10 , ClubId = 5 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 20 , ClubId = 5 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 30 , ClubId = 5 });
-                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 40 , ClubId = 5 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 40, ClubId = 1 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 10, ClubId = 1 });
+                        context.Club.Where(c => c.Id == 1).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 10, ClubId = 1 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 1", RoleId = 10, ClubId = 5 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 2", RoleId = 20, ClubId = 5 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 3", RoleId = 30, ClubId = 5 });
+                        context.Club.Where(c => c.Id == 5).First().UsersRoleClub.Add(new UsersRoleClub { UserId = "Test 4", RoleId = 40, ClubId = 5 });
                     }
 
                     await context.SaveChangesAsync();
                 }
             }
 
-            
-            
+
+
 
             if (!await context.CodeClub.AnyAsync())
             {
@@ -147,9 +141,9 @@ namespace SCManagement.Tests.Services
                     RoleId = 20,
                     ExpireDate = DateTime.Now.AddHours(23).AddMinutes(59).AddSeconds(59),
                     Approved = false
-                }, 
-                new CodeClub 
-                { 
+                },
+                new CodeClub
+                {
                     ClubId = 2,
                     Code = "123456789",
                     CreatedByUserId = "Test 1",
@@ -210,7 +204,7 @@ namespace SCManagement.Tests.Services
             Club club = new Club
             {
                 Name = $"Test Club {11}",
-                ModalitiesIds = new List<int>{1},
+                ModalitiesIds = new List<int> { 1 },
             };
 
             // Act
@@ -700,7 +694,7 @@ namespace SCManagement.Tests.Services
             // Arrange
 
             // Act
-            var result = _clubService.IsClubSecretary("Test 2",1);
+            var result = _clubService.IsClubSecretary("Test 2", 1);
 
             // Assert
             result.Should().BeTrue();
@@ -796,7 +790,7 @@ namespace SCManagement.Tests.Services
             // Arrange
 
             // Act
-            var result = _clubService.SendCodeEmail(5,"a@gmail.com", 2);
+            var result = _clubService.SendCodeEmail(5, "a@gmail.com", 2);
 
             // Assert
             result.Should().BeAssignableTo<Task>();
@@ -820,7 +814,7 @@ namespace SCManagement.Tests.Services
             // Arrange
 
             // Act
-            var result = _clubService.UserHasRoleInClub("Test 4",1,10);
+            var result = _clubService.UserHasRoleInClub("Test 4", 1, 10);
 
             // Assert
             result.Should().BeTrue();
@@ -849,7 +843,7 @@ namespace SCManagement.Tests.Services
             // Assert
             result.Should().BeOfType<List<UsersRoleClub>>();
         }
-        
+
         [Fact]
         public async Task ClubService_RemoveClubUser_ReturnsSuccess()
         {
@@ -859,7 +853,7 @@ namespace SCManagement.Tests.Services
 
             // Act
             await _clubService.AddPartnerToClub("Test 1", 10);
-            await _clubService.RemoveClubUser(count+1);
+            await _clubService.RemoveClubUser(count + 1);
 
             // Assert
             _context.UsersRoleClub.Count().Should().Be(count);
@@ -886,7 +880,7 @@ namespace SCManagement.Tests.Services
 
             // Act
             await _clubService.UpdateClubPhoto(club, false, null);
-            
+
             // Assert
             club.Photography.Should().BeNull();
         }
@@ -904,14 +898,14 @@ namespace SCManagement.Tests.Services
             // Assert
             club.Photography.Should().BeNull();
         }
-        
+
         [Fact]
         public async Task ClubService_UpdateClubModalities_ReturnsSuccess()
         {
             // Arrange
             Club club = _context.Club.Where(c => c.Id == 1).Include(c => c.Modalities).First();
             var modalitiesIds = new List<int>() { 2, 3, 4 };
-            
+
             // Act
             await _clubService.UpdateClubModalities(club, modalitiesIds);
 
@@ -935,13 +929,11 @@ namespace SCManagement.Tests.Services
         public async Task ClubService_CreateAddress_ReturnsSuccess()
         {
             // Arrange
-            var address = new Address()
+            var address = new Address
             {
-                ZipCode = "222-22",
-                Street = "Rua",
-                City = "Lisboa",
-                District = "Lisboa",
-                Country = "Portugal",
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
 
             // Act
@@ -1039,21 +1031,18 @@ namespace SCManagement.Tests.Services
         public async Task ClubService_UpdateClubAddress_ReturnsSuccess()
         {
             // Arrange
-            var address = new Address()
+            var address = new Address
             {
-                Id = 1,
-                ZipCode = "222-22",
-                Street = "Rua",
-                City = "Lisboa",
-                District = "Lisboa",
-                Country = "Portugal",
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "Rua Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
 
             // Act
             await _clubService.UpdateClubAddress(address, 1);
 
             // Assert
-            _context.Address.Where(a => a.Id == 1).First().Street.Should().Be("Rua");
+            _context.Address.Where(a => a.Id == 1).First().AddressString.Should().Be("Rua Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal");
         }
 
         [Fact]
@@ -1084,7 +1073,7 @@ namespace SCManagement.Tests.Services
         public async Task ClubService_SearchNameClubs_ReturnsNameNull()
         {
             // Arrange
-            
+
             // Act
             var result = await _clubService.SearchNameClubs(null);
 

@@ -347,20 +347,18 @@ function PathMapBoxConfig() {
 
     function errorMessage(codeMessage) {
         if (codeMessage == "NoMatch") {
-            erMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
+            erMessage = strings.noMatch;
+            strings.noMatch;
         } else if (codeMessage == "NoSegment") {
-            erMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
+            erMessage = strings.noSegment;
         } else if (codeMessage == "TooManyCoordinates") {
-            erMessage = "There are more than 100 points in the request."
-        } else if (codeMessage == "ProfileNotFound") {
-            erMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
+            erMessage = strings.tooManyCoordinates;
         } else if (codeMessage == "InvalidInput") {
-            erMessage = "message will hold an explanation of the invalid input.";
+            erMessage = strings.invalidInput;
         }
         $(".toast").show();
         document.getElementById('alertText').innerHTML = erMessage;
     }
-
 
     async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken) {
         const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?ypes=poi,address,region,district,place,country&access_token=${accessToken}`;
@@ -468,7 +466,8 @@ function MarkerWithAddress(map) {
 
                 let features = map.queryRenderedFeatures(e.point, { layers: ['water'] });
                 if (features.length > 0) {
-                    alert(strings.searchError)
+                    $(".toast").show();
+                    document.getElementById('alertText').innerHTML = strings.searchError;
                     marker.remove();
                 } else {
                     // Extract the address information from the JSON response

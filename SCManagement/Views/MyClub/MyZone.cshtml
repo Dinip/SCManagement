@@ -21,6 +21,136 @@
 </div>
 
 
+@*MyTeams*@
+<div>
+    <div>
+        <h1>Teams</h1>
+    </div>
+    <div>
+        @if (Model.Teams != null)
+        {
+            @foreach (var team in Model.Teams)
+            {
+                <div>
+                    <span><b>@team.Name</b></span>
+                    <span>@team.Modality.Name</span>
+                </div>
+            }
+        }
+    </div>
+
+</div>
+
+
+
+@*MyTrainingPlans*@
+<div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card-body">
+        <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th class="text-to-dark">
+                        Modalidade
+                    </th>
+                    <th class="text-to-dark">
+                        Name
+                    </th>
+                    <th class="text-to-dark">
+                        Description
+                    </th>
+                    <th class="text-to-dark">
+                        Trainer
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @if(Model.TrainingPlans!=null)
+                @foreach (var item in Model.TrainingPlans)
+                {
+                    <tr>
+                        <td class="text-to-dark">
+                            @Html.DisplayFor(modelItem => item.Modality.Name)
+                        </td>
+                        <td class="text-to-dark">
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td class="text-to-dark">
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td class="text-to-dark">
+                            @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center justify-content-end">
+                                <a asp-action="EditTrainingPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
+                                <a asp-action="TrainingDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Details</a>
+                                <form asp-action="DeleteTrainingPlan">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Delete</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@*MyMealPlans*@
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                    <tr>
+                        <th class="text-to-dark">
+                                Name
+                        </th>
+                        <th class="text-to-dark">
+                                Description
+                        </th>
+                        <th class="text-to-dark">
+                                Trainer
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if(Model.MealPlans != null)
+                    @foreach (var item in Model.MealPlans)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <a asp-action="EditMealPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
+                                    <a asp-action="MealDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">Details</a>
+                                    <form asp-action="DeleteMealPlan">
+                                        <input type="hidden" name="id" value="@item.Id" />
+                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Delete</button>
+                                    </form>
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
 @if (Model.Bioimpedance != null)
 {
     <div>

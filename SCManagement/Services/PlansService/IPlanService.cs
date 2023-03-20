@@ -26,5 +26,8 @@ namespace SCManagement.Services.PlansService
         public Task<Goal> CreateGoal(Goal goal);
         public Task<Goal> UpdateGoal(Goal goal);
         public Task DeleteGoal(Goal goal);
+
+        public Task<IEnumerable<TrainingPlan?>> GetMyTrainingPlans(string userId);
+        public Task<IEnumerable<MealPlan?>> GetMyMealPlans(string userId);
     }
 }
