@@ -10,10 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SCManagement.Tests.Services
-{
-    public class EventServiceTests
-    {
+namespace SCManagement.Tests.Services {
+    public class EventServiceTests {
         private readonly ApplicationDbContext _context;
         private readonly EventService _eventService;
 
@@ -96,7 +94,7 @@ namespace SCManagement.Tests.Services
                     StartDate = DateTime.Now,
                     EndDate = DateTime.Now.AddDays(5),
                     IsPublic = true,
-                    
+
                 });
 
                 await context.SaveChangesAsync();
@@ -227,7 +225,7 @@ namespace SCManagement.Tests.Services
 
             // Act
             await _eventService.CreateEvent(e);
-            
+
             var result = await _eventService.UpdateEvent(e);
 
             // Assert
@@ -325,7 +323,7 @@ namespace SCManagement.Tests.Services
         public async Task EventService_GetEvents_ReturnsUserIdNull()
         {
             // Arrange
-            
+
             // Act
             var result = await _eventService.GetEvents(null);
 
@@ -342,11 +340,7 @@ namespace SCManagement.Tests.Services
             var result = await _eventService.CreateEventAddress(new Address
             {
                 Id = 1,
-                City = "Test",
-                Country = "Test",
-                Street = "Test",
-                ZipCode = "Test",
-                District = "Test",
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal",
                 CoordinateX = 2.0d,
                 CoordinateY = 2.0d
             });
@@ -364,16 +358,16 @@ namespace SCManagement.Tests.Services
             await _eventService.CreateEventAddress(new Address
             {
                 Id = 2,
-                City = "Test",
-                Country = "Test",
-                Street = "Test",
-                ZipCode = "Test",
-                District = "Test",
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal",
                 CoordinateX = 2.0d,
                 CoordinateY = 2.0d
             });
-            
-            var result = await _eventService.UpdateEventAddress(2,new Address { Id = 1, City = "Test", Country = "Test", Street = "Test", ZipCode = "Test" });
+
+            var result = await _eventService.UpdateEventAddress(2, new Address
+            {
+                Id = 1,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
+            });
 
             // Assert
             result.Should().BeOfType<Address>();
@@ -409,7 +403,7 @@ namespace SCManagement.Tests.Services
                     }
                 }
             };
-            
+
             // Act
             await _eventService.CreateEvent(e);
             await _eventService.RemoveEventAddress(e);
@@ -452,7 +446,7 @@ namespace SCManagement.Tests.Services
         public async Task EventService_GetResult_ReturnsSuccess()
         {
             // Arrange
-            
+
 
             // Act
             var result = await _eventService.GetResult("Test 1", 1);

@@ -13,10 +13,8 @@ using static SCManagement.Controllers.EventsController;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.TranslationService;
 
-namespace SCManagement.Tests.Controller
-{
-    public class EventsControllerTests
-    {
+namespace SCManagement.Tests.Controller {
+    public class EventsControllerTests {
         private readonly IEventService _eventService;
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
@@ -43,7 +41,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var events = new List<Event> { new Event { Id = 1,} };
+            var events = new List<Event> { new Event { Id = 1, } };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
 
             // Act
@@ -59,7 +57,7 @@ namespace SCManagement.Tests.Controller
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
             var events = new List<Event> { new Event { Id = 1, } };
-            var clubEvents = new List<Event> { new Event { Id = 2 , ClubId = 1} };
+            var clubEvents = new List<Event> { new Event { Id = 2, ClubId = 1 } };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
 
             // Act
@@ -111,7 +109,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Details_ReturnsRoleNotExist()
         {
             // Arrange
-            var events = new Event { Id = 1,  IsPublic = false, ClubId = 1 };
+            var events = new Event { Id = 1, IsPublic = false, ClubId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
 
@@ -155,7 +153,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             var role = new UsersRoleClub { ClubId = 1 };
-            var events = new Event { Id = 1,  IsPublic = false, ClubId = 2 };
+            var events = new Event { Id = 1, IsPublic = false, ClubId = 2 };
             var enroll = new EventEnroll { Id = 1, EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(events);
@@ -218,82 +216,16 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Create_Post_ReturnsSuccess()
         {
             // Arrange
-            var even = new EventModel 
-            { 
-                Id = 1, 
+            var even = new EventModel
+            {
+                Id = 1,
                 StartDate = DateTime.Now.AddDays(7),
                 EndDate = DateTime.Now.AddDays(10),
                 EnrollLimitDate = DateTime.Now.AddDays(5),
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
-                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
-                EventTranslationsName = new List<EventTranslation>
-                {
-                    new EventTranslation 
-                    {
-                        EventId = 1,
-                        Value = "Olá",
-                        Language = "pt-PT",
-                        Atribute = "Name",
-                    },
-                    new EventTranslation
-                    {
-                        EventId = 1,
-                        Value = "",
-                        Language = "en-US",
-                        Atribute = "Name",
-                    }
-                },
-                EventTranslationsDetails = new List<EventTranslation>
-                {
-                    new EventTranslation
-                    {
-                        EventId = 1,
-                        Value = "Olá",
-                        Language = "pt-PT",
-                        Atribute = "Details",
-                    },
-                    new EventTranslation
-                    {
-                        EventId = 1,
-                        Value = "",
-                        Language = "en-US",
-                        Atribute = "Details",
-                    }
-                },
-            };
-            var events = new Event { Id = 1, EventTranslations = new List<EventTranslation>() };
-            var role = new UsersRoleClub { ClubId = 1 };
-            var address = new Address { CoordinateY = 38.5266275 ,CoordinateX = -8.8677658,ZipCode ="2910-580",Street = "Rua Libânio Braga", City = "Setúbal",
-                District = "Setúbal",Country = "Portugal" };
-            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
-            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
-            A.CallTo(() => _eventService.CreateEvent(A<Event>._)).Returns(events);
-            A.CallTo(() => _paymentService.ClubHasValidKey(A<int>._)).Returns(true);
-            A.CallTo(() => _eventService.CreateEventAddress(A<Address>._)).Returns(address);
-
-            // Act
-            var result = await _eventsController.Create(even);
-
-            // Assert
-            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
-        }
-
-        [Fact]
-        public async Task EventsController_Create_Post_ReturnsErrorDate()
-        {
-            // Arrange
-            var even = new EventModel
-            {
-                Id = 1,
-                StartDate = DateTime.Now,
-                EndDate = DateTime.Now.AddDays(10),
-                EnrollLimitDate = DateTime.Now.AddDays(5),
-                IsPublic = true,
-                Fee = 10,
-                HaveRoute = true,
-                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"AddressString\":\"Rua Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal\"}",
                 EventTranslationsName = new List<EventTranslation>
                 {
                     new EventTranslation
@@ -333,13 +265,79 @@ namespace SCManagement.Tests.Controller
             var role = new UsersRoleClub { ClubId = 1 };
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
+            };
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateEvent(A<Event>._)).Returns(events);
+            A.CallTo(() => _paymentService.ClubHasValidKey(A<int>._)).Returns(true);
+            A.CallTo(() => _eventService.CreateEventAddress(A<Address>._)).Returns(address);
+
+            // Act
+            var result = await _eventsController.Create(even);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
+        }
+
+        [Fact]
+        public async Task EventsController_Create_Post_ReturnsErrorDate()
+        {
+            // Arrange
+            var even = new EventModel
+            {
+                Id = 1,
+                StartDate = DateTime.Now,
+                EndDate = DateTime.Now.AddDays(10),
+                EnrollLimitDate = DateTime.Now.AddDays(5),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true,
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"AddressString\":\"Rua Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal\"}",
+                EventTranslationsName = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
+            };
+            var events = new Event { Id = 1, EventTranslations = new List<EventTranslation>() };
+            var role = new UsersRoleClub { ClubId = 1 };
+            var address = new Address
+            {
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
@@ -480,7 +478,7 @@ namespace SCManagement.Tests.Controller
                     Atribute = "Details",
                 }
             };
-            
+
             var even = new EventModel
             {
                 Id = 1,
@@ -526,15 +524,15 @@ namespace SCManagement.Tests.Controller
                     }
                 },
             };
-            
+
             var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1 , ClubId = 1 , EventTranslations = a , LocationId = 1};
+            var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
 
             // Act
-            var result = await _eventsController.Edit(1,even);
+            var result = await _eventsController.Edit(1, even);
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
@@ -585,7 +583,7 @@ namespace SCManagement.Tests.Controller
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
-                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"AddressString\":\"Rua Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal\"}",
                 EventTranslationsName = new List<EventTranslation>
                 {
                     new EventTranslation
@@ -623,20 +621,16 @@ namespace SCManagement.Tests.Controller
             };
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
             var role = new UsersRoleClub { ClubId = 1 };
             var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
-            A.CallTo(() => _eventService.UpdateEventAddress(A<int>._,A<Address>._)).Returns(address);
+            A.CallTo(() => _eventService.UpdateEventAddress(A<int>._, A<Address>._)).Returns(address);
 
             // Act
             var result = await _eventsController.Edit(1, even);
@@ -690,7 +684,7 @@ namespace SCManagement.Tests.Controller
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
-                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"ZipCode\":\"2910-580\",\"Street\":\"Rua Libânio Braga\",\"City\":\"Setúbal\",\"District\":\"Setúbal\",\"Country\":\"Portugal\"}",
+                LocationString = "{\"CoordinateY\":38.5266275,\"CoordinateX\":-8.8677658,\"AddressString\":\"Rua Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal\"}",
                 EventTranslationsName = new List<EventTranslation>
                 {
                     new EventTranslation
@@ -728,13 +722,9 @@ namespace SCManagement.Tests.Controller
             };
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
             var role = new UsersRoleClub { ClubId = 1 };
             var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = null };
@@ -856,10 +846,10 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Delete_ReturnsSuccess()
         {
             // Arrange
-            var e = new Event { Id = 1};
+            var e = new Event { Id = 1 };
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
-            
+
             // Act
             var result = await _eventsController.Delete(1);
 
@@ -887,7 +877,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Delete_ReturnsIdNull()
         {
             // Arrange
-            
+
             // Act
             var result = await _eventsController.Delete(null);
 
@@ -965,13 +955,13 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_EventEnrollment_ReturnsUserAlreadyEnrolled()
         {
             // Arrange
-            var e = new Event { Id = 1,  IsPublic = true };
+            var e = new Event { Id = 1, IsPublic = true };
             var role = new UsersRoleClub { ClubId = 1 };
             var enroll = new EventEnroll { EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
             A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(enroll);
-            
+
             // Act
             var result = await _eventsController.EventEnrollment(1);
 
@@ -984,7 +974,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_EventEnrollment_ReturnsPay()
         {
             // Arrange
-            var e = new Event { Id = 1, IsPublic = true , MaxEventEnrolls = 10, EnrollLimitDate = DateTime.Now.AddDays(1)};
+            var e = new Event { Id = 1, IsPublic = true, MaxEventEnrolls = 10, EnrollLimitDate = DateTime.Now.AddDays(1) };
             var role = new UsersRoleClub { ClubId = 1 };
             var createEnroll = new EventEnroll { EventId = 1, UserId = "1" };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -1063,7 +1053,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_CancelEventEnroll_ReturnsIdNull()
         {
             // Arrange
-            
+
             // Act
             var result = await _eventsController.CancelEventEnroll(null);
 
@@ -1091,7 +1081,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_CancelEventEnroll_ReturnsEnrollStatus()
         {
             // Arrange
-            var e = new Event { Id = 1, IsPublic = true, Fee = 10 , UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
+            var e = new Event { Id = 1, IsPublic = true, Fee = 10, UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } } };
             var enroll = new EventEnroll { EventId = 1, UserId = "1", EnrollStatus = EnrollPaymentStatus.Valid };
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
             A.CallTo(() => _eventService.GetEnroll(A<int>._, A<string>._)).Returns(enroll);
@@ -1224,13 +1214,9 @@ namespace SCManagement.Tests.Controller
             var role = new UsersRoleClub { ClubId = 1 };
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
 
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -1251,13 +1237,9 @@ namespace SCManagement.Tests.Controller
             // Arrange
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
 
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(Task.FromResult<UsersRoleClub>(null));
@@ -1277,13 +1259,9 @@ namespace SCManagement.Tests.Controller
             var role = new UsersRoleClub { ClubId = 1 };
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
 
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -1305,13 +1283,9 @@ namespace SCManagement.Tests.Controller
             var role = new UsersRoleClub { ClubId = 1 };
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
 
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -1334,13 +1308,9 @@ namespace SCManagement.Tests.Controller
             var role = new UsersRoleClub { ClubId = 1 };
             var address = new Address
             {
-                CoordinateY = 38.5266275,
-                CoordinateX = -8.8677658,
-                ZipCode = "2910-580",
-                Street = "Rua Libânio Braga",
-                City = "Setúbal",
-                District = "Setúbal",
-                Country = "Portugal"
+                CoordinateY = 38.5225957,
+                CoordinateX = -8.8390330,
+                AddressString = "R Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal"
             };
 
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -1371,7 +1341,7 @@ namespace SCManagement.Tests.Controller
         public async Task EventsController_Results_ReturnsSuccess()
         {
             // Arrange
-            var e = new Event { Id = 1, IsPublic = true, ClubId = 1,EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Time };
+            var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Time };
             var role = new UsersRoleClub { ClubId = 1 };
 
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -1426,7 +1396,7 @@ namespace SCManagement.Tests.Controller
 
         [Fact]
         public async Task EventsController_AddResult_ReturnsSuccess()
-        { 
+        {
             // Arrange
             var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Position };
             var role = new UsersRoleClub { ClubId = 1 };
@@ -1484,7 +1454,7 @@ namespace SCManagement.Tests.Controller
             // Arrange
             var e = new Event { Id = 1, IsPublic = true, ClubId = 1, EventTranslations = A.Fake<ICollection<EventTranslation>>(), UsersEnrolled = new List<EventEnroll> { new EventEnroll { UserId = "" } }, EventResultType = ResultType.Time };
             var role = new UsersRoleClub { ClubId = 1 };
-            var enrolls = new List<EventEnroll>() { new EventEnroll { UserId = "1",EnrollStatus = EnrollPaymentStatus.Valid } };
+            var enrolls = new List<EventEnroll>() { new EventEnroll { UserId = "1", EnrollStatus = EnrollPaymentStatus.Valid } };
             var results = new List<EventResult>() { new EventResult { UserId = "1", } };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
