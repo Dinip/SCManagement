@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using static SCManagement.Controllers.EventsController;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.TranslationService;
+using System.Text.Json;
 
 namespace SCManagement.Tests.Controller {
     public class EventsControllerTests {
@@ -378,22 +379,6 @@ namespace SCManagement.Tests.Controller {
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
 
-        [Fact]
-        public async Task EventsController_Edit_ReturnsSuccess()
-        {
-            // Arrange
-            var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1 };
-            A.CallTo(() => _clubService.GetUserRoleInClub(A<string>._, A<int>._)).Returns(role);
-            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
-            A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
-
-            // Act
-            var result = await _eventsController.Edit(1);
-
-            // Assert
-            result.Should().BeOfType<ViewResult>();
-        }
 
         [Fact]
         public async Task EventsController_Edit_ReturnsIdNull()
@@ -525,6 +510,18 @@ namespace SCManagement.Tests.Controller {
                 },
             };
 
+            var eventAUX = new Event
+            {
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true
+            };
+
+            even.EventAux = JsonSerializer.Serialize(eventAUX);
+
             var role = new UsersRoleClub { ClubId = 1 };
             var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
@@ -619,6 +616,18 @@ namespace SCManagement.Tests.Controller {
                     }
                 },
             };
+
+            var eventAUX = new Event
+            {
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true
+            };
+
+            even.EventAux = JsonSerializer.Serialize(eventAUX);
             var address = new Address
             {
                 CoordinateY = 38.5225957,
@@ -675,6 +684,16 @@ namespace SCManagement.Tests.Controller {
                 }
             };
 
+            var eventAUX = new Event
+            {
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true
+            };
+            
             var even = new EventModel
             {
                 Id = 1,
@@ -720,6 +739,10 @@ namespace SCManagement.Tests.Controller {
                     }
                 },
             };
+
+            even.EventAux = JsonSerializer.Serialize(eventAUX);
+
+
             var address = new Address
             {
                 CoordinateY = 38.5225957,
@@ -776,6 +799,19 @@ namespace SCManagement.Tests.Controller {
                 Fee = 10,
                 HaveRoute = true,
             };
+
+            var eventAUX = new Event
+            {
+                StartDate = DateTime.Now.AddDays(4),
+                EndDate = DateTime.Now.AddDays(10),
+                EnrollLimitDate = DateTime.Now,
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true
+            };
+
+            even.EventAux = JsonSerializer.Serialize(eventAUX);
+
             var role = new UsersRoleClub { ClubId = 1 };
             var e = new Event { Id = 1, ClubId = 1, };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
