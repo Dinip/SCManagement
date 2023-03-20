@@ -11,6 +11,7 @@ using FluentAssertions.Common;
 using Microsoft.Extensions.DependencyInjection;
 using FluentAssertions;
 using FakeItEasy;
+using SCManagement.Services.AzureStorageService;
 
 namespace SCManagement.Tests.Services
 {
@@ -18,13 +19,15 @@ namespace SCManagement.Tests.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly UserService _userService;
-
+        private readonly IAzureStorage _azureStorage;
+        
         public UserServiceTests()
         {
             _context = GetDbContext().Result;
+            _azureStorage = A.Fake<IAzureStorage>();
 
             //SUT (system under test)
-            _userService = new UserService(_context, A.Fake<SignInManager<User>>());
+            _userService = new UserService(_context, A.Fake<SignInManager<User>>(), _azureStorage);
         }
 
         private async Task<ApplicationDbContext> GetDbContext()

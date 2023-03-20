@@ -8,10 +8,12 @@ using Newtonsoft.Json.Linq;
 using SCManagement.Controllers;
 using SCManagement.Models;
 using SCManagement.Services;
+using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.ClubService.Models;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.PlansService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
@@ -61,6 +63,8 @@ namespace SCManagement.Tests.Controller
         private readonly IPaymentService _paymentService;
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
+        private readonly IAzureStorage _azureStorage;
+        private readonly IPlanService _planService;
 
         public MyClubControllerTests()
         {
@@ -72,9 +76,11 @@ namespace SCManagement.Tests.Controller
             _paymentService = A.Fake<IPaymentService>();
             _applicationContextService = A.Fake<ApplicationContextService>();
             _stringLocalizer = A.Fake<IStringLocalizer<SharedResource>>();
+            _azureStorage = A.Fake<IAzureStorage>();
+            _planService = A.Fake<IPlanService>();
 
             //SUT (system under test)
-            _controller = new MyClubController(_userManager, _clubService, _userService, _teamService, _translationService, _paymentService, _applicationContextService, _stringLocalizer);
+            _controller = new MyClubController(_userManager, _clubService, _userService, _teamService, _translationService, _paymentService, _applicationContextService, _stringLocalizer, _azureStorage, _planService);
         }
 
         [Fact]
