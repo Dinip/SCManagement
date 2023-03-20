@@ -303,5 +303,94 @@ namespace SCManagement.Tests.Controller
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("TrainingTemplates");
         }
+
+        [Fact]
+        public async Task PlansControllerTests_DeleteMealPlan_ReturnsSuccess()
+        {
+            // Arrange
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "", IsTemplate = false });
+
+            // Act
+            var result = await _controller.DeleteMealPlan(1);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("AthleteTrainingPlans");
+        }
+
+        [Fact]
+        public async Task PlansControllerTests_DeleteMealPlan_ReturnsIdNull()
+        {
+            // Arrange
+
+            // Act
+            var result = await _controller.DeleteMealPlan(null);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+        [Fact]
+        public async Task PlansControllerTests_DeleteMealPlan_ReturnsIsNotClubTrainer()
+        {
+            // Arrange
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+
+            // Act
+            var result = await _controller.DeleteMealPlan(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task PlansControllerTests_DeleteMealPlan_ReturnsPlanNotFound()
+        {
+            // Arrange
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(Task.FromResult<MealPlan>(null));
+
+            // Act
+            var result = await _controller.DeleteMealPlan(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
+        }
+
+        [Fact]
+        public async Task PlansControllerTests_DeleteMealPlan_ReturnsDiffIds()
+        {
+            // Arrange
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "1" });
+
+            // Act
+            var result = await _controller.DeleteMealPlan(1);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task PlansControllerTests_DeleteMealPlan_ReturnsTemplateSuccess()
+        {
+            // Arrange
+            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
+            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "", IsTemplate = true });
+
+            // Act
+            var result = await _controller.DeleteMealPlan(1);
+
+            // Assert
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("TrainingTemplates");
+        }
     }
 }
