@@ -1,0 +1,103 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+@model IEnumerable<SCManagement.Models.Team>
+
+<style>
+    .buttons {
+        color:white; 
+        border-radius: 10px; 
+        background-color: #00639A; 
+        border-color: #00639A;  
+        padding: 6px 12px; 
+        text-decoration:none;
+    }
+    .buttons:hover{
+            color: white;
+            text-decoration: none;
+            background-color: #015787;
+        }
+</style>
+
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["MyZone"]</h1>
+    <hr />
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <table id="table_id" class="display" style="width:100%!important;">
+                <thead>
+                    <tr>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Modality)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var teams in Model)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(model => teams.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(model => teams.Modality.Name)
+                            </td>
+                            <td class="d-flex justify-content-end align-items-center">
+                                <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-teamId="@teams.Id" class="buttons me-2">Add Meal Plan</a>
+                                <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-teamId="@teams.Id" class="buttons me-2">Add Training Plan</a>
+                            </td>
+                            
+                        </tr>
+
+                        @foreach (var athlete in teams.Athletes)
+                        {
+                            <tr class="athletes">
+                                <td>
+                                    <span class="text-to-dark" style="float:right">@Html.DisplayFor(model => athlete.FullName)</span>
+                                </td>
+                                <td class="text-to-dark">
+                                    @Html.DisplayFor(model => athlete.DateOfBirth)
+                                </td>
+                                <td class="d-flex justify-content-end align-items-center">
+                                    <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons me-2">Add Meal Plan</a>
+                                    <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons me-2">Add Training Plan</a>
+                                    <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons me-2">Apply Training Template </a>
+                                    <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons me-2">Apply Meal Template </a>
+                                    <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2">See Training Plans</a>
+                                    @if(athlete.MealPlans.Count() != 0)
+                                    {
+                                        <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">See Meal Plans </a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $.noConflict();
+        var table = $("#table_id").DataTable({
+            responsive: true,
+            "ordering": false,
+        });
+        let atheletes = document.getElementsByClassName('athletes');
+        for(let i=0; i< atheletes.length; i++){
+            atheletes[i].classList.remove("odd");
+            atheletes[i].classList.remove("even");
+        }
+    });
+
+</script>

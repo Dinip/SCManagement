@@ -1,0 +1,60 @@
+﻿@model SCManagement.Services.PlansService.Models.MealPlan
+@inject IStringLocalizer<SharedResource> StringLocalizer
+@{
+    ViewData["Title"] = "EditMealPlan";
+}
+
+<div class="container ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">Edit Meal Plan</h1>
+    <hr />
+    <div class="card mt-5 shadow" style="border-radius:20px;">
+        <div class="card-body">
+            <div class="row">
+                <form asp-action="EditMealPlan">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="TrainerId" />
+                    <input type="hidden" asp-for="AthleteId" />
+                    <input type="hidden" asp-for="IsTemplate" />
+                    <input type="hidden" asp-for="Id" />
+                    <div class="form-floating mt-3">
+                        <input asp-for="Name" class="form-control" />
+                        <label asp-for="Name" class="control-label"></label>
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input asp-for="Description" class="form-control" />
+                        <label asp-for="Description" class="control-label"></label>
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+                    @if (!ViewBag.IsTemplate)
+                    {
+                        <div class="form-floating mt-3">
+                            <input asp-for="StartDate" min="@Model.StartDate.Value.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                            <label asp-for="StartDate" class="control-label"></label>
+                            <span asp-validation-for="StartDate" class="text-danger"></span>
+                        </div>
+                        <div class="form-floating mt-3">
+                            <input asp-for="EndDate" min="@Model.EndDate.Value.AddMinutes(5).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                            <label asp-for="EndDate" class="control-label"></label>
+                            <span asp-validation-for="EndDate" class="text-danger"></span>
+                        </div>
+                    }
+                    <div id="sessions" class="row">
+                        @Html.EditorFor(x => x.MealPlanSessions)
+                    </div>
+                    <div class="d-flex mt-5" style="float:right;">
+                        <div class="ms-2">
+                            <a asp-action="TrainingZone" asp-controller="MyClub" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Cancel"]</a>
+                        </div>
+                        <div class="form-group ms-2">
+                            <button type="submit" name="action" value="Add sessions" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Add sessions</button>
+                        </div>
+                        <div class="form-group ms-2 ms-2">
+                            <button type="submit" name="action" value="Edit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Edit</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

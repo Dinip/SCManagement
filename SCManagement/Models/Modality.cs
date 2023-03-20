@@ -1,4 +1,6 @@
-﻿namespace SCManagement.Models
+﻿using SCManagement.Services.PlansService.Models;
+
+namespace SCManagement.Models
 {
     /// <summary>
     /// This class represents a Modality
@@ -7,7 +9,7 @@
     {
         public int Id { get; set; }
         public string Name { get; set; }
-
         public ICollection<Club>? Clubs { get; set; }
+        public ICollection<TrainingPlan>? TrainingPlans { get; set; }
     }
 }

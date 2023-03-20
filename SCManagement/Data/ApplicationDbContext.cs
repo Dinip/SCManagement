@@ -7,6 +7,7 @@ using SCManagement.Services.AzureStorageService.Models;
 using Unidecode.NET;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.StatisticsService.Models;
+using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Data
 {
@@ -41,6 +42,9 @@ namespace SCManagement.Data
         public DbSet<ClubModalityStatistics> ClubModalityStatistics { get; set; }
         public DbSet<ClubPaymentStatistics> ClubPaymentStatistics { get; set; }
         public DbSet<ClubUserStatistics> ClubUserStatistics { get; set; }
+        public DbSet<TrainingPlan> TrainingPlans { get; set; }
+        public DbSet<MealPlan> MealPlans { get; set; }
+        public DbSet<Goal> Goals { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -111,6 +115,30 @@ namespace SCManagement.Data
 
             builder.Entity<User>().Navigation(e => e.ProfilePicture).AutoInclude();
             builder.Entity<Team>().HasMany(x => x.Athletes).WithMany("Teams");
+
+            builder.Entity<TrainingPlan>()
+            .HasOne(tp => tp.Athlete)
+            .WithMany(u => u.TrainingPlans)
+            .HasForeignKey(tp => tp.AthleteId);
+
+            builder.Entity<TrainingPlan>()
+            .Ignore(tp => tp.Athlete);
+
+            builder.Entity<MealPlan>()
+            .HasOne(tp => tp.Athlete)
+            .WithMany(u => u.MealPlans)
+            .HasForeignKey(tp => tp.AthleteId);
+
+            builder.Entity<MealPlan>()
+            .Ignore(tp => tp.Athlete);
+
+            builder.Entity<Goal>()
+            .HasOne(tp => tp.Athlete)
+            .WithMany(u => u.Goals)
+            .HasForeignKey(tp => tp.AthleteId);
+
+            builder.Entity<Goal>()
+            .Ignore(tp => tp.Trainer);
         }
     }
 }

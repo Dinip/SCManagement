@@ -1786,4 +1786,12 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Selecione o Ano de Pesquisa</value>
     <comment>18-03-2023_StatisticsView</comment>
   </data>
+  <data name="Error_DateGreaterThan" xml:space="preserve">
+    <value>A data final selecionada é anterior à data inicial</value>
+    <comment>11-03-2023_Plans</comment>
+  </data>
+  <data name="Error_IsDateBeforeToday" xml:space="preserve">
+    <value>A data selecionada é antes de hoje</value>
+    <comment>11-03-2023_Plans</comment>
+  </data>
 </root>

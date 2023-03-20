@@ -1656,4 +1656,12 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Select Research Year</value>
     <comment>18-03-2023_StatisticsView</comment>
   </data>
+  <data name="Error_DateGreaterThan" xml:space="preserve">
+    <value>The end date selected is before the start date</value>
+    <comment>11-03-2023_Plans</comment>
+  </data>
+  <data name="Error_IsDateBeforeToday" xml:space="preserve">
+    <value>The date selected is before today</value>
+    <comment>11-03-2023_Plans</comment>
+  </data>
 </root>

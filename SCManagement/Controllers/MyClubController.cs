@@ -18,6 +18,8 @@ using SCManagement.Services;
 using SCManagement.Data.Migrations;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Services.AzureStorageService;
+using SCManagement.Services.PlansService;
+using Microsoft.IdentityModel.Tokens;
 
 namespace SCManagement.Controllers
 {
@@ -35,6 +37,7 @@ namespace SCManagement.Controllers
         private readonly ITeamService _teamService;
         private readonly ITranslationService _translationService;
         private readonly IPaymentService _paymentService;
+        private readonly IPlanService _planService;
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
         private readonly IAzureStorage _azureStorage;
@@ -58,7 +61,8 @@ namespace SCManagement.Controllers
             IPaymentService paymentService,
             ApplicationContextService applicationContextService,
             IStringLocalizer<SharedResource> stringLocalizer,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            IPlanService planService)
         {
             _userManager = userManager;
             _clubService = clubService;
@@ -69,6 +73,7 @@ namespace SCManagement.Controllers
             _applicationContextService = applicationContextService;
             _stringLocalizer = stringLocalizer;
             _azureStorage = azureStorage;
+            _planService = planService;
         }
 
         public async Task<IActionResult> Unavailable()
@@ -908,7 +913,6 @@ namespace SCManagement.Controllers
             return View(payments);
         }
 
-
         public async Task<IActionResult> MyZone()
         {
             UsersRoleClub role = _applicationContextService.UserRole;
@@ -925,9 +929,7 @@ namespace SCManagement.Controllers
                 Bioimpedance = bio
             };
 
-
             return View(myModel);
-
         }
 
         public async Task<IActionResult> CreateBioimpedance()
@@ -951,7 +953,6 @@ namespace SCManagement.Controllers
             await _userService.CreateBioimpedance(bioimpedance);
 
             return RedirectToAction(nameof(MyZone));
-
         }
 
         public async Task<IActionResult> UpdateBioimpedance()
@@ -1029,8 +1030,6 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(MyZone));
         }
 
-
-
         //[HttpPost]
         //public async Task<IActionResult> InsertEMD(IFormFile FileEMD)
         //{
@@ -1058,16 +1057,12 @@ namespace SCManagement.Controllers
         {
             var userWithEMD = await _userService.GetUserWithEMD(userId);
             return userWithEMD.EMD == null ? _stringLocalizer["Pending_Add"] : userWithEMD.EMD.Uri;
-
         }
-
-
-
 
         public class MyZoneModel
         {
             public string UserId { get; set; }
-            public User? User {get; set; }
+            public User? User { get; set; }
             public Bioimpedance? Bioimpedance { get; set; }
 
             public string? EMDUrl { get; set; }
@@ -1075,5 +1070,18 @@ namespace SCManagement.Controllers
             public IFormFile? FileEMD { get; set; }
         }
 
+        public async Task<IActionResult> TrainingZone()
+        {
+            //get the user selected role
+            UsersRoleClub role = _applicationContextService.UserRole;
+
+            //Check if is trainer
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.HaveMealTemplate = ((await _planService.GetTemplateMealPlans(role.UserId))?.Any() ?? false);
+            ViewBag.HaveTrainingTemplate = ((await _planService.GetTemplateTrainingPlans(role.UserId))?.Any() ?? false);
+
+            return View(await _teamService.GetTeamsByTrainer(role.UserId));
+        }
     }
 }
