@@ -678,7 +678,7 @@ We apologize for the inconvenience.</value>
   </data>
   <data name="DavidAbout" xml:space="preserve">
     <value>I'm a software engineering student at the polytechnic institute of setúbal.
-                            I am 20 years old and I am from Portugal.
+                            I am 21 years old and I am from Portugal.
                             I have only had professional contact in sectors different from the area I am majoring in.
                             I'm an open-minded person and I welcome any challenge. In my personal life, I admire the values of sincerity, dedication,
                             and kindness.</value>
@@ -1523,7 +1523,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>10-03-2023_translations</comment>
   </data>
   <data name="BasalMetabolism" xml:space="preserve">
-    <value>Basal Metabolism</value>
+    <value>Basal Metabolism (kcal/day)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="CreateBioimpedance" xml:space="preserve">
@@ -1531,23 +1531,23 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="FatMass" xml:space="preserve">
-    <value>Fat Mass</value>
+    <value>Fat Mass (%)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Height</value>
+    <value>Height (5'11)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Hydration" xml:space="preserve">
-    <value>Hydration</value>
+    <value>Hydration (%)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="LeanMass" xml:space="preserve">
-    <value>Lean Mass</value>
+    <value>Lean Mass (%)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="MuscleMass" xml:space="preserve">
-    <value>Muscle Mass</value>
+    <value>Muscle Mass (%)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="MyZone" xml:space="preserve">
@@ -1555,11 +1555,11 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="ViceralFat" xml:space="preserve">
-    <value>Viceral Fat</value>
+    <value>Viceral Fat (%)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Weight" xml:space="preserve">
-    <value>Weight</value>
+    <value>Weight (145lbs)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="All" xml:space="preserve">
@@ -1663,5 +1663,25 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Error_IsDateBeforeToday" xml:space="preserve">
     <value>The date selected is before today</value>
     <comment>11-03-2023_Plans</comment>
+  </data>
+  <data name="CreateBio" xml:space="preserve">
+    <value>Create Bioimpedance</value>
+    <comment>19-03-2023_Bio</comment>
+  </data>
+  <data name="LocationEvent" xml:space="preserve">
+    <value>You will need to enter a location in the event</value>
+    <comment>19-03-2023_Events</comment>
+  </data>
+  <data name="NameEvent" xml:space="preserve">
+    <value>You will have to give the event a name</value>
+    <comment>19-03-2023_Events</comment>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+    <comment>19-03-2023_bioimpedance</comment>
+  </data>
+  <data name="UpdateBio" xml:space="preserve">
+    <value>Update Bioimpedance</value>
+    <comment>19-03-2023_bioimpedance</comment>
   </data>
 </root>
