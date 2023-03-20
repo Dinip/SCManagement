@@ -1042,7 +1042,7 @@ namespace SCManagement.Tests.Services {
             await _clubService.UpdateClubAddress(address, 1);
 
             // Assert
-            _context.Address.Where(a => a.Id == 1).First().AddressString.Should().Be("Rua");
+            _context.Address.Where(a => a.Id == 1).First().AddressString.Should().Be("Rua Estefanilha 1, 2910-846 Setúbal, Setúbal, Portugal");
         }
 
         [Fact]
