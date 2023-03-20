@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.PlansService;
 using Microsoft.IdentityModel.Tokens;
+using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Controllers
 {
@@ -922,11 +923,19 @@ namespace SCManagement.Controllers
 
             var EMDUrl = await PrepareUserEMD(role.UserId);
 
+            var myTeams = await _teamService.GetTeamsByAthlete(role.UserId, role.ClubId);
+
+            var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId);
+            var myMealPlans = await _planService.GetMyMealPlans(role.UserId);
+
             var myModel = new MyZoneModel
             {
                 UserId = role.UserId,
                 EMDUrl = EMDUrl,
-                Bioimpedance = bio
+                Bioimpedance = bio,
+                Teams = myTeams,
+                TrainingPlans = myTrainingPlans,
+                MealPlans = myMealPlans
             };
 
             return View(myModel);
@@ -936,6 +945,9 @@ namespace SCManagement.Controllers
         {
             UsersRoleClub role = _applicationContextService.UserRole;
             if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            var bio = await _userService.GetBioimpedance(role.UserId);
+            if (bio != null) return RedirectToAction(nameof(UpdateBioimpedance));
+
             return View(new Bioimpedance { BioimpedanceId = role.UserId });
         }
 
@@ -991,13 +1003,6 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(MyZone));
         }
 
-        //public async Task<IActionResult> RemoveEMD()
-        //{
-        //    await _userService.CheckAndDeleteEMD(await _userService.GetUserWithEMD(_applicationContextService.UserRole.UserId));
-
-        //    return RedirectToAction(nameof(MyZone));
-        //}
-
         [HttpPost]
         public async Task<IActionResult> MyZoneEMDUpdate(IFormFile FileEMD)
         {
@@ -1030,28 +1035,6 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(MyZone));
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> InsertEMD(IFormFile FileEMD)
-        //{
-        //    if(FileEMD != null || FileEMD.Length == 0) { 
-        //        BlobResponseDto uploadResult = await _azureStorage.UploadAsync(FileEMD);
-        //        if (uploadResult.Error)
-        //        {
-        //            return View("CustomError", "Something wrong");
-        //        }
-        //        await _userService.CheckAndDeleteEMD(await _userService.GetUserWithEMD(_applicationContextService.UserRole.UserId));
-
-        //        var user = await _userService.GetUserWithEMD(_applicationContextService.UserRole.UserId);
-        //        user.EMD = uploadResult.Blob;
-        //        var result = await _userManager.UpdateAsync(user);
-        //        if (!result.Succeeded)
-        //        {
-        //            return View("CustomError", "Something wrong");
-        //        }
-        //    }
-
-        //    return RedirectToAction(nameof(MyZone));
-        //}
 
         private async Task<string> PrepareUserEMD(string userId)
         {
@@ -1064,6 +1047,9 @@ namespace SCManagement.Controllers
             public string UserId { get; set; }
             public User? User { get; set; }
             public Bioimpedance? Bioimpedance { get; set; }
+            public IEnumerable<Team>? Teams { get; set; }
+            public IEnumerable<TrainingPlan?>? TrainingPlans { get; set; }
+            public IEnumerable<MealPlan?>? MealPlans { get; set; }
 
             public string? EMDUrl { get; set; }
             public bool RemoveEMD { get; set; } = false;
