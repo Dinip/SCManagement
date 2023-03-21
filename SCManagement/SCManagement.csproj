@@ -53,8 +53,6 @@
 
   <ItemGroup>
     <None Include=".editorconfig" />
-    <None Include="Views\Shared\Components\Address\LocationFilter.cshtml" />
-    <None Include="Views\Shared\Components\Address\LocationSearch.cshtml" />
     <None Include="Views\Shared\Components\CulturePicker\Default.cshtml" />
     <None Include="Views\Shared\Components\UserClubContext\UserClubRoles.cshtml" />
     <None Include="Views\Shared\CustomError.cshtml" />

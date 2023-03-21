@@ -9,7 +9,6 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService.Models;
-using SCManagement.Services.Location;
 using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services.ClubService

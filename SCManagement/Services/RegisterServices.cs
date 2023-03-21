@@ -14,7 +14,6 @@ using Azure.Identity;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.EventService;
 using SCManagement.Services.TranslationService;
-using SCManagement.Services.Location;
 using SCManagement.Services.CronJobService;
 using SCManagement.Services.StatisticsService;
 using SCManagement.Services.PlansService;
@@ -135,7 +134,6 @@ namespace SCManagement.Services
             services.AddTransient<IAzureStorage, AzureStorage>();
             services.AddTransient<IUserService, SCManagement.Services.UserService.UserService>();
             services.AddTransient<IClubService, SCManagement.Services.ClubService.ClubService>();
-            services.AddTransient<ILocationService, SCManagement.Services.Location.LocationService>();
             services.AddTransient<ITeamService, SCManagement.Services.TeamService.TeamService>();
             services.AddTransient<IPaymentService, SCManagement.Services.PaymentService.PaymentService>();
             services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
