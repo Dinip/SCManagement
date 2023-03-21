@@ -44,6 +44,39 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
+        public class TemplatesLists
+        {
+            public List<TrainingPlan> TrainingPlans { get; set; }
+            public List<MealPlan> MealPlans { get; set; }
+        }
+
+        public async Task<IActionResult> Templates()
+        {
+            string userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.IsTemplate = true;
+
+            var trains = await _planService.GetTemplateTrainingPlans(userId);
+
+            if (trains == null) return View("CustomError", "Error_NotFound");
+
+            var meals = await _planService.GetTemplateMealPlans(userId);
+
+            if (meals == null) return View("CustomError", "Error_NotFound");
+
+            var templates = new TemplatesLists
+            {
+                TrainingPlans = (List<TrainingPlan>)trains,
+                MealPlans = (List<MealPlan>)meals
+            };
+
+            return View(templates);
+        }
+
         public async Task<IActionResult> TrainingTemplates()
         {
             string userId = getUserIdFromAuthedUser();
