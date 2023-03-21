@@ -38,6 +38,7 @@ function setTheme(theme) {
     let inputs = document.getElementsByClassName('form-control');
     let clabels = document.getElementsByClassName('control-label');
     let flabels = document.getElementsByClassName('form-label');
+    let tables = document.getElementsByClassName('table');
     let textareas = document.getElementsByTagName('textarea');
     if (theme === "dark") {
         darkToggle.checked = true
@@ -51,6 +52,10 @@ function setTheme(theme) {
         }
         for (let i = 0; i < dropdown.length; i++) {
             dropdown[i].classList.add("bg-dark");
+        }
+
+        for (let i = 0; i < tables.length; i++) {
+            tables[i].classList.add("table-dark");
         }
 
         for (let i = 0; i < clabels.length; i++) {
@@ -130,6 +135,10 @@ function setTheme(theme) {
 
         for (let i = 0; i < clabels.length; i++) {
             clabels[i].style.color = 'black';
+        }
+
+        for (let i = 0; i < tables.length; i++) {
+            tables[i].classList.remove("table-dark");
         }
 
         for (let i = 0; i < flabels.length; i++) {

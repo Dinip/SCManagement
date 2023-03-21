@@ -136,5 +136,15 @@ namespace SCManagement.Services.UserService
             }
         }
 
+        /// <summary>
+        /// Checks if the given user is a trainer in any club
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task<bool> IsTrainerInAnyClub(string userId)
+        {
+            return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 30);
+        }
+
     }
 }
