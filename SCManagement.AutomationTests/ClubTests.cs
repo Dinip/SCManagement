@@ -56,12 +56,7 @@ namespace SeleniumTests
             driver.FindElement(By.Id("idName")).Click();
             driver.FindElement(By.Id("idName")).Clear();
             driver.FindElement(By.Id("idName")).SendKeys("MyClub");
-            driver.FindElement(By.XPath("//div[@id='ModalitiesIds_chosen']/ul")).Click();
-            driver.FindElement(By.XPath("//div[@id='ModalitiesIds_chosen']/div/ul/li")).Click();
-            driver.FindElement(By.XPath("//div[@id='ModalitiesIds_chosen']/ul")).Click();
-            driver.FindElement(By.XPath("//div[@id='ModalitiesIds_chosen']/div/ul/li[2]")).Click();
-            driver.FindElement(By.XPath("//div[@id='ModalitiesIds_chosen']/ul")).Click();
-            driver.FindElement(By.XPath("//div[@id='ModalitiesIds_chosen']/div/ul/li[3]")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"ModalitiesIds\"]/option[1]")).Click();
             driver.FindElement(By.XPath("//input[@value='Create']")).Click();
         }
 
