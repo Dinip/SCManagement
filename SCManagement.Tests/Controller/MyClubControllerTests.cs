@@ -59,8 +59,8 @@ namespace SCManagement.Tests.Controller {
         private readonly IPaymentService _paymentService;
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
-        private readonly IPlanService _planService;
         private readonly IAzureStorage _azureStorage;
+        private readonly IPlanService _planService;
 
         public MyClubControllerTests()
         {
@@ -72,22 +72,11 @@ namespace SCManagement.Tests.Controller {
             _paymentService = A.Fake<IPaymentService>();
             _applicationContextService = A.Fake<ApplicationContextService>();
             _stringLocalizer = A.Fake<IStringLocalizer<SharedResource>>();
-            _planService = A.Fake<IPlanService>();
             _azureStorage = A.Fake<IAzureStorage>();
+            _planService = A.Fake<IPlanService>();
 
             //SUT (system under test)
-            _controller = new MyClubController(
-                _userManager,
-                _clubService,
-                _userService,
-                _teamService,
-                _translationService,
-                _paymentService,
-                _applicationContextService,
-                _stringLocalizer,
-                _azureStorage,
-                _planService
-                );
+            _controller = new MyClubController(_userManager, _clubService, _userService, _teamService, _translationService, _paymentService, _applicationContextService, _stringLocalizer, _azureStorage, _planService);
         }
 
         [Fact]

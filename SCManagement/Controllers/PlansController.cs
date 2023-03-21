@@ -156,7 +156,7 @@ namespace SCManagement.Controllers
 
             await _planService.DeleteMealPlan(plan);
 
-            if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
+            if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = plan.AthleteId });
 
             return RedirectToAction(nameof(MealTemplates));
         }
