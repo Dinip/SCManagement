@@ -1,5 +1,4 @@
-﻿using SCManagement.Data.Migrations;
-using SCManagement.Models;
+﻿using SCManagement.Models;
 
 namespace SCManagement.Services.TeamService
 {

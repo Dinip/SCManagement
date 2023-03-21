@@ -24,6 +24,13 @@ namespace SCManagement.Services.StatisticsService
             _stringLocalizer = stringLocalizer;
         }
 
+        /// <summary>
+        /// Creates statistics about users (partners and athletes) from a specified club.
+        /// Only creates monthly stats and can be run once a day. Updates the existing stats if they exist
+        /// with the new values.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task CreateClubUserStatistics(int clubId)
         {
             List<int> filterIds = new() { 10, 20 };
@@ -64,22 +71,18 @@ namespace SCManagement.Services.StatisticsService
                     };
                     _context.ClubUserStatistics.Add(stat);
                 }
-
-                //daily stats
-                var daily = new ClubUserStatistics
-                {
-                    Value = userCountByRole.FirstOrDefault(s => s.RoleId == id)?.Count ?? 0,
-                    RoleId = id,
-                    ClubId = clubId,
-                    StatisticsRange = StatisticsRange.Day,
-                    Timestamp = prevDay
-                };
-                _context.ClubUserStatistics.Add(daily);
             });
 
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Creates statistics about payments (events and memberships) from a specified club.
+        /// Only creates monthly stats and MUST be only run once a day. Gets the payments received from
+        /// the previous day and updates (sum) the existing stats if they exist or creates an new one.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task CreateClubPaymentStatistics(int clubId)
         {
             var prevDay = DateTime.Now.Date.AddDays(-1);
@@ -130,18 +133,6 @@ namespace SCManagement.Services.StatisticsService
                     };
                     _context.ClubPaymentStatistics.Add(stat);
                 }
-
-                //daily stats
-                var daily = new ClubPaymentStatistics
-                {
-                    Value = prod.Total,
-                    ProductId = prod.ProductId,
-                    ClubId = clubId,
-                    StatisticsRange = StatisticsRange.Day,
-                    ProductType = prod.ProductType,
-                    Timestamp = prevDay
-                };
-                _context.ClubPaymentStatistics.Add(daily);
             });
 
             var sumValueByType = sumValueByProduct
@@ -189,6 +180,13 @@ namespace SCManagement.Services.StatisticsService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Creates statistics about modalities from a specified club.
+        /// Only creates monthly stats and can be run once a day. Updates the existing stats if they exist
+        /// with the new values.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task CreateClubModalityStatistics(int clubId)
         {
             var prevDay = DateTime.Now.Date.AddDays(-1);
@@ -229,22 +227,17 @@ namespace SCManagement.Services.StatisticsService
                     };
                     _context.ClubModalityStatistics.Add(stat);
                 }
-
-                //daily stats
-                var daily = new ClubModalityStatistics
-                {
-                    Value = modality.Count,
-                    ModalityId = modality.ModalityId,
-                    ClubId = clubId,
-                    StatisticsRange = StatisticsRange.Day,
-                    Timestamp = prevDay
-                };
-
-                _context.ClubModalityStatistics.Add(daily);
             });
+
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Gets the current user stats (number of athletes / total slots, staff, active partners / all partners)
+        /// for a specified club. Returns realtime data.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<ICollection<ClubCurrentUsers>> GetCurrentClubUsersStatistics(int clubId)
         {
             List<ClubCurrentUsers> users = new();
@@ -294,6 +287,14 @@ namespace SCManagement.Services.StatisticsService
             return users;
         }
 
+        /// <summary>
+        /// Gets the payment statistics for a specified club. If year is not specified, uses current year.
+        /// Returns 12 entries (1 for each month) with the respective data.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
         public async Task<ICollection<ClubPaymentStatistics>> GetClubPaymentStatistics(int clubId, int? year = null, int? month = null)
         {
             year ??= DateTime.Now.Year;
@@ -323,6 +324,14 @@ namespace SCManagement.Services.StatisticsService
             }
         }
 
+        /// <summary>
+        /// Gets the payment details statistics for a specified club. If year is not specified, uses current year.
+        /// Returns X entries for each month corresponding to each product that was "sold" that month.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
         public async Task<ICollection<ClubPaymentStatistics>> GetClubPaymentDetailsStatistics(int clubId, int? year = null, int? month = null)
         {
             if (year == null) year = DateTime.Now.Year;
@@ -354,6 +363,16 @@ namespace SCManagement.Services.StatisticsService
             }
         }
 
+        /// <summary>
+        /// Gets the user statistics for a specified club. If year is not specified, uses current year.
+        /// User type must be specified (id from database). Mostly used to get the number of athletes 
+        /// and partners.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="userTypeId"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
         public async Task<ICollection<ClubUserStatistics>> GetClubUserStatistics(int clubId, int userTypeId, int? year = null, int? month = null)
         {
             if (year == null) year = DateTime.Now.Year;
@@ -383,6 +402,13 @@ namespace SCManagement.Services.StatisticsService
             }
         }
 
+        /// <summary>
+        /// Gets the modality statistics for a specified club. If year is not specified, uses current year.
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="year"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
         public async Task<ICollection<ClubModalityStatistics>> GetClubModalityStatistics(int clubId, int? year = null, int? month = null)
         {
             if (year == null) year = DateTime.Now.Year;

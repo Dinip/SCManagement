@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
-using SCManagement.Data.Migrations;
 using SCManagement.Models;
-using EventTranslation = SCManagement.Models.EventTranslation;
 
 namespace SCManagement.Services.EventService
 {

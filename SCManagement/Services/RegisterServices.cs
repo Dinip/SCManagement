@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using SCManagement.Data;
 using SCManagement.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Middlewares;
 using SCManagement.Services.ClubService;

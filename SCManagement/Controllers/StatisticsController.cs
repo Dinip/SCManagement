@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json.Linq;
-using SCManagement.Models;
 using SCManagement.Services;
 using SCManagement.Services.StatisticsService;
-using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Controllers
 {

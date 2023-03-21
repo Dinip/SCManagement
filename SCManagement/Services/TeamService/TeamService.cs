@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
-using SCManagement.Data.Migrations;
 using SCManagement.Models;
 
 namespace SCManagement.Services.TeamService

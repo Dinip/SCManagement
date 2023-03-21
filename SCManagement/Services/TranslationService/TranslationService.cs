@@ -1,9 +1,6 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using SCManagement.Data;
 using SCManagement.Models;
 using System.Text;
-using System.Text.Json.Nodes;
 
 namespace SCManagement.Services.TranslationService
 {

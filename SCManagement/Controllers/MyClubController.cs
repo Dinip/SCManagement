@@ -15,11 +15,8 @@ using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services;
-using SCManagement.Data.Migrations;
-using Microsoft.EntityFrameworkCore;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.PlansService;
-using Microsoft.IdentityModel.Tokens;
 using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Controllers

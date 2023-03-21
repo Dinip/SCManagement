@@ -42,7 +42,7 @@ namespace SCManagement.Services.PaymentService
         }
 
         /// <summary>
-        /// Get all payments from a user ordered by date
+        /// Get all payments from a user, ordered by date
         /// from the most recent to the oldest
         /// </summary>
         /// <param name="userId"></param>
@@ -68,6 +68,14 @@ namespace SCManagement.Services.PaymentService
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        /// <summary>
+        /// Creates a new subscription on easypay service and returns the data
+        /// from easypay
+        /// </summary>
+        /// <param name="product"></param>
+        /// <param name="user"></param>
+        /// <param name="startTime"></param>
+        /// <returns></returns>
         private async Task<EasypayResponse?> SubscriptionApiRequest(Product product, User user, DateTime startTime)
         {
             var client = await createHttpClient(product.ClubId);
@@ -101,6 +109,12 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
+        /// <summary>
+        /// Creates a single payment on easypay service and returns the data
+        /// </summary>
+        /// <param name="paymentInput"></param>
+        /// <param name="user"></param>
+        /// <returns></returns>
         private async Task<EasypayResponse?> SinglePaymentApiRequest(Payment paymentInput, User user)
         {
             var client = await createHttpClient(paymentInput.Product.ClubId);
@@ -132,6 +146,11 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
+        /// <summary>
+        /// Gets single payment data from database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Payment?> GetPayment(int id)
         {
             return await _context.Payment
@@ -139,6 +158,11 @@ namespace SCManagement.Services.PaymentService
                 .FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        /// <summary>
+        /// Gets all subscriptions from a user, ordered by next time date
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Subscription>> GetSubscriptions(string userId)
         {
             return await _context.Subscription
@@ -149,6 +173,11 @@ namespace SCManagement.Services.PaymentService
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets single subscription data from database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<Subscription?> GetSubscription(int id)
         {
             return await _context.Subscription
@@ -157,6 +186,12 @@ namespace SCManagement.Services.PaymentService
                 .FirstOrDefaultAsync(s => s.Id == id);
         }
 
+        /// <summary>
+        /// Returns the current subscription of a user membership to a club or null
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<Subscription?> GetMembershipSubscription(string userId, int clubId)
         {
             return await _context.Subscription
@@ -164,10 +199,12 @@ namespace SCManagement.Services.PaymentService
                 .FirstOrDefaultAsync(s => s.UserId == userId && s.ClubId == clubId && s.Product.ProductType == ProductType.ClubMembership);
         }
 
-        //fazer uma funçao que recebe a key do pagamento / subscricao, vai buscar
-        //a info da entitade, verifica de quem é o produto (clube ou sistema) e
-        //vai buscar as api keys do clube ou do sistema e define no httpclient
-
+        /// <summary>
+        /// Gets data from a single payment on easypay service and returns the data from them
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         private async Task<EasypayResponse?> singlePaymentIdApiRequest(string id, int? clubId)
         {
             var client = await createHttpClient(clubId);
@@ -183,6 +220,12 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
+        /// <summary>
+        /// Gets data from a subscription on easypay service and returns the data from them
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         private async Task<EasypayResponse?> subscriptionPaymentIdApiRequest(string id, int? clubId)
         {
             var client = await createHttpClient(clubId);
@@ -198,6 +241,12 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayResponse>();
         }
 
+        /// <summary>
+        /// Deletes a subscription on easypay service and returns true if success
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         private async Task<bool> deleteSubscriptionId(string id, int? clubId)
         {
             var client = await createHttpClient(clubId);
@@ -213,6 +262,12 @@ namespace SCManagement.Services.PaymentService
             return true;
         }
 
+        /// <summary>
+        /// Helper function to create a json object with credit card
+        /// info, to be stored on the associated transaction
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         private string? buildCardInfo(EasypayResponse info)
         {
             if (info.method.type == "CC" &&
@@ -230,6 +285,11 @@ namespace SCManagement.Services.PaymentService
             return null;
         }
 
+        /// <summary>
+        /// Handles logic from a single payment data from easypay webhook
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public async Task WebhookHandleSinglePayment(PaymentWebhookGeneric data)
         {
             var payment = await _context.Payment.Include(p => p.Product).FirstOrDefaultAsync(p => p.PaymentKey == data.id);
@@ -273,6 +333,13 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Updates a user event enrolment when the payment is completed
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <param name="userId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         private async Task updateEventEnroll(int eventId, string userId, EnrollPaymentStatus status)
         {
             var enroll = await _context.EventEnroll.FirstAsync(e => e.UserId == userId && e.EventId == eventId);
@@ -280,6 +347,13 @@ namespace SCManagement.Services.PaymentService
             _context.EventEnroll.Update(enroll);
         }
 
+        /// <summary>
+        /// Updates club status when the payment is completed
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="status"></param>
+        /// <param name="endDate"></param>
+        /// <returns></returns>
         private async Task updateClubSubStatus(int clubId, ClubStatus status, DateTime? endDate = null)
         {
             var club = await _context.Club.FirstAsync(e => e.Id == clubId);
@@ -291,6 +365,13 @@ namespace SCManagement.Services.PaymentService
             _context.Club.Update(club);
         }
 
+        /// <summary>
+        /// Updates club membership status when the payment is completed
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="userId"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
         private async Task updateClubMembershipStatus(int clubId, string userId, UserRoleStatus status)
         {
             if (status == UserRoleStatus.Canceled)
@@ -306,6 +387,11 @@ namespace SCManagement.Services.PaymentService
             }
         }
 
+        /// <summary>
+        /// Handles logic from a subscription creation data from easypay webhook
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public async Task WebhookHandleSubscriptionCreate(PaymentWebhookGeneric data)
         {
             var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
@@ -321,6 +407,11 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Handles logic from payment recieved associated with a subscription from easypay webhook
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         public async Task WebhookHandleSubscriptionPayment(PaymentWebhookGeneric data)
         {
             var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.SubscriptionKey == data.id);
@@ -374,6 +465,10 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Gets all available club subscription plans (enabled)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IEnumerable<Product>> GetClubSubscriptionPlans()
         {
             return await _context.Product
@@ -382,12 +477,13 @@ namespace SCManagement.Services.PaymentService
                 .ToListAsync();
         }
 
-        public async Task<Product?> GetClubSubscriptionPlans(int planId)
-        {
-            return await _context.Product
-                .FirstOrDefaultAsync(p => p.ProductType == ProductType.ClubSubscription && p.Enabled && p.Id == planId);
-        }
-
+        /// <summary>
+        /// Creates a subscription to a plan for a club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="userId"></param>
+        /// <param name="planId"></param>
+        /// <returns></returns>
         public async Task<Subscription> SubscribeClubToPlan(int clubId, string userId, int planId)
         {
             var product = await GetProduct(planId);
@@ -431,6 +527,11 @@ namespace SCManagement.Services.PaymentService
             return sub;
         }
 
+        /// <summary>
+        /// Updates subscription to auto renew
+        /// </summary>
+        /// <param name="subId"></param>
+        /// <returns></returns>
         public async Task<Subscription?> SetSubscriptionToAuto(int subId)
         {
             //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
@@ -465,6 +566,11 @@ namespace SCManagement.Services.PaymentService
             return subscription;
         }
 
+        /// <summary>
+        /// Cancels subscription auto renew
+        /// </summary>
+        /// <param name="subId"></param>
+        /// <returns></returns>
         public async Task<Subscription?> CancelAutoSubscription(int subId)
         {
             var subscription = await _context.Subscription.Include(s => s.Product).Include(s => s.User).FirstOrDefaultAsync(s => s.Id == subId);
@@ -512,6 +618,11 @@ namespace SCManagement.Services.PaymentService
             return subscription;
         }
 
+        /// <summary>
+        /// Cancels subscription
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task CancelSubscription(int id)
         {
             var subscription = await _context.Subscription.Include(p => p.Product).FirstOrDefaultAsync(s => s.Id == id);
@@ -557,6 +668,13 @@ namespace SCManagement.Services.PaymentService
             return;
         }
 
+        /// <summary>
+        /// Update subscription value in easypay
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="newValue"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         private async Task<bool> updateSubscription(string id, float newValue, int? clubId)
         {
             var client = await createHttpClient(clubId);
@@ -575,6 +693,13 @@ namespace SCManagement.Services.PaymentService
             return true;
         }
 
+        /// <summary>
+        /// Upgrades a subscription from a plan to a new one
+        /// </summary>
+        /// <param name="subId"></param>
+        /// <param name="newPlanId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task UpgradeClubPlan(int subId, int newPlanId)
         {
             var subscription = await GetSubscription(subId);
@@ -625,6 +750,11 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Creates a product based on the event data
+        /// </summary>
+        /// <param name="myEvent"></param>
+        /// <returns></returns>
         public async Task CreateProductEvent(Event myEvent)
         {
             _context.Product.Add(new Product
@@ -641,6 +771,12 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Updates a product based on the event data
+        /// </summary>
+        /// <param name="myEvent"></param>
+        /// <param name="delete"></param>
+        /// <returns></returns>
         public async Task UpdateProductEvent(Event myEvent, bool delete = false)
         {
             var oldProduct = await _context.Product.Where(p => p.OriginalId == myEvent.Id && p.ClubId == myEvent.ClubId && p.ProductType == ProductType.Event).FirstOrDefaultAsync();
@@ -689,6 +825,11 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Creates an event payment for the user enroll
+        /// </summary>
+        /// <param name="enroll"></param>
+        /// <returns></returns>
         public async Task<Payment?> CreateEventPayment(EventEnroll enroll)
         {
             var product = await _context.Product.Where(p => p.ProductType == ProductType.Event && p.OriginalId == enroll.EventId && p.Enabled && p.Value != 0).FirstOrDefaultAsync();
@@ -708,10 +849,13 @@ namespace SCManagement.Services.PaymentService
             return pay;
         }
 
+        /// <summary>
+        /// Handles a single payment request
+        /// </summary>
+        /// <param name="paymentInput"></param>
+        /// <returns></returns>
         public async Task<Payment?> PaySinglePayment(PayPayment paymentInput)
         {
-            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
-
             var payment = await GetPayment(paymentInput.Id);
             if (payment == null) return null;
 
@@ -734,6 +878,11 @@ namespace SCManagement.Services.PaymentService
             return payment;
         }
 
+        /// <summary>
+        /// Creates/updates club membership product based on club payment settings
+        /// </summary>
+        /// <param name="clubPaymentSettings"></param>
+        /// <returns></returns>
         public async Task UpdateProductClubMembership(ClubPaymentSettings clubPaymentSettings)
         {
             var oldProduct = await _context.Product.Where(p => p.ClubId == clubPaymentSettings.ClubPaymentSettingsId && p.ProductType == ProductType.ClubMembership).FirstOrDefaultAsync();
@@ -763,6 +912,12 @@ namespace SCManagement.Services.PaymentService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Requests a config from easypay (used to test account credentials)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
         private async Task<EasypayConfigResponse?> easypayConfigRequest(string id, string key)
         {
             var client = new HttpClient();
@@ -782,6 +937,13 @@ namespace SCManagement.Services.PaymentService
             return await result.Content.ReadFromJsonAsync<EasypayConfigResponse>();
         }
 
+        /// <summary>
+        /// Tests if the account credentials are valid (easypay)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public async Task TestAccount(string id, string key)
         {
             var result = await easypayConfigRequest(id, key);
@@ -797,6 +959,11 @@ namespace SCManagement.Services.PaymentService
             }
         }
 
+        /// <summary>
+        /// Creates a club membership subscription for a given user in a given club
+        /// </summary>
+        /// <param name="partner"></param>
+        /// <returns></returns>
         public async Task<Subscription> CreateMembershipSubscription(UsersRoleClub partner)
         {
             var product = await _context.Product.FirstAsync(p => p.ProductType == ProductType.ClubMembership && p.ClubId == partner.ClubId);
@@ -836,6 +1003,11 @@ namespace SCManagement.Services.PaymentService
             return sub;
         }
 
+        /// <summary>
+        /// Cancel a payment for a given event enrolment
+        /// </summary>
+        /// <param name="enroll"></param>
+        /// <returns></returns>
         public async Task CancelEventPayment(EventEnroll enroll)
         {
             var product = await _context.Product
@@ -855,6 +1027,11 @@ namespace SCManagement.Services.PaymentService
 
         }
 
+        /// <summary>
+        /// Checks if club has a valid key property on their settings
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<bool> ClubHasValidKey(int clubId)
         {
             var club = await _context.ClubPaymentSettings.FindAsync(clubId);
@@ -862,6 +1039,11 @@ namespace SCManagement.Services.PaymentService
             return club.ValidCredentials;
         }
 
+        /// <summary>
+        /// Gets all payments for a given club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<Payment>> GetClubPayments(int clubId)
         {
             return await _context.Payment
@@ -871,6 +1053,11 @@ namespace SCManagement.Services.PaymentService
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Gets the product info from a given club subscription plan
+        /// </summary>
+        /// <param name="planId"></param>
+        /// <returns></returns>
         public async Task<Product?> GetClubSubscriptionPlan(int planId)
         {
             return await _context.Product

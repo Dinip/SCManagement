@@ -1,22 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Data;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.EventService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
-using System.Text.Json;
 using JsonSerializer = System.Text.Json.JsonSerializer;
-using System.Security.Cryptography.Xml;
 
 namespace SCManagement.Controllers
 {

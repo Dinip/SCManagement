@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
-using SCManagement.Models;
 using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Services.PlansService

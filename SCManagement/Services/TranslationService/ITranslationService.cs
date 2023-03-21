@@ -1,6 +1,4 @@
-﻿using System.Text.Json.Nodes;
-using Newtonsoft.Json.Linq;
-using SCManagement.Models;
+﻿using SCManagement.Models;
 
 namespace SCManagement.Services.TranslationService
 {
