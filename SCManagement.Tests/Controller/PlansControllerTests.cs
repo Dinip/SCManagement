@@ -817,7 +817,7 @@ namespace SCManagement.Tests.Controller
             var result = await _controller.CreateGoal(new Goal { AthleteId = "1", TrainerId = "2", Name = "Meta 1",});
 
             // Assert
-            result.Should().BeOfType<ViewResult>();
+            result.Should().BeOfType<RedirectToActionResult>();
         }
     }
 }
