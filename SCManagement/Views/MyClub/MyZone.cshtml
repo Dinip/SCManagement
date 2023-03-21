@@ -1,256 +1,284 @@
 ﻿@model SCManagement.Controllers.MyClubController.MyZoneModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
-<h1>@StringLocalizer["MyZone"]</h1>
-
-<div id="modal" class="modal">
-    <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
-        <span onclick="$('#modal').hide()" class="close">&times;</span>
-        <iframe id="frame" src="@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : Model.EMDUrl)" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%"></iframe>
-    </div>
-</div>
-
-<div id="modal1" class="modal">
-    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
-        <span class="text-to-dark">@StringLocalizer["Are u sure you want to delete?"]</span>
-        <div class="d-flex justify-content-end mt-3">
-            <button onclick="$('#modal1').hide()" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Cancel"]</button>
-            <button onclick="removeFile('image')" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Remove"]</button>
-        </div>
-    </div>
-</div>
-
-
-@*MyTeams*@
-<div>
-    <div>
-        <h1>Teams</h1>
-    </div>
-    <div>
-        @if (Model.Teams != null)
-        {
-            @foreach (var team in Model.Teams)
-            {
-                <div>
-                    <span><b>@team.Name</b></span>
-                    <span>@team.Modality.Name</span>
-                </div>
-            }
-        }
-    </div>
-
-</div>
-
-
-
-@*MyTrainingPlans*@
-<div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
-    <div class="card-body">
-        <table id="table_id" class="display">
-            <thead>
-                <tr>
-                    <th class="text-to-dark">
-                        Modalidade
-                    </th>
-                    <th class="text-to-dark">
-                        Name
-                    </th>
-                    <th class="text-to-dark">
-                        Description
-                    </th>
-                    <th class="text-to-dark">
-                        Trainer
-                    </th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @if(Model.TrainingPlans!=null)
-                @foreach (var item in Model.TrainingPlans)
-                {
-                    <tr>
-                        <td class="text-to-dark">
-                            @Html.DisplayFor(modelItem => item.Modality.Name)
-                        </td>
-                        <td class="text-to-dark">
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                        <td class="text-to-dark">
-                            @Html.DisplayFor(modelItem => item.Description)
-                        </td>
-                        <td class="text-to-dark">
-                            @Html.DisplayFor(modelItem => item.Trainer.FullName)
-                        </td>
-                        <td>
-                            <div class="d-flex align-items-center justify-content-end">
-                                <a asp-action="EditTrainingPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
-                                <a asp-action="TrainingDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Details</a>
-                                <form asp-action="DeleteTrainingPlan">
-                                    <input type="hidden" name="id" value="@item.Id" />
-                                    <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Delete</button>
-                                </form>
-                            </div>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>
-</div>
-
-
-@*MyMealPlans*@
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
-        <div class="card-body">
-            <table id="table_id" class="display">
-                <thead>
-                    <tr>
-                    <tr>
-                        <th class="text-to-dark">
-                                Name
-                        </th>
-                        <th class="text-to-dark">
-                                Description
-                        </th>
-                        <th class="text-to-dark">
-                                Trainer
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @if(Model.MealPlans != null)
-                    @foreach (var item in Model.MealPlans)
-                    {
-                        <tr>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Name)
-                            </td>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Description)
-                            </td>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Trainer.FullName)
-                            </td>
-                            <td>
-                                <div class="d-flex align-items-center justify-content-end">
-                                    <a asp-action="EditMealPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
-                                    <a asp-action="MealDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">Details</a>
-                                    <form asp-action="DeleteMealPlan">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Delete</button>
-                                    </form>
-                                </div>
-
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+<div class="container-fluid">
+    <h1 style="margin-top:130px !important; margin-left:3%" class="text-to-dark">@StringLocalizer["MyZone"]</h1>
+    <div id="modal" class="modal">
+        <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
+            <span onclick="$('#modal').hide()" class="close">&times;</span>
+            <iframe id="frame" src="@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : Model.EMDUrl)" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%"></iframe>
         </div>
     </div>
 
-
-@if (Model.Bioimpedance != null)
-{
-    <div>
-        <div>
-            <h3>Bioimpedance</h3>
-            <span> ( @Html.DisplayFor(model => model.Bioimpedance.LastUpdateDate) ) </span>
+    <div id="modal1" class="modal">
+        <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+            <span class="text-to-dark">@StringLocalizer["Are u sure you want to delete?"]</span>
+            <div class="d-flex justify-content-end mt-3">
+                <button onclick="$('#modal1').hide()" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Cancel"]</button>
+                <button onclick="removeFile('image')" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Remove"]</button>
+            </div>
         </div>
-        @*
-    //Este botao é para ser um icon
-        *@
-        <a asp-action="UpdateBioimpedance">Update</a>
-        <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.Weight)
-        </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.Weight)
-        </dd>
-        <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.Height)
-        </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.Height)
-        </dd>
-        <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.Hydration)
-        </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.Hydration)
-        </dd>
-        <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.FatMass)
-        </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.FatMass)
-        </dd>
-        <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.LeanMass)
-        </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.LeanMass)
-        </dd>
-        <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.MuscleMass)
-        </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.MuscleMass)
-        </dd>
-        <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.ViceralFat)
-        </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.ViceralFat)
-        </dd>
-                <dt class="col-sm-2 text-to-dark">
-            @Html.DisplayNameFor(model => model.Bioimpedance.BasalMetabolism)
-            </dt>
-        <dd class="col-sm-10 text-to-dark">
-            @Html.DisplayFor(model => model.Bioimpedance.BasalMetabolism)
-            </dd>
-
     </div>
 
-    <div>
-        <h3>Medica Exam</h3>
-            <div class="row h-auto">
-                <div class="col-2">
-                    <strong class="text-to-dark">EMD</strong>
-                </div>
-                <div class="col-10 text-end">
-
-                <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
-                    <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
-                    <button id="saveInsertEmd" type="submit" style="display:none">Save</button>
-                </form>
-
-                    <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" style="margin-right:20px;" onclick="toggleModal()"></i>
-
-
-
-                    <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
-
-                    
-                    <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
-               style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
-                    <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
+    <div class="w-100 d-md-flex">
+        <div class="p-5 col-md-6 col-12">
+            <h2 class="text-to-dark">@StringLocalizer["Teams"]</h2>
+            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+                <div class="card-body d-flex flex-column">
+                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                        <table id="table_id1" class="display" style="width:100%!important;">
+                            <thead>
+                                <tr class="text-to-dark">
+                                    <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Teams"]
+                                    </th>
+                                    <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Modality"]
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Teams != null)
+                                {
+                                    @foreach (var team in Model.Teams)
+                                    {
+                                        <tr class="text-to-dark">
+                                            <td class="mt-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => team.Name)
+                                            </td>
+                                            <td class="mt-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => team.Modality.Name)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <hr style="margin-bottom:20px;" />
-        <div>
-            <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
         </div>
 
-        
+        <div class="p-5 col-md-6 col-12">
+            <h2 class="text-to-dark">@StringLocalizer["ActiveTrainingPlan"]</h2>
+            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+                <div class="card-body d-flex flex-column text-to-dark">
+                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                        <table id="table_id2" class="display" style="width:100%!important;">
+                            <thead>
+                                <tr class="text-to-dark">
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                @StringLocalizer["Modality"]
+                                    </th>
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                @StringLocalizer["Name"]
+                                    </th>
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                @StringLocalizer["Description"]
+                                    </th>
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                @StringLocalizer["Trainer"]
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.TrainingPlans != null)
+                                    @foreach (var item in Model.TrainingPlans)
+                                    {
+                                        <tr class="text-to-dark">
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Modality.Name)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle">
+                                                <div class="d-flex align-items-center">
+                                                    <a asp-action="TrainingDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-}else{
-    <a asp-action="CreateBioimpedance">@StringLocalizer["CreateBioimpedance"]</a>
-}
+
+    <div class="row col-12 p-5 flex-wrap">
+        <h2 class="text-to-dark">@StringLocalizer["FoodPlan"]</h2>
+        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+            <div class="card-body d-flex flex-column text-to-dark">
+                <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                    <table id="table_id3" class="display" style="width:100%!important;">
+                        <thead>
+                            <tr class="text-to-dark">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                            @StringLocalizer["Name"]
+                                </th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                            @StringLocalizer["Description"]
+                                </th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                            @StringLocalizer["Trainer"]
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.MealPlans != null)
+                                @foreach (var item in Model.MealPlans)
+                                {
+                                    <tr class="text-to-dark">
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
+                                            @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                                        </td>
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle">
+                                            <div class="d-flex align-items-center">
+                                                <a asp-action="MealDetails" asp-route-id="@item.Id" class="me-2 align-middle" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    @if (Model.Bioimpedance != null)
+    {
+        <div class="row col-12 p-5">
+            <h2 class="text-to-dark">@StringLocalizer["Bio"]</h2>
+            <div class="mb-4 mt-3">
+                <div class="card text-to-dark">
+                    <div class="card-body">
+                        <dl class="row">
+                            <dt class="col-sm-6 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.Weight)</dt>
+                            <dd class="col-sm-6 ps-4">@Html.DisplayFor(model => model.Bioimpedance.Weight)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.Height)</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.Height)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.Hydration)</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.Hydration)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.FatMass)</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.FatMass)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.LeanMass)</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.LeanMass)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.MuscleMass)</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.MuscleMass)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.ViceralFat)</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.ViceralFat)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@Html.DisplayNameFor(model => model.Bioimpedance.BasalMetabolism)</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.BasalMetabolism)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["Actualize"]</dt>
+                            <dd class="col-sm-6 pt-2 ps-4">@Html.DisplayFor(model => model.Bioimpedance.LastUpdateDate)</dd>
+                            <dt class="col-sm-6 pt-2 ps-4"></dt>
+                            <dd class="col-sm-6 pt-2 ps-4"><a asp-action="UpdateBioimpedance" class="me-2 align-middle" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">@StringLocalizer["Update"]</a></dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row col-12 p-5 flex-wrap">
+            <h2 class="text-to-dark">@StringLocalizer["MD"]</h2>
+            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+                <div class="card-body">
+                    <div style="width: 100%; max-height: 300px;">
+                        <div class="d-md-flex justify-content-between">
+                            <div class="col-xs-12">
+                                <strong class="text-to-dark">@StringLocalizer["ExpiryDate"]:</strong>
+                            </div>
+                            <div>
+                                <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
+                                    <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
+                                    <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
+                                </form>
+
+                                <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" onclick="toggleModal()"></i>
+
+                                <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
+
+                                <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
+                               style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
+                                <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="margin-bottom:20px;" />
+                    <div>
+                        <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    }
+    else
+    {
+        <a asp-action="CreateBioimpedance">@StringLocalizer["CreateBioimpedance"]</a>
+    }
+
+</div>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 
 <script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id1").DataTable({
+            responsive: true,
+            "searching": false,
+            "ordering": false,
+            "paging": false,
+            "dom": 't',
+            "info": false,
+        });
+        $("#table_id2").DataTable({
+            responsive: true,
+            "searching": false,
+            "ordering": false,
+            "paging": false,
+            "dom": 't',
+            "info": false,
+        });
+        $("#table_id3").DataTable({
+            responsive: true,
+            "searching": false,
+            "ordering": false,
+            "paging": false,
+            "dom": 't',
+            "info": false,
+        });
+
+    });
+
+
     const modal = document.getElementById("modal")
 
 

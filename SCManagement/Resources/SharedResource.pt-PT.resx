@@ -1814,4 +1814,32 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Atualizar Bioimpedância</value>
     <comment>19-03-2023_bioimpedance</comment>
   </data>
+  <data name="Actualize" xml:space="preserve">
+    <value>Atualizado a</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="ActiveTrainingPlan" xml:space="preserve">
+    <value>Plano de Treino Ativo</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="Bio" xml:space="preserve">
+    <value>Bioimpedância</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descrição</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Data de expiração</value>
+    <comment>21-03-2023_MyZone</comment>
+  </data>
+  <data name="FoodPlan" xml:space="preserve">
+    <value>Plano Alimentar</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="MD" xml:space="preserve">
+    <value>Exame Médico</value>
+    <comment>21-03-2023_MyZone</comment>
+  </data>
 </root>

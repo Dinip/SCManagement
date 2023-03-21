@@ -1684,4 +1684,32 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Update Bioimpedance</value>
     <comment>19-03-2023_bioimpedance</comment>
   </data>
+  <data name="Actualize" xml:space="preserve">
+    <value>Updated to</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="ActiveTrainingPlan" xml:space="preserve">
+    <value>Active Training Plan</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="Bio" xml:space="preserve">
+    <value>Bioimpedance</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Expiry Date</value>
+    <comment>21-03-2023_MyZone</comment>
+  </data>
+  <data name="FoodPlan" xml:space="preserve">
+    <value>Food Plan</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="MD" xml:space="preserve">
+    <value>Medical Exame</value>
+    <comment>21-03-2023_MyZone</comment>
+  </data>
 </root>
