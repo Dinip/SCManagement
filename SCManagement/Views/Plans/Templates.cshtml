@@ -22,14 +22,14 @@
 </style>
 <div class="container-fluid ps-5 pe-5">
     <div class="d-flex justify-content-between align-items-center" style="margin-top:130px !important;">
-        <h1 class="text-to-dark">Template Plans</h1>
+        <h1 class="text-to-dark">@StringLocalizer["Templates"]</h1>
         <div class="w-25">
             <div class="btn-group w-100" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" onclick="openTraining()" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="btnradio1">Training</label>
+                <label class="btn btn-outline-primary" for="btnradio1">@StringLocalizer["Training"]</label>
 
                 <input type="radio" onclick="openMeal()" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2">Meal</label>
+                <label class="btn btn-outline-primary" for="btnradio2">@StringLocalizer["Meal"]</label>
             </div>
         </div>
     </div>
@@ -37,8 +37,8 @@
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
             <div class="mb-4 mt-2">
-                <a asp-route-isTemplate="true" id="createTraining" asp-action="CreateTrainingPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Create New Template</a>
-                <a asp-route-isTemplate="true" id="createMeal" class="d-none" asp-action="CreateMealPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Create New Template</a>
+                <a asp-route-isTemplate="true" id="createTraining" asp-action="CreateTrainingPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New Template"]</a>
+                <a asp-route-isTemplate="true" id="createMeal" class="d-none" asp-action="CreateMealPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New Template"]</a>
             </div>
             <table id="table_id" class="display"  style="width:100%!important;">
                 <thead id="trainingHead">
@@ -51,9 +51,6 @@
                         </th>
                         <th class="text-to-dark">
                             @StringLocalizer["Description"]
-                        </th>
-                        <th class="text-to-dark">
-                            @StringLocalizer["Trainer"]
                         </th>
                         <th></th>
                     </tr>
@@ -70,9 +67,6 @@
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor( _=> trainingPlan.Description)
-                            </td>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor( _=> trainingPlan.Trainer.FullName)
                             </td>
                             <td>
                                 <div class="d-flex align-items-center justify-content-end">
@@ -97,9 +91,6 @@
                         <th class="text-to-dark">
                             @StringLocalizer["Description"]
                         </th>
-                        <th class="text-to-dark">
-                            @StringLocalizer["Trainer"]
-                        </th>
                         <th></th>
                     </tr>
                 </thead>
@@ -112,9 +103,6 @@
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor( _=> mealPlan.Description)
-                            </td>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor( _=> mealPlan.Trainer.FullName)
                             </td>
                             <td>
                                 <div class="d-flex align-items-center justify-content-end">

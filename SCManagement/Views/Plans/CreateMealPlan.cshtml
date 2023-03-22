@@ -5,7 +5,7 @@
 }
 
 <div class="container ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Create Meal Plan</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Create Meal Plan"]</h1>
     <hr />
     <div class="card mt-5 shadow" style="border-radius:20px;">
         <div class="card-body">
@@ -60,16 +60,16 @@
             
                         <div class="d-flex mt-5" style="float:right;">
                             <div class="form-group">
-                                <button type="submit" name="action" value="Add sessions" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Add sessions</button>
+                            <button type="submit" name="action" value="Add sessions" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Add Sessions"]</button>
                             </div>
                             <div class="ms-2">
-                                <a asp-action="TrainingZone" asp-controller="MyClub" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Cancel"]</a>
+                                <a asp-action="Templates" asp-controller="Plans" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Cancel"]</a>
                             </div>
                             @if (ViewBag.Apply)
                             {
                                 <input type="hidden" name="apply" value="true" />
                                 <div class="form-group ms-2">
-                                    <button type="submit" name="action" value="Apply" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Apply</button>
+                                <button type="submit" name="action" value="Apply" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Apply"]</button>
                                 </div>
                             }
                             else

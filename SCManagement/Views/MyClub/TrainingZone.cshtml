@@ -26,10 +26,10 @@
         <div class="w-25">
             <div class="btn-group w-100" role="group" aria-label="Basic radio toggle button group">
                 <input type="radio" onclick="openTeams()" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                <label class="btn btn-outline-primary" for="btnradio1">Teams</label>
+                <label class="btn btn-outline-primary" for="btnradio1">@StringLocalizer["Teams"]</label>
 
                 <input type="radio" onclick="openAthletes()" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                <label class="btn btn-outline-primary" for="btnradio2">Athletes</label>
+                <label class="btn btn-outline-primary" for="btnradio2">@StringLocalizer["Athletes"]</label>
             </div>
         </div>
     </div>
@@ -45,8 +45,8 @@
                         <th class="text-to-dark" style="width:60%">
                             @Html.DisplayNameFor(model => model.Modality)
                         </th>
-                        <th class="text-to-dark" style="text-align:center">Training</th>
-                        <th class="text-to-dark" style="text-align:center">Meal</th>
+                        <th class="text-to-dark" style="text-align:center">@StringLocalizer["Training"]</th>
+                        <th class="text-to-dark" style="text-align:center">@StringLocalizer["Meal"]</th>
                     </tr>
                 </thead>
                 <tbody id ="teamsBody">
@@ -55,11 +55,11 @@
                         <div id="modal" class="modal">
                             <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
                                 <div id="modal-inner-content">
-                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>How do you want to add a plan?</strong></div>
+                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#modal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>New Plan</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>Apply</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -68,11 +68,11 @@
                         <div id="modal1" class="modal">
                             <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
                                 <div id="modal-inner-content">
-                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>How do you want to add a plan?</strong></div>
+                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#modal1').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>New Plan</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>Apply</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -85,10 +85,10 @@
                                 @Html.DisplayFor(model => teams.Modality.Name)
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="toggleModal()">Add</a>
+                                <a class="buttons me-2" onclick="toggleModal()">@StringLocalizer["Add"]</a>
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="toggleModal1()">Add</a>
+                                <a class="buttons me-2" onclick="toggleModal1()">@StringLocalizer["Add"]</a>
                             </td>
                         </tr>
 
@@ -112,11 +112,12 @@
                         <th class="text-to-dark">
                             @Html.DisplayNameFor(model => model.Name)
                         </th>
-                        <th class="text-to-dark" style="width:60%">
-                            Birth Date
+                        <th class="text-to-dark">
+                            @StringLocalizer["Birth Date"]
                         </th>
-                        <th class="text-to-dark" style="text-align:center">Training</th>
-                        <th class="text-to-dark" style="text-align:center">Meal</th>
+                        <th class="text-to-dark" style="text-align:center">@StringLocalizer["Goals"]</th>
+                        <th class="text-to-dark" style="text-align:center">@StringLocalizer["Training"]</th>
+                        <th class="text-to-dark" style="text-align:center">@StringLocalizer["Meal"]</th>
                     </tr>
                 </thead>
                 <tbody id="athletesBody" class="d-none">
@@ -131,8 +132,8 @@
                                         <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>How do you want to add a plan?</strong></div>
                                         <span onclick="$('#modal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                         <div class="d-flex justify-content-evenly mt-3">
-                                            <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>New Plan</strong></a>
-                                            <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>Apply</strong></a>
+                                            <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                            <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                         </div>
                                     </div>
                                 </div>
@@ -144,8 +145,8 @@
                                         <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>How do you want to add a plan?</strong></div>
                                         <span onclick="$('#modal1').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                         <div class="d-flex justify-content-evenly mt-3">
-                                            <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>New Plan</strong></a>
-                                            <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>Apply</strong></a>
+                                            <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                            <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                         </div>
                                     </div>
                                 </div>
@@ -159,12 +160,16 @@
                                     @Html.DisplayFor(model => athlete.DateOfBirth)
                                 </td>
                                 <td style="text-align:center">
-                                    <a class="buttons me-2" onclick="toggleModal()">Add</a>
-                                    <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2">See</a>
+                                    <a asp-controller="Plans" asp-action="CreateGoal" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["Add"]</a>
+                                    <a asp-controller="Plans" asp-action="GoalsList" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
                                 </td>
                                 <td style="text-align:center">
-                                    <a class="buttons me-2" onclick="toggleModal1()">Add</a>
-                                    <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">See</a>
+                                    <a class="buttons me-2" onclick="toggleModal()">@StringLocalizer["Add"]</a>
+                                    <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
+                                </td>
+                                <td style="text-align:center">
+                                    <a class="buttons me-2" onclick="toggleModal1()">@StringLocalizer["Add"]</a>
+                                    <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
                                 </td>
                             </tr>
                         }

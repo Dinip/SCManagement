@@ -21,7 +21,7 @@
     }
 </style>
 <div class="container ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Meal Plan</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Meal Plan"]</h1>
     <hr />
     <div class="card mt-5 shadow" style="border-radius:20px;">
         <div class="card-body">
@@ -64,10 +64,10 @@
                 <thead>
                     <tr>
                         <th class="text-to-dark">
-                            @StringLocalizer["Name"]
+                            @StringLocalizer["Meal Name"]
                         </th>
                         <th class="text-to-dark">
-                            @StringLocalizer["Description"]
+                            @StringLocalizer["Meal Description"]
                         </th>
                         <th class="text-to-dark">
                             @StringLocalizer["Time"]
@@ -93,7 +93,7 @@
             </table>
         </div>
         <div class="d-flex justify-content-end me-3 mb-3">
-            <a asp-action="EditMealPlan" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
+            <a asp-action="EditMealPlan" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
         </div>
     </div>
 </div>

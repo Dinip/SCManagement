@@ -61,18 +61,15 @@
     </div>
 </div>
 <script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
-
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
         $("#table_id").DataTable({
             responsive: true,
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
             columnDefs: [
                 { orderable: false, targets: [-1, -2] }
             ]

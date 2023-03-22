@@ -854,7 +854,7 @@ namespace SCManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteGoal(int? id)
         {
             string userId = getUserIdFromAuthedUser();
 
@@ -862,7 +862,7 @@ namespace SCManagement.Controllers
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
 
-            var goal = await _planService.GetGoal(id);
+            var goal = await _planService.GetGoal((int)id);
 
             if (goal == null) return View("CustomError", "Error_NotFound");
 
