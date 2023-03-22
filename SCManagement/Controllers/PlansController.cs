@@ -832,7 +832,7 @@ namespace SCManagement.Controllers
             await _planService.UpdateGoal(goal);
 
             //if u need u can change this 
-            return RedirectToAction("TrainingZone", "MyClub");
+            return RedirectToAction("GoalDetails");
         }
         
         public async Task<IActionResult> GoalDetails(int id)
@@ -871,10 +871,25 @@ namespace SCManagement.Controllers
             await _planService.DeleteGoal(goal);
 
             //if u need u can change this 
-            return RedirectToAction("TrainingZone", "MyClub");
+            return RedirectToAction("GoalDetails");
         }
 
+        public async Task<IActionResult> GoalsList(string id)
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
 
+            string userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var goals = await _planService.GetGoals(id);
+
+            if (goals == null) return View("CustomError", "Error_NotFound");
+
+            return View(goals);
+        }
     }
     
 }
