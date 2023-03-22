@@ -1684,12 +1684,40 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Update Bioimpedance</value>
     <comment>19-03-2023_bioimpedance</comment>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Add Sessions" xml:space="preserve">
+    <value>Add Sessions</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="Athlete" xml:space="preserve">
     <value>Athlete</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="Birth Date" xml:space="preserve">
+    <value>Birth Date</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create New Template" xml:space="preserve">
+    <value>Create New Template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="Duration" xml:space="preserve">
     <value>Duration</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Meal Plan" xml:space="preserve">
+    <value>Edit Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Training Plan" xml:space="preserve">
+    <value>Edit Training Plan</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Exercise Description" xml:space="preserve">
@@ -1704,12 +1732,24 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Goal Description</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="Goal List" xml:space="preserve">
+    <value>Goal List</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="Goal Name" xml:space="preserve">
     <value>Goal Name</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="Goals" xml:space="preserve">
+    <value>Goals</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="IsTemplate" xml:space="preserve">
     <value>Is Template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal" xml:space="preserve">
+    <value>Meal</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Meal Description" xml:space="preserve">
@@ -1718,6 +1758,10 @@ I have experience in the area and I am very focused on my goals.</value>
   </data>
   <data name="Meal Name" xml:space="preserve">
     <value>Meal Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Plan" xml:space="preserve">
+    <value>Meal Plan</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Plan Description" xml:space="preserve">
@@ -1732,8 +1776,20 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Repetitions</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="See" xml:space="preserve">
+    <value>See</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="Time" xml:space="preserve">
     <value>Time</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training" xml:space="preserve">
+    <value>Training</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training Plan" xml:space="preserve">
+    <value>Training Plan</value>
     <comment>22-03-2023 plans</comment>
   </data>
 </root>
