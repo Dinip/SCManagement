@@ -5,12 +5,15 @@
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <input asp-for="SubscriptionId" hidden />
 
+        <h3 class="text-to-dark">Plans</h3>
+        <hr />
+
         <div class="flex-row">
             @foreach (var plan in Model.Plans)
             {
                 <div>
-                    <input type="radio" asp-for="PlanId" id="plan-@plan.Id" value="@plan.Id" disabled="@(plan.Enabled)" />
-                    <label class="card-cc" for="plan-@plan.Id">@plan.Name - @plan.Value€</label>
+                    <input type="radio" asp-for="PlanId" id="plan-@plan.Id" value="@plan.Id" disabled="@(plan.Enabled)"/>
+                    <label class="text-to-dark" for="plan-@plan.Id">@plan.Name - @plan.Value€</label>
                 </div>
             }
             <span asp-validation-for="PlanId" class="text-danger"></span>
@@ -21,3 +24,5 @@
         </div>
     </form>
 </div>
+
+<script src="~/js/site.js" asp-append-version="true"></script>

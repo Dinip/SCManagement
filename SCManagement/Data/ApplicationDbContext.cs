@@ -5,9 +5,9 @@ using SCManagement.Models;
 using System.Text;
 using SCManagement.Services.AzureStorageService.Models;
 using Unidecode.NET;
-using System.Reflection.Emit;
-using Microsoft.Extensions.Hosting;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.StatisticsService.Models;
+using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Data
 {
@@ -38,8 +38,14 @@ namespace SCManagement.Data
         public DbSet<EventResult> EventResult { get; set; }
         public DbSet<ClubPaymentSettings> ClubPaymentSettings { get; set; }
         public DbSet<EventTranslation> EventTranslations { get; set; }
+        public DbSet<Bioimpedance> Bioimpedance { get; set; }
+        public DbSet<ClubModalityStatistics> ClubModalityStatistics { get; set; }
+        public DbSet<ClubPaymentStatistics> ClubPaymentStatistics { get; set; }
+        public DbSet<ClubUserStatistics> ClubUserStatistics { get; set; }
+        public DbSet<TrainingPlan> TrainingPlans { get; set; }
+        public DbSet<MealPlan> MealPlans { get; set; }
+        public DbSet<Goal> Goals { get; set; }
 
-        
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -109,6 +115,30 @@ namespace SCManagement.Data
 
             builder.Entity<User>().Navigation(e => e.ProfilePicture).AutoInclude();
             builder.Entity<Team>().HasMany(x => x.Athletes).WithMany("Teams");
+
+            builder.Entity<TrainingPlan>()
+            .HasOne(tp => tp.Athlete)
+            .WithMany(u => u.TrainingPlans)
+            .HasForeignKey(tp => tp.AthleteId);
+
+            builder.Entity<TrainingPlan>()
+            .Ignore(tp => tp.Athlete);
+
+            builder.Entity<MealPlan>()
+            .HasOne(tp => tp.Athlete)
+            .WithMany(u => u.MealPlans)
+            .HasForeignKey(tp => tp.AthleteId);
+
+            builder.Entity<MealPlan>()
+            .Ignore(tp => tp.Athlete);
+
+            builder.Entity<Goal>()
+            .HasOne(tp => tp.Athlete)
+            .WithMany(u => u.Goals)
+            .HasForeignKey(tp => tp.AthleteId);
+
+            builder.Entity<Goal>()
+            .Ignore(tp => tp.Trainer);
         }
     }
 }

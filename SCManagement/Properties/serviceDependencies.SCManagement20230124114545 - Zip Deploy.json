@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "secretStore": "AzureKeyVault",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/scmanagementdbserver/databases/SCManagement_db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:DefaultConnection",
+      "dynamicId": null
+    },
+    "storage1": {
+      "secretStore": "AzureKeyVault",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/cdnscmanagement",
+      "type": "storage.azure",
+      "connectionId": "BlobConnectionString",
+      "dynamicId": null
+    },
+    "secrets1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.KeyVault/vaults/scmanagement",
+      "type": "secrets.keyVault",
+      "connectionId": "VaultUri",
+      "dynamicId": null
+    }
+  }
+}

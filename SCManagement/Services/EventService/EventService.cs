@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
-using SCManagement.Data.Migrations;
 using SCManagement.Models;
-using EventTranslation = SCManagement.Models.EventTranslation;
 
 namespace SCManagement.Services.EventService
 {
@@ -132,12 +129,7 @@ namespace SCManagement.Services.EventService
             Address ad = _context.Address.Find(locationId);
             ad.CoordinateX = address.CoordinateX;
             ad.CoordinateY = address.CoordinateY;
-            ad.ZipCode = address.ZipCode;
-            ad.Street = address.Street;
-            ad.City = address.City;
-            ad.District = address.District;
-            ad.Country = address.Country;
-
+            ad.AddressString = address.AddressString;
             _context.Address.Update(ad);
             await _context.SaveChangesAsync();
             return address;

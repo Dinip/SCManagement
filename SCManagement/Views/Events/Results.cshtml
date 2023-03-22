@@ -1,88 +1,87 @@
 ﻿@model SCManagement.Models.Event
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
-
 @{
-    ViewData["Title"] = "Resultados";
+    ViewData["Title"] = @StringLocalizer["Results"];
 }
 
-<h1>Resultados</h1>
-<h3>@Model.EventTranslations.FirstOrDefault(c => c.Atribute == "Name").Value</h3>
+<div class="container-fluid ps-5 pe-5">
+    <h1>@StringLocalizer["Results"]</h1>
+    <h3>@Model.EventTranslations.FirstOrDefault(c => c.Atribute == "Name").Value</h3>
+    <hr />
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span onclick="$('#modal').hide()" class="close">&times;</span>
+            <div id="modal-inner-content">
+            </div>
+        </div>
+    </div>
 
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span onclick="$('#modal').hide()" class="close">&times;</span>
-        <div id="modal-inner-content">
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            @if (ViewBag.IsStaff != null)
+            {
+                <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Result </a>
+            }
+            <table id="table_id" class="display">
+            <thead>
+                <tr>
+                    <th>
+                        @StringLocalizer["Place"]
+                    </th>
+                    <th>
+                        @StringLocalizer["Name"]
+                    </th>
+                    <th>
+                        @StringLocalizer["Result"]
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @if (Model.Results != null && Model.Results.Count > 0)
+            {
+                @foreach (var item in Model.Results.Select((result, index) => new { Result = result, Index = index }))
+                {
+                    <tr>
+                        <td class="text-to-dark">@(item.Index + 1)</td>
+                        <td class="text-to-dark">
+                            @item.Result.User.FullName
+                        </td>
+                        <td class="text-to-dark">
+                            @if (Model.EventResultType == ResultType.Time)
+                            {
+                                @item.Result.Time
+                            }
+                            else if (Model.EventResultType == ResultType.Score)
+                            {
+                                @item.Result.Score
+                            }
+                            else
+                            {
+                                @item.Result.Position
+                            }
+                        </td>
+                        <td class="text-to-dark">
+                            @if (ViewBag.IsStaff != null)
+                            {
+                                <form asp-action="DeleteResult">
+                                    <input hidden name="userId" value="@item.Result.UserId" />
+                                    <input hidden name="eventId" value="@Model.Id" />
+                                    <input type="submit" value="@StringLocalizer["RemoveParticipant"]" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
+                                </form>
+                            }
+                        </td>
+                    </tr>
+                }
+            }
+            </tbody>
+            </table>
         </div>
     </div>
 </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @StringLocalizer["Place"]
-                </th>
-                <th>
-                    @StringLocalizer["Name"]
-                </th>
-                <th>
-                    @StringLocalizer["Result"]
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-        @if (Model.Results != null && Model.Results.Count > 0)
-        {
-            @foreach (var item in Model.Results.Select((result, index) => new { Result = result, Index = index }))
-            {
-                <tr>
-                    <td>@(item.Index + 1)</td>
-                    <td>
-                        @item.Result.User.FullName
-                    </td>
-                    <td>
-                        @if (Model.EventResultType == ResultType.Time)
-                        {
-                            @item.Result.Time
-                        }
-                        else if (Model.EventResultType == ResultType.Score)
-                        {
-                            @item.Result.Score
-                        }
-                        else
-                        {
-                            @item.Result.Position
-                        }
-                    </td>
-                    <td>
-                        @if (ViewBag.IsStaff != null)
-                        {
-                            <form asp-action="DeleteResult">
-                                <input hidden name="userId" value="@item.Result.UserId" />
-                                <input hidden name="eventId" value="@Model.Id" />
-                                <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
-                            </form>
-                        }
-                    </td>
-                </tr>
-            }
-        }
-
-        @if(ViewBag.IsStaff != null) {
-            <tr>
-                <td colspan="4">
-            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Result </a>
-                </td>
-            </tr>
-        } 
-
-        </tbody>
-    </table>
-    
-    
-
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
@@ -94,11 +93,7 @@
     }
     $(document).ready(function () {
         $.noConflict();
-        $("#table_id").DataTable({
-            columnDefs: [
-                { orderable: false, targets: [-1] }
-            ]
-        });
+        $("#table_id").DataTable();
     });
     function openCreate() {
         $.ajax({

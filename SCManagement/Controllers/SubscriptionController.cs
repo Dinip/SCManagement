@@ -4,7 +4,6 @@ using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.PaymentService;
 using Microsoft.AspNetCore.Identity;
 using SCManagement.Models;
-using System.Net;
 using SCManagement.Services.ClubService;
 
 namespace SCManagement.Controllers

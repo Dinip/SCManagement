@@ -5,71 +5,61 @@
 
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/calendar.css" asp-append-version="true" />
-@if (SignInManager.IsSignedIn(User)){
-     <div class="row mt-5 mb-5">
-        <div>
-        <div class="calendar-container">
-          <div class="calendar"> 
-            <div class="year-header"> 
-              <span class="left-button" id="prev"> &lang; </span> 
-              <span class="year" id="label"></span> 
-              <span class="right-button" id="next"> &rang; </span>
-            </div> 
-            <table class="months-table"> 
-              <tbody>
-                <tr class="months-row">
-                  <td class="month">Jan</td> 
-                  <td class="month">Feb</td> 
-                  <td class="month">Mar</td> 
-                  <td class="month">Apr</td> 
-                  <td class="month">May</td> 
-                  <td class="month">Jun</td> 
-                  <td class="month">Jul</td>
-                  <td class="month">Aug</td> 
-                  <td class="month">Sep</td> 
-                  <td class="month">Oct</td>          
-                  <td class="month">Nov</td>
-                  <td class="month">Dec</td>
-                </tr>
-              </tbody>
-            </table> 
-        
-            <table class="days-table"> 
-              <td class="day">Sun</td> 
-              <td class="day">Mon</td> 
-              <td class="day">Tue</td> 
-              <td class="day">Wed</td> 
-              <td class="day">Thu</td> 
-              <td class="day">Fri</td> 
-              <td class="day">Sat</td>
-            </table> 
-            <div class="frame"> 
-              <table class="dates-table"> 
-                  <tbody class="tbody">             
-                  </tbody> 
-              </table>
-            </div> 
-            <button class="button" id="add-button">Add Event</button>
-          </div>
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="row mt-5 mb-5">
+        <div id="calendar-full">
+            <div class="calendar-container" id="calendar-container">
+                <div class="calendar">
+                    <div class="year-header">
+                        <span class="left-button" id="prev"> &lang; </span>
+                        <span class="year" id="label"></span>
+                        <span class="right-button" id="next"> &rang; </span>
+                    </div>
+                    <table class="months-table">
+                        <tbody>
+                            <tr class="months-row">
+                                <td class="month text-to-dark">Jan</td>
+                                <td class="month text-to-dark">Feb</td>
+                                <td class="month text-to-dark">Mar</td>
+                                <td class="month text-to-dark">Apr</td>
+                                <td class="month text-to-dark">May</td>
+                                <td class="month text-to-dark">Jun</td>
+                                <td class="month text-to-dark">Jul</td>
+                                <td class="month text-to-dark">Aug</td>
+                                <td class="month text-to-dark">Sep</td>
+                                <td class="month text-to-dark">Oct</td>
+                                <td class="month text-to-dark">Nov</td>
+                                <td class="month text-to-dark">Dec</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <table class="days-table">
+                        <td class="day text-to-dark">@StringLocalizer["Sun"]</td>
+                        <td class="day text-to-dark">@StringLocalizer["Mon"]</td>
+                        <td class="day text-to-dark">@StringLocalizer["Tue"]</td>
+                        <td class="day text-to-dark">@StringLocalizer["Wed"]</td>
+                        <td class="day text-to-dark">@StringLocalizer["Thu"]</td>
+                        <td class="day text-to-dark">@StringLocalizer["Fri"]</td>
+                        <td class="day text-to-dark">@StringLocalizer["Sat"]</td>
+                    </table>
+                    <div class="frame">
+                        <table class="dates-table" style="max-width:100%;">
+                            <tbody class="tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="button" id="add-button">@StringLocalizer["AddEvent"]</button>
+                </div>
+            </div>
+            <div class="events-container">
+            </div>
         </div>
-        <div class="events-container">
-        </div>
-        <div class="dialog" id="dialog">
-                <h2 class="dialog-header"> Add New Event </h2>
-                <form class="form" id="form">
-                  <div class="form-container" align="center">
-                    <label class="form-label" id="valueFromMyButton" for="name">Event name</label>
-                    <input class="input" type="text" id="name" maxlength="36">
-                    <label class="form-label" id="valueFromMyButton" for="count">Number of people to invite</label>
-                    <input class="input" type="number" id="count" min="0" max="1000000" maxlength="7">
-                    <input type="button" value="Cancel" class="button" id="cancel-button">
-                    <input type="button" value="OK" class="button" id="ok-button">
-                  </div>
-                </form>
-          </div>
-          </div>
-     </div>
-}else{
+    </div>
+}
+else
+{
     <div class="row align-items-center mt-xl-5">
         <p class="col-md-4 col-lg-6 text-to-dark" style="text-align:center"> @StringLocalizer["NotDone"]</p>
         <img src="~/img/under-construction-png_667893.png" class="col-md-4 col-lg-6" alt="NotDone" />
@@ -79,14 +69,23 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.4/index.global.min.js'></script>
 <script src="~/js/calendar.js" asp-append-version="true"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script>
-
-      document.addEventListener('DOMContentLoaded', function() {
+    var strings = {
+        "noEvents": '@Html.Raw(StringLocalizer["NoEvents"].Value.ToString())',
+    };
+    document.addEventListener('DOMContentLoaded', function () {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth'
+            initialView: 'dayGridMonth'
         });
         calendar.render();
-      });
+    });
 
+    var date = document.getElementsByClassName('table-date');
+    for (let i = 0; i < date.length; i++) {
+        date[i].classList.add("text-to-dark");
+    }
+
+ 
 </script>

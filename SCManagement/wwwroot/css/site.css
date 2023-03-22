@@ -230,3 +230,57 @@ input:checked + .slider:before {
 .dropdown-menu button:hover {
     color: black !important;
 }
+
+#sitetitle {
+    overflow: hidden;
+    height: auto;
+    opacity:0;
+    transform: translateY(-200px);
+    animation: slideUp 2s ease forwards .5s;
+}
+
+#slogan {
+    font-size:22px;
+    opacity: 0;
+    animation: fade 5s ease forwards .5s;
+}
+
+#calendar-full {
+    opacity: 0;
+    animation: slideRight 2s ease forwards .5s;
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(-200px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateX(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(-200px);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0px);
+        opacity: 1;
+    }
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+

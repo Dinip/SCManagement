@@ -35,7 +35,7 @@ namespace SCManagement.Models
         public string? Route { get; set; }
 
         [Display(Name = "Max Enrolls")]
-        [Range(1, int.MaxValue, ErrorMessage = "Please enter a value bigger than {1}")]
+        [Range(0, int.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
         public int MaxEventEnrolls { get; set; }
 
         //Fazer validação: tem de ser depois da start date e antes da end date
@@ -53,6 +53,8 @@ namespace SCManagement.Models
         public ICollection<EventResult>? Results { get; set; }
         [Display(Name= "Event Location")]
         public string? AddressByPath { get; set; }
+        public DateTime CreationDate { get; set; }
+
     }
 
     public enum ResultType : int

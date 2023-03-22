@@ -1,5 +1,4 @@
-﻿using SCManagement.Data.Migrations;
-using SCManagement.Models;
+﻿using SCManagement.Models;
 
 namespace SCManagement.Services.TeamService
 {
@@ -17,5 +16,7 @@ namespace SCManagement.Services.TeamService
         public Task DeleteTeam(Team team);
 
         public Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId);
+
+        public Task<IEnumerable<Team>> GetTeamsByTrainer(string userId);
     }
 }

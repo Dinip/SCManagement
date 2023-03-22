@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using SCManagement.Models.Validations;
 using SCManagement.Services.AzureStorageService.Models;
+using SCManagement.Services.PlansService.Models;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -70,5 +72,8 @@ namespace SCManagement.Models
         }
 
         private ICollection<Team> Teams { get; set; }
+        public ICollection<TrainingPlan>? TrainingPlans { get; set; }
+        public ICollection<MealPlan>? MealPlans { get; set; }
+        public ICollection<Goal>? Goals { get; set; }
     }
 }

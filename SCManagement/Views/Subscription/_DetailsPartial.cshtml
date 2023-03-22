@@ -77,6 +77,9 @@
             <dd class="col-sm-8 dlBg text-to-dark">
                 @Html.DisplayFor(model => model.Club.Name)
             </dd>
+        }
+        @if (Model.Product?.AthleteSlots != null)
+        {
             <dt class="col-sm-4 text-to-dark">
                 @Html.DisplayNameFor(model => model.Product.AthleteSlots)
             </dt>
@@ -181,6 +184,10 @@
             async: false,
             success: function (result) {
                 $("#modal-inner-content").html(result);
+                console.log(document.getElementsByClassName("modal-content").length);
+                document.getElementsByClassName("modal-content")[0].classList.remove("w-50");
+                document.getElementsByClassName("modal-content")[0].classList.add("w-25");
+                $(".modal-content");
                 $("#modal").show();
             }
         });

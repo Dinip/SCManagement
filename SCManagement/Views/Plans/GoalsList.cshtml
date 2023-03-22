@@ -1,0 +1,78 @@
+﻿@model IEnumerable<SCManagement.Services.PlansService.Models.Goal>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+@{
+    ViewData["Title"] = "GoalsList";
+}
+
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">Goals List</h1>
+    <hr />
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <div class="mb-3">
+                <a asp-action="Create" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create"]</a>
+            </div>
+            <table id="table_id" class="display">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.EndDate)
+                            </td>
+                            <td class="d-flex justify-content-end">
+                                <a asp-action="EditGoal" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
+                                <form asp-action="DeleteGoal">
+                                    <input type="hidden" name="id" value="@item.Id" />
+                                    <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+</script>

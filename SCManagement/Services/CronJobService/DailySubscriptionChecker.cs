@@ -31,20 +31,22 @@ namespace SCManagement.Services.CronJobService
             _logger.LogInformation($"{DateTime.Now:hh:mm:ss} daily subscription checker working...");
             using var scope = _serviceProvider.CreateScope();
             var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
-            
+
             //get all subs that renew today but aren't expected
             //to end today (canceled subs)
             var subs = await _context.Subscription
                 .Where(p => p.NextTime.Date == DateTime.Now.Date && p.EndTime == null)
                 .ToListAsync(cancellationToken);
 
-            subs.ForEach(f => f.Status = SubscriptionStatus.Pending);
+            //update all subscriptions to pending if they are not free (0€)
+            subs.ForEach(f => { if (f.Value > 0) f.Status = SubscriptionStatus.Pending; });
 
             //create payments
+            //if value is 0 (free) consider it paid
             var payments = subs.Select(s => new Payment
             {
                 Value = s.Value,
-                PaymentStatus = PaymentStatus.Pending,
+                PaymentStatus = s.Value > 0 ? (s.AutoRenew ? PaymentStatus.Processing : PaymentStatus.Pending) : PaymentStatus.Paid,
                 SubscriptionId = s.Id,
                 UserId = s.UserId,
                 ProductId = s.ProductId,

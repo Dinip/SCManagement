@@ -15,11 +15,14 @@
         <li>
             <div class="dropdown d-none d-md-block">
                 <button class="btn fa-2xl shadow-none text-to-dark" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" title=@StringLocalizer["User"]>
-                    <img src="@pfpUri" class="rounded-circle" style="width: 45px; height: 45px;" />
+                    <img src="@pfpUri" class="rounded-circle" style="width: 45px; height: 45px; object-fit:cover;" />
                 </button>
                 <ul class="dropdown-menu shadow" style="margin-top: 7px; left: -145px; width: 230px; border:none; border-radius:0;" id="Dropdown1">
                     <li class="dropdown-item" style="padding: 5px;">
                         <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title=@StringLocalizer["Profile"]>@user?.FullName</a>
+                    </li>
+                    <li class="dropdown-item" style="padding: 5px;">
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="Settings">@StringLocalizer["Settings"]</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
                         <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Payment" asp-action="Index">@StringLocalizer["Wallet"]</a>
@@ -64,8 +67,8 @@
     }
     else
     {
-        <a type="button" class="btn btn-primary register ms-2" id="navbarSupportedContent1" asp-area="Identity" asp-page="/Account/Register">@StringLocalizer["Sign up"]</a>
-        <a type="button" class="btn btn-primary signin ms-2 ms-md-3 mt-2 mt-md-0" id="navbarSupportedContent1" asp-area="Identity" asp-page="/Account/Login">@StringLocalizer["Sign in"]</a>
+        <a type="button" class="btn btn-primary register ms-2" id="register" asp-area="Identity" asp-page="/Account/Register">@StringLocalizer["Sign up"]</a>
+        <a type="button" class="btn btn-primary signin ms-2 ms-md-3 mt-2 mt-md-0" id="signin" asp-area="Identity" asp-page="/Account/Login">@StringLocalizer["Sign in"]</a>
         <li>
             <div class="dropdown d-none d-md-block">
                 <button class="btn fa-solid fa-user fa-2xl shadow-none text-to-dark mt-3" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></button>

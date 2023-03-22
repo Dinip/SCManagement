@@ -1,0 +1,75 @@
+﻿@model SCManagement.Models.Bioimpedance
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+
+<div class="container">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["UpdateBio"]</h1>
+    <hr />
+    <div class="card mt-5 shadow">
+        <div class="card-body text-to-dark d-flex align-items-center">
+            <div class="w-100">
+                <form asp-action="UpdateBioimpedance">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-floating">
+                        <input asp-for="Height" class="form-control"/>
+                        <label asp-for="Height"></label>
+                        <span asp-validation-for="Height" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <input asp-for="Weight" class="form-control" />
+                        <label asp-for="Weight"></label>
+                        <span asp-validation-for="Weight" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <input asp-for="FatMass" type="number" step="0.01" class="form-control" />
+                        <label asp-for="FatMass"></label>
+                        <span asp-validation-for="FatMass" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <input asp-for="LeanMass" type="number" step="0.01" class="form-control" />
+                        <label asp-for="LeanMass"></label>
+                        <span asp-validation-for="LeanMass" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <input asp-for="MuscleMass" type="number" step="0.01" class="form-control" />
+                        <label asp-for="MuscleMass"></label>
+                        <span asp-validation-for="MuscleMass" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <input asp-for="ViceralFat" type="number" step="0.01" class="form-control" />
+                        <label asp-for="ViceralFat"></label>
+                        <span asp-validation-for="ViceralFat" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <input asp-for="BasalMetabolism" type="number" step="1" class="form-control" />
+                        <label asp-for="BasalMetabolism"></label>
+                        <span asp-validation-for="BasalMetabolism" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-2">
+                        <input asp-for="Hydration" type="number" step="0.01" class="form-control" />
+                        <label asp-for="Hydration"></label>
+                        <span asp-validation-for="Hydration" class="text-danger"></span>
+                    </div>
+
+                    <input type="hidden" asp-for="BioimpedanceId" />
+
+                    <div class="form-floating mt-3 d-flex">
+                        <input type="submit" value="@StringLocalizer["Update"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+                        <a asp-action="Index" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border: 1px solid black; text-decoration:none;"><strong>@StringLocalizer["Cancel"]</strong></a>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+}

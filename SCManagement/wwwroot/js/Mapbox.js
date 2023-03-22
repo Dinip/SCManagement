@@ -54,9 +54,9 @@ function loadMap(userCoordinates, markersCoordinates) {
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
         marker: false,
-        placeholder: 'Digite um endereço ou localização'
+        placeholder: strings.placeholder
     });
-
+    
     map.on('load', () => {
         map.resize();
         let coords = markersCoordinates;

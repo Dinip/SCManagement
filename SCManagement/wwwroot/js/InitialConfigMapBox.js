@@ -5,7 +5,7 @@ function PathMapBoxConfig() {
     const path = document.getElementById("path");
     let map;
     let locationText = document.getElementById("locationText");
-
+    let tradPlaceholder = document.getElementById('tradPlaceholder');
 
     if (path.value !== 'null') {
         let coordsString = path.value;
@@ -77,6 +77,7 @@ function PathMapBoxConfig() {
 
     let erMessage = "";
     let newCoords = null;
+    let coordsPath = null;
     let initialMarker = null;
     let endMarker = null;
 
@@ -84,14 +85,14 @@ function PathMapBoxConfig() {
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
         marker: false,
-        placeholder: 'Digite um endereço ou localização'
+        placeholder: tradPlaceholder.value,
     });
 
     map.addControl(geocoder, 'top-left');
 
     btnSave.onclick = function () {
-        if (newCoords != null) {
-            ev.value = newCoords;
+        if (coordsPath != null) {
+            ev.value = coordsPath;
             btnSave.classList.add("d-none");
             locationText.innerHTML = strings.newAddress + " " + addressByPath.value;
         }
@@ -217,6 +218,8 @@ function PathMapBoxConfig() {
             return;
         }
         const coords = response.matchings[0].geometry;
+        coordsPath = coords.coordinates.join(';');
+
         // Draw the route on the map
         addRoute(coords);
     }
@@ -344,23 +347,18 @@ function PathMapBoxConfig() {
 
     function errorMessage(codeMessage) {
         if (codeMessage == "NoMatch") {
-            erMessage = "The input did not produce any matches, or the waypoints requested were not found in the resulting match. features will be an empty array.";
-            alert(erMessage);
+            erMessage = strings.noMatch;
+            strings.noMatch;
         } else if (codeMessage == "NoSegment") {
-            erMessage = "No road segment could be matched for one or more coordinates within the supplied radiuses. Check for coordinates that are too far away from a road."
-            alert(erMessage);
+            erMessage = strings.noSegment;
         } else if (codeMessage == "TooManyCoordinates") {
-            erMessage = "There are more than 100 points in the request."
-            alert(erMessage);
-        } else if (codeMessage == "ProfileNotFound") {
-            erMessage = "Needs to be a valid profile (mapbox/driving, mapbox/driving-traffic, mapbox/walking, or mapbox/cycling).";
-            alert(erMessage);
+            erMessage = strings.tooManyCoordinates;
         } else if (codeMessage == "InvalidInput") {
-            erMessage = "message will hold an explanation of the invalid input.";
-            alert(erMessage);
+            erMessage = strings.invalidInput;
         }
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = erMessage;
     }
-
 
     async function getCityAndCountryFromCoordinates(latitude, longitude, accessToken) {
         const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${longitude},${latitude}.json?ypes=poi,address,region,district,place,country&access_token=${accessToken}`;
@@ -379,12 +377,10 @@ function PathMapBoxConfig() {
             return;
         }
     }
-
-
-
 }
 
 function SearchMapBoxConfig() {
+    let tradPlaceholder = document.getElementById('tradPlaceholder');
 
     const map = new mapboxgl.Map({
         container: 'map',
@@ -406,52 +402,82 @@ function SearchMapBoxConfig() {
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
-        types: 'address',
-        layers: ['address']
+        placeholder: tradPlaceholder.value,
     });
 
     map.addControl(geocoder, 'top-left');
 
-    let address;
-    let btn = document.getElementById("save-button");
+
+    let result = null;
+
+    let btn = document.getElementById("save-button")
     map.on('load', () => {
-        // Listen for the `geocoder.input` event that is triggered when a user
-        // makes a selection
-        geocoder.on('result', (event) => {
-            address = event.result;
-            btn.classList.remove("d-none");
-        });
+        result = MarkerWithAddress(map);
     });
-
-
 
     let locationText = document.getElementById("locationText");
     btn.onclick = function () {
         try {
-            if (address != null) {
-                let { text, geometry, context } = address;
-                let addressCode = context.find(item => item.id.startsWith('postcode')).text;
-                let city = context.find(item => item.id.startsWith('place')).text;
-                let district = context.find(item => item.id.startsWith('region')).text;
-                let country = context.find(item => item.id.startsWith('country')).text;
-                let coord = geometry.coordinates;
-
+            if (result.address != null) {
                 let location = document.getElementById("Location");
                 location.value = JSON.stringify({
-                    CoordinateX: coord[0],
-                    CoordinateY: coord[1],
-                    ZipCode: addressCode,
-                    Street: text,
-                    City: city,
-                    District: district,
-                    Country: country,
+                    CoordinateX: result.coord[0],
+                    CoordinateY: result.coord[1],
+                    AddressString: result.address,
+
                 })
-                locationText.innerHTML = strings.newAddress + ": " + text + ", " + addressCode + ", " + city + ", " + district + ", " + country;
+                locationText.innerHTML = strings.newAddress + ": " + result.address;
                 btn.classList.add("d-none");
             }
         } catch (error) {
             $(".toast").show();
-            document.getElementById('alertText').innerHTML = strings.searchError;
+            document.getElementById('alertText').innerHTML = strings.resultError;
         }
     }
+}
+
+
+
+function MarkerWithAddress(map) {
+    let btn = document.getElementById("save-button");
+    let marker = null;
+    let result = { coord: null, address: null };
+
+    map.on('click', function (e) {
+        // Capture the coordinates of the clicked point
+        if (marker !== null) {
+            marker.remove();
+        }
+        result.coord = e.lngLat.toArray();
+
+        // Add the marker to the map
+        marker = new mapboxgl.Marker({ color: "#00639A" })
+            .setLngLat([result.coord[0], result.coord[1]])
+            .addTo(map);
+
+        btn.classList.remove("d-none");
+
+
+        // Send an HTTP request to the Geocoding API
+        let geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + result.coord[0] + ',' + result.coord[1] + '.json?ypes=poi,address,region,district,place,country&access_token=' + mapboxgl.accessToken;
+        fetch(geocodeUrl)
+            .then(response => response.json())
+            .then(data => {
+
+                let features = map.queryRenderedFeatures(e.point, { layers: ['water'] });
+                if (features.length > 0) {
+                    $(".toast").show();
+                    document.getElementById('alertText').innerHTML = strings.searchError;
+                    marker.remove();
+                    result.address = null;
+                    locationText.innerHTML = "";
+                } else {
+                    // Extract the address information from the JSON response
+                    if (data.features && data.features.length > 0) {
+                        result.address = data.features[0].place_name;
+                    }
+                }
+            });
+    });
+    return result;
 }

@@ -7,7 +7,7 @@
         <form asp-action="CreateCode">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-floating">
-                <input asp-for="ExpireDate" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                <input required asp-for="ExpireDate" class="form-control" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(1).ToString("yyyy-MM-dd")" value="@DateTime.Now.AddMonths(1).ToString("yyyy-mm-dd")" />
                 <label asp-for="ExpireDate" class="control-labeaccept-policy"></label>
                 <span asp-validation-for="ExpireDate" class="text-danger"></span>
             </div>
@@ -16,7 +16,7 @@
                 <label asp-for="RoleId" class="control-label"></label>
             </div>
             <div class="form-group">
-                <input type="submit" onclick="this.form.submit(); this.disabled=true" value=@StringLocalizer["Create"] style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mt-3" />
+                <input type="submit" value=@StringLocalizer["Create"] style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mt-3" />
             </div>
         </form>
     </div>

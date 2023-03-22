@@ -627,9 +627,6 @@
     <value>At the moment, as we are in the development phase, we are not yet able to show you our main features.
 We apologize for the inconvenience.</value>
   </data>
-  <data name="Partners" xml:space="preserve">
-    <value>Partners</value>
-  </data>
   <data name="Public Page" xml:space="preserve">
     <value>Public Page</value>
   </data>
@@ -681,7 +678,7 @@ We apologize for the inconvenience.</value>
   </data>
   <data name="DavidAbout" xml:space="preserve">
     <value>I'm a software engineering student at the polytechnic institute of setúbal.
-                            I am 20 years old and I am from Portugal.
+                            I am 21 years old and I am from Portugal.
                             I have only had professional contact in sectors different from the area I am majoring in.
                             I'm an open-minded person and I welcome any challenge. In my personal life, I admire the values of sincerity, dedication,
                             and kindness.</value>
@@ -902,9 +899,9 @@ I have experience in the area and I am very focused on my goals.</value>
                       Club Quota Change&lt;/h1&gt; &lt;span
                       style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                     &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;The club _CLUB_ recently updated their quota values. The quota now
-                      is _PRICE_ payed _FREQUENCY_. This will only affect you in your next payment cycle. If you have auto renew, it will be renewed
-                    with the new values in mind or you can go to your &lt;a href="_SUBSCRIPTION_"&gt;subscription page&lt;/a&gt; and cancel it now and it will remain active
-                  until the end of the cycle.&lt;/p&gt; 
+                      is _PRICE_ payed _FREQUENCY_. If you have your subscription to auto renew, it was automatically disabled to prevent unwanted payments.
+                      The current subscription will remain active until the end of the cycle. You can go to your &lt;a href="_SUBSCRIPTION_"&gt;subscription page&lt;/a&gt; and
+                      updated it to enable auto renew again or cancel it, if you don't agree with the new values.&lt;/p&gt; 
                   &lt;/td&gt;
                 &lt;/tr&gt;
                 &lt;tr&gt;
@@ -1247,8 +1244,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>The registration limit cannot exceed the start date of the event.</value>
   </data>
   <data name="SearchError" xml:space="preserve">
-    <value>Make sure you are searching for a location that contains a street, city, and district.</value>
-    <comment>03-03-2023_SearchMapBox</comment>
+    <value>You cannot make an address in water</value>
+    <comment>15-03-2023_SearchMapBox</comment>
   </data>
   <data name="Error_Invalid_Result" xml:space="preserve">
     <value>Invalid Result</value>
@@ -1365,5 +1362,494 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Remove EMD" xml:space="preserve">
     <value>Remove EMD</value>
     <comment>08-03-2023_profile</comment>
+  </data>
+  <data name="AddEvent" xml:space="preserve">
+    <value>Add Event</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="AddNewEvent" xml:space="preserve">
+    <value>Add New Event</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="AddResult" xml:space="preserve">
+    <value>Add Result</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Athletics" xml:space="preserve">
+    <value>Athletics</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Basketball" xml:space="preserve">
+    <value>Basketball</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="ConfigEasyPay" xml:space="preserve">
+    <value>How to configure your easyPay?</value>
+    <comment>10-03-2023_PaySettings</comment>
+  </data>
+  <data name="EventName" xml:space="preserve">
+    <value>Event Name</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="EventPath" xml:space="preserve">
+    <value>Event Path</value>
+    <comment>10-03-2023_PathInfoMapBox</comment>
+  </data>
+  <data name="Fri" xml:space="preserve">
+    <value>Fri</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Futsal" xml:space="preserve">
+    <value>Futsal</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Guidance" xml:space="preserve">
+    <value>Guidance</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Mon" xml:space="preserve">
+    <value>Mon</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="MTB" xml:space="preserve">
+    <value>MTB</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="NoEvents" xml:space="preserve">
+    <value>There are no events planned for</value>
+    <comment>10-03-2023_canlendar</comment>
+  </data>
+  <data name="NumberInvite" xml:space="preserve">
+    <value>Number of people to invite</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Place" xml:space="preserve">
+    <value>Place</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Placeholder" xml:space="preserve">
+    <value>Search</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="PlaceholderAddress" xml:space="preserve">
+    <value>Enter an address or street</value>
+    <comment>09-03-2023_MyClubEdit</comment>
+  </data>
+  <data name="RemoveParticipant" xml:space="preserve">
+    <value>Remove Participant</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Result" xml:space="preserve">
+    <value>Result</value>
+    <comment>10-03-2023_Results</comment>
+  </data>
+  <data name="Roller hockey" xml:space="preserve">
+    <value>Roller hockey</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="s" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Sat" xml:space="preserve">
+    <value>Sat</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Soccer" xml:space="preserve">
+    <value>Soccer</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Sun" xml:space="preserve">
+    <value>Sun</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Swimming" xml:space="preserve">
+    <value>Swimming</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Taekwondo" xml:space="preserve">
+    <value>Taekwondo</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Thu" xml:space="preserve">
+    <value>Thu</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Tue" xml:space="preserve">
+    <value>Tue</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="ViewDark" xml:space="preserve">
+    <value>Dark</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewLight" xml:space="preserve">
+    <value>Light</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewSatellite" xml:space="preserve">
+    <value>Satellite Streets</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="ViewStreets" xml:space="preserve">
+    <value>Streets</value>
+    <comment>09-03-2023_IndexClubs</comment>
+  </data>
+  <data name="Volleyball" xml:space="preserve">
+    <value>Volleyball</value>
+    <comment>09-03-2023_Modalities</comment>
+  </data>
+  <data name="Wed" xml:space="preserve">
+    <value>Wed</value>
+    <comment>10-03-2023_InfoPartial</comment>
+  </data>
+  <data name="Administrador de Clube" xml:space="preserve">
+    <value>Club Administrator</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Atleta" xml:space="preserve">
+    <value>Athlete</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Secretaria" xml:space="preserve">
+    <value>Secretary</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Sócio" xml:space="preserve">
+    <value>Partner</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="Treinador" xml:space="preserve">
+    <value>Trainer</value>
+    <comment>10-03-2023_translations</comment>
+  </data>
+  <data name="BasalMetabolism" xml:space="preserve">
+    <value>Basal Metabolism (kcal/day)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="CreateBioimpedance" xml:space="preserve">
+    <value>Create Bioimpedance</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="FatMass" xml:space="preserve">
+    <value>Fat Mass (%)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Height" xml:space="preserve">
+    <value>Height (1.81m, 181cm, 5'11)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Hydration" xml:space="preserve">
+    <value>Hydration (%)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="LeanMass" xml:space="preserve">
+    <value>Lean Mass (%)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="MuscleMass" xml:space="preserve">
+    <value>Muscle Mass (%)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="MyZone" xml:space="preserve">
+    <value>MyZone</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="ViceralFat" xml:space="preserve">
+    <value>Viceral Fat (%)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Weight" xml:space="preserve">
+    <value>Weight (145lbs, 65.5kg)</value>
+    <comment>09-03-2023_bioimpedance</comment>
+  </data>
+  <data name="All" xml:space="preserve">
+    <value>All</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="Finished" xml:space="preserve">
+    <value>Finished</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="Futures" xml:space="preserve">
+    <value>Futures</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="InProgress" xml:space="preserve">
+    <value>In Progress</value>
+    <comment>10-03-2023_EventFilter</comment>
+  </data>
+  <data name="No address saved" xml:space="preserve">
+    <value>No address saved</value>
+    <comment>11-03-2023_myclubEdit</comment>
+  </data>
+  <data name="NoLimit" xml:space="preserve">
+    <value>No Limit</value>
+    <comment>14-03-2023_FixEditEvent</comment>
+  </data>
+  <data name="Staff" xml:space="preserve">
+    <value>Staff</value>
+    <comment>15-03-2023_statistics</comment>
+  </data>
+  <data name="Futebol" xml:space="preserve">
+    <value>Football</value>
+  </data>
+  <data name="ResultError" xml:space="preserve">
+    <value>Please try again, we could not capture your address</value>
+    <comment>15/03/2023_SearchMapBox</comment>
+  </data>
+  <data name="Are u sure you want to delete?" xml:space="preserve">
+    <value>Are u sure you want to delete?</value>
+    <comment>17-03-2023_profile</comment>
+  </data>
+  <data name="Are you sure you want to cancel? All progress will be lost!" xml:space="preserve">
+    <value>Are you sure you want to cancel? All progress will be lost!</value>
+    <comment>17-03-2023_profile</comment>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Entries" xml:space="preserve">
+    <value>Entries</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Fee" xml:space="preserve">
+    <value>Fee</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Income" xml:space="preserve">
+    <value>Income</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Month" xml:space="preserve">
+    <value>Month</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Of" xml:space="preserve">
+    <value>Of</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="ProductName" xml:space="preserve">
+    <value>Product Name</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Statistics" xml:space="preserve">
+    <value>Statistics</value>
+    <comment>16-03-2023_StatisticsView</comment>
+  </data>
+  <data name="UpdatePlan" xml:space="preserve">
+    <value>Update Plan</value>
+    <comment>17-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Income Detailed" xml:space="preserve">
+    <value>Income Detailed</value>
+    <comment>17-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Partners" xml:space="preserve">
+    <value>Partners</value>
+  </data>
+  <data name="PartnersV2" xml:space="preserve">
+    <value>Partners</value>
+    <comment>18-03-2023_StatisticsView</comment>
+  </data>
+  <data name="SelectYear" xml:space="preserve">
+    <value>Select Research Year</value>
+    <comment>18-03-2023_StatisticsView</comment>
+  </data>
+  <data name="Error_DateGreaterThan" xml:space="preserve">
+    <value>The end date selected is before the start date</value>
+    <comment>11-03-2023_Plans</comment>
+  </data>
+  <data name="Error_IsDateBeforeToday" xml:space="preserve">
+    <value>The date selected is before today</value>
+    <comment>11-03-2023_Plans</comment>
+  </data>
+  <data name="CreateBio" xml:space="preserve">
+    <value>Create Bioimpedance</value>
+    <comment>19-03-2023_Bio</comment>
+  </data>
+  <data name="LocationEvent" xml:space="preserve">
+    <value>You will need to enter a location in the event</value>
+    <comment>19-03-2023_Events</comment>
+  </data>
+  <data name="NameEvent" xml:space="preserve">
+    <value>You will have to give the event a name</value>
+    <comment>19-03-2023_Events</comment>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+    <comment>19-03-2023_bioimpedance</comment>
+  </data>
+  <data name="UpdateBio" xml:space="preserve">
+    <value>Update Bioimpedance</value>
+    <comment>19-03-2023_bioimpedance</comment>
+  </data>
+  <data name="Actualize" xml:space="preserve">
+    <value>Updated to</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="ActiveTrainingPlan" xml:space="preserve">
+    <value>Active Training Plan</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="Bio" xml:space="preserve">
+    <value>Bioimpedance</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="ExpiryDate" xml:space="preserve">
+    <value>Expiry Date</value>
+    <comment>21-03-2023_MyZone</comment>
+  </data>
+  <data name="FoodPlan" xml:space="preserve">
+    <value>Food Plan</value>
+    <comment>20-03-2023_MyZone</comment>
+  </data>
+  <data name="MD" xml:space="preserve">
+    <value>Medical Exame</value>
+    <comment>21-03-2023_MyZone</comment>
+  </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Add Sessions" xml:space="preserve">
+    <value>Add Sessions</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Athlete" xml:space="preserve">
+    <value>Athlete</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Birth Date" xml:space="preserve">
+    <value>Birth Date</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create New Template" xml:space="preserve">
+    <value>Create New Template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Meal Plan" xml:space="preserve">
+    <value>Edit Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Training Plan" xml:space="preserve">
+    <value>Edit Training Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Description" xml:space="preserve">
+    <value>Exercise Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Name" xml:space="preserve">
+    <value>Exercise Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Description" xml:space="preserve">
+    <value>Goal Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal List" xml:space="preserve">
+    <value>Goal List</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Name" xml:space="preserve">
+    <value>Goal Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goals" xml:space="preserve">
+    <value>Goals</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="IsTemplate" xml:space="preserve">
+    <value>Is Template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal" xml:space="preserve">
+    <value>Meal</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Description" xml:space="preserve">
+    <value>Meal Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Name" xml:space="preserve">
+    <value>Meal Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Plan" xml:space="preserve">
+    <value>Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Description" xml:space="preserve">
+    <value>Plan Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Name" xml:space="preserve">
+    <value>Plan Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Repetitions" xml:space="preserve">
+    <value>Repetitions</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="See" xml:space="preserve">
+    <value>See</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training" xml:space="preserve">
+    <value>Training</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training Plan" xml:space="preserve">
+    <value>Training Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Meal Plan" xml:space="preserve">
+    <value>Create Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Training Plan" xml:space="preserve">
+    <value>Create Training Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="HowAddPlan" xml:space="preserve">
+    <value>How do you want to add a plan?</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="New Plan" xml:space="preserve">
+    <value>New Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Templates</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Trainer Zone" xml:space="preserve">
+    <value>Trainer zone</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training Zone" xml:space="preserve">
+    <value>Training zone</value>
+    <comment>22-03-2023 plans</comment>
   </data>
 </root>

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Identity;
 using SCManagement.Data;
 using SCManagement.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authentication;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Middlewares;
 using SCManagement.Services.ClubService;
@@ -14,8 +13,9 @@ using Azure.Identity;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.EventService;
 using SCManagement.Services.TranslationService;
-using SCManagement.Services.Location;
 using SCManagement.Services.CronJobService;
+using SCManagement.Services.StatisticsService;
+using SCManagement.Services.PlansService;
 
 namespace SCManagement.Services
 {
@@ -52,12 +52,12 @@ namespace SCManagement.Services
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.Configure<RequestLocalizationOptions>(options =>
             {
-                var supportedCultures = new[]
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("pt-PT"),
-                };
-                options.DefaultRequestCulture = new RequestCulture("en-US");
+                var pt = new CultureInfo("pt-PT");
+                var en = new CultureInfo("en-US");
+                en.DateTimeFormat.ShortDatePattern = "dd/MM/yyyy";
+
+                var supportedCultures = new[] { pt, en };
+                options.DefaultRequestCulture = new RequestCulture(en);
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
                 options.FallBackToParentCultures = true;
@@ -133,16 +133,17 @@ namespace SCManagement.Services
             services.AddTransient<IAzureStorage, AzureStorage>();
             services.AddTransient<IUserService, SCManagement.Services.UserService.UserService>();
             services.AddTransient<IClubService, SCManagement.Services.ClubService.ClubService>();
-            services.AddTransient<ILocationService, SCManagement.Services.Location.LocationService>();
             services.AddTransient<ITeamService, SCManagement.Services.TeamService.TeamService>();
             services.AddTransient<IPaymentService, SCManagement.Services.PaymentService.PaymentService>();
             services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
             services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
-            #endregion
-
+            services.AddTransient<IPlanService, SCManagement.Services.PlansService.PlanService>();
+            services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();         
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
+            #endregion
 
+            #region cronjobs
             //daily checker @ 1 min past midnight
             services.AddCronJob<DailySubscriptionChecker>(c =>
             {
@@ -163,6 +164,14 @@ namespace SCManagement.Services
                 c.TimeZoneInfo = TimeZoneInfo.Utc;
                 c.CronExpression = @"5 * * * *";
             });
+
+            // daily statistics generator @ 30 min past midnight
+            services.AddCronJob<DailyStatisticsGenerator>(c =>
+            {
+                c.TimeZoneInfo = TimeZoneInfo.Utc;
+                c.CronExpression = @"30 0 * * *";
+            });
+            #endregion
         }
     }
 }

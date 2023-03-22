@@ -94,6 +94,16 @@
         background-color: #00639A;
         border: 1px solid black;
     }
+
+    .toast {
+        position: fixed;
+        top: 10vh;
+        left: 0;
+        border: 2px solid red;
+        transform: translateY(-100px);
+        animation: slideRight 1s ease forwards .5s;
+    }
+
 </style>
 
 <div class="container ps-5 pe-5">
@@ -119,20 +129,20 @@
                 <span class="text-to-dark" style="top:-20px !important;">*@StringLocalizer["Minimum 1 character"]</span>
             </div>
             <div class="form-floating mt-3">
-                <input asp-for="StartDate" id="startDateTime" class="form-control" onchange="HaveDiferentDate()" />
+                <input asp-for="StartDate" id="startDateTime" class="form-control" min="@Model.CreationDate.Value.AddMinutes(10).ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" onChange="changedStart(this)" />
                 <label asp-for="StartDate" class="control-label"></label>
                 <span asp-validation-for="StartDate" class="text-danger" id="spanStartDate"></span>
                 <span class="text-danger" id="spanStartDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
             <div class="form-floating mt-3">
-                <input asp-for="EndDate" id="endDateTime" class="form-control" onchange="HaveDiferentDate()" />
+                <input asp-for="EndDate" id="endDateTime" class="form-control" min="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-ddTHH:mm")" />
                 <label asp-for="EndDate" class="control-label"></label>
                 <span asp-validation-for="EndDate" class="text-danger"></span>
                 <span class="text-danger" id="spanEndDateError" style="display:none">@StringLocalizer["Error_This_Date_Is_Not_Allowed"]</span>
             </div>
 
-            <div class="form-floating mt-3">
-                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" onchange="CheckLimitEnrollDate()" />
+            <div id="LimitEnrollContainer" class="form-floating mt-3">
+                <input asp-for="EnrollLimitDate" class="form-control" id="EnrollLimitDate" min="@Model.CreationDate.Value.ToString("yyyy-MM-ddTHH:mm")" max="@Model.StartDate.ToString("yyyy-MM-ddTHH:mm")" onchange="CheckLimitEnrollDate()" />
                 <label asp-for="EnrollLimitDate" class="control-label"></label>
                 <span asp-validation-for="EnrollLimitDate" class="text-danger"></span>
                 <span class="text-danger" id="spanLimiteEnrollError" style="display:none">@StringLocalizer["Error_Registration_limit_Event"]</span>
@@ -165,7 +175,7 @@
                 <span style="color: orange;">@(ViewBag.ValidKey == false ? StringLocalizer["Warning_InvalidKey"] : "")</span>
             </div>
             <div class="form-floating mt-3">
-                <input type="number" step="1" min="1" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" value="0" />
+                <input type="number" step="1" min="@ViewBag.NumberOfEnrolls" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" />
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>
@@ -183,7 +193,7 @@
 
                 @if (@Model.LocationId != null && Model.Location != null)
                 {
-                    <span id="spanStreet" class="text-to-dark">@Model.Location.Street, @Model.Location.City, @Model.Location.Country, @Model.Location.ZipCode</span>
+                    <span id="spanStreet" class="text-to-dark">@Model.Location.AddressString</span>
 
                 }
             </div>
@@ -201,13 +211,17 @@
                 <label asp-for="AddressByPath" class="control-label"></label>
             </div>
 
-            <br />
-
-            <a id="tutorialBtn" onclick="showTutorial()" class="mt-3 d-none" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
-
-
+            <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong id="alertText"></strong>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                </div>
+            </div>
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
-
+            <span id="locationText" class="text-to-dark"></span> <br /> <br />
+            <a id="tutorialBtn" onclick="showTutorial()" class="mt-4 d-none" style="color:white; margin-top:4% !important; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
             <div id="cardMapBox" class="mt-3">
                 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px;  width:100% !important;">
                     <div class="card-body">
@@ -259,9 +273,30 @@
                 </div>
             </div>
 
+            <input type="hidden" disabled id="tradPlaceholder" value="@StringLocalizer["PlaceholderAddress"].Value.ToString()" />
             <div class="form-group mt-3 d-flex">
                 <input type="submit" value="Save" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
-                <a asp-action="Index" class="btn btn-primary ms-3" style="color:black; border-radius: 10px; background-color: white; border: 2px solid red; text-decoration:none;"><strong>Cancel</strong></a>
+                <div id="modal1" class="modal">
+                    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+                        <span class="text-to-dark">@StringLocalizer["Are you sure you want to cancel? All progress will be lost!"]</span>
+                        <div class="d-flex justify-content-end mt-3">
+                            <a onclick="$('#modal1').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Back"]</a>
+                            <a asp-action="Index" class="btn btn-primary ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;"><strong>@StringLocalizer["Cancel"]</strong></a>
+                        </div>
+                    </div>
+                </div>
+                <a onclick="toggleRemoveModal()" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red; text-decoration:none;">@StringLocalizer["Cancel"]</a>
+
+            </div>
+            <input type="hidden" asp-for="EventAux" id="EventAux"/>
+
+            <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        <strong id="alertText"></strong>
+                    </div>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                </div>
             </div>
         </form>
     </div>
@@ -270,9 +305,24 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
 <script type="text/javascript">
+    function closeToast() {
+        $(".toast").hide();
+    }
+    function toggleRemoveModal() {
+        $("#modal1").show();
+    }
 
     function showTutorial() {
         $('#modal').show();
+    }
+
+    function closeToast(){
+        $(".toast").hide();
+    }
+
+    function changedStart(event) {
+        document.getElementById("endDateTime").setAttribute("min", event.value)
+        document.getElementById("EnrollLimitDate").setAttribute("max", event.value)
     }
 
     function toggleLang(lang, elemento) {
@@ -322,18 +372,33 @@
         })
     }
 
+    function checkLimitEnrollDateIsValid(){
+        let startDate = new Date('@Model.StartDate');
+        let currentDate = new Date().toLocaleString();;
+
+        if (startDate <= currentDate) {
+            document.getElementById("LimitEnrollContainer").style.display = "none"
+        }else{
+            document.getElementById("LimitEnrollContainer").style.display = "block"
+        }
+    }
+
     window.onload = function () {
         document.getElementById("myForm").addEventListener("submit", validateForm);
-
+        
         const culture = "@ViewBag.CultureInfo"
         toggleLang(culture, "details")
         toggleLang(culture, "name")
 
+        checkLimitEnrollDateIsValid();
+
         ToggleMapBox();
-        var ckbHaveRoute = document.getElementById("ckbHaveRoute");
-        if (ckbhaveRoute.checked) {
+        let ckbHaveRoute = document.getElementById("ckbHaveRoute");
+        if (ckbHaveRoute.checked) {
             PathMapBoxConfig();
         }
+
+        
     }
 
 
@@ -388,35 +453,7 @@
     }
 
 
-    function HaveDiferentDate() {
-        let startDateTime = document.getElementById("startDateTime");
-        let endDateTime = document.getElementById("endDateTime");
-
-        let spanStartError = document.getElementById("spanStartDateError")
-        let spanEndError = document.getElementById("spanEndDateError")
-        let dateNow = new Date();
-        let checkStartDate = new Date(startDateTime.value)
-        let checkEndDate = new Date(endDateTime.value)
-
-
-        if (checkStartDate < dateNow) {
-            spanStartError.style.display = "block";
-            startDateTime.value = dateNow;
-        } else {
-            spanStartError.style.display = "none";
-        }
-
-        if (checkEndDate < checkStartDate) {
-            spanEndError.style.display = "block";
-            endDateTime.value = dateNow;
-        } else {
-            spanEndError.style.display = "none";
-        }
-
-        CheckLimitEnrollDate();
-    }
-
-    function CheckLimitEnrollDate() {
+        function CheckLimitEnrollDate() {
         let startDateTime = document.getElementById("startDateTime");
         let EnrollLimitDate = document.getElementById("EnrollLimitDate");
         let spanLimiteEnrollError = document.getElementById("spanLimiteEnrollError");
@@ -424,7 +461,7 @@
 
         let startDate = new Date(startDateTime.value);
         let enrollDate = new Date(EnrollLimitDate.value);
-        let dateNow = new Date();
+        let dateNow = new Date().toLocaleString();;
 
 
         if (enrollDate > startDate) {
@@ -450,7 +487,8 @@
 
         if (addressByPath.trim() === "" && locationString.trim() === "" && spanLocation.trim() === "") {
             event.preventDefault();
-            alert("Por favor, coloque uma localização no evento.");
+            $(".toast").show();
+            document.getElementById('alertText').innerHTML = "Por favor, coloque uma localização no evento.";
             return false;
         }
 
@@ -473,7 +511,8 @@
 
         // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
         event.preventDefault();
-        alert("Preencha pelo menos um campo de tradução.");
+        $(".toast").show();
+        document.getElementById('alertText').innerHTML = "Preencha pelo menos um campo de tradução.";
         return false;
     }
 
@@ -490,6 +529,9 @@
         "distance": '@Html.Raw(StringLocalizer["Distance"].Value.ToString())',
         "altitude": '@Html.Raw(StringLocalizer["Altitude"].Value.ToString())',
         "altimetry": '@Html.Raw(StringLocalizer["Altimetry"].Value.ToString())',
+        "searchError": '@Html.Raw(StringLocalizer["SearchError"].Value.ToString())',
+        "newAddress": '@Html.Raw(StringLocalizer["NewAddress"].Value.ToString())',
+        "resultError": '@Html.Raw(StringLocalizer["ResultError"].Value.ToString())',
     }
 </script>
 

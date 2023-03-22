@@ -9,7 +9,7 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService.Models;
-using SCManagement.Services.Location;
+using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services.ClubService
 {
@@ -20,19 +20,23 @@ namespace SCManagement.Services.ClubService
         private readonly IHttpContextAccessor _httpContext;
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
+        private readonly IPaymentService _paymentService;
 
         public ClubService(
             ApplicationDbContext context,
             IEmailSender emailSender,
             IHttpContextAccessor httpContext,
             SharedResourceService sharedResource,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            IPaymentService paymentService
+            )
         {
             _context = context;
             _emailSender = emailSender;
             _httpContext = httpContext;
             _sharedResource = sharedResource;
             _azureStorage = azureStorage;
+            _paymentService = paymentService;
         }
 
         /// <summary>
@@ -286,9 +290,9 @@ namespace SCManagement.Services.ClubService
         /// to a user in a club
         /// </summary>
         /// <returns>list of roles</returns>
-        public Task<IEnumerable<RoleClub>> GetRoles()
+        public async Task<IEnumerable<RoleClub>> GetRoles()
         {
-            return Task.FromResult(_context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).AsEnumerable());
+            return await _context.RoleClub.Where(r => r.Id > 10 && r.Id < 50).ToListAsync();
         }
 
         /// <summary>
@@ -739,11 +743,7 @@ namespace SCManagement.Services.ClubService
             {
                 CoordinateX = address.CoordinateX,
                 CoordinateY = address.CoordinateY,
-                ZipCode = address.ZipCode,
-                Street = address.Street,
-                City = address.City,
-                District = address.District,
-                Country = address.Country
+                AddressString = address.AddressString,
             };
 
             _context.Address.Add(ad);
@@ -774,11 +774,7 @@ namespace SCManagement.Services.ClubService
             Address ad = await _context.Address.FindAsync(addressId);
             ad.CoordinateX = address.CoordinateX;
             ad.CoordinateY = address.CoordinateY;
-            ad.ZipCode = address.ZipCode;
-            ad.Street = address.Street;
-            ad.City = address.City;
-            ad.District = address.District;
-            ad.Country = address.Country;
+            ad.AddressString = address.AddressString;
             _context.Address.Update(ad);
             await _context.SaveChangesAsync();
         }
@@ -804,13 +800,28 @@ namespace SCManagement.Services.ClubService
         /// <returns></returns>
         public async Task<IEnumerable<Club>> SearchNameClubs(string? name)
         {
-            var clubs = await GetClubs();
-
-            //get all clubs
-            if (name == null) return clubs.ToList();
-
-            //get clubs with the name that user search
-            return clubs.Where(c => c.Name.ToLower().Contains(name.ToLower())).ToList();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            return await _context.Club
+               .Include(c => c.Modalities)
+               .Include(c => c.Photography)
+               .Include(c => c.Address)
+               .Include(c => c.ClubTranslations)
+               .Where(c => string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower().Trim()))
+               .Select(s =>
+               new Club
+               {
+                   Id = s.Id,
+                   Name = s.Name,
+                   Email = s.Email,
+                   PhoneNumber = s.PhoneNumber,
+                   PhotographyId = s.PhotographyId,
+                   Photography = s.Photography,
+                   AddressId = s.AddressId,
+                   Address = s.Address,
+                   Modalities = s.Modalities,
+                   ClubTranslations = s.ClubTranslations!.Where(cc => cc.Language == cultureInfo).ToList(),
+               })
+               .ToListAsync();
         }
 
         /// <summary>
@@ -908,6 +919,18 @@ namespace SCManagement.Services.ClubService
 
             foreach (var partner in partners)
             {
+                var sub = await _context.Subscription
+                    .Include(p => p.Product)
+                    .FirstOrDefaultAsync(f =>
+                    f.UserId == partner.UserId &&
+                    f.Product.ClubId == clubId &&
+                    f.Product.ProductType == PaymentService.Models.ProductType.ClubMembership
+                );
+                if (sub != null && sub.AutoRenew)
+                {
+                    await _paymentService.CancelAutoSubscription(sub.Id);
+                }
+
                 if (!partner.User.Email.ToLower().Contains("scmanagement"))
                 {
                     string lang = partner.User.Language;
@@ -919,7 +942,7 @@ namespace SCManagement.Services.ClubService
                     { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.ToString(), lang) },
                     { "_PRICE_", $"{settings.QuotaFee.ToString()}€"},
                     { "_CLUB_", club.Name },
-                    { "_SUBSCRIPTION_", $"{hostUrl}/Subscription"},
+                    { "_SUBSCRIPTION_", sub != null ? $"{hostUrl}/Subscription?subId={sub.Id}" : $"{hostUrl}/Subscription"},
                     };
 
                     foreach (KeyValuePair<string, string> entry in values)

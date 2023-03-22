@@ -1,12 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Localization;
-using Microsoft.Extensions.Localization;
-using Microsoft.Extensions.Options;
 using SCManagement.Models;
 using SCManagement.Services;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.UserService;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace SCManagement.Middlewares
 {

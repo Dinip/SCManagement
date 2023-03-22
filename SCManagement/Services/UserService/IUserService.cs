@@ -10,5 +10,13 @@ namespace SCManagement.Services.UserService
         public Task UpdateSelectedRole(string userId, int usersRoleClubId);
         public Task<UsersRoleClub> GetSelectedRole(string userId);
         public Task<bool> IsAtleteInAnyClub(string userId);
+        public Task<Bioimpedance> CreateBioimpedance(Bioimpedance bioimpedance);
+        public Task<Bioimpedance> GetBioimpedance(string userId);
+        public Task<Bioimpedance> UpdateBioimpedance(Bioimpedance bioimpedance);
+        public Task<User> GetUserWithEMD (string userId);
+        public Task CheckAndDeleteEMD(User user);
+
+        public Task<bool> IsTrainerInAnyClub(string userId);
+
     }
 }

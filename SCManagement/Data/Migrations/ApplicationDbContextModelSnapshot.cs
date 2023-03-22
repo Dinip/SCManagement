@@ -178,7 +178,7 @@ namespace SCManagement.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("City")
+                    b.Property<string>("AddressString")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -188,24 +188,46 @@ namespace SCManagement.Data.Migrations
                     b.Property<double>("CoordinateY")
                         .HasColumnType("float");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("District")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ZipCode")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Address");
+                });
+
+            modelBuilder.Entity("SCManagement.Models.Bioimpedance", b =>
+                {
+                    b.Property<string>("BioimpedanceId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<float?>("BasalMetabolism")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("FatMass")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Height")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<float?>("Hydration")
+                        .HasColumnType("real");
+
+                    b.Property<DateTime>("LastUpdateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float?>("LeanMass")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("MuscleMass")
+                        .HasColumnType("real");
+
+                    b.Property<float?>("ViceralFat")
+                        .HasColumnType("real");
+
+                    b.Property<string>("Weight")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("BioimpedanceId");
+
+                    b.ToTable("Bioimpedance");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Club", b =>
@@ -2819,6 +2841,9 @@ namespace SCManagement.Data.Migrations
                     b.Property<int>("ClubId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
@@ -2921,7 +2946,7 @@ namespace SCManagement.Data.Migrations
                     b.ToTable("EventResult");
                 });
 
-            modelBuilder.Entity("SCManagement.Models.EventTranslations", b =>
+            modelBuilder.Entity("SCManagement.Models.EventTranslation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -3426,6 +3451,286 @@ namespace SCManagement.Data.Migrations
                     b.ToTable("Subscription");
                 });
 
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.Goal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AthleteId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrainerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AthleteId");
+
+                    b.ToTable("Goals");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AthleteId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsTemplate")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrainerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainerId");
+
+                    b.ToTable("MealPlans");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlanSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("MealDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MealName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MealPlanId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("Time")
+                        .HasColumnType("time");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MealPlanId");
+
+                    b.ToTable("MealPlanSession");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.TrainingPlan", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("AthleteId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("EndDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsTemplate")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("ModalityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("StartDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TrainerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModalityId");
+
+                    b.HasIndex("TrainerId");
+
+                    b.ToTable("TrainingPlans");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.TrainingPlanSession", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ExerciseDescription")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ExerciseName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("Repetitions")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TrainingPlanId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TrainingPlanId");
+
+                    b.ToTable("TrainingPlanSession");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubModalityStatistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ModalityId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatisticsRange")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("ModalityId");
+
+                    b.ToTable("ClubModalityStatistics");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubPaymentStatistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatisticsRange")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ClubPaymentStatistics");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubUserStatistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("ClubId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatisticsRange")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Value")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ClubId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("ClubUserStatistics");
+                });
+
             modelBuilder.Entity("TeamUser", b =>
                 {
                     b.Property<string>("AthletesId")
@@ -3654,7 +3959,7 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("SCManagement.Models.EventTranslations", b =>
+            modelBuilder.Entity("SCManagement.Models.EventTranslation", b =>
                 {
                     b.HasOne("SCManagement.Models.Event", "Event")
                         .WithMany("EventTranslations")
@@ -3793,6 +4098,124 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.Goal", b =>
+                {
+                    b.HasOne("SCManagement.Models.User", "Athlete")
+                        .WithMany("Goals")
+                        .HasForeignKey("AthleteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Athlete");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlan", b =>
+                {
+                    b.HasOne("SCManagement.Models.User", "Trainer")
+                        .WithMany("MealPlans")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Trainer");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlanSession", b =>
+                {
+                    b.HasOne("SCManagement.Services.PlansService.Models.MealPlan", "MealPlan")
+                        .WithMany("MealPlanSessions")
+                        .HasForeignKey("MealPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MealPlan");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.TrainingPlan", b =>
+                {
+                    b.HasOne("SCManagement.Models.Modality", "Modality")
+                        .WithMany("TrainingPlans")
+                        .HasForeignKey("ModalityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SCManagement.Models.User", "Trainer")
+                        .WithMany("TrainingPlans")
+                        .HasForeignKey("TrainerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Modality");
+
+                    b.Navigation("Trainer");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.TrainingPlanSession", b =>
+                {
+                    b.HasOne("SCManagement.Services.PlansService.Models.TrainingPlan", "TrainingPlan")
+                        .WithMany("TrainingPlanSessions")
+                        .HasForeignKey("TrainingPlanId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TrainingPlan");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubModalityStatistics", b =>
+                {
+                    b.HasOne("SCManagement.Models.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SCManagement.Models.Modality", "Modality")
+                        .WithMany()
+                        .HasForeignKey("ModalityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+
+                    b.Navigation("Modality");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubPaymentStatistics", b =>
+                {
+                    b.HasOne("SCManagement.Models.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SCManagement.Services.PaymentService.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Club");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.ClubUserStatistics", b =>
+                {
+                    b.HasOne("SCManagement.Models.Club", "Club")
+                        .WithMany()
+                        .HasForeignKey("ClubId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SCManagement.Models.RoleClub", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Club");
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("TeamUser", b =>
                 {
                     b.HasOne("SCManagement.Models.User", null)
@@ -3836,6 +4259,11 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("UsersEnrolled");
                 });
 
+            modelBuilder.Entity("SCManagement.Models.Modality", b =>
+                {
+                    b.Navigation("TrainingPlans");
+                });
+
             modelBuilder.Entity("SCManagement.Models.RoleClub", b =>
                 {
                     b.Navigation("UsersRoleClub");
@@ -3843,7 +4271,23 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Models.User", b =>
                 {
+                    b.Navigation("Goals");
+
+                    b.Navigation("MealPlans");
+
+                    b.Navigation("TrainingPlans");
+
                     b.Navigation("UsersRoleClub");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.MealPlan", b =>
+                {
+                    b.Navigation("MealPlanSessions");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.PlansService.Models.TrainingPlan", b =>
+                {
+                    b.Navigation("TrainingPlanSessions");
                 });
 #pragma warning restore 612, 618
         }

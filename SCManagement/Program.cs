@@ -8,7 +8,7 @@ RegisterServices.Register(builder.Configuration, builder.Services);
 
 var app = builder.Build();
 
-//sprint2 branch
+//sprint3 branch
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -35,6 +35,11 @@ app.UseWhen(context => context.Request.Path.StartsWithSegments("/MyClub") && !co
     appBuilder.UseClubMiddleware();
 });
 
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/Statistics"), appBuilder =>
+{
+    appBuilder.UseClubMiddleware();
+});
+
 using (var ser = app.Services.CreateScope())
 {
     var services = ser.ServiceProvider;
@@ -56,6 +61,16 @@ app.MapControllerRoute(
     pattern: "Clubs/{id}",
     defaults: new { controller = "Clubs", action = "Index" },
     constraints: new { id = @"\d+" });
+
+app.MapControllerRoute(
+    name: "create meal plan for athlete",
+    pattern: "Plans/CreateMealPlan/{athleteId?}",
+    defaults: new { controller = "Plans", action = "CreateMealPlan" });
+
+app.MapControllerRoute(
+    name: "create training plan for athlete",
+    pattern: "Plans/CreateTrainingPlan/{athleteId?}",
+    defaults: new { controller = "Plans", action = "CreateTrainingPlan" });
 
 app.MapControllerRoute(
     name: "default",

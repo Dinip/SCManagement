@@ -14,7 +14,7 @@
 </div>
 
 <div>
-    <div class="container-fluid m-0 pb-5 pt-2 " id="colorthiefobj" style="height:30%;">
+    <div class="container-fluid m-0 pb-5 pt-2" id="colorthiefobj" style="height:30%;">
         <div class="row mt-5">
             <div class="col-4 d-flex justify-content-center ms-5">
                 <img id="clubPicture"
@@ -93,10 +93,7 @@
                     <div class="col-10">
                         @if (Model.Address != null)
                         {
-                            <span class="text-to-dark">@Model.Address.Street, </span>
-                            <span class="text-to-dark">@Model.Address.City, </span>
-                            <span class="text-to-dark">@Model.Address.Country, </span>
-                            <span class="text-to-dark">@Model.Address.ZipCode</span>
+                            <span class="text-to-dark">@Model.Address.AddressString</span>
                         }
                     </div>
                 </div>

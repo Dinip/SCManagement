@@ -58,11 +58,11 @@ function init_calendar(date) {
         }
         // if current index isn't a day in this month, make it blank
         if (i < first_day || day > day_count) {
-            var curr_date = $("<td class='table-date nil'>" + "</td>");
+            var curr_date = $("<td class='table-date nil text-to-dark'>" + "</td>");
             row.append(curr_date);
         }
         else {
-            var curr_date = $("<td class='table-date'>" + day + "</td>");
+            var curr_date = $("<td class='table-date text-to-dark'>" + day + "</td>");
             var events = check_events(day, month + 1, year);
             if (today === day && $(".active-date").length === 0) {
                 curr_date.addClass("active-date");
@@ -80,6 +80,21 @@ function init_calendar(date) {
     // Append the last row and set the current year
     calendar_days.append(row);
     $(".year").text(year);
+    if (localStorage.getItem("theme") == "dark") {
+        let calendarBG = document.getElementById('calendar-container');
+        let eventCardBG = document.getElementById('event-card');
+        let texts = document.getElementsByClassName('text-to-dark');
+        if (calendarBG) {
+            calendarBG.classList.add("bg-dark");
+        }
+
+        if (eventCardBG) {
+            eventCardBG.classList.add("bg-dark");
+        }
+        for (let i = 0; i < texts.length; i++) {
+            texts[i].style.color = 'white';
+        }
+    }
 }
 
 // Get the number of days in a given month/year
@@ -157,8 +172,8 @@ function show_events(events, month, day) {
     $(".events-container").show(250);
     // If there are no events for this date, notify the user
     if (events.length === 0) {
-        var event_card = $("<div class='event-card'></div>");
-        var event_name = $("<div class='event-name'>There are no events planned for " + month + " " + day + ".</div>");
+        var event_card = $("<div class='event-card' id='event-card'></div>");
+        var event_name = $("<div class='event-name text-to-dark'>" + strings.noEvents + " " + month + " " + day + ".</div>");
         $(event_card).css({ "border-left": "10px solid #00639A" });
         $(event_card).append(event_name);
         $(".events-container").append(event_card);
@@ -167,11 +182,29 @@ function show_events(events, month, day) {
         // Go through and add each event as a card to the events container
         for (var i = 0; i < events.length; i++) {
             var event_card = $("<div style='cursor:pointer' onclick='DetailsEvent("+events[i]["id"]+")' class='event-card'></div>");
-            var event_name = $("<div class='event-name'>" + events[i]["occasion"] + ":</div>");
+            var event_name = $("<div class='event-name text-to-dark'>" + events[i]["occasion"] + ":</div>");
             var event_count = $("<div class='event-count'> Sponsor by " + events[i]["clubName"] + "</div>");
-
+            if (localStorage.getItem("theme") == "dark") {
+                var event_card = $("<div style='cursor:pointer' onclick='DetailsEvent(" + events[i]["id"] + ")' class='event-card bg-dark'></div>");
+                var event_name = $("<div class='event-name text-to-dark' style='color: white'>" + events[i]["occasion"] + ":</div>");
+                var event_count = $("<div class='event-count' style='color: white'> Sponsor by " + events[i]["clubName"] + "</div>");
+            } else {
+                var event_card = $("<div style='cursor:pointer' onclick='DetailsEvent(" + events[i]["id"] + ")' class='event-card'></div>");
+                var event_name = $("<div class='event-name text-to-dark'>" + events[i]["occasion"] + ":</div>");
+                var event_count = $("<div class='event-count'> Sponsor by " + events[i]["clubName"] + "</div>");
+            }
             $(event_card).append(event_name).append(event_count);
             $(".events-container").append(event_card);
+        }
+    }
+    if (localStorage.getItem("theme") == "dark") {
+        let eventCardBG = document.getElementById('event-card');
+        let texts = document.getElementsByClassName('text-to-dark');
+        if (eventCardBG) {
+            eventCardBG.classList.add("bg-dark");
+        }
+        for (let i = 0; i < texts.length; i++) {
+            texts[i].style.color = 'white';
         }
     }
 }

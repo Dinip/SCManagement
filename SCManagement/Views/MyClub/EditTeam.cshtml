@@ -27,7 +27,8 @@
                     <span asp-validation-for="Name" class="text-danger"></span>
                 </div>
                 <div class="form-floating" style="margin-bottom:20px;">
-                    <select asp-for="ModalityId" data-placeholder=@StringLocalizer["Choose modalities"] class="form-control chosen-select" asp-items="ViewBag.Modalities"></select>
+                    <select asp-for="ModalityId" data-placeholder=@StringLocalizer["Choose modalities"] class="form-control" asp-items="ViewBag.Modalities"></select>
+                    <label asp-for="ModalityId" class="control-label"></label>
                     <span asp-validation-for="ModalityId" class="text-danger"></span>
                 </div>
                 <div class="form-floating" style="margin-bottom:20px;">

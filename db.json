@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "dbserver_scmanagementdbserver_name": {
+      "type": "string"
+    },
+    "dbserver_scmanagementdbserver_adminlogin": {
+      "type": "string"
+    },
+    "dbserver_scmanagementdbserver_adminpassword": {
+      "type": "securestring"
+    },
+    "dbserver_scmanagementdbserver_location": {
+      "type": "string"
+    },
+    "dbserver_scmanagementdbserver_SCManagement_db_name": {
+      "type": "string"
+    },
+    "dbserver_scmanagementdbserver_SCManagement_db_location": {
+      "type": "string"
+    }
+  },
+  "resources": [
+    {
+      "location": "[parameters('dbserver_scmanagementdbserver_location')]",
+      "name": "[parameters('dbserver_scmanagementdbserver_name')]",
+      "type": "Microsoft.Sql/servers",
+      "apiVersion": "2019-06-01-preview",
+      "properties": {
+        "administratorLogin": "[parameters('dbserver_scmanagementdbserver_adminlogin')]",
+        "administratorLoginPassword": "[parameters('dbserver_scmanagementdbserver_adminpassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+          "location": "[parameters('dbserver_scmanagementdbserver_location')]",
+          "name": "AllowAllAzureIPs",
+          "type": "firewallrules",
+          "apiVersion": "2019-06-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('dbserver_scmanagementdbserver_name'))]"
+          ],
+          "properties": {
+            "endIpAddress": "0.0.0.0",
+            "startIpAddress": "0.0.0.0"
+          }
+        },
+        {
+          "location": "[parameters('dbserver_scmanagementdbserver_SCManagement_db_location')]",
+          "name": "[parameters('dbserver_scmanagementdbserver_SCManagement_db_name')]",
+          "type": "databases",
+          "apiVersion": "2019-06-01-preview",
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('dbserver_scmanagementdbserver_name'))]"
+          ],
+          "sku": {
+            "name": "S0",
+            "tier": "Standard"
+          },
+          "properties": {
+            "collation": "SQL_Latin1_General_CP1_CI_AS",
+            "maxSizeBytes": "1073741824"
+          }
+        }
+      ]
+    }
+  ]
+}

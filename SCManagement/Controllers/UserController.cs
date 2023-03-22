@@ -1,9 +1,6 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.UserService;
 
