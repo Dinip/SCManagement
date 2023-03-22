@@ -169,7 +169,7 @@ namespace SCManagement.Controllers
 
             if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
 
-            return RedirectToAction(nameof(TrainingTemplates));
+            return RedirectToAction(nameof(Templates));
         }
 
         [HttpPost]
@@ -195,7 +195,7 @@ namespace SCManagement.Controllers
 
             if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
 
-            return RedirectToAction(nameof(MealTemplates));
+            return RedirectToAction(nameof(Templates));
         }
 
         public async Task<IActionResult> CreateTrainingPlan(string? athleteId, string? isTemplate, int? id, int? teamId)
@@ -334,7 +334,7 @@ namespace SCManagement.Controllers
                     await _planService.CreateTrainingPlan(trainingPlan);
                 }
 
-                if (trainingPlan.IsTemplate) return RedirectToAction("TrainingTemplates");
+                if (trainingPlan.IsTemplate) return RedirectToAction("Templates");
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }
@@ -476,7 +476,7 @@ namespace SCManagement.Controllers
                     await _planService.CreateMealPlan(mealPlan);
                 }
 
-                if (mealPlan.IsTemplate) return RedirectToAction("MealTemplates");
+                if (mealPlan.IsTemplate) return RedirectToAction("Templates");
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }
@@ -576,7 +576,7 @@ namespace SCManagement.Controllers
 
                 if (!actualTrainingPlan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = actualTrainingPlan.AthleteId });
 
-                return RedirectToAction("TrainingTemplates");
+                return RedirectToAction("Templates");
             }
 
             return View("CustomError", "Error_NotFound");
@@ -672,7 +672,7 @@ namespace SCManagement.Controllers
 
                 if (!actualMealPlan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = actualMealPlan.AthleteId });
 
-                return RedirectToAction("MealTemplates");
+                return RedirectToAction("Templates");
             }
 
             return View("CustomError", "Error_NotFound");
