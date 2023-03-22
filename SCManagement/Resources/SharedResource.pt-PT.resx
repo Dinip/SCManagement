@@ -1926,6 +1926,14 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Aplicar</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="Create Meal Plan" xml:space="preserve">
+    <value>Criar plano de alimentação</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Training Plan" xml:space="preserve">
+    <value>Criar plano de treino</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="HowAddPlan" xml:space="preserve">
     <value>Como queres adicionar um plano</value>
     <comment>22-03-2023 plans</comment>

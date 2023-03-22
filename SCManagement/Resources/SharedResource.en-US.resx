@@ -1796,6 +1796,14 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Apply</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="Create Meal Plan" xml:space="preserve">
+    <value>Create Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Training Plan" xml:space="preserve">
+    <value>Create Training Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="HowAddPlan" xml:space="preserve">
     <value>How do you want to add a plan?</value>
     <comment>22-03-2023 plans</comment>
