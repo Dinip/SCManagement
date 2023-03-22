@@ -78,7 +78,7 @@ namespace SCManagement.Services.PlansService
         }
         public async Task<TrainingPlan?> GetTrainingPlan(int planId)
         {
-            return await _context.TrainingPlans.Where(p => p.Id == planId && p.IsTemplate == false)
+            return await _context.TrainingPlans.Where(p => p.Id == planId)
                 .Include(p => p.Modality)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
@@ -87,7 +87,7 @@ namespace SCManagement.Services.PlansService
 
         public async Task<MealPlan?> GetMealPlan(int planId)
         {
-            return await _context.MealPlans.Where(p => p.Id == planId && p.IsTemplate == false)
+            return await _context.MealPlans.Where(p => p.Id == planId)
                 .Include(p => p.Trainer)
                 .Include(p => p.MealPlanSessions)
                 .FirstOrDefaultAsync();

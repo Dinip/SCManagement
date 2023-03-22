@@ -40,6 +40,39 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
+        public class TemplatesLists
+        {
+            public List<TrainingPlan> TrainingPlans { get; set; }
+            public List<MealPlan> MealPlans { get; set; }
+        }
+
+        public async Task<IActionResult> Templates()
+        {
+            string userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.IsTemplate = true;
+
+            var trains = await _planService.GetTemplateTrainingPlans(userId);
+
+            if (trains == null) return View("CustomError", "Error_NotFound");
+
+            var meals = await _planService.GetTemplateMealPlans(userId);
+
+            if (meals == null) return View("CustomError", "Error_NotFound");
+
+            var templates = new TemplatesLists
+            {
+                TrainingPlans = (List<TrainingPlan>)trains,
+                MealPlans = (List<MealPlan>)meals
+            };
+
+            return View(templates);
+        }
+
         public async Task<IActionResult> TrainingTemplates()
         {
             string userId = getUserIdFromAuthedUser();
@@ -132,7 +165,7 @@ namespace SCManagement.Controllers
 
             if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
 
-            return RedirectToAction(nameof(TrainingTemplates));
+            return RedirectToAction(nameof(Templates));
         }
 
         [HttpPost]
@@ -158,7 +191,7 @@ namespace SCManagement.Controllers
 
             if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = plan.AthleteId });
 
-            return RedirectToAction(nameof(MealTemplates));
+            return RedirectToAction(nameof(Templates));
         }
 
         public async Task<IActionResult> CreateTrainingPlan(string? athleteId, string? isTemplate, int? id, int? teamId)
@@ -297,7 +330,7 @@ namespace SCManagement.Controllers
                     await _planService.CreateTrainingPlan(trainingPlan);
                 }
 
-                if (trainingPlan.IsTemplate) return RedirectToAction("TrainingTemplates");
+                if (trainingPlan.IsTemplate) return RedirectToAction("Templates");
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }
@@ -439,7 +472,7 @@ namespace SCManagement.Controllers
                     await _planService.CreateMealPlan(mealPlan);
                 }
 
-                if (mealPlan.IsTemplate) return RedirectToAction("MealTemplates");
+                if (mealPlan.IsTemplate) return RedirectToAction("Templates");
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }
@@ -539,7 +572,7 @@ namespace SCManagement.Controllers
 
                 if (!actualTrainingPlan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = actualTrainingPlan.AthleteId });
 
-                return RedirectToAction("TrainingTemplates");
+                return RedirectToAction("Templates");
             }
 
             return View("CustomError", "Error_NotFound");
@@ -635,7 +668,7 @@ namespace SCManagement.Controllers
 
                 if (!actualMealPlan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = actualMealPlan.AthleteId });
 
-                return RedirectToAction("MealTemplates");
+                return RedirectToAction("Templates");
             }
 
             return View("CustomError", "Error_NotFound");
@@ -795,7 +828,7 @@ namespace SCManagement.Controllers
             await _planService.UpdateGoal(goal);
 
             //if u need u can change this 
-            return RedirectToAction("TrainingZone", "MyClub");
+            return RedirectToAction("GoalsList", new { id = goal.AthleteId });
         }
         
         public async Task<IActionResult> GoalDetails(int id)
@@ -817,7 +850,7 @@ namespace SCManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> DeleteGoal(int? id)
         {
             string userId = getUserIdFromAuthedUser();
 
@@ -825,7 +858,7 @@ namespace SCManagement.Controllers
 
             if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
 
-            var goal = await _planService.GetGoal(id);
+            var goal = await _planService.GetGoal((int)id);
 
             if (goal == null) return View("CustomError", "Error_NotFound");
 
@@ -834,10 +867,34 @@ namespace SCManagement.Controllers
             await _planService.DeleteGoal(goal);
 
             //if u need u can change this 
-            return RedirectToAction("TrainingZone", "MyClub");
+            return RedirectToAction("GoalsList", new { id = goal.AthleteId });
         }
 
+        public async Task<IActionResult> GoalsList(string id)
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
 
+            string userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            IEnumerable<Goal> goals;
+            
+            if (_clubService.IsClubAthlete(role)) 
+            {
+                goals = await _planService.GetGoals(id);
+            }
+            else 
+            {
+                goals = await _planService.GetGoals(userId,id);
+            } 
+
+            if (goals == null) return View("CustomError", "Error_NotFound");
+
+            return View(goals);
+        }
     }
     
 }

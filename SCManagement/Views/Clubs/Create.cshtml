@@ -53,15 +53,15 @@
                                 <span asp-validation-for="Name" class="text-danger"></span>
                             </div>
 
-                            <div class="form-floating mt-3">
+                            <div class="form-group mt-3">
+                                <label asp-for="ModalitiesIds" class="control-label me-2" style="float:left;"></label>
                                 <select multiple required data-placeholder=" " style="width: fit-content !important;" asp-for="ModalitiesIds" class="form-control" asp-items="ViewBag.Modalities"></select>
-                                <label asp-for="ModalitiesIds" class="control-label"></label>
                                 <span asp-validation-for="ModalitiesIds" class="text-danger"></span>
                             </div>
 
                             
                             <div class="mt-4">
-                                <strong style="float:left !important; margin-left:5px; margin-bottom:5px;">Selected Plan:</strong>
+                                <strong class="text-to-dark" style="float:left !important; margin-left:5px; margin-bottom:5px;">Selected Plan:</strong>
                                 <table class="table table-sm" style="border-radius:10px !important;">
                                     <tr style="background-color:#f0f0f0;">
                                         <th>@Html.DisplayNameFor(_=>plan.Name)</th>

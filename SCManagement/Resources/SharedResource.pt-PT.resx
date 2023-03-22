@@ -1842,4 +1842,148 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Exame Médico</value>
     <comment>21-03-2023_MyZone</comment>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Adicionar</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Add Sessions" xml:space="preserve">
+    <value>Adicionar sessões</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Athlete" xml:space="preserve">
+    <value>Atleta</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Birth Date" xml:space="preserve">
+    <value>Data de nascimento</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create New Template" xml:space="preserve">
+    <value>Criar novo template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Descrição</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duração</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Meal Plan" xml:space="preserve">
+    <value>Editar plano de refeição</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Training Plan" xml:space="preserve">
+    <value>Editar plano de treino</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Description" xml:space="preserve">
+    <value>Descrição do exercício</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Name" xml:space="preserve">
+    <value>Nome do exercício</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Description" xml:space="preserve">
+    <value>Descrição da meta</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal List" xml:space="preserve">
+    <value>Lista de metas</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Name" xml:space="preserve">
+    <value>Nome da meta</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goals" xml:space="preserve">
+    <value>Metas</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="IsTemplate" xml:space="preserve">
+    <value>É template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal" xml:space="preserve">
+    <value>Alimentação</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Description" xml:space="preserve">
+    <value>Descrição da refeição</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Name" xml:space="preserve">
+    <value>Nome da refeição</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Plan" xml:space="preserve">
+    <value>Plano de alimentação</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Description" xml:space="preserve">
+    <value>Descrição do plano</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Name" xml:space="preserve">
+    <value>Nome do plano</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Repetitions" xml:space="preserve">
+    <value>Repetições</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="See" xml:space="preserve">
+    <value>Ver</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Horário</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training" xml:space="preserve">
+    <value>Treinos</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training Plan" xml:space="preserve">
+    <value>Plano de treino </value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Aplicar</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Meal Plan" xml:space="preserve">
+    <value>Criar plano de alimentação</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Training Plan" xml:space="preserve">
+    <value>Criar plano de treino</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="HowAddPlan" xml:space="preserve">
+    <value>Como queres adicionar um plano</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="New Plan" xml:space="preserve">
+    <value>Novo plano</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remover</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Templates</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Trainer Zone" xml:space="preserve">
+    <value>Zona do treinador</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training Zone" xml:space="preserve">
+    <value>Zona de treino</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
 </root>

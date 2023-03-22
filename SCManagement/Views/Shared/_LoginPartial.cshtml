@@ -22,6 +22,9 @@
                         <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title=@StringLocalizer["Profile"]>@user?.FullName</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="Settings">@StringLocalizer["Settings"]</a>
+                    </li>
+                    <li class="dropdown-item" style="padding: 5px;">
                         <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Payment" asp-action="Index">@StringLocalizer["Wallet"]</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">

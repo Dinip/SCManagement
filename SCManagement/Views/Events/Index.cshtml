@@ -8,15 +8,15 @@
 
 <div class="container-fluid ps-5 pe-5">
     <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Events"]</h1>
-    @if (ViewBag.IsStaff != null && ViewBag.IsStaff == true)
-    {
-        <p>
-            <a asp-action="Create">@StringLocalizer["Create New"]</a>
-        </p>
-    }
-    
+    <hr />
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
+            @if (ViewBag.IsStaff != null && ViewBag.IsStaff == true)
+            {
+                <div class="mb-4 mt-2">
+                    <a asp-action="Create" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New"]</a>
+                </div>
+            }
             <div class="mb-4 mt-2">
                 <input id="FilterEvent0" name="FilterEvent" value="0" type="radio" style="accent-color: #00639A">
                 <label for="FilterEvent0" class="text-to-dark">@StringLocalizer["All"]</label>

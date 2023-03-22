@@ -1,5 +1,5 @@
 ﻿@model SCManagement.Services.PlansService.Models.MealPlanSession
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     string guid = Guid.NewGuid().ToString();
 }
@@ -25,7 +25,7 @@
             <span asp-validation-for="Time" class="text-danger"></span>
         </div>
         <div>
-            <button onClick='removeElement("@guid")' class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Remove</button>
+            <button onClick='removeElement("@guid")' class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Remove"]</button>
         </div>
 
     </div>

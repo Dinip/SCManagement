@@ -6,7 +6,7 @@
 }
 
 <div class="container ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Edit Training Plan</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Edit Training Plan"]</h1>
     <hr />
     <div class="card mt-5 shadow" style="border-radius:20px;">
         <div class="card-body">
@@ -41,8 +41,10 @@
                         </div>
                     }
                     <div class="form-group mt-3">
-                        <select required data-placeholder=" " style="width: fit-content !important;" asp-for="ModalityId" class="form-control" asp-items="ViewBag.Modalities"></select>
-                        <label asp-for="ModalityId" class="control-label"></label>
+                        <div class="d-flex align-items-center">
+                            <label asp-for="Modality" class="control-label me-2"></label>
+                            <select required data-placeholder=" " style="width: fit-content !important;" asp-for="ModalityId" class="form-control" asp-items="ViewBag.Modalities"></select>
+                        </div>
                         <span asp-validation-for="ModalityId" class="text-danger"></span>
                     </div>
                     <div id="sessions" class="row">
@@ -50,13 +52,13 @@
                     </div>
                     <div class="d-flex mt-5" style="float:right;">
                         <div class="ms-2">
-                            <a asp-action="TrainingZone" asp-controller="MyClub" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Cancel"]</a>
+                            <a asp-action="Templates" asp-controller="Plans" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Cancel"]</a>
                         </div>
                         <div class="form-group ms-2">
-                            <button type="submit" name="action" value="Add sessions" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Add sessions</button>
+                            <button type="submit" name="action" value="Add sessions" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Add Sessions"]</button>
                         </div>
                         <div class="form-group ms-2">
-                            <button type="submit" name="action" value="Edit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Edit</button>
+                            <button type="submit" name="action" value="Edit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Save"]</button>
                         </div>
                     </div>
                 </form>

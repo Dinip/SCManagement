@@ -16,6 +16,7 @@ namespace SCManagement.Services.UserService
         public Task<User> GetUserWithEMD (string userId);
         public Task CheckAndDeleteEMD(User user);
 
+        public Task<bool> IsTrainerInAnyClub(string userId);
 
     }
 }

@@ -1,5 +1,5 @@
 ﻿@model IEnumerable<SCManagement.Services.PlansService.Models.MealPlan>
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "MealTemplates";
 }
@@ -10,7 +10,7 @@
     }
     else
     {
-        <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Meal Plans</h1>
+        <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName @StringLocalizer["Meal Plan"]</h1>
     }
 
     @if (ViewBag.IsTemplate)

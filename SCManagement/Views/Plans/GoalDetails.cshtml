@@ -3,8 +3,6 @@
 @{
     ViewData["Title"] = "GoalDetails";
 }
-
-<h1>GoalDetails</h1>
 <style>
     dt {
         border: 1px solid gainsboro;
@@ -22,11 +20,11 @@
     }
 </style>
 <div class="container ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Goal</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@Model.Name</h1>
     <hr />
     <div class="card mt-5 shadow" style="border-radius:20px;">
         <div class="card-body">
-            <dl class="row">
+            <dl class="row m-2">
                 <dt class="col-sm-2 dlBg text-to-dark">
                     @Html.DisplayNameFor(model => model.Name)
                 </dt>
@@ -54,8 +52,8 @@
             </dl>
         </div>
         <div class="d-flex justify-content-end me-3 mb-3">
-            <a asp-action="EditGoal" asp-route-id="@Model?.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a> |
-            <a asp-action="Index" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Back to List</a>
+            <a asp-action="EditGoal" asp-route-id="@Model?.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
+            <a asp-action="GoalsList" asp-route-id="@Model.AthleteId" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Back to List</a>
         </div>
     </div>
 </div>

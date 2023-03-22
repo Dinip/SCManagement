@@ -14,8 +14,12 @@
 </div>
 <div class="container-fluid ps-5 pe-5">
     <div class="mt-3">
-        <h1 style="margin-top:130px !important;" class="text-to-dark">@Html.DisplayFor(model => model.Name)</h1>
-        <a id="btn-back" href="">@StringLocalizer["Back"]</a>
+        <div class="d-flex justify-content-between align-items-center" style="margin-top:130px !important;">
+            <h1 class="text-to-dark">@Html.DisplayFor(model => model.Name)</h1>
+            <div>
+                <a id="btn-back" href="" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Back"]</a>
+            </div>
+        </div>
         <hr class="text-to-dark" />
         <dl class="row">
             <dt class="col-sm-2 text-to-dark">
@@ -46,7 +50,7 @@
                         <th class="text-to-dark">
                             @StringLocalizer["Name"]
                         </th>
-                        <th class ="text-to-dark">
+                        <th class="text-to-dark">
                             @StringLocalizer["Age"]
                         </th>
                     </tr>

@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<SCManagement.Services.PlansService.Models.TrainingPlan>
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "TrainingPlans";
@@ -6,28 +7,21 @@
 <div class="container-fluid ps-5 pe-5">
     @if (ViewBag.IsTemplate)
     {
-        <h1 style="margin-top:130px !important;" class="text-to-dark">TrainingPlans</h1>
+        <h1 style="margin-top:130px !important;" class="text-to-dark">Training Plans</h1>
     }
     else
     {
         <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Training Plans</h1>
     }
-
-    @if (ViewBag.IsTemplate)
-    {
-        <p>
-            <a asp-route-isTemplate="true" asp-action="CreateTrainingPlan">Create New Template</a>
-        </p>
-    }
-    @*else tem que se fazer aquela view de escolher se e para aplicar ou nao o template
-    {
-    <p>
-    <a asp-route-isTemplate="true" asp-action="CreateTrainingPlan">Create New Template</a>
-    </p>
-    }*@
     <hr />
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
+            @if (ViewBag.IsTemplate)
+            {
+                <div class="mb-4 mt-2">
+                    <a asp-route-isTemplate="true" asp-action="CreateTrainingPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Create New Template</a>
+                </div>
+            }
             <table id="table_id" class="display">
                 <thead>
                     <tr>
@@ -64,11 +58,11 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center justify-content-end">
-                                    <a asp-action="EditTrainingPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
-                                    <a asp-action="TrainingDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Details</a>
+                                    <a asp-action="EditTrainingPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
+                                    <a asp-action="TrainingDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
                                     <form asp-action="DeleteTrainingPlan">
                                         <input type="hidden" name="id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Delete</button>
+                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
                                     </form>
                                 </div>
                             </td>

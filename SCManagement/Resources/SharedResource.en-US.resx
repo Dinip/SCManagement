@@ -1712,4 +1712,148 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Medical Exame</value>
     <comment>21-03-2023_MyZone</comment>
   </data>
+  <data name="Add" xml:space="preserve">
+    <value>Add</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Add Sessions" xml:space="preserve">
+    <value>Add Sessions</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Athlete" xml:space="preserve">
+    <value>Athlete</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Birth Date" xml:space="preserve">
+    <value>Birth Date</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create New Template" xml:space="preserve">
+    <value>Create New Template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Description" xml:space="preserve">
+    <value>Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duration</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Meal Plan" xml:space="preserve">
+    <value>Edit Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Edit Training Plan" xml:space="preserve">
+    <value>Edit Training Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Description" xml:space="preserve">
+    <value>Exercise Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Name" xml:space="preserve">
+    <value>Exercise Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Description" xml:space="preserve">
+    <value>Goal Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal List" xml:space="preserve">
+    <value>Goal List</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Name" xml:space="preserve">
+    <value>Goal Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goals" xml:space="preserve">
+    <value>Goals</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="IsTemplate" xml:space="preserve">
+    <value>Is Template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal" xml:space="preserve">
+    <value>Meal</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Description" xml:space="preserve">
+    <value>Meal Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Name" xml:space="preserve">
+    <value>Meal Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Plan" xml:space="preserve">
+    <value>Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Description" xml:space="preserve">
+    <value>Plan Description</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Name" xml:space="preserve">
+    <value>Plan Name</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Repetitions" xml:space="preserve">
+    <value>Repetitions</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="See" xml:space="preserve">
+    <value>See</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Time</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training" xml:space="preserve">
+    <value>Training</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training Plan" xml:space="preserve">
+    <value>Training Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Apply" xml:space="preserve">
+    <value>Apply</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Meal Plan" xml:space="preserve">
+    <value>Create Meal Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Create Training Plan" xml:space="preserve">
+    <value>Create Training Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="HowAddPlan" xml:space="preserve">
+    <value>How do you want to add a plan?</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="New Plan" xml:space="preserve">
+    <value>New Plan</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Templates" xml:space="preserve">
+    <value>Templates</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Trainer Zone" xml:space="preserve">
+    <value>Trainer zone</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Training Zone" xml:space="preserve">
+    <value>Training zone</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
 </root>
