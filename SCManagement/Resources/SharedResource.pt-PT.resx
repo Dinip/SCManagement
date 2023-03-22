@@ -1814,4 +1814,56 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Atualizar Bioimpedância</value>
     <comment>19-03-2023_bioimpedance</comment>
   </data>
+  <data name="Athlete" xml:space="preserve">
+    <value>Atleta</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Duration" xml:space="preserve">
+    <value>Duração</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Description" xml:space="preserve">
+    <value>Descrição do exercício</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Exercise Name" xml:space="preserve">
+    <value>Nome do exercício</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Description" xml:space="preserve">
+    <value>Descrição da meta</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Goal Name" xml:space="preserve">
+    <value>Nome da meta</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="IsTemplate" xml:space="preserve">
+    <value>É template</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Description" xml:space="preserve">
+    <value>Descrição da refeição</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Meal Name" xml:space="preserve">
+    <value>Nome da Refeição</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Description" xml:space="preserve">
+    <value>Descrição do plano</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Plan Name" xml:space="preserve">
+    <value>Nome do plano</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Repetitions" xml:space="preserve">
+    <value>Repetições</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Time" xml:space="preserve">
+    <value>Tempo</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
 </root>
