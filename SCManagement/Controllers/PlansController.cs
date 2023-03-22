@@ -895,6 +895,53 @@ namespace SCManagement.Controllers
 
             return View(goals);
         }
+
+        public class ChooseTrainingTeamTemplate
+        {
+            public IEnumerable<TrainingPlan> TrainingPlans { get; set; }
+            public int TeamId { get; set; }
+        }
+
+        public async Task<IActionResult> ChooseTrainingTeamTemplates(int id)
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
+
+            string userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            var template = await _planService.GetTemplateTrainingPlans(userId);
+
+            if (template == null) return View("CustomError", "Error_NotFound");
+
+
+            return View(new ChooseTrainingTeamTemplate { TrainingPlans = template, TeamId = id });
+        }
+
+        public class ChooseMealTeamTemplate
+        {
+            public IEnumerable<MealPlan> MealPlans { get; set; }
+            public int TeamId { get; set; }
+        }
+
+        public async Task<IActionResult> ChooseMealTeamTemplates(int id)
+        {
+            if (id == null) return View("CustomError", "Error_NotFound");
+
+            string userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+
+            var template = await _planService.GetTemplateMealPlans(userId);
+
+            if (template == null) return View("CustomError", "Error_NotFound");
+
+            return View(new ChooseMealTeamTemplate { MealPlans = template, TeamId = id });
+        }
     }
-    
 }
+    
