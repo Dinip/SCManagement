@@ -71,7 +71,7 @@ namespace SCManagement.Models
             }
         }
 
-        private ICollection<Team> Teams { get; set; }
+        private ICollection<Team> Teams { get; set; } // NAO REMOVER ISTO SFF
         public ICollection<TrainingPlan>? TrainingPlans { get; set; }
         public ICollection<MealPlan>? MealPlans { get; set; }
         public ICollection<Goal>? Goals { get; set; }
