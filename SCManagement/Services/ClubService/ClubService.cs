@@ -806,7 +806,7 @@ namespace SCManagement.Services.ClubService
                .Include(c => c.Photography)
                .Include(c => c.Address)
                .Include(c => c.ClubTranslations)
-               .Where(c => string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower()))
+               .Where(c => string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower().Trim()))
                .Select(s =>
                new Club
                {
