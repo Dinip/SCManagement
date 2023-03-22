@@ -832,7 +832,7 @@ namespace SCManagement.Controllers
             await _planService.UpdateGoal(goal);
 
             //if u need u can change this 
-            return RedirectToAction("GoalDetails");
+            return RedirectToAction("GoalDetails", new { id = goal.AthleteId });
         }
         
         public async Task<IActionResult> GoalDetails(int id)
@@ -871,7 +871,7 @@ namespace SCManagement.Controllers
             await _planService.DeleteGoal(goal);
 
             //if u need u can change this 
-            return RedirectToAction("GoalDetails");
+            return RedirectToAction("GoalDetails", new { id = goal.AthleteId });
         }
 
         public async Task<IActionResult> GoalsList(string id)
