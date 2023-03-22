@@ -1668,7 +1668,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Height" xml:space="preserve">
-    <value>Altura (1.81m, 181cm)</value>
+    <value>Altura (1.81m, 181cm, 5'11)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Hydration" xml:space="preserve">
@@ -1688,11 +1688,11 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="ViceralFat" xml:space="preserve">
-    <value>Gordura Oculta (%)</value>
+    <value>Gordura Visceral (%)</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Weight" xml:space="preserve">
-    <value>Peso (65.5kg)</value>
+    <value>Peso (145lbs, 65.5kg)</value>
     <comment>19-03-2023_bioimpedance</comment>
   </data>
   <data name="All" xml:space="preserve">
@@ -1828,7 +1828,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   </data>
   <data name="Description" xml:space="preserve">
     <value>Descrição</value>
-    <comment>20-03-2023_MyZone</comment>
+    <comment>22-03-2023 plans</comment>
   </data>
   <data name="ExpiryDate" xml:space="preserve">
     <value>Data de expiração</value>
@@ -1860,10 +1860,6 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   </data>
   <data name="Create New Template" xml:space="preserve">
     <value>Criar novo template</value>
-    <comment>22-03-2023 plans</comment>
-  </data>
-  <data name="Description" xml:space="preserve">
-    <value>Descrição</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Duration" xml:space="preserve">
