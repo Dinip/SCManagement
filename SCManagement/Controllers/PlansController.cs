@@ -884,7 +884,16 @@ namespace SCManagement.Controllers
 
             if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-            var goals = await _planService.GetGoals(id);
+            IEnumerable<Goal> goals;
+            
+            if (_clubService.IsClubAthlete(role)) 
+            {
+                goals = await _planService.GetGoals(id);
+            }
+            else 
+            {
+                goals = await _planService.GetGoals(userId,id);
+            } 
 
             if (goals == null) return View("CustomError", "Error_NotFound");
 
