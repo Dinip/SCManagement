@@ -1804,6 +1804,10 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>New Plan</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remove</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="Templates" xml:space="preserve">
     <value>Templates</value>
     <comment>22-03-2023 plans</comment>

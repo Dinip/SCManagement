@@ -1879,7 +1879,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Meal" xml:space="preserve">
-    <value>Refeição</value>
+    <value>Alimentação</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Meal Description" xml:space="preserve">
@@ -1887,11 +1887,11 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Meal Name" xml:space="preserve">
-    <value>Nome da Refeição</value>
+    <value>Nome da refeição</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Meal Plan" xml:space="preserve">
-    <value>Plano de refeição</value>
+    <value>Plano de alimentação</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Plan Description" xml:space="preserve">
@@ -1911,7 +1911,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Time" xml:space="preserve">
-    <value>Tempo</value>
+    <value>Horário</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Training" xml:space="preserve">
@@ -1934,12 +1934,16 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Novo plano</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="Remove" xml:space="preserve">
+    <value>Remover</value>
+    <comment>22-03-2023 plans</comment>
+  </data>
   <data name="Templates" xml:space="preserve">
     <value>Templates</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Trainer Zone" xml:space="preserve">
-    <value>Zona do reinador</value>
+    <value>Zona do treinador</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Training Zone" xml:space="preserve">

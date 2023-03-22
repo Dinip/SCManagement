@@ -9,7 +9,6 @@ namespace SCManagement.Services.PlansService.Models
     public class TrainingPlan : Plan
     {
         [Display(Name = "Modality")]
-        [Required(ErrorMessage = "Error_Required")]
         public Modality? Modality { get; set; }
         public int ModalityId { get; set; }
         public ICollection<TrainingPlanSession>? TrainingPlanSessions { get; set; }
