@@ -8,20 +8,11 @@
     @if (ViewBag.IsTemplate)
     {
         <h1 style="margin-top:130px !important;" class="text-to-dark">Training Plans</h1>
-
-
     }
     else
     {
         <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Training Plans</h1>
     }
-
-    @*else tem que se fazer aquela view de escolher se e para aplicar ou nao o template
-    {
-    <p>
-    <a asp-route-isTemplate="true" asp-action="CreateTrainingPlan">Create New Template</a>
-    </p>
-    }*@
     <hr />
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">

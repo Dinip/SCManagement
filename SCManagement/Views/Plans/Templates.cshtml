@@ -1,77 +1,180 @@
-﻿@model IEnumerable<SCManagement.Controllers.PlansController.>
-
+﻿@model SCManagement.Controllers.PlansController.TemplatesLists
+@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "Templates";
 }
+<style>
+    .buttons, .btn-outline-primary {
+        color: white;
+        border-radius: 5px;
+        background-color: #00639A;
+        border-color: #00639A;
+        padding: 6px 12px;
+        text-decoration: none;
+    }
 
-<h1>Templates</h1>
+        .buttons:hover, .btn-outline-primary.active, .btn-check:checked + .btn-outline-primary, .btn-outline-primary:hover {
+            color: white;
+            text-decoration: none;
+            background-color: #013d5e;
+            border-color: #013d5e;
+        }
+</style>
+<div class="container-fluid ps-5 pe-5">
+    <div class="d-flex justify-content-between align-items-center" style="margin-top:130px !important;">
+        <h1 class="text-to-dark">Template Plans</h1>
+        <div class="w-25">
+            <div class="btn-group w-100" role="group" aria-label="Basic radio toggle button group">
+                <input type="radio" onclick="openTraining()" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                <label class="btn btn-outline-primary" for="btnradio1">Training</label>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Modality)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.EndDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Trainer)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AthleteId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsTemplate)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modality.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EndDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Trainer.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AthleteId)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsTemplate)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+                <input type="radio" onclick="openMeal()" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                <label class="btn btn-outline-primary" for="btnradio2">Meal</label>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+        <div class="card-body">
+            <div class="mb-4 mt-2">
+                <a asp-route-isTemplate="true" id="createTraining" asp-action="CreateTrainingPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Create New Template</a>
+                <a asp-route-isTemplate="true" id="createMeal" class="d-none" asp-action="CreateMealPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Create New Template</a>
+            </div>
+            <table id="table_id" class="display"  style="width:100%!important;">
+                <thead id="trainingHead">
+                    <tr>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Modalities"]
+                        </th>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Name"]
+                        </th>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Description"]
+                        </th>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Trainer"]
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="trainingBody">
+                    @foreach (var trainingPlan in Model.TrainingPlans)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor( _=> trainingPlan.Modality.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor( _=> trainingPlan.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor( _=> trainingPlan.Description)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor( _=> trainingPlan.Trainer.FullName)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <a asp-action="EditTrainingPlan" asp-route-id="@trainingPlan.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
+                                    <a asp-action="TrainingDetails" asp-route-id="@trainingPlan.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                    <form asp-action="DeleteTrainingPlan">
+                                        <input type="hidden" name="id" value="@trainingPlan.Id" />
+                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+
+                <thead id="mealHead" class="d-none">
+                    <tr>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Name"]
+                        </th>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Description"]
+                        </th>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Trainer"]
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="mealBody" class="d-none">
+                    @foreach (var mealPlan in Model.MealPlans)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor( _=> mealPlan.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor( _=> mealPlan.Description)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor( _=> mealPlan.Trainer.FullName)
+                            </td>
+                            <td>
+                                <div class="d-flex align-items-center justify-content-end">
+                                    <a asp-action="EditMealPlan" asp-route-id="@mealPlan.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
+                                    <a asp-action="MealDetails" asp-route-id="@mealPlan.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                    <form asp-action="DeleteMealPlan">
+                                        <input type="hidden" name="id" value="@mealPlan.Id" />
+                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
+                                    </form>
+                                </div>
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+
+
+            </table>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table_id").DataTable({
+            responsive: true,
+            columnDefs: [
+                { orderable: false, targets: [-1] }
+            ]
+        });
+    });
+
+    let trainingHead = document.getElementById("trainingHead");
+    let trainingBody = document.getElementById("trainingBody");
+    let mealHead = document.getElementById("mealHead");
+    let mealBody = document.getElementById("mealBody");
+    let createTraining = document.getElementById("createTraining");
+    let createMeal = document.getElementById("createMeal");
+
+    function openTraining() {
+        trainingHead.classList.remove("d-none");
+        mealHead.classList.add("d-none");
+        trainingBody.classList.remove("d-none");
+        mealBody.classList.add("d-none");
+        createMeal.classList.add("d-none");
+        createTraining.classList.remove("d-none");
+    }
+    function openMeal() {
+        mealHead.classList.remove("d-none");
+        trainingHead.classList.add("d-none");
+        mealBody.classList.remove("d-none");
+        trainingBody.classList.add("d-none");
+        createMeal.classList.remove("d-none");
+        createTraining.classList.add("d-none");
+    }
+</script>
