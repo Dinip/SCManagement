@@ -150,5 +150,7 @@ function errorRemoveMarker(errorMessage) {
     $(".toast").show();
     document.getElementById('alertText').innerHTML = errorMessage;
     marker.remove();
+    address = null;
+    newAd.innerHTML = "";
 }
 

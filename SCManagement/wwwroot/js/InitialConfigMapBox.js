@@ -469,6 +469,8 @@ function MarkerWithAddress(map) {
                     $(".toast").show();
                     document.getElementById('alertText').innerHTML = strings.searchError;
                     marker.remove();
+                    result.address = null;
+                    locationText.innerHTML = "";
                 } else {
                     // Extract the address information from the JSON response
                     if (data.features && data.features.length > 0) {
