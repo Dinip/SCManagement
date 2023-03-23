@@ -8,7 +8,7 @@
     <div class="card mt-5 shadow">
         <div class="card-body text-to-dark d-flex align-items-center">
             <div class="w-100">
-                <form asp-action="CreateBioimpedance">
+                <form id="myForm" asp-action="CreateBioimpedance">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating">
                         <input asp-for="Height" class="form-control"/>
@@ -21,17 +21,17 @@
                         <span asp-validation-for="Weight" class="text-danger"></span>
                     </div>
                     <div class="form-floating mt-2">
-                        <input asp-for="FatMass" type="number" step="0.01" class="form-control" />
+                        <input id="fatMass" asp-for="FatMass" type="number" step="0.01" class="form-control" />
                         <label asp-for="FatMass"></label>
                         <span asp-validation-for="FatMass" class="text-danger"></span>
                     </div>
                     <div class="form-floating mt-2">
-                        <input asp-for="LeanMass" type="number" step="0.01" class="form-control" />
+                        <input id="leanMass" asp-for="LeanMass" type="number" step="0.01" class="form-control" />
                         <label asp-for="LeanMass"></label>
                         <span asp-validation-for="LeanMass" class="text-danger"></span>
                     </div>
                     <div class="form-floating mt-2">
-                        <input asp-for="MuscleMass" type="number" step="0.01" class="form-control" />
+                        <input id="muscleMass" asp-for="MuscleMass" type="number" step="0.01" class="form-control" />
                         <label asp-for="MuscleMass"></label>
                         <span asp-validation-for="MuscleMass" class="text-danger"></span>
                     </div>
@@ -65,6 +65,40 @@
     </div>
 </div>
 
+
+<script>
+    window.onload = function () {
+        document.getElementById("myForm").addEventListener("submit", validateForm);
+    }
+
+    function validateForm(event) {
+        let leanMass = parseFloat(document.getElementById("leanMass").value);
+        let fatMass = parseFloat(document.getElementById("fatMass").value);
+        let muscleMass = parseFloat(document.getElementById("muscleMass").value);
+
+        //if any variable is NaN set to 0
+        if (isNaN(leanMass)) {
+            leanMass = 0;
+        }
+        if (isNaN(fatMass)) {
+            fatMass = 0;
+        }
+        if (isNaN(muscleMass)) {
+            muscleMass = 0;
+        }
+
+        //if the sum of the variables is not 100% return false
+        if (leanMass + fatMass + muscleMass > 100) {
+            event.preventDefault();
+            alert("The sum of the lean mass, fat mass and muscle mass must be 100%!");
+            return false;
+        }
+
+        return true;
+    }
+
+
+</script>
 
 
 @section Scripts {
