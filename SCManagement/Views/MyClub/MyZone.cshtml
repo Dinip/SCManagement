@@ -20,152 +20,6 @@
         </div>
     </div>
 
-    <div class="w-100 d-md-flex">
-        <div class="p-5 col-md-6 col-12">
-            <h2 class="text-to-dark">@StringLocalizer["Teams"]</h2>
-            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-                <div class="card-body d-flex flex-column">
-                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
-                        <table id="table_id1" class="display" style="width:100%!important;">
-                            <thead>
-                                <tr class="text-to-dark">
-                                    <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6 fs-4" style="padding: 0 10px;">
-                                        @StringLocalizer["Teams"]
-                                    </th>
-                                    <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6 fs-4" style="padding: 0 10px;">
-                                        @StringLocalizer["Modality"]
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model.Teams != null)
-                                {
-                                    @foreach (var team in Model.Teams)
-                                    {
-                                        <tr class="text-to-dark">
-                                            <td class="mt-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 align-middle" style="padding: 0 10px;">
-                                                @Html.DisplayFor(modelItem => team.Name)
-                                            </td>
-                                            <td class="mt-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 align-middle" style="padding: 0 10px;">
-                                                @Html.DisplayFor(modelItem => team.Modality.Name)
-                                            </td>
-                                        </tr>
-                                    }
-                                }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="p-5 col-md-6 col-12">
-            <h2 class="text-to-dark">@StringLocalizer["ActiveTrainingPlan"]</h2>
-            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-                <div class="card-body d-flex flex-column text-to-dark">
-                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
-                        <table id="table_id2" class="display" style="width:100%!important;">
-                            <thead>
-                                <tr class="text-to-dark">
-                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
-                                @StringLocalizer["Modality"]
-                                    </th>
-                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
-                                @StringLocalizer["Name"]
-                                    </th>
-                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
-                                @StringLocalizer["Description"]
-                                    </th>
-                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
-                                @StringLocalizer["Trainer"]
-                                    </th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model.TrainingPlans != null)
-                                    @foreach (var item in Model.TrainingPlans)
-                                    {
-                                        <tr class="text-to-dark">
-                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
-                                                @Html.DisplayFor(modelItem => item.Modality.Name)
-                                            </td>
-                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
-                                                @Html.DisplayFor(modelItem => item.Name)
-                                            </td>
-                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
-                                                @Html.DisplayFor(modelItem => item.Description)
-                                            </td>
-                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
-                                                @Html.DisplayFor(modelItem => item.Trainer.FullName)
-                                            </td>
-                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle">
-                                                <div class="d-flex align-items-center">
-                                                    <a asp-action="TrainingDetails" asp-controller="Plans" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    }
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row col-12 p-5 flex-wrap">
-        <h2 class="text-to-dark">@StringLocalizer["FoodPlan"]</h2>
-        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-            <div class="card-body d-flex flex-column text-to-dark">
-                <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
-                    <table id="table_id3" class="display" style="width:100%!important;">
-                        <thead>
-                            <tr class="text-to-dark">
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
-                            @StringLocalizer["Name"]
-                                </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
-                            @StringLocalizer["Description"]
-                                </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
-                            @StringLocalizer["Trainer"]
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (Model.MealPlans != null)
-                                @foreach (var item in Model.MealPlans)
-                                {
-                                    <tr class="text-to-dark">
-                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
-                                            @Html.DisplayFor(modelItem => item.Name)
-                                        </td>
-                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
-                                            @Html.DisplayFor(modelItem => item.Description)
-                                        </td>
-                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
-                                            @Html.DisplayFor(modelItem => item.Trainer.FullName)
-                                        </td>
-                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle">
-                                            <div class="d-flex align-items-center">
-                                                <a asp-action="MealDetails" asp-controller="Plans" asp-route-id="@item.Id" class="me-2 align-middle" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                }
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-
-
     @if (Model.Bioimpedance != null)
     {
         <div class="row col-12 p-5">
@@ -238,8 +92,153 @@
     }
     else
     {
-        <a asp-action="CreateBioimpedance">@StringLocalizer["CreateBioimpedance"]</a>
+        <a class="btn btn-primary ms-4 mt-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-action="CreateBioimpedance">@StringLocalizer["CreateBioimpedance"]</a>
     }
+
+    <div class="w-100 d-md-flex">
+        <div class="p-5 col-md-6 col-12">
+            <h2 class="text-to-dark">@StringLocalizer["Teams"]</h2>
+            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+                <div class="card-body d-flex flex-column">
+                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                        <table id="table_id1" class="display" style="width:100%!important;">
+                            <thead>
+                                <tr class="text-to-dark">
+                                    <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Teams"]
+                                    </th>
+                                    <th class="col-lg-6 col-md-6 col-sm-6 col-xs-6 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Modality"]
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.Teams != null)
+                                {
+                                    @foreach (var team in Model.Teams)
+                                    {
+                                        <tr class="text-to-dark">
+                                            <td class="mt-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => team.Name)
+                                            </td>
+                                            <td class="mt-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => team.Modality.Name)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-5 col-md-6 col-12">
+            <h2 class="text-to-dark">@StringLocalizer["ActiveTrainingPlan"]</h2>
+            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+                <div class="card-body d-flex flex-column text-to-dark">
+                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                        <table id="table_id2" class="display" style="width:100%!important;">
+                            <thead>
+                                <tr class="text-to-dark">
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Modality"]
+                                    </th>
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Name"]
+                                    </th>
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Description"]
+                                    </th>
+                                    <th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 fs-4" style="padding: 0 10px;">
+                                        @StringLocalizer["Trainer"]
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.TrainingPlans != null)
+                                    @foreach (var item in Model.TrainingPlans)
+                                    {
+                                        <tr class="text-to-dark">
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Modality.Name)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Name)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Description)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle" style="padding: 0 10px;">
+                                                @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                                            </td>
+                                            <td class="mt-3 col-lg-3 col-md-4 col-sm-3 col-xs-3 align-middle">
+                                                <div class="d-flex align-items-center">
+                                                    <a asp-action="TrainingDetails" asp-controller="Plans" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row col-12 p-5 flex-wrap">
+        <h2 class="text-to-dark">@StringLocalizer["FoodPlan"]</h2>
+        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+            <div class="card-body d-flex flex-column text-to-dark">
+                <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                    <table id="table_id3" class="display" style="width:100%!important;">
+                        <thead>
+                            <tr class="text-to-dark">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                    @StringLocalizer["Name"]
+                                </th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                    @StringLocalizer["Description"]
+                                </th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                    @StringLocalizer["Trainer"]
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.MealPlans != null)
+                                @foreach (var item in Model.MealPlans)
+                                {
+                                    <tr class="text-to-dark">
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
+                                            @Html.DisplayFor(modelItem => item.Name)
+                                        </td>
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
+                                            @Html.DisplayFor(modelItem => item.Description)
+                                        </td>
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle" style="padding: 0 10px;">
+                                            @Html.DisplayFor(modelItem => item.Trainer.FullName)
+                                        </td>
+                                        <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle">
+                                            <div class="d-flex align-items-center">
+                                                <a asp-action="MealDetails" asp-controller="Plans" asp-route-id="@item.Id" class="me-2 align-middle" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
 
 </div>
 
