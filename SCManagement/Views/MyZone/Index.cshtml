@@ -121,26 +121,26 @@
         </div>
     </div>
 
-        
-    
-        <div class="row col-12 p-5 flex-wrap">
-            <h2 class="text-to-dark">@StringLocalizer["Bioimpedance"]</h2>
+
+
+    <div class="row col-12 p-5 flex-wrap">
+        <h2 class="text-to-dark">@StringLocalizer["Bioimpedance"]</h2>
         <a asp-action="CreateBioimpedance">@StringLocalizer["CreateBioimpedance"]</a>
-            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-                <div class="card-body d-flex flex-column text-to-dark">
-                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
-                        <table id="table_id4" class="display" style="width:100%!important;">
-                            <thead>
-                                <tr class="text-to-dark">
-                                    <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
-                                        @StringLocalizer["Height"]
-                                    </th>
-                                    <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
-                                        @StringLocalizer["Weight"]
-                                    </th>
-                                    <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
-                                        @StringLocalizer["FatMass"]
-                                    </th>
+        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+            <div class="card-body d-flex flex-column text-to-dark">
+                <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                    <table id="table_id4" class="display" style="width:100%!important;">
+                        <thead>
+                            <tr class="text-to-dark">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                    @StringLocalizer["Height"]
+                                </th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                    @StringLocalizer["Weight"]
+                                </th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                    @StringLocalizer["FatMass"]
+                                </th>
                                 <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
                                     @StringLocalizer["LeanMass"]
                                 </th>
@@ -159,54 +159,51 @@
                                 <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
                                     @StringLocalizer["LaspUpdateDate"]
                                 </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </div>
+    </div>
 
 
-        <div class="row col-12 p-5 flex-wrap">
-            <h2 class="text-to-dark">@StringLocalizer["MD"]</h2>
-            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-                <div class="card-body">
-                    <div style="width: 100%; max-height: 300px;">
-                        <div class="d-md-flex justify-content-between">
-                            <div class="col-xs-12">
-                                <strong class="text-to-dark">@StringLocalizer["ExpiryDate"]:</strong>
-                            </div>
-                            <div>
-                                <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
-                                    <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
-                                    <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
-                                </form>
+    <div class="row col-12 p-5 flex-wrap">
+        <h2 class="text-to-dark">@StringLocalizer["MD"]</h2>
+        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+            <div class="card-body">
+                <div style="width: 100%; max-height: 300px;">
+                    <div class="d-md-flex justify-content-between">
+                        <div class="col-xs-12">
+                            <strong class="text-to-dark">@StringLocalizer["ExpiryDate"]:</strong>
+                        </div>
+                        <div>
+                            <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
+                                <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
+                                <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
+                            </form>
 
-                                <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" onclick="toggleModal()"></i>
+                            <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" onclick="toggleModal()"></i>
 
-                                <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
+                            <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
 
-                                <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
+                            <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
                                style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
-                                <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
-                            </div>
+                            <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
                         </div>
                     </div>
-                    <hr style="margin-bottom:20px;" />
-                    <div>
-                        <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
-                    </div>
                 </div>
-
+                <hr style="margin-bottom:20px;" />
+                <div>
+                    <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
+                </div>
             </div>
+
         </div>
-
-        
-
+    </div>
 </div>
 
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
@@ -232,10 +229,10 @@
                 dataType: "json",
             },
             columns: [
-                { "data": "modality"},
-                { "data": "name"},
-                { "data": "description"},
-                { "data": "trainer"},
+                { "data": "modality" },
+                { "data": "name" },
+                { "data": "description" },
+                { "data": "trainer" },
                 {
                     "title": "Detalhes",
                     "data": null,
@@ -407,5 +404,4 @@
         document.getElementById(`remove${fileType === 'image' ? 'Image' : 'EMD'}`).value = true
         $('#modal1').hide()
     }
-
 </script>

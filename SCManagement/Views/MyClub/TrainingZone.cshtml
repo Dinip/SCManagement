@@ -20,6 +20,14 @@
         
 </style>
 
+<div id="modal2" class="modal">
+    <div class="modal-content">
+        <span onclick="$('#modal2').hide()" class="close">&times;</span>
+        <div id="modal2-inner-content">
+        </div>
+    </div>
+</div>
+
 <div class="container-fluid ps-5 pe-5">
     <div class="d-flex justify-content-between align-items-center" style="margin-top:130px !important;">
         <h1  class="text-to-dark">@StringLocalizer["MyZone"]</h1>
@@ -94,8 +102,8 @@
 
                         @foreach (var athlete in teams.Athletes)
                         {
-                            <tr class="athletes">
-                                <td>
+                            <tr>
+                                <td class="athletes" onclick="openDetails('@athlete.Id')" style="cursor:pointer">
                                     <span class="text-to-dark" style="float:right">@Html.DisplayFor(model => athlete.FullName)</span>
                                 </td>
                                 <td class="text-to-dark">
@@ -153,7 +161,7 @@
                             </div>
 
                             <tr class="athletes">
-                                <td>
+                                <td class="athletes" onclick="openDetails('@athlete.Id')" style="cursor:pointer">
                                     <span class="text-to-dark">@Html.DisplayFor(model => athlete.FullName)</span>
                                 </td>
                                 <td class="text-to-dark">
@@ -186,6 +194,12 @@
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 
 <script type="text/javascript">
+    let modal2 = document.getElementById("modal2")
+    window.onclick = function (event) {
+        if (event.target == modal2) {
+            $("#modal2").hide();
+        }
+    }
 
     $(document).ready(function () {
         $.noConflict();
@@ -230,5 +244,17 @@
     }
     function toggleModal1() {
         $("#modal1").show();
+    }
+
+    function openDetails(id) {
+        $.ajax({
+            url: `/MyClub/UserDetails/${id}`,
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal2-inner-content").html(result);
+                $("#modal2").show();
+            }
+        });
     }
 </script>

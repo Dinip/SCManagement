@@ -1852,4 +1852,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Training zone</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="CirclePart" xml:space="preserve">
+    <value>Number of active Partners over total Partners</value>
+    <comment>23-02-2023_Statitics</comment>
+  </data>
 </root>
