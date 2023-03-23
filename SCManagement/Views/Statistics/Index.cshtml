@@ -8,166 +8,6 @@
     ViewBag.Title = @StringLocalizer["Statistics"];
 }
 
-
-<div class="container-fluid w-100">
-    <h1 style="margin-top:130px !important; margin-left:6%" class="text-to-dark">@StringLocalizer["Statistics"]</h1>
-
-    <div class="row mt-5">
-        @{
-            bool isFirst = true;
-
-            foreach (var current in Model)
-            {
-                bool isLast = (current == Model.Last());
-                <div class="col-xs-12 col-sm-12 col-md-4 mb-3 d-flex flex-column justify-content-center align-items-center">
-                    <div class="@((isFirst && current.Value == current.MaxValue) ? "first-circle" : "circle")" title="@((isLast) ? @StringLocalizer["CirclePart"] : "")">
-                        @if (current.MaxValue == null)
-                        {
-                            <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center">@current.Value</span>
-                        }
-                        else
-                        {
-                            <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @current.Value <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @current.MaxValue</span>
-                        }
-                    </div>
-
-                    <div class="text-to-dark text-animation fw-bold text-center mt-3 fs-2 fs-sm-3" style="width: 100%;">
-                        @current.RoleName
-                    </div>
-                </div>
-
-                if (isFirst)
-                {
-                    isFirst = false;
-                }
-            }
-        }
-
-    </div>
-
-    <a class="btn btn-primary ms-4 mt-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Subscription" asp-action="Index">@StringLocalizer["UpdatePlan"]</a>
-
-    <div class="row mt-5">
-
-        <div style="display: flex; justify-content: center; width: 100%;">
-            <ul id="tab-selector" class="nav nav-pills">
-                <li class="nav-item">
-                    <button id="btn-tab-Payments" class="btn-tab-change nav-link active text-to-dark" onClick="changeTab('Payments')">@StringLocalizer["Income"]</button>
-                </li>
-                <li class="nav-item">
-                    <button id="btn-tab-PaymentsDetailed" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('PaymentsDetailed')">@StringLocalizer["Income Detailed"]</button>
-                </li>
-                <li class="nav-item">
-                    <button id="btn-tab-Athletes" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('Athletes')">@StringLocalizer["Athletes"]</button>
-                </li>
-                <li class="nav-item">
-                    <button id="btn-tab-Partners" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('Partners')">@StringLocalizer["Partners"]</button>
-                </li>
-                <li class="nav-item">
-                    <button id="btn-tab-Modalities" class="btn-tab-change nav-link text-to-dark" onClick="changeTab('Modalities')">@StringLocalizer["Modalities"]</button>
-                </li>
-            </ul>
-        </div>
-
-        <div class="ms-3 mt-4">
-            <span class="text-to-dark">@StringLocalizer["SelectYear"]</span>
-            <select id="selectYear" onchange="changeYear(this)" class="text-to-dark"></select>
-        </div>
-
-
-        <div class="w-100">
-            <div class="tab-content p-4">
-
-                <div class="tables-list tab-pane active p-0 " id="div-table-Payments" style="margin-top:15px;">
-                    <div class="d-md-flex justify-content-evenly">
-                        <table id="table-Payments" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
-                            <thead class="thead-dark text-white">
-                                <tr>
-                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["Fee"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["Events"]</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-
-                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
-                            <canvas id="chart-Payments"></canvas>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="tables-list tab-pane p-0" id="div-table-PaymentsDetailed" style="margin-top:15px;">
-                    <div class="d-md-flex justify-content-evenly">
-                        <table id="table-PaymentsDetailed" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
-                            <thead class="thead-dark text-white">
-                                <tr>
-                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["ProductName"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["Value"]</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
-                            <canvas id="chart-PaymentsDetailed"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="tables-list tab-pane p-0" id="div-table-Athletes" style="margin-top:15px;">
-                    <div class="d-md-flex justify-content-evenly">
-                        <table id="table-Athletes" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
-                            <thead class="thead-dark text-white">
-                                <tr>
-                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["Athletes"]</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
-                            <canvas id="chart-Athletes"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="tables-list tab-pane p-0" id="div-table-Partners" style="margin-top:15px;">
-                    <div class="d-md-flex justify-content-evenly">
-                        <table id="table-Partners" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
-                            <thead class="thead-dark text-white">
-                                <tr>
-                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["Partners"]</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
-                            <canvas id="chart-Partners"></canvas>
-                        </div>
-                    </div>
-                </div>
-                <div class="tables-list tab-pane p-0" id="div-table-Modalities" style="margin-top:15px;">
-                    <div class="d-md-flex justify-content-evenly">
-                        <table id="table-Modalities" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
-                            <thead class="thead-dark text-white">
-                                <tr>
-                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["Modality"]</th>
-                                    <th class="text-to-dark">@StringLocalizer["Value"]</th>
-                                </tr>
-                            </thead>
-                            <tbody></tbody>
-                        </table>
-                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
-                            <canvas id="chart-Modalities"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 <style>
     .circle {
         display: flex;
@@ -328,7 +168,176 @@
             transition-delay: 0.2s;
         }
 
+    .buttons, .btn-outline-primary {
+        color: white !important;
+        border-radius: 5px;
+        background-color: #00639A;
+        border-color: #00639A;
+        padding: 6px 12px;
+        text-decoration: none;
+    }
+
+        .buttons:hover, .btn-outline-primary.active, .btn-check:checked + .btn-outline-primary, .btn-outline-primary:hover {
+            color: white !important;
+            text-decoration: none;
+            background-color: #01517d;
+            border-color: #01517d;
+        }
+
 </style>
+
+
+<div class="container-fluid w-100">
+    <div class="d-flex justify-content-between align-items-center" style="margin-top:130px !important; margin-left:6%">
+        <h1 class="text-to-dark">@StringLocalizer["Statistics"]</h1>
+        <a class="btn btn-primary me-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Subscription" asp-action="Index">@StringLocalizer["UpdatePlan"]</a>
+    </div>
+   
+    <div class="row mt-5">
+        @{
+            bool isFirst = true;
+
+            foreach (var current in Model)
+            {
+                bool isLast = (current == Model.Last());
+                <div class="col-xs-12 col-sm-12 col-md-4 mb-3 d-flex flex-column justify-content-center align-items-center">
+                    <div class="@((isFirst && current.Value == current.MaxValue) ? "first-circle" : "circle")" title="@((isLast) ? @StringLocalizer["CirclePart"] : "")">
+                        @if (current.MaxValue == null)
+                        {
+                            <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center">@current.Value</span>
+                        }
+                        else
+                        {
+                            <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @current.Value <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @current.MaxValue</span>
+                        }
+                    </div>
+
+                    <div class="text-to-dark text-animation fw-bold text-center mt-3 fs-2 fs-sm-3" style="width: 100%;">
+                        @current.RoleName
+                    </div>
+                </div>
+
+                if (isFirst)
+                {
+                    isFirst = false;
+                }
+            }
+        }
+
+    </div>
+
+    <div class="row mt-5">
+        <div class="d-flex justify-content-center">
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                <button id="btn-tab-Payments" class="btn-tab-change btn btn-outline-primary nav-link active text-to-dark" onClick="changeTab('Payments')">@StringLocalizer["Income"]</button>
+                <button id="btn-tab-PaymentsDetailed" class="btn-tab-change btn btn-outline-primary nav-link text-to-dark" onClick="changeTab('PaymentsDetailed')">@StringLocalizer["Income Detailed"]</button>
+                <button id="btn-tab-Athletes" class="btn-tab-change btn btn-outline-primary nav-link text-to-dark" onClick="changeTab('Athletes')">@StringLocalizer["Athletes"]</button>
+                <button id="btn-tab-Partners" class="btn-tab-change btn btn-outline-primary nav-link text-to-dark" onClick="changeTab('Partners')">@StringLocalizer["Partners"]</button>
+                <button id="btn-tab-Modalities" class="btn-tab-change btn btn-outline-primary nav-link text-to-dark" onClick="changeTab('Modalities')">@StringLocalizer["Modalities"]</button>
+            </div>
+
+
+        </div>
+
+        <div class="ms-5 mt-4">
+            <span class="text-to-dark">@StringLocalizer["SelectYear"]</span>
+            <select id="selectYear" onchange="changeYear(this)" class="text-to-dark"></select>
+        </div>
+
+
+        <div class="w-100">
+            <div class="tab-content p-4">
+
+                <div class="tables-list tab-pane active p-0 " id="div-table-Payments" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Payments" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Fee"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Events"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Payments"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="tables-list tab-pane p-0" id="div-table-PaymentsDetailed" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-PaymentsDetailed" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["ProductName"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Value"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-PaymentsDetailed"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tables-list tab-pane p-0" id="div-table-Athletes" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Athletes" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Athletes"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Athletes"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tables-list tab-pane p-0" id="div-table-Partners" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Partners" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Partners"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Partners"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="tables-list tab-pane p-0" id="div-table-Modalities" style="margin-top:15px;">
+                    <div class="d-md-flex justify-content-evenly">
+                        <table id="table-Modalities" class="table table-bordered p-3 text-to-dark col-xs-12 col-sm-12 col-md-6">
+                            <thead class="thead-dark text-white">
+                                <tr>
+                                    <th class="text-to-dark">@StringLocalizer["Date"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Modality"]</th>
+                                    <th class="text-to-dark">@StringLocalizer["Value"]</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                            <canvas id="chart-Modalities"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
