@@ -1787,7 +1787,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>18-03-2023_StatisticsView</comment>
   </data>
   <data name="Error_DateGreaterThan" xml:space="preserve">
-    <value>A data final selecionada é anterior à data inicial</value>
+    <value>A data final selecionada é anterior ou igual à data inicial</value>
     <comment>11-03-2023_Plans</comment>
   </data>
   <data name="Error_IsDateBeforeToday" xml:space="preserve">
@@ -1981,5 +1981,9 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Training Zone" xml:space="preserve">
     <value>Zona de treino</value>
     <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Completar</value>
+    <comment>23-03-2023_plansFix</comment>
   </data>
 </root>

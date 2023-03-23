@@ -15,7 +15,7 @@ namespace SCManagement.Services.UserService
         public Task<Bioimpedance> UpdateBioimpedance(Bioimpedance bioimpedance);
         public Task<User> GetUserWithEMD (string userId);
         public Task CheckAndDeleteEMD(User user);
-
+        public Task<bool> IsStaffInAnyClub(string userId);
         public Task<bool> IsTrainerInAnyClub(string userId);
 
     }

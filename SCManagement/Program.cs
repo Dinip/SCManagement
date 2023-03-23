@@ -62,15 +62,49 @@ app.MapControllerRoute(
     defaults: new { controller = "Clubs", action = "Index" },
     constraints: new { id = @"\d+" });
 
+#region plans routes
+
+app.MapControllerRoute(
+    name: "create meal plan for team with template",
+    pattern: "Plans/CreateTeamMealPlan/{teamId?}/{id?}",
+    defaults: new { controller = "Plans", action = "CreateTeamMealPlan" });
+
+app.MapControllerRoute(
+    name: "create meal plan for team",
+    pattern: "Plans/CreateTeamMealPlan/{teamId?}",
+    defaults: new { controller = "Plans", action = "CreateTeamMealPlan" });
+
+app.MapControllerRoute(
+    name: "create training plan for team with template",
+    pattern: "Plans/CreateTeamTrainingPlan/{teamId?}/{id?}",
+    defaults: new { controller = "Plans", action = "CreateTeamTrainingPlan" });
+
+app.MapControllerRoute(
+    name: "create training plan for team",
+    pattern: "Plans/CreateTeamTrainingPlan/{teamId?}",
+    defaults: new { controller = "Plans", action = "CreateTeamTrainingPlan" });
+
+app.MapControllerRoute(
+    name: "create meal plan for athlete with template",
+    pattern: "Plans/CreateMealPlan/{athleteId?}/{id?}",
+    defaults: new { controller = "Plans", action = "CreateMealPlan" });
+
 app.MapControllerRoute(
     name: "create meal plan for athlete",
     pattern: "Plans/CreateMealPlan/{athleteId?}",
     defaults: new { controller = "Plans", action = "CreateMealPlan" });
 
 app.MapControllerRoute(
+    name: "create training plan for athlete with template",
+    pattern: "Plans/CreateTrainingPlan/{athleteId?}/{id?}",
+    defaults: new { controller = "Plans", action = "CreateTrainingPlan" });
+
+app.MapControllerRoute(
     name: "create training plan for athlete",
     pattern: "Plans/CreateTrainingPlan/{athleteId?}",
     defaults: new { controller = "Plans", action = "CreateTrainingPlan" });
+
+#endregion
 
 app.MapControllerRoute(
     name: "default",

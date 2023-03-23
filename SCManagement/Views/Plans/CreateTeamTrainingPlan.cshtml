@@ -2,7 +2,7 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "CreateTrainingPlan";
+    ViewData["Title"] = "CreateTeamTrainingPlan";
     var val = ViewBag.Apply;
 }
 
@@ -12,11 +12,12 @@
     <div class="card mt-5 shadow" style="border-radius:20px;">
         <div class="card-body">
             <div class="row">
-                <form id="form"  asp-action="CreateTrainingPlan" >
+                <form id="form" asp-action="CreateTeamTrainingPlan">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <input type="hidden" asp-for="TrainerId" />
                     <input type="hidden" asp-for="AthleteId" />
                     <input type="hidden" asp-for="IsTemplate" />
+                    <input type="hidden" name="teamId" value="@(ViewBag.TeamId)" />
 
                     @if (!ViewBag.Apply)
                     {
@@ -38,12 +39,12 @@
                     }
             
                     <div class="form-floating mt-3">
-                        <input required asp-for="StartDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                        <input asp-for="StartDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
                         <label asp-for="StartDate" class="control-label"></label>
                         <span asp-validation-for="StartDate" class="text-danger"></span>
                     </div>
                     <div class="form-floating mt-3">
-                        <input required asp-for="EndDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                        <input asp-for="EndDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
                         <label asp-for="EndDate" class="control-label"></label>
                         <span asp-validation-for="EndDate" class="text-danger"></span>
                     </div>

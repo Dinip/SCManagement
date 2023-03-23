@@ -1,45 +1,28 @@
-﻿@model IEnumerable<SCManagement.Services.PlansService.Models.MealPlan>
+﻿@model IEnumerable<SCManagement.Services.PlansService.Models.TrainingPlan>
 @inject IStringLocalizer<SharedResource> StringLocalizer
+
 @{
-    ViewData["Title"] = "MealTemplates";
+    ViewData["Title"] = "AthleteTrainingPlans";
 }
 <div class="container-fluid ps-5 pe-5">
-    @if (ViewBag.IsTemplate)
-    {
-        <h1 style="margin-top:130px !important;"  class="text-to-dark">MealPlans</h1>
-    }
-    else
-    {
-        <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName @StringLocalizer["Meal Plan"]</h1>
-    }
-
-    @if (ViewBag.IsTemplate)
-    {
-        <p>
-            <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
-        </p>
-    }
-    @*else tem que se fazer aquela view de escolher se e para aplicar ou nao o template
-    {
-    <p>
-    <a asp-route-isTemplate="true" asp-action="CreateMealPlan">Create New Template</a>
-    </p>
-    }*@
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Training Plans</h1>
     <hr />
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
             <table id="table_id" class="display">
                 <thead>
                     <tr>
-                    <tr>
                         <th class="text-to-dark">
-                                @Html.DisplayNameFor(model => model.Name)
+                            @Html.DisplayNameFor(model => model.Modality)
                         </th>
                         <th class="text-to-dark">
-                                @Html.DisplayNameFor(model => model.Description)
+                            @Html.DisplayNameFor(model => model.Name)
                         </th>
                         <th class="text-to-dark">
-                                @Html.DisplayNameFor(model => model.Trainer)
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Trainer)
                         </th>
                         <th></th>
                     </tr>
@@ -48,6 +31,9 @@
                     @foreach (var item in Model)
                     {
                         <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(modelItem => item.Modality.Name)
+                            </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
@@ -59,14 +45,13 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center justify-content-end">
-                                    <a asp-action="EditMealPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Edit</a>
-                                    <a asp-action="MealDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">Details</a>
-                                    <form asp-action="DeleteMealPlan">
+                                    <a asp-action="EditTrainingPlan" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
+                                    <a asp-action="TrainingDetails" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                    <form asp-action="DeleteTrainingPlan">
                                         <input type="hidden" name="id" value="@item.Id" />
-                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">Delete</button>
+                                        <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
                                     </form>
                                 </div>
-                                
                             </td>
                         </tr>
                     }
@@ -75,6 +60,7 @@
         </div>
     </div>
 </div>
+
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>

@@ -37,8 +37,8 @@
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
             <div class="mb-4 mt-2">
-                <a asp-route-isTemplate="true" id="createTraining" asp-action="CreateTrainingPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New Template"]</a>
-                <a asp-route-isTemplate="true" id="createMeal" class="d-none" asp-action="CreateMealPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New Template"]</a>
+                <a id="createTraining" asp-action="CreateTrainingPlanTemplate" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New Template"]</a>
+                <a id="createMeal" class="d-none" asp-action="CreateMealPlanTemplate" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New Template"]</a>
             </div>
             <table id="table_id" class="display"  style="width:100%!important;">
                 <thead id="trainingHead">
