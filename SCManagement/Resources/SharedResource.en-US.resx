@@ -1527,7 +1527,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="CreateBioimpedance" xml:space="preserve">
-    <value>Create Bioimpedance</value>
+    <value>Insert Bioimpedance</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="FatMass" xml:space="preserve">

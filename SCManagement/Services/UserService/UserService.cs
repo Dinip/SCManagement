@@ -105,11 +105,15 @@ namespace SCManagement.Services.UserService
             return bioimpedance;
         }
         
-        public async Task<Bioimpedance> GetBioimpedance(string userId)
+        public async Task<IEnumerable<Bioimpedance>> GetBioimpedances(string userId)
         {
-            return await _context.Bioimpedance.FirstOrDefaultAsync(b => b.BioimpedanceId == userId);
+            return await _context.Bioimpedance.Where(b => b.UserId == userId).OrderByDescending(d => d.LastUpdateDate).Take(10).ToListAsync();
         }
 
+        public async Task<Bioimpedance> GetLastBioimpedance(string userId)
+        {
+            return await _context.Bioimpedance.Where(b => b.UserId == userId).OrderByDescending(d => d.LastUpdateDate).FirstOrDefaultAsync();
+        }
 
         public async Task<Bioimpedance> UpdateBioimpedance(Bioimpedance bioimpedance)
         {
