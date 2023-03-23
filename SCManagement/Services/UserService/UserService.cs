@@ -150,5 +150,15 @@ namespace SCManagement.Services.UserService
             return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 30);
         }
 
+        /// <summary>
+        /// Checks if the given user is a staff in any club
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task<bool> IsStaffInAnyClub(string userId)
+        {
+            return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && (u.RoleId == 30 || u.RoleId == 40 || u.RoleId == 50));
+        }
+
     }
 }

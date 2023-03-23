@@ -18,12 +18,12 @@ namespace SCManagement.Services.PlansService.Models
         [Display(Name = "Exercise Description")]
         public string ExerciseDescription { get; set; }
 
-        [Range(0,1000)]
+        [Range(1,1000)]
         [Display(Name = "Repetitions")]
         public int? Repetitions { get; set; }
 
         //Duration is in minutes
-        [Range(0, 100)]
+        [Range(1, 1000)]
         [Display(Name = "Duration")]
         public int? Duration { get; set; }
 

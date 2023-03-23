@@ -18,15 +18,25 @@ namespace SCManagement.Models.Validations
                 return ValidationResult.Success;
 
             DateTime? startDate;
-            if (Model != null)
+            if (Model.Equals("Goal"))
             {
                 var obj = (Services.PlansService.Models.Goal)validationContext.ObjectInstance;
                 startDate = obj.StartDate;
             }
+            else if (Model.Equals("CreateTraining"))
+            {
+                var obj = (Controllers.PlansController.CreateTrainingPlanModel)validationContext.ObjectInstance;
+                startDate = obj.StartDate;
+            }
+            else if (Model.Equals("CreateMeal"))
+            {
+                var obj = (Controllers.PlansController.CreateMealPlanModel)validationContext.ObjectInstance;
+                startDate = obj.StartDate;
+            }
             else
             {
-                var model = (Services.PlansService.Models.Plan)validationContext.ObjectInstance;
-                startDate = model.StartDate;
+                var obj = (Services.PlansService.Models.Plan)validationContext.ObjectInstance;
+                startDate = obj.StartDate;
             }
             
             var val = (DateTime)value;

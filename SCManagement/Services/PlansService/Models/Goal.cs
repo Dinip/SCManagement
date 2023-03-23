@@ -34,6 +34,6 @@ namespace SCManagement.Services.PlansService.Models
         [Display(Name = "Athlete")]
         public User? Athlete { get; set; }
         public string AthleteId { get; set; }
-
+        public bool isCompleted { get; set; }
     }
 }

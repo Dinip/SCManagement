@@ -934,7 +934,7 @@ namespace SCManagement.Controllers
             UsersRoleClub role = _applicationContextService.UserRole;
 
             //Check if is trainer
-            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
 
             ViewBag.HaveMealTemplate = ((await _planService.GetTemplateMealPlans(role.UserId))?.Any() ?? false);
             ViewBag.HaveTrainingTemplate = ((await _planService.GetTemplateTrainingPlans(role.UserId))?.Any() ?? false);

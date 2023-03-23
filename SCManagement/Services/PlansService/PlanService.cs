@@ -181,5 +181,10 @@ namespace SCManagement.Services.PlansService
             _context.Goals.Remove(goal);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<Goal?>> GetMyGoals(string userId)
+        {
+            return await _context.Goals.Where(g => g.AthleteId == userId).ToListAsync();
+        }
     }
 }

@@ -40,7 +40,7 @@
                                 @Html.DisplayFor(modelItem => item.IsTemplate)
                             </td>
                             <td>
-                                <a asp-action="CreateMealPlan" asp-route-id="@item.Id" asp-route-teamId="@Model.TeamId" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">Apply</a>
+                                <a asp-action="CreateTeamMealPlan" asp-route-id="@item.Id" asp-route-teamId="@Model.TeamId" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Apply"]</a>
                             </td>
                         </tr>
                     }

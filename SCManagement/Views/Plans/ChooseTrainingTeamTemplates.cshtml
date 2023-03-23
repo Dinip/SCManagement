@@ -6,9 +6,6 @@
     <hr />
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
-            <div class="mb-3">
-                <a asp-action="CreateTrainingPlan" asp-route-isTemplate="true" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create"]</a>
-            </div>
             <table id="table_id" class="display">
                 <thead>
                     <tr>
@@ -38,7 +35,7 @@
                                 @Html.DisplayFor(modelItem => item.Modality.Name)
                             </td>
                             <td>
-                                <a asp-action="CreateTrainingPlan" asp-route-id="@item.Id" asp-route-teamId="@Model.TeamId" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none; float:right;">Apply</a>
+                                <a asp-action="CreateTeamTrainingPlan" asp-route-id="@item.Id" asp-route-teamId="@Model.TeamId" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none; float:right;">@StringLocalizer["Apply"]</a>
                             </td>
                         </tr>
                     }

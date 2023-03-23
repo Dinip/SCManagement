@@ -105,8 +105,11 @@
                 </tbody>
             </table>
         </div>
-        <div class="d-flex justify-content-end me-3 mb-3">
-            <a asp-action="EditTrainingPlan" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
-        </div>
+        @if (!ViewBag.isAthlete)
+        {
+            <div class="d-flex justify-content-end me-3 mb-3">
+                <a asp-action="EditTrainingPlan" asp-route-id="@Model?.Id" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
+            </div>
+        }
     </div>
 </div>

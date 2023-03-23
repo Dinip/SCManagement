@@ -1657,7 +1657,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>18-03-2023_StatisticsView</comment>
   </data>
   <data name="Error_DateGreaterThan" xml:space="preserve">
-    <value>The end date selected is before the start date</value>
+    <value>The end date selected is before or the same as the start date</value>
     <comment>11-03-2023_Plans</comment>
   </data>
   <data name="Error_IsDateBeforeToday" xml:space="preserve">
@@ -1855,5 +1855,9 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="CirclePart" xml:space="preserve">
     <value>Number of active Partners over total Partners</value>
     <comment>23-02-2023_Statitics</comment>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Complete</value>
+    <comment>23-03-2023_plansFix</comment>
   </data>
 </root>
