@@ -1688,7 +1688,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="ViceralFat" xml:space="preserve">
-    <value>Gordura Oculta (%)</value>
+    <value>Gordura Oculta</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Weight" xml:space="preserve">
@@ -1841,5 +1841,13 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="MD" xml:space="preserve">
     <value>Exame Médico</value>
     <comment>21-03-2023_MyZone</comment>
+  </data>
+  <data name="Error_Bio_Height" xml:space="preserve">
+    <value>Confira que segue o formato correto: 1.80m, 180cm ou 1'80\" (é necessario escrever a unidade de medida)</value>
+    <comment>23-03-2023_MyZone(DataTables)+Bioimpedance</comment>
+  </data>
+  <data name="Error_Bio_Weight" xml:space="preserve">
+    <value>Confira que segue o formato correto 80.5kg ou 80.5lb (é necessario escrever a unidade de medida)</value>
+    <comment>23-03-2023_MyZone(DataTables)+Bioimpedance</comment>
   </data>
 </root>

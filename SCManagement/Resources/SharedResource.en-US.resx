@@ -1555,7 +1555,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="ViceralFat" xml:space="preserve">
-    <value>Viceral Fat (%)</value>
+    <value>Viceral Fat</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="Weight" xml:space="preserve">
@@ -1711,5 +1711,13 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="MD" xml:space="preserve">
     <value>Medical Exame</value>
     <comment>21-03-2023_MyZone</comment>
+  </data>
+  <data name="Error_Bio_Height" xml:space="preserve">
+    <value>Check that the correct format follows: 1.80m, 180cm or 1'80\" (it is necessary to write the unit of measurement)</value>
+    <comment>23-03-2023_MyZone(DataTables)+Bioimpedance</comment>
+  </data>
+  <data name="Error_Bio_Weight" xml:space="preserve">
+    <value>Check that it follows the correct format 80.5kg or 80.5lb (it is necessary to write the unit of measurement)</value>
+    <comment>23-03-2023_MyZone(DataTables)+Bioimpedance</comment>
   </data>
 </root>
