@@ -18,8 +18,9 @@
 
             foreach (var current in Model)
             {
+                bool isLast = (current == Model.Last());
                 <div class="col-xs-12 col-sm-12 col-md-4 mb-3 d-flex flex-column justify-content-center align-items-center">
-                    <div class="@((isFirst && current.Value == current.MaxValue) ? "first-circle" : "circle")">
+                    <div class="@((isFirst && current.Value == current.MaxValue) ? "first-circle" : "circle")" title="@((isLast) ? @StringLocalizer["CirclePart"] : "")">
                         @if (current.MaxValue == null)
                         {
                             <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center">@current.Value</span>
@@ -44,7 +45,7 @@
 
     </div>
 
-    <a class="btn btn-primary ms-4 mt-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["UpdatePlan"]</a>
+    <a class="btn btn-primary ms-4 mt-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Subscription" asp-action="Index">@StringLocalizer["UpdatePlan"]</a>
 
     <div class="row mt-5">
 
@@ -276,30 +277,30 @@
         -moz-appearance: none;
     }
 
-        selectYear:hover {
-            background-color: #e0e0e0;
-        }
+    selectYear:hover {
+        background-color: #e0e0e0;
+    }
 
         selectYear:hover option {
-                display: block;
-            }
-
-        selectYear option {
-            display: none;
-            background-color: #f5f5f5;
-            color: #333;
-            padding: 8px 12px;
+            display: block;
         }
 
+    selectYear option {
+        display: none;
+        background-color: #f5f5f5;
+        color: #333;
+        padding: 8px 12px;
+    }
 
-            selectYear option:checked:hover {
-                background-color: #2196f3;
-                color: #fff;
-            }
+
+        selectYear option:checked:hover {
+            background-color: #2196f3;
+            color: #fff;
+        }
 
     selectYear:focus {
-            outline: none;
-        }
+        outline: none;
+    }
 
     .first-circle {
         display: flex;
@@ -379,7 +380,6 @@
 
     async function changeYear(elem) {
         const activeTab = $("button.btn-tab-change.active")
-        console.log(activeTab, activeTab.length)
         if (activeTab.length != 0) {
             const btnId = activeTab.get(0).id
             const tab = btnId.replace('btn-tab-', '')
@@ -388,17 +388,6 @@
             dataToGraphs(tab, d)
         }
     }
-
-    $(window).scroll(function () {
-        if ($(window).scrollTop() + $(window).height() > $(document).height() - 1000 && !animated) {
-            $(".circle").each(function (index) {
-                setTimeout(function () {
-                    $(this).addClass("show");
-                }.bind(this), 500 * index);
-            });
-            animated = true;
-        }
-    });
 
 
     async function changeTab(tab) {
@@ -421,7 +410,6 @@
         const year = document.getElementById("selectYear").value
 
         const d = await loadData(tab, year);
-        console.log(d)
         dataToTables(tab, d)
         dataToGraphs(tab, d)
     }
