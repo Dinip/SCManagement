@@ -45,6 +45,7 @@ namespace SCManagement.Data
         public DbSet<TrainingPlan> TrainingPlans { get; set; }
         public DbSet<MealPlan> MealPlans { get; set; }
         public DbSet<Goal> Goals { get; set; }
+        public DbSet<SystemPaymentStatistics> SystemPaymentStatistics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

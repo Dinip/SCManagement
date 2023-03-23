@@ -12,5 +12,6 @@ namespace SCManagement.Services.StatisticsService
         public Task<ICollection<ClubPaymentStatistics>> GetClubPaymentDetailsStatistics(int clubId, int? year = null, int? month = null);
         public Task<ICollection<ClubUserStatistics>> GetClubUserStatistics(int clubId, int userTypeId, int? year = null, int? month = null);
         public Task<ICollection<ClubModalityStatistics>> GetClubModalityStatistics(int clubId, int? year = null, int? month = null);
+        public Task CreateSystemPaymentStatistics();
     }
 }

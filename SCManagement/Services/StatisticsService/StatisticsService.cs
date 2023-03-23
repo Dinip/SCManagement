@@ -164,17 +164,6 @@ namespace SCManagement.Services.StatisticsService
                     };
                     _context.ClubPaymentStatistics.Add(stat);
                 }
-
-                //daily stats
-                var daily = new ClubPaymentStatistics
-                {
-                    Value = prod.Total,
-                    ClubId = clubId,
-                    StatisticsRange = StatisticsRange.Day,
-                    ProductType = prod.ProductType,
-                    Timestamp = prevDay
-                };
-                _context.ClubPaymentStatistics.Add(daily);
             });
 
             await _context.SaveChangesAsync();
@@ -436,6 +425,60 @@ namespace SCManagement.Services.StatisticsService
                         c.StatisticsRange == StatisticsRange.Month)
                     .ToListAsync();
             }
+        }
+
+        public async Task CreateSystemPaymentStatistics()
+        {
+            var prevDay = DateTime.Now.Date.AddDays(-1);
+            var result = await _context
+                .SystemPaymentStatistics
+                .Where(f => f.Timestamp.Month == prevDay.Month && f.Timestamp.Year == prevDay.Year)
+                .ToListAsync();
+
+            var sumValueByProduct = await _context
+                .Product
+                .Join(
+                    _context.Payment,
+                    product => product.Id,
+                    payment => payment.ProductId,
+                    (product, payment) => new { product, payment }
+                )
+                .Where(
+                    f => f.product.ProductType == PaymentService.Models.ProductType.ClubSubscription &&
+                    f.payment.PayedAt.Value.Date == prevDay // get the payed payments from last day
+                    )
+                .GroupBy(f => f.product.Id)
+                .Select(f => new
+                {
+                    ProductId = f.Key,
+                    Total = f.Sum(s => s.product.Value),
+                    ProductType = f.Select(s => s.product.ProductType).First()
+                })
+                .ToListAsync();
+
+            sumValueByProduct.ForEach(prod =>
+            {
+                var f = result.Find(r => r.ProductId == prod.ProductId);
+                if (f != null)
+                {
+                    f.Value += prod.Total;
+                    _context.SystemPaymentStatistics.Update(f);
+                }
+                else if (prod.Total > 0)
+                {
+                    var stat = new SystemPaymentStatistics
+                    {
+                        Value = prod.Total,
+                        ProductId = prod.ProductId,
+                        StatisticsRange = StatisticsRange.Month,
+                        ProductType = prod.ProductType,
+                        Timestamp = new DateTime(prevDay.Year, prevDay.Month, DateTime.DaysInMonth(prevDay.Year, prevDay.Month)),
+                    };
+                    _context.SystemPaymentStatistics.Add(stat);
+                }
+            });
+
+            await _context.SaveChangesAsync();
         }
     }
 }
