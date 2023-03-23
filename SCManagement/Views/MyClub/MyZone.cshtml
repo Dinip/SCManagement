@@ -83,7 +83,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Model.TrainingPlans != null)
+                                @*@if (Model.TrainingPlans != null)
                                     @foreach (var item in Model.TrainingPlans)
                                     {
                                         <tr class="text-to-dark">
@@ -105,7 +105,7 @@
                                                 </div>
                                             </td>
                                         </tr>
-                                    }
+                                    }*@
                             </tbody>
                         </table>
                     </div>
@@ -151,7 +151,7 @@
                                         </td>
                                         <td class="mt-3 col-lg-4 col-md-4 col-sm-4 col-xs-4 align-middle">
                                             <div class="d-flex align-items-center">
-                                                <a asp-action="MealDetails" asp-controller="Plans" asp-route-id="@item.Id" class="me-2 align-middle" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                                <a asp-action="MealDetails" asp-controller="PlansController" asp-route-id="@item.Id" class="me-2 align-middle" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;  padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -268,6 +268,17 @@
             "info": false,
         });
         $("#table_id3").DataTable({
+            ajax: {
+                url:"/MyZone/GetMealPlans",
+                type: "GET",
+                dataType: "json",
+            },
+            columns: [
+                { "data": "name" },
+                { "data": "description"},
+                { "data": "trainer"}
+            ],
+            destroy: true,
             responsive: true,
             "searching": false,
             "ordering": false,
