@@ -1,4 +1,5 @@
 ﻿@model SCManagement.Models.User
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <div class="d-flex justify-content-center">
     <div class="col-6 me-3 d-flex justify-content-center">
@@ -25,7 +26,41 @@
             </dd>
         </dl>
     </div>
+
 </div>
+
+@if(ViewBag.HaveBio){
+<div class="row col-12 p-5">
+    <h2 class="text-to-dark">@StringLocalizer["Bio"]</h2>
+    <div class="mb-4 mt-3">
+        <div class="card text-to-dark">
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-6 ps-4">@StringLocalizer["Weight"]</dt>
+                    <dd class="col-sm-6 ps-4">@ViewBag.Weight</dd>
+                     <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["Height"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.Height</dd>
+                    <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["Hydration"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.Hydration</dd>
+                    <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["FatMass"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.FatMass</dd>
+                    <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["LeanMass"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.LeanMass</dd>
+                    <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["MuscleMass"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.MuscleMass</dd>
+                    <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["ViceralFat"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.ViceralFat</dd>
+                    <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["BasalMetabolism"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.BasalMetabolism</dd>
+                    <dt class="col-sm-6 pt-2 ps-4">@StringLocalizer["Actualize"]</dt>
+                    <dd class="col-sm-6 pt-2 ps-4">@ViewBag.LastUpdateDate</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+}
+
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript">
     window.onload = () => {
