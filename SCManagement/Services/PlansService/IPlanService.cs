@@ -29,6 +29,6 @@ namespace SCManagement.Services.PlansService
 
         public Task<IEnumerable<TrainingPlan?>> GetMyTrainingPlans(string userId, int? filter);
         public Task<IEnumerable<MealPlan?>> GetMyMealPlans(string userId, int? filter);
-        public Task<IEnumerable<Goal?>> GetMyGoals(string userId);
+        public Task<IEnumerable<Goal?>> GetMyGoals(string userId, int? filter);
     }
 }

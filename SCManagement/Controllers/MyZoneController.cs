@@ -102,7 +102,7 @@ namespace SCManagement.Controllers
 
             var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId, filter);
 
-            var obj = myTrainingPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, Modality = p.Modality.Name, PlanId = p.Id });
+            var obj = myTrainingPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, Modality = p.Modality.Name, PlanId = p.Id.ToString() });
 
             return Json(new { data = obj });
 
@@ -122,6 +122,21 @@ namespace SCManagement.Controllers
 
             return Json(new { data = obj });
 
+        }
+
+        public async Task<IActionResult> GetGoals(int? filter)
+        {
+            var userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var myGoals = await _planService.GetMyGoals(userId, filter);
+
+            var obj = myGoals.Select(p => new { Name = p.Name, EndDate = p.EndDate, GoalId = p.Id, IsCompleted= p.isCompleted });
+
+            return Json(new { data = obj });
         }
 
         public async Task<IActionResult> GetBioimpedance()

@@ -46,39 +46,34 @@ namespace SCManagement.Services.PlansService
 
         public async Task<IEnumerable<TrainingPlan?>> GetMyTrainingPlans(string userId, int? filter = 0)
         {
+            var plansQuery = _context.TrainingPlans
+                .Where(p => p.AthleteId == userId && p.IsTemplate == false);
+
             switch (filter)
             {
                 //Return futures
                 case 1:
-                    return await _context.TrainingPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.StartDate > DateTime.Now && p.EndDate >= DateTime.Now)
-                       .Include(p => p.Modality)
-                       .Include(p => p.Trainer)
-                       .Include(p => p.TrainingPlanSessions)
-                       .OrderBy(p => p.StartDate)
-                       .Take(15)
-                       .ToListAsync();
+                    plansQuery = plansQuery.Where(p => p.StartDate > DateTime.Now);
+                    break;
 
                 //Return Finished
                 case 2:
-                    return await _context.TrainingPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate < DateTime.Now)
-                       .Include(p => p.Modality)
-                       .Include(p => p.Trainer)
-                       .Include(p => p.TrainingPlanSessions)
-                       .OrderBy(p => p.StartDate)
-                       .Take(15)
-                       .ToListAsync();
+                    plansQuery = plansQuery.Where(p => p.EndDate < DateTime.Now);
+                    break;
 
                 //Atives + Futures
                 default:
-                    return await _context.TrainingPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate >= DateTime.Now)
-                        .Include(p => p.Modality)
-                        .Include(p => p.Trainer)
-                        .Include(p => p.TrainingPlanSessions)
-                        .OrderBy(p => p.StartDate)
-                        .Take(15)
-                        .ToListAsync();
+                    plansQuery = plansQuery.Where(p => p.EndDate >= DateTime.Now);
+                    break;
             }
 
+            return await plansQuery
+                .Include(p => p.Modality)
+                .Include(p => p.Trainer)
+                .Include(p => p.TrainingPlanSessions)
+                .OrderBy(p => p.StartDate)
+                .Take(15)
+                .ToListAsync();
         }
 
         public async Task<IEnumerable<MealPlan?>> GetMealPlans(string trainerId, string athleteId)
@@ -97,38 +92,37 @@ namespace SCManagement.Services.PlansService
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<MealPlan?>> GetMyMealPlans(string userId, int? filter = 0)
+        public async Task<IEnumerable<MealPlan>> GetMyMealPlans(string userId, int? filter = 0)
         {
+            var now = DateTime.Now;
+            var query = _context.MealPlans.Where(p => p.AthleteId == userId && !p.IsTemplate);
+
             switch (filter)
             {
                 //Return futures
                 case 1:
-                    return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.StartDate > DateTime.Now)
-                    .Include(p => p.Trainer)
-                    .Include(p => p.MealPlanSessions)
-                       .OrderBy(p => p.StartDate)
-                       .Take(15)
-                       .ToListAsync();
+                    query = query.Where(p => p.StartDate > now);
+                    break;
 
                 //Return Finished
                 case 2:
-                    return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate < DateTime.Now)
-                    .Include(p => p.Trainer)
-                    .Include(p => p.MealPlanSessions)
-                       .OrderBy(p => p.StartDate)
-                       .Take(15)
-                       .ToListAsync();
+                    query = query.Where(p => p.EndDate < now);
+                    break;
 
                 //Atives + Futures
                 default:
-                    return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate >= DateTime.Now)
-                    .Include(p => p.Trainer)
-                    .Include(p => p.MealPlanSessions)
-                    .Take(15)
-                    .ToListAsync();
+                    query = query.Where(p => p.EndDate >= now);
+                    break;
             }
 
+            return await query
+                .Include(p => p.MealPlanSessions)
+                .Include(p => p.Trainer)
+                .OrderByDescending(p => p.StartDate)
+                .Take(15)
+                .ToListAsync();
         }
+
         public async Task<TrainingPlan?> GetTrainingPlan(int planId)
         {
             return await _context.TrainingPlans.Where(p => p.Id == planId)
@@ -235,9 +229,22 @@ namespace SCManagement.Services.PlansService
             await _context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Goal?>> GetMyGoals(string userId)
+        public async Task<IEnumerable<Goal?>> GetMyGoals(string userId, int? filter)
         {
-            return await _context.Goals.Where(g => g.AthleteId == userId).ToListAsync();
+            switch(filter)
+            {
+                case 1:
+                    return await _context.Goals.Where(g => g.AthleteId == userId && g.isCompleted == false).ToListAsync();
+
+                case 2:
+                    return await _context.Goals.Where(g => g.AthleteId == userId && g.isCompleted == true).ToListAsync();
+
+                case 3:
+                    return await _context.Goals.Where(g => g.AthleteId == userId).ToListAsync();
+                default:
+                    return await _context.Goals.Where(g => g.AthleteId == userId && g.EndDate > DateTime.Now).ToListAsync();
+            }
+
         }
     }
 }
