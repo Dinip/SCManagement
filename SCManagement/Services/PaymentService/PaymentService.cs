@@ -605,7 +605,8 @@ namespace SCManagement.Services.PaymentService
                         SubscriptionId = subscription.Id,
                     };
                     _context.Payment.Add(payment);
-                } else
+                }
+                else
                 {
                     oldPayment.PaymentMethod = null;
                     oldPayment.PaymentStatus = PaymentStatus.Pending;
@@ -1062,6 +1063,15 @@ namespace SCManagement.Services.PaymentService
         {
             return await _context.Product
                 .FirstOrDefaultAsync(p => p.ProductType == ProductType.ClubSubscription && p.Enabled && p.Id == planId);
+        }
+
+        public async Task<ICollection<Subscription>> GetDelayedClubSubscriptions()
+        {
+            return await _context
+                .Subscription
+                .Include(s => s.Product)
+                .Where(s => s.Product.ProductType == ProductType.ClubSubscription && s.Status == SubscriptionStatus.Pending)
+                .ToListAsync();
         }
     }
 }

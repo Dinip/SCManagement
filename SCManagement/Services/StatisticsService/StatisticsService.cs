@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.PlansService.Models;
 using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.StatisticsService
@@ -479,6 +481,133 @@ namespace SCManagement.Services.StatisticsService
             });
 
             await _context.SaveChangesAsync();
+        }
+
+        public async Task CreateSystemPlansStatistics()
+        {
+            var prevDay = DateTime.Now.Date.AddDays(-1);
+
+            var plansIds = await _context
+                .Product
+                .Where(f => f.ProductType == PaymentService.Models.ProductType.ClubSubscription)
+                .Select(f => f.Id)
+                .ToListAsync();
+
+            var prevDayMonthResults = await _context
+                    .SystemPlansStatistics
+                    .Where(f => f.Timestamp.Month == prevDay.Month && f.Timestamp.Year == prevDay.Year)
+                    .ToListAsync();
+
+            foreach (var id in plansIds)
+            {
+                //new planId that is not present on prevDayMonthResults
+                //(created yesterday so it wasn't "found" on that month or new month start)
+                if (!prevDayMonthResults.Any(r => r.ProductId == id))
+                {
+                    _context.SystemPlansStatistics.Add(new SystemPlansStatistics
+                    {
+                        ProductId = id,
+                        StatisticsRange = StatisticsRange.Month,
+                        Timestamp = new DateTime(prevDay.Year, prevDay.Month, DateTime.DaysInMonth(prevDay.Year, prevDay.Month)),
+                        Active = 0
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            //get all plan subs that expired yesterday
+            var endedSubsYesterday = await _context
+                    .Subscription
+                    .Where(f => plansIds.Contains(f.ProductId) && f.EndTime.Value.Date == prevDay)
+                    .GroupBy(f => f.ProductId)
+                    .Select(f => new { Id = f.Key, Canceled = f.Count() })
+                    .ToListAsync();
+
+            //get all plan subs that started yesterday
+            var startedSubsYesterday = await _context
+                .Subscription
+                .Where(f => plansIds.Contains(f.ProductId) && f.StartTime.Date == prevDay)
+                .GroupBy(f => f.ProductId)
+                .Select(f => new { Id = f.Key, Canceled = f.Count() })
+                .ToListAsync();
+
+            //if plans were started or canceled yesterday, get the old values and update them
+            if (endedSubsYesterday.Any() || startedSubsYesterday.Any())
+            {
+                var prevDayMonthResultsNew = await _context
+                    .SystemPlansStatistics
+                    .Where(f => f.Timestamp.Month == prevDay.Month && f.Timestamp.Year == prevDay.Year)
+                    .ToListAsync();
+
+                prevDayMonthResultsNew.ForEach(plan =>
+                {
+                    //add count of new active plans from previous day (is assumes that was created before)
+                    var startedPlans = startedSubsYesterday.Where(e => e.Id == plan.ProductId);
+                    if (startedPlans.Any())
+                    {
+                        plan.Active += startedPlans.Count();
+                    }
+
+                    //subtract from active and add to canceled (is assumes that was created before)
+                    var endedPlans = endedSubsYesterday.Where(e => e.Id == plan.ProductId);
+                    if (endedPlans.Any())
+                    {
+                        plan.Active -= endedPlans.Count();
+                        plan.Canceled += endedPlans.Count();
+                    }
+
+                    _context.SystemPlansStatistics.Update(plan);
+                });
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<ICollection<SystemPaymentStatistics>> GetSystemPaymentStatistics(int? year = null)
+        {
+            year ??= DateTime.Now.Year;
+
+            return await _context
+                .SystemPaymentStatistics
+                .Where(c =>
+                    c.Timestamp.Year == year &&
+                    c.StatisticsRange == StatisticsRange.Month)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<SystemPlansStatistics>> GetSystemPlansStatistics(int? year = null)
+        {
+            year ??= DateTime.Now.Year;
+            return await _context
+                .SystemPlansStatistics
+                .Where(c =>
+                    c.Timestamp.Year == year &&
+                    c.StatisticsRange == StatisticsRange.Month)
+                .ToListAsync();
+        }
+
+        public async Task<ICollection<SystemPlansShortStatistics>> GetSystemPlansShortStatistics()
+        {
+            var plansIds = await _context
+                .Product
+                .Where(f => f.ProductType == ProductType.ClubSubscription)
+                .Select(f => f.Id)
+                .ToListAsync();
+
+            var stats = await _context
+                .Subscription
+                .Include(f => f.Product)
+                .Where(f => plansIds.Contains(f.ProductId))
+                .GroupBy(f => new { f.ProductId, f.Product.Name })
+                .Select(f => new SystemPlansShortStatistics
+                {
+                    Id = f.Key.ProductId,
+                    Count = f.Count(),
+                    Name = f.Key.Name
+                })
+                .ToListAsync();
+
+            return stats;
         }
     }
 }

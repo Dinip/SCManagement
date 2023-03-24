@@ -41,5 +41,7 @@ namespace SCManagement.Services.PaymentService
         public Task<Subscription?> GetMembershipSubscription(string userId, int clubId);
 
         public Task<bool> ClubHasValidKey(int clubId);
+
+        public Task<ICollection<Subscription>> GetDelayedClubSubscriptions();
     }
 }
