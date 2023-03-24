@@ -1985,8 +1985,17 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="CirclePart" xml:space="preserve">
     <value>Número de sócios ativos sobre o total de sócios</value>
     <comment>23-02-2023_Statitics</comment>
-  </data>  <data name="Complete" xml:space="preserve">
+  </data>
+  <data name="Complete" xml:space="preserve">
     <value>Completar</value>
     <comment>23-03-2023_plansFix</comment>
+  </data>
+  <data name="RemoveAthlete" xml:space="preserve">
+    <value>Remover Atleta</value>
+    <comment>24-04-2023_TradFix</comment>
+  </data>
+  <data name="RemoveStaff" xml:space="preserve">
+    <value>Remover Staff</value>
+    <comment>24-04-2023_TradFix</comment>
   </data>
 </root>

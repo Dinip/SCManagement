@@ -1860,4 +1860,12 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Complete</value>
     <comment>23-03-2023_plansFix</comment>
   </data>
+  <data name="RemoveStaff" xml:space="preserve">
+    <value>Remove Staff</value>
+    <comment>24-04-2023_TradFix</comment>
+  </data>
+  <data name="RemoveAthlete" xml:space="preserve">
+    <value>Remove Athlete</value>
+    <comment>24-04-2023_TradFix</comment>
+  </data>
 </root>
