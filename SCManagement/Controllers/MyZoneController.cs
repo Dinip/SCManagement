@@ -11,6 +11,8 @@ using SCManagement.Services.PlansService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
+using System.ComponentModel.DataAnnotations;
+using Xunit.Abstractions;
 
 namespace SCManagement.Controllers
 {
@@ -162,7 +164,7 @@ namespace SCManagement.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBioimpedance([Bind("Id,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] Bioimpedance bioimpedance)
+        public async Task<IActionResult> CreateBioimpedance([Bind("Id,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] BioimpedanceModel bioimpedance)
         {
             var userId = getUserIdFromAuthedUser();
 
@@ -174,8 +176,21 @@ namespace SCManagement.Controllers
 
             if (!ModelState.IsValid) return View(bioimpedance);
 
-            bioimpedance.UserId = role.UserId;
-            await _userService.CreateBioimpedance(bioimpedance);
+            var newBio = new Bioimpedance
+            {
+                UserId = role.UserId,
+                Weight = bioimpedance.Weight,
+                Height = bioimpedance.Height,
+                Hydration = bioimpedance.Hydration,
+                FatMass = bioimpedance.FatMass,
+                LeanMass = bioimpedance.LeanMass,
+                MuscleMass = bioimpedance.MuscleMass,
+                ViceralFat = bioimpedance.ViceralFat,
+                BasalMetabolism = bioimpedance.BasalMetabolism,
+                LastUpdateDate = DateTime.Now
+            };
+
+            await _userService.CreateBioimpedance(newBio);
             
             return RedirectToAction(nameof(Index));
         }
@@ -283,6 +298,43 @@ namespace SCManagement.Controllers
             public string? EMDUrl { get; set; }
             public bool RemoveEMD { get; set; } = false;
             public IFormFile? FileEMD { get; set; }
+        }
+
+        public class BioimpedanceModel
+        {
+            public int Id { get; set; }
+            [Display(Name = "Height")]
+            [RegularExpression("^((([1-9][0-9]{0,2})?'?([1-9][0-9]{0,2})(\"([1-9][0-9]{0,2})?|'')?)|([1-9][0-9]{0,2}((\\.|\\,)[0-9]{1,2})?(cm|m)))$",
+                ErrorMessage = "Error_Bio_Height")]
+            public string? Height { get; set; }
+
+            [Display(Name = "Weight")]
+            [RegularExpression("^([1-9][0-9]{0,2}((\\.|\\,)[0-9]{1,2})?(kg|lb|lbs))$",
+                ErrorMessage = "Error_Bio_Weight")]
+            public string? Weight { get; set; }
+
+            [Display(Name = "FatMass")]
+            [Range(0, 100)]
+            public float? FatMass { get; set; }
+
+            [Display(Name = "LeanMass")]
+            [Range(0, 100)]
+            public float? LeanMass { get; set; }
+
+            [Display(Name = "MuscleMass")]
+            [Range(0, 100)]
+            public float? MuscleMass { get; set; }
+
+            [Display(Name = "ViceralFat")]
+            [Range(0, 60)]
+            public float? ViceralFat { get; set; }
+
+            [Display(Name = "BasalMetabolism")]
+            public float? BasalMetabolism { get; set; }
+
+            [Display(Name = "Hydration")]
+            [Range(0, 100)]
+            public float? Hydration { get; set; }
         }
     }
 }
