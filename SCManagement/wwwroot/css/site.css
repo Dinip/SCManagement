@@ -250,6 +250,11 @@ input:checked + .slider:before {
     animation: slideRight 2s ease forwards .5s;
 }
 
+#arrow {
+    opacity: 0;
+    animation: slideUp 2s ease forwards .5s;
+}
+
 @keyframes slideRight {
     0% {
         transform: translateX(-200px);
