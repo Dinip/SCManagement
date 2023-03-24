@@ -853,19 +853,22 @@ namespace SCManagement.Controllers
             var bio = await _userService.GetLastBioimpedance(user.Id);
 
             if (bio != null)
+            { 
                 ViewBag.HaveBio = true;
+                ViewBag.Weight = bio.Weight == null ? "" : bio.Weight;
+                ViewBag.Height = bio.Height == null ? "" : bio.Height;
+                ViewBag.Hydration = bio.Hydration == null ? "" : bio.Hydration.ToString();
+                ViewBag.FatMass = bio.FatMass == null ? "" : bio.FatMass.ToString();
+                ViewBag.LeanMass = bio.LeanMass == null ? "" : bio.LeanMass.ToString();
+                ViewBag.MuscleMass = bio.MuscleMass == null ? "" : bio.MuscleMass.ToString();
+                ViewBag.BasalMetabolism = bio.BasalMetabolism == null ? "" : bio.BasalMetabolism.ToString();
+                ViewBag.ViceralFat = bio.ViceralFat == null ? "" : bio.ViceralFat.ToString();
+                ViewBag.LastUpdateDate = bio.LastUpdateDate;
+            }
             else
                 ViewBag.HaveBio = false;
 
-            ViewBag.Weight = bio.Weight == null ? "" : bio.Weight;
-            ViewBag.Height = bio.Height == null ? "" : bio.Height;
-            ViewBag.Hydration = bio.Hydration == null ? "" : bio.Hydration.ToString();
-            ViewBag.FatMass = bio.FatMass == null ? "" : bio.FatMass.ToString();
-            ViewBag.LeanMass = bio.LeanMass == null ? "" : bio.LeanMass.ToString();
-            ViewBag.MuscleMass = bio.MuscleMass == null ? "" : bio.MuscleMass.ToString();
-            ViewBag.BasalMetabolism = bio.BasalMetabolism == null ? "" : bio.BasalMetabolism.ToString();
-            ViewBag.ViceralFat = bio.ViceralFat == null ? "" : bio.ViceralFat.ToString();
-            ViewBag.LastUpdateDate = bio.LastUpdateDate;
+            
 
             return PartialView("_PartialUserDetails", user);
         }
