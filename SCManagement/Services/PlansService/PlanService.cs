@@ -44,13 +44,41 @@ namespace SCManagement.Services.PlansService
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TrainingPlan?>> GetMyTrainingPlans(string userId)
+        public async Task<IEnumerable<TrainingPlan?>> GetMyTrainingPlans(string userId, int? filter = 0)
         {
-            return await _context.TrainingPlans.Where(p=> p.AthleteId == userId && p.IsTemplate == false)
-                .Include(p => p.Modality)
-                .Include(p => p.Trainer)
-                .Include(p => p.TrainingPlanSessions)
-                .ToListAsync();
+            switch (filter)
+            {
+                //Return futures
+                case 1:
+                    return await _context.TrainingPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.StartDate > DateTime.Now && p.EndDate >= DateTime.Now)
+                       .Include(p => p.Modality)
+                       .Include(p => p.Trainer)
+                       .Include(p => p.TrainingPlanSessions)
+                       .OrderBy(p => p.StartDate)
+                       .Take(15)
+                       .ToListAsync();
+
+                //Return Finished
+                case 2:
+                    return await _context.TrainingPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate < DateTime.Now)
+                       .Include(p => p.Modality)
+                       .Include(p => p.Trainer)
+                       .Include(p => p.TrainingPlanSessions)
+                       .OrderBy(p => p.StartDate)
+                       .Take(15)
+                       .ToListAsync();
+
+                //Atives + Futures
+                default:
+                    return await _context.TrainingPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate >= DateTime.Now)
+                        .Include(p => p.Modality)
+                        .Include(p => p.Trainer)
+                        .Include(p => p.TrainingPlanSessions)
+                        .OrderBy(p => p.StartDate)
+                        .Take(15)
+                        .ToListAsync();
+            }
+
         }
 
         public async Task<IEnumerable<MealPlan?>> GetMealPlans(string trainerId, string athleteId)
@@ -69,12 +97,37 @@ namespace SCManagement.Services.PlansService
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<MealPlan?>> GetMyMealPlans(string userId)
+        public async Task<IEnumerable<MealPlan?>> GetMyMealPlans(string userId, int? filter = 0)
         {
-            return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false)
-                .Include(p => p.Trainer)
-                .Include(p => p.MealPlanSessions)
-                .ToListAsync();
+            switch (filter)
+            {
+                //Return futures
+                case 1:
+                    return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.StartDate > DateTime.Now)
+                    .Include(p => p.Trainer)
+                    .Include(p => p.MealPlanSessions)
+                       .OrderBy(p => p.StartDate)
+                       .Take(15)
+                       .ToListAsync();
+
+                //Return Finished
+                case 2:
+                    return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate < DateTime.Now)
+                    .Include(p => p.Trainer)
+                    .Include(p => p.MealPlanSessions)
+                       .OrderBy(p => p.StartDate)
+                       .Take(15)
+                       .ToListAsync();
+
+                //Atives + Futures
+                default:
+                    return await _context.MealPlans.Where(p => p.AthleteId == userId && p.IsTemplate == false && p.EndDate >= DateTime.Now)
+                    .Include(p => p.Trainer)
+                    .Include(p => p.MealPlanSessions)
+                    .Take(15)
+                    .ToListAsync();
+            }
+
         }
         public async Task<TrainingPlan?> GetTrainingPlan(int planId)
         {
