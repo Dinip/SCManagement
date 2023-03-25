@@ -1,4 +1,5 @@
-﻿using SCManagement.Services.PaymentService.Models;
+﻿using SCManagement.Models;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.StatisticsService
@@ -19,5 +20,11 @@ namespace SCManagement.Services.StatisticsService
         public Task<ICollection<SystemPlansStatistics>> GetSystemPlansStatistics(int? year = null);
         public Task<ICollection<SystemPlansShortStatistics>> GetSystemPlansShortStatistics();
         public Task<Product> BestSellerPlan();
+        public Task<MinMaxHelper> GetActiveAndOtherClubsCount();
+        public Task<ICollection<Subscription>> GetDelayedClubSubscriptions();
+        public Task<MinMaxHelper> GetActiveAndDelayedClubSubscriptionsCount();
+        public Task<MinMaxHelper> GetUsedAndCreatedCodes();
+        public Task<MinMaxHelper> GetMonthYearIncomeShort();
+        public Task<ICollection<ClubGeneralInfo>> GetClubsGeneralStats();
     }
 }

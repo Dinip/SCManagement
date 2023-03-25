@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SCManagement.Models;
+using SCManagement.Services;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.StatisticsService;
 using SCManagement.Services.StatisticsService.Models;
@@ -15,14 +16,12 @@ namespace SCManagement.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
         private readonly IStatisticsService _statisticsService;
-        private readonly IPaymentService _paymentService;
 
         public BackofficeController(IUserService userService, UserManager<User> userManager, IStatisticsService statisticsService, IPaymentService paymentService)
         {
             _userService = userService;
             _userManager = userManager;
             _statisticsService = statisticsService;
-            _paymentService = paymentService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -58,7 +57,11 @@ namespace SCManagement.Controllers
         {
             var stats = new BackofficeStats
             {
-                BestSeller = await _statisticsService.BestSellerPlan()
+                Clubs = await _statisticsService.GetActiveAndOtherClubsCount(),
+                Income = await _statisticsService.GetMonthYearIncomeShort(),
+                Codes = await _statisticsService.GetUsedAndCreatedCodes(),
+                BestSeller = await _statisticsService.BestSellerPlan(),
+                Payments = await _statisticsService.GetActiveAndDelayedClubSubscriptionsCount(),
             };
 
             return View(stats);
@@ -124,7 +127,7 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> DelayedPayments()
         {
-            return View(await _paymentService.GetDelayedClubSubscriptions());
+            return View(await _statisticsService.GetDelayedClubSubscriptions());
         }
 
         [HttpPost]
@@ -136,8 +139,7 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(DelayedPayments));
         }
 
-
-        public async Task<IActionResult> Income(int? year)
+        public async Task<IActionResult> IncomeData(int? year)
         {
             var stats = await _statisticsService.GetSystemPaymentStatistics(year);
 
@@ -167,8 +169,7 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
-
-        public async Task<IActionResult> Plans(int? year)
+        public async Task<IActionResult> PlansData(int? year)
         {
             var stats = await _statisticsService.GetSystemPlansStatistics(year);
 
@@ -198,6 +199,71 @@ namespace SCManagement.Controllers
 
 
             return Json(new { data = stats2 });
+        }
+
+        public async Task<IActionResult> AthletesData(int clubId, int? year)
+        {
+            var stats = await _statisticsService.GetClubUserStatistics(clubId, 20, year);
+
+            var stats2 =
+                stats
+                .Select(s => new
+                {
+                    TimeInDate = s.Timestamp,
+                    TimeInText = computeTimestampText(s.Timestamp),
+                    s.Value
+                })
+                .ToList();
+
+            var months = computeAllMonths(year);
+            foreach (var month in months)
+            {
+
+                //check if stats2 has an entry with the same value as "month" in the TimeInDate field
+                if (!stats2.Any(s => s.TimeInDate == month))
+                {
+                    stats2.Add(new { TimeInDate = month, TimeInText = computeTimestampText(month), Value = 0 });
+                }
+            }
+
+            stats2.Sort((x, y) => x.TimeInDate.CompareTo(y.TimeInDate));
+
+            return Json(new { data = stats2 });
+        }
+
+        public async Task<IActionResult> PartnersData(int clubId, int? year)
+        {
+            var stats = await _statisticsService.GetClubUserStatistics(clubId, 10, year);
+
+            var stats2 =
+                stats
+                .Select(s => new
+                {
+                    TimeInDate = s.Timestamp,
+                    TimeInText = computeTimestampText(s.Timestamp),
+                    s.Value
+                })
+                .ToList();
+
+            var months = computeAllMonths(year);
+            foreach (var month in months)
+            {
+
+                //check if stats2 has an entry with the same value as "month" in the TimeInDate field
+                if (!stats2.Any(s => s.TimeInDate == month))
+                {
+                    stats2.Add(new { TimeInDate = month, TimeInText = computeTimestampText(month), Value = 0 });
+                }
+            }
+
+            stats2.Sort((x, y) => x.TimeInDate.CompareTo(y.TimeInDate));
+
+            return Json(new { data = stats2 });
+        }
+
+        public async Task<IActionResult> Clubs()
+        {
+            return View(await _statisticsService.GetClubsGeneralStats());
         }
     }
 }

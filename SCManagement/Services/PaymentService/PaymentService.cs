@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.PaymentService
 {
@@ -981,7 +982,6 @@ namespace SCManagement.Services.PaymentService
                 UserId = partner.UserId,
                 AutoRenew = false,
                 Frequency = product.Frequency.Value,
-                ClubId = partner.ClubId,
             };
 
             _context.Subscription.Add(sub);
@@ -1063,50 +1063,6 @@ namespace SCManagement.Services.PaymentService
         {
             return await _context.Product
                 .FirstOrDefaultAsync(p => p.ProductType == ProductType.ClubSubscription && p.Enabled && p.Id == planId);
-        }
-
-        public async Task<ICollection<Subscription>> GetDelayedClubSubscriptions()
-        {
-            return await _context
-                .Subscription
-                .Include(s => s.Product)
-                .Include(s => s.Club)
-                .Where(s =>
-                    s.Product.ProductType == ProductType.ClubSubscription &&
-                    s.Status == SubscriptionStatus.Pending &&
-                    s.NextTime.Date < DateTime.Now.Date
-                )
-                .Select(s => new Subscription
-                {
-                    Id = s.Id,
-                    StartTime = s.StartTime,
-                    NextTime = s.NextTime,
-                    EndTime = s.EndTime,
-                    Value = s.Value,
-                    Status = s.Status,
-                    ProductId = s.ProductId,
-                    UserId = s.UserId,
-                    AutoRenew = s.AutoRenew,
-                    Frequency = s.Frequency,
-                    ClubId = s.ClubId,
-                    Club = new Club
-                    {
-                        Id = s.Club.Id,
-                        Name = s.Club.Name,
-                    },
-                    Product = new Product
-                    {
-                        Id = s.Product.Id,
-                        Name = s.Product.Name,
-                    },
-                    User = new User
-                    {
-                        Id = s.User.Id,
-                        FirstName = s.User.FirstName,
-                        LastName = s.User.LastName,
-                    }
-                })
-                .ToListAsync();
         }
     }
 }

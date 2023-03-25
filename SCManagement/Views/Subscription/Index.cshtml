@@ -65,7 +65,14 @@
                                 @Html.DisplayFor(modelItem => item.Status)
                             </td>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Product.Name)
+                                @if (item.Product.ProductType == SCManagement.Services.PaymentService.Models.ProductType.ClubSubscription)
+                                {
+                                    <span>@item.Product.Name (@item.Club.Name)</span>
+                                }
+                                else
+                                {
+                                    <span>@item.Product.Name</span>
+                                }
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.AutoRenew)
