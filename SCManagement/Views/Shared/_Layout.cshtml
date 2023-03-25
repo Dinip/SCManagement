@@ -39,6 +39,7 @@
                             var isSignedIn = SignInManager.IsSignedIn(User);
                             var userId = isSignedIn ? UserManager.GetUserId(User) : null;
                             var isTrainer = string.IsNullOrEmpty(userId) ? false : UserService.IsTrainerInAnyClub(userId).Result;
+                            var isSystemAdmin = string.IsNullOrEmpty(userId) ? false : UserService.UserIsAdmin(userId).Result;
                         }
 
                         @if (isSignedIn)
@@ -90,6 +91,12 @@
                                     </ul>
                                 </div>
                             }
+
+                            @if (isSystemAdmin)
+                            {
+                              <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Backoffice" asp-action="Index">@StringLocalizer["Backoffice"]</a>
+                            }
+
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="About">@StringLocalizer["About Us"]</a>
 
                             <hr />

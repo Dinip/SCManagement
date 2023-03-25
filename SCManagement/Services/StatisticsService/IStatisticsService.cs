@@ -1,4 +1,5 @@
-﻿using SCManagement.Services.StatisticsService.Models;
+﻿using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.StatisticsService
 {
@@ -17,5 +18,6 @@ namespace SCManagement.Services.StatisticsService
         public Task<ICollection<SystemPaymentStatistics>> GetSystemPaymentStatistics(int? year = null);
         public Task<ICollection<SystemPlansStatistics>> GetSystemPlansStatistics(int? year = null);
         public Task<ICollection<SystemPlansShortStatistics>> GetSystemPlansShortStatistics();
+        public Task<Product> BestSellerPlan();
     }
 }

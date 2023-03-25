@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
@@ -11,14 +12,17 @@ namespace SCManagement.Services.UserService
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly IAzureStorage _azureStorage;
+        private readonly UserManager<User> _userManager;
 
         public UserService(ApplicationDbContext context,
             SignInManager<User> signInManager,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            UserManager<User> userManager)
         {
             _context = context;
             _signInManager = signInManager;
             _azureStorage = azureStorage;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -97,14 +101,14 @@ namespace SCManagement.Services.UserService
         {
             return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 20);
         }
-        
+
         public async Task<Bioimpedance> CreateBioimpedance(Bioimpedance bioimpedance)
         {
             _context.Bioimpedance.Add(bioimpedance);
             await _context.SaveChangesAsync();
             return bioimpedance;
         }
-        
+
         public async Task<Bioimpedance> GetBioimpedance(string userId)
         {
             return await _context.Bioimpedance.FirstOrDefaultAsync(b => b.BioimpedanceId == userId);
@@ -146,5 +150,55 @@ namespace SCManagement.Services.UserService
             return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 30);
         }
 
+
+        public async Task<ICollection<User>> GetAllUsers()
+        {
+            var admins = (await _userManager.GetUsersInRoleAsync("Administrator"))
+                .Select(u => new User
+                {
+                    Id = u.Id,
+                }).ToList();
+
+            var users = await _context
+                .Users
+                .Select(u => new User
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                })
+                .OrderBy(u => u.Id)
+                .ToListAsync();
+
+            users.ForEach(user =>
+            {
+                int index = admins.FindIndex(a => a.Id == user.Id);
+                if (index != -1)
+                {
+                    user.IsAdmin = true;
+                }
+            });
+
+            return users;
+        }
+
+        public async Task<bool> UserIsAdmin(string userId)
+        {
+            return (await _userManager.GetUsersInRoleAsync("Administrator")).Any(u => u.Id == userId);
+        }
+
+        public async Task<bool> ChangeSystemUserRole(string userId, string newRole)
+        {
+            string roleToRemove = newRole == "Administrator" ? "Regular" : "Administrator";
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return false;
+
+            var rem = await _userManager.RemoveFromRoleAsync(user, roleToRemove);
+            var add = await _userManager.AddToRoleAsync(user, newRole);
+
+            if (rem.Succeeded && add.Succeeded) return true;
+            return false;
+        }
     }
 }

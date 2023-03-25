@@ -13,10 +13,11 @@ namespace SCManagement.Services.UserService
         public Task<Bioimpedance> CreateBioimpedance(Bioimpedance bioimpedance);
         public Task<Bioimpedance> GetBioimpedance(string userId);
         public Task<Bioimpedance> UpdateBioimpedance(Bioimpedance bioimpedance);
-        public Task<User> GetUserWithEMD (string userId);
+        public Task<User> GetUserWithEMD(string userId);
         public Task CheckAndDeleteEMD(User user);
-
         public Task<bool> IsTrainerInAnyClub(string userId);
-
+        public Task<ICollection<User>> GetAllUsers();
+        public Task<bool> UserIsAdmin(string userId);
+        public Task<bool> ChangeSystemUserRole(string userId, string newRole);
     }
 }

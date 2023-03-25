@@ -1070,7 +1070,42 @@ namespace SCManagement.Services.PaymentService
             return await _context
                 .Subscription
                 .Include(s => s.Product)
-                .Where(s => s.Product.ProductType == ProductType.ClubSubscription && s.Status == SubscriptionStatus.Pending)
+                .Include(s => s.Club)
+                .Where(s =>
+                    s.Product.ProductType == ProductType.ClubSubscription &&
+                    s.Status == SubscriptionStatus.Pending &&
+                    s.NextTime.Date < DateTime.Now.Date
+                )
+                .Select(s => new Subscription
+                {
+                    Id = s.Id,
+                    StartTime = s.StartTime,
+                    NextTime = s.NextTime,
+                    EndTime = s.EndTime,
+                    Value = s.Value,
+                    Status = s.Status,
+                    ProductId = s.ProductId,
+                    UserId = s.UserId,
+                    AutoRenew = s.AutoRenew,
+                    Frequency = s.Frequency,
+                    ClubId = s.ClubId,
+                    Club = new Club
+                    {
+                        Id = s.Club.Id,
+                        Name = s.Club.Name,
+                    },
+                    Product = new Product
+                    {
+                        Id = s.Product.Id,
+                        Name = s.Product.Name,
+                    },
+                    User = new User
+                    {
+                        Id = s.User.Id,
+                        FirstName = s.User.FirstName,
+                        LastName = s.User.LastName,
+                    }
+                })
                 .ToListAsync();
         }
     }

@@ -569,9 +569,20 @@ namespace SCManagement.Services.StatisticsService
 
             return await _context
                 .SystemPaymentStatistics
+                .Include(s => s.Product)
                 .Where(c =>
                     c.Timestamp.Year == year &&
                     c.StatisticsRange == StatisticsRange.Month)
+                .Select(s => new SystemPaymentStatistics
+                {
+                    Value = s.Value,
+                    ProductId = s.ProductId,
+                    Product = new Product
+                    {
+                        Name = s.Product.Name
+                    },
+                    Timestamp = s.Timestamp
+                })
                 .ToListAsync();
         }
 
@@ -580,9 +591,21 @@ namespace SCManagement.Services.StatisticsService
             year ??= DateTime.Now.Year;
             return await _context
                 .SystemPlansStatistics
+                .Include(s => s.Product)
                 .Where(c =>
                     c.Timestamp.Year == year &&
                     c.StatisticsRange == StatisticsRange.Month)
+                .Select(s => new SystemPlansStatistics
+                {
+                    Active = s.Active,
+                    Canceled = s.Canceled,
+                    ProductId = s.ProductId,
+                    Product = new Product
+                    {
+                        Name = s.Product.Name
+                    },
+                    Timestamp = s.Timestamp
+                })
                 .ToListAsync();
         }
 
@@ -602,12 +625,44 @@ namespace SCManagement.Services.StatisticsService
                 .Select(f => new SystemPlansShortStatistics
                 {
                     Id = f.Key.ProductId,
-                    Count = f.Count(),
+                    Total = f.Count(),
+                    Canceled = f.Sum(s => s.Status == SubscriptionStatus.Canceled ? 1 : 0),
                     Name = f.Key.Name
                 })
                 .ToListAsync();
 
             return stats;
+        }
+
+        public async Task<Product> BestSellerPlan()
+        {
+            var plansIds = await _context
+                .Product
+                .Where(f => f.ProductType == ProductType.ClubSubscription)
+                .Select(f => f.Id)
+                .ToListAsync();
+
+            var bestSellingProduct = await _context
+                .Subscription
+                .Include(f => f.Product)
+                .Where(f => plansIds.Contains(f.ProductId))
+                .GroupBy(f => new { f.ProductId, f.Product.Name, f.Product.Value })
+                .Select(f => new
+                {
+                    Id = f.Key.ProductId,
+                    Count = f.Count(),
+                    f.Key.Name,
+                    f.Key.Value
+                })
+                .OrderByDescending(f => f.Count)
+                .FirstOrDefaultAsync();
+
+            return new Product
+            {
+                Id = bestSellingProduct.Id,
+                Name = bestSellingProduct.Name,
+                Value = bestSellingProduct.Value
+            };
         }
     }
 }

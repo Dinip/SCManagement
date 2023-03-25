@@ -1,0 +1,12 @@
+﻿@model SCManagement.Services.StatisticsService.Models.BackofficeStats
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "Backoffice";
+}
+
+<div>
+  <div>Backoffice Soon™️</div>
+    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="Statistics">@StringLocalizer["Statistics"]</a>
+    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="UserAccess">@StringLocalizer["UserAccess"]</a>
+</div>

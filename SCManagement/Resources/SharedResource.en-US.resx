@@ -1852,4 +1852,52 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Training zone</value>
     <comment>22-03-2023 plans</comment>
   </data>
+  <data name="AddAdmin" xml:space="preserve">
+    <value>Add as admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="AddAdminConfirm" xml:space="preserve">
+    <value>Are you sure that you want to add _USER_ as admin?</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_InvalidRole" xml:space="preserve">
+    <value>That role is invalid</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UpdatingToAdministrator" xml:space="preserve">
+    <value>An error occurred updating _USER_ to admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UpdatingToNotAdministrator" xml:space="preserve">
+    <value>An error occurred updating _USER_ to regular user</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UserAlreadyAdmin" xml:space="preserve">
+    <value>User _USER_ is already an admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UserAlreadyNotAdmin" xml:space="preserve">
+    <value>User _USER_ is already a regular user</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="RemoveAdmin" xml:space="preserve">
+    <value>Remove from admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="RemoveAdminConfirm" xml:space="preserve">
+    <value>Are you sure that you want to remove _USER_ from admin?</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Success_IsAdministrator" xml:space="preserve">
+    <value>User _USER_ is now an administrator</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Success_IsNotAdministrator" xml:space="preserve">
+    <value>User _USER_ is now a regular user</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="UserAccess" xml:space="preserve">
+    <value>User Access</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
 </root>
