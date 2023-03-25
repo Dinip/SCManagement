@@ -1226,7 +1226,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>27-02-2023_payments</comment>
   </data>
   <data name="Waiting_Payment" xml:space="preserve">
-    <value>à espera de pagamento</value>
+    <value>À espera de pagamento</value>
     <comment>27-02-2023_payments</comment>
   </data>
   <data name="ClubUnavailableDescriptionPrivate" xml:space="preserve">
@@ -1985,8 +1985,57 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="CirclePart" xml:space="preserve">
     <value>Número de sócios ativos sobre o total de sócios</value>
     <comment>23-02-2023_Statitics</comment>
-  </data>  <data name="Complete" xml:space="preserve">
+  </data>
+  <data name="Complete" xml:space="preserve">
     <value>Completar</value>
     <comment>23-03-2023_plansFix</comment>
+  </data>
+  <data name="AddAdmin" xml:space="preserve">
+    <value>Adicionar admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="AddAdminConfirm" xml:space="preserve">
+    <value>Tens a certeza que queres adicionar o utilizador _USER_ como administrador?</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_InvalidRole" xml:space="preserve">
+    <value>A role é inválida</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UpdatingToAdministrator" xml:space="preserve">
+    <value>Ocorreu um erro ao atualizar o user _USER_ para administrador</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UpdatingToNotAdministrator" xml:space="preserve">
+    <value>Ocorreu um erro ao atualizar o user _USER_ para utilizador regular</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UserAlreadyAdmin" xml:space="preserve">
+    <value>O user _USER_ já é um administrador</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UserAlreadyNotAdmin" xml:space="preserve">
+    <value>O user _USER_ já é um utilizador regular</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="RemoveAdmin" xml:space="preserve">
+    <value>Remover de admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="RemoveAdminConfirm" xml:space="preserve">
+    <value>Tens a certeza que queres remover o utilizador _USER_ de administrador?</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Success_IsAdministrator" xml:space="preserve">
+    <value>O user _USER_ é agora um administrador</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Success_IsNotAdministrator" xml:space="preserve">
+    <value>O user _USER_ é agora um utilizador regular</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="UserAccess" xml:space="preserve">
+    <value>Accesso utilizadores</value>
+    <comment>25-03-2023_backoffice</comment>
   </data>
 </root>

@@ -40,6 +40,8 @@ namespace SCManagement.Services.CronJobService
                 await statisticsService.CreateClubUserStatistics(clubId);
                 await statisticsService.CreateClubPaymentStatistics(clubId);
                 await statisticsService.CreateClubModalityStatistics(clubId);
+                await statisticsService.CreateSystemPaymentStatistics();
+                await statisticsService.CreateSystemPlansStatistics();
             }
 
             return;

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<SCManagement.Models.User>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "UsersList";
+}
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
+
+<div class="container-fluid ps-5 pe-5">
+    @if (ViewBag.Error != null)
+    {
+        <div style="color: red">@StringLocalizer[ViewBag.Error].Value.Replace("_USER_", ViewBag.User)</div>
+    }
+    else if (ViewBag.Message != null)
+    {
+        <div style="color:green;">@StringLocalizer[ViewBag.Message].Value.Replace("_USER_", ViewBag.User)</div>
+    }
+    <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
+        <div class="card-body">
+            <table id="table-users" class="display" style="width:100%!important;">
+                <thead>
+                    <tr>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in Model)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => user.FullName)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => user.Email)
+                            </td>
+                            <td class="justify-content-end d-flex">
+                                <form asp-action="UserAccess">
+                                    <input name="userId" value="@user.Id" class="form-control" hidden />
+                                    <input name="newRole" value="@(user.IsAdmin ? "Regular" : "Administrator")" class="form-control" hidden />
+                                    <input type="submit"
+                                           value='@(user.IsAdmin ? StringLocalizer["RemoveAdmin"]: StringLocalizer["AddAdmin"])'
+                                           class='btn @(user.IsAdmin ? (ViewBag.IgnoredUsers.Contains(user.Id) ? "invisible" : "btn-warning"): "btn-danger")'
+                                           onclick="return confirm('@StringLocalizer[user.IsAdmin ? "RemoveAdminConfirm" : "AddAdminConfirm"].Value.Replace("_USER_", user.FullName)')" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table-users").DataTable({
+            responsive: true,
+            order: [],
+            columnDefs: [
+                { orderable: false }
+            ]
+        });
+    });
+</script>

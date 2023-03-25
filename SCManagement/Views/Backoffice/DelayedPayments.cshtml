@@ -1,0 +1,82 @@
+﻿@model IEnumerable<SCManagement.Services.PaymentService.Models.Subscription>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "Delayed Payments";
+}
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
+
+<div class="container-fluid ps-5 pe-5">
+    @if(ViewBag.Message != null)
+    {
+        <div style="color:green;">@StringLocalizer[ViewBag.Message]</div>
+    }
+    <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
+        <div class="card-body">
+            <table id="table-payments" class="display" style="width:100%!important;">
+                <thead>
+                    <tr>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Club)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.NextTime)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Product)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Value)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var subscription in Model)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @subscription.Club.Name (@subscription.User.FullName)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => subscription.NextTime.Date)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => subscription.Product.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => subscription.Value)€
+                            </td>
+                            <td class="justify-content-end d-flex">
+                                <form asp-action="NotifyMissingPayment">
+                                    <input name="subId" value="@subscription.Id" class="form-control" hidden />
+                                    <input type="submit"
+                                           value='@StringLocalizer["Notify"]'
+                                           class='btn btn-primary'
+                                           onclick="return confirm('@StringLocalizer["NotifyConfirm"]')" />
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table-payments").DataTable({
+            responsive: true,
+            order: [],
+            columnDefs: [
+                { orderable: false }
+            ]
+        });
+    });
+</script>

@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.PaymentService
 {
@@ -605,7 +606,8 @@ namespace SCManagement.Services.PaymentService
                         SubscriptionId = subscription.Id,
                     };
                     _context.Payment.Add(payment);
-                } else
+                }
+                else
                 {
                     oldPayment.PaymentMethod = null;
                     oldPayment.PaymentStatus = PaymentStatus.Pending;
@@ -980,7 +982,6 @@ namespace SCManagement.Services.PaymentService
                 UserId = partner.UserId,
                 AutoRenew = false,
                 Frequency = product.Frequency.Value,
-                ClubId = partner.ClubId,
             };
 
             _context.Subscription.Add(sub);

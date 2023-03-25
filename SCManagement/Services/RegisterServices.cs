@@ -48,6 +48,12 @@ namespace SCManagement.Services
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
 
+            //Validate login every 1 minute (to update roles)
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromMinutes(1);
+            });
+
             #region add support for localization
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.Configure<RequestLocalizationOptions>(options =>
@@ -138,7 +144,7 @@ namespace SCManagement.Services
             services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
             services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
             services.AddTransient<IPlanService, SCManagement.Services.PlansService.PlanService>();
-            services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();         
+            services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
             #endregion

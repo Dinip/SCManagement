@@ -1,5 +1,6 @@
 ﻿using SCManagement.Models;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.PaymentService
 {

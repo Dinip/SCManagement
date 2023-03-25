@@ -1,0 +1,84 @@
+﻿@model IEnumerable<SCManagement.Services.StatisticsService.Models.ClubGeneralInfo>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "Clubs";
+}
+
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
+
+<div class="container-fluid ps-5 pe-5">
+    <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
+        <div class="card-body">
+            <table id="table-clubs" class="display" style="width:100%!important;">
+                <thead>
+                    <tr>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.Members)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.SubscriptionName)
+                        </th>
+                        <th class="text-to-dark">
+                            @Html.DisplayNameFor(model => model.ClubStatus)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var club in Model)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => club.Name)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => club.Members)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => club.StartDate)
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(_ => club.SubscriptionName)
+                            </td>
+                            <td class="text-to-dark">
+                                @StringLocalizer[club.ClubStatus.ToString()]
+                            </td>
+                            <td>
+                                <button class='btn btn-primary' onclick="moreInfo(@club.Id)">@StringLocalizer["More Info"]</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table-clubs").DataTable({
+            responsive: true,
+            order: [],
+            columnDefs: [
+                { orderable: false }
+            ]
+        });
+    });
+
+    function moreInfo(clubId) {
+        //query Athletes or Partners JSON to build graphs
+        console.log(clubId)
+    }
+</script>

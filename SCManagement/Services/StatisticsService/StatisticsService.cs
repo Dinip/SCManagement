@@ -1,8 +1,11 @@
 ﻿using System.Data;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.PlansService.Models;
 using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.StatisticsService
@@ -164,17 +167,6 @@ namespace SCManagement.Services.StatisticsService
                     };
                     _context.ClubPaymentStatistics.Add(stat);
                 }
-
-                //daily stats
-                var daily = new ClubPaymentStatistics
-                {
-                    Value = prod.Total,
-                    ClubId = clubId,
-                    StatisticsRange = StatisticsRange.Day,
-                    ProductType = prod.ProductType,
-                    Timestamp = prevDay
-                };
-                _context.ClubPaymentStatistics.Add(daily);
             });
 
             await _context.SaveChangesAsync();
@@ -436,6 +428,442 @@ namespace SCManagement.Services.StatisticsService
                         c.StatisticsRange == StatisticsRange.Month)
                     .ToListAsync();
             }
+        }
+
+        /// <summary>
+        /// Creates statistics about payments (plan subscriptions).
+        /// Only creates monthly stats and MUST be only run once a day. Gets the payments received from
+        /// the previous day and updates (sum) the existing stats if they exist or creates an new one.
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateSystemPaymentStatistics()
+        {
+            var prevDay = DateTime.Now.Date.AddDays(-1);
+            var result = await _context
+                .SystemPaymentStatistics
+                .Where(f => f.Timestamp.Month == prevDay.Month && f.Timestamp.Year == prevDay.Year)
+                .ToListAsync();
+
+            var sumValueByProduct = await _context
+                .Product
+                .Join(
+                    _context.Payment,
+                    product => product.Id,
+                    payment => payment.ProductId,
+                    (product, payment) => new { product, payment }
+                )
+                .Where(
+                    f => f.product.ProductType == PaymentService.Models.ProductType.ClubSubscription &&
+                    f.payment.PayedAt.Value.Date == prevDay // get the payed payments from last day
+                    )
+                .GroupBy(f => f.product.Id)
+                .Select(f => new
+                {
+                    ProductId = f.Key,
+                    Total = f.Sum(s => s.product.Value),
+                    ProductType = f.Select(s => s.product.ProductType).First()
+                })
+                .ToListAsync();
+
+            sumValueByProduct.ForEach(prod =>
+            {
+                var f = result.Find(r => r.ProductId == prod.ProductId);
+                if (f != null)
+                {
+                    f.Value += prod.Total;
+                    _context.SystemPaymentStatistics.Update(f);
+                }
+                else if (prod.Total > 0)
+                {
+                    var stat = new SystemPaymentStatistics
+                    {
+                        Value = prod.Total,
+                        ProductId = prod.ProductId,
+                        StatisticsRange = StatisticsRange.Month,
+                        ProductType = prod.ProductType,
+                        Timestamp = new DateTime(prevDay.Year, prevDay.Month, DateTime.DaysInMonth(prevDay.Year, prevDay.Month)),
+                    };
+                    _context.SystemPaymentStatistics.Add(stat);
+                }
+            });
+
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Creates statistics about system club plans.
+        /// Only creates monthly stats and MUST be only run once a day. Gets the plans that exist
+        /// the previous day and updates (sum or subtract) the existing stats if they exist or creates an new one.
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateSystemPlansStatistics()
+        {
+            var prevDay = DateTime.Now.Date.AddDays(-1);
+
+            var plansIds = await _context
+                .Product
+                .Where(f => f.ProductType == PaymentService.Models.ProductType.ClubSubscription)
+                .Select(f => f.Id)
+                .ToListAsync();
+
+            var prevDayMonthResults = await _context
+                    .SystemPlansStatistics
+                    .Where(f => f.Timestamp.Month == prevDay.Month && f.Timestamp.Year == prevDay.Year)
+                    .ToListAsync();
+
+            foreach (var id in plansIds)
+            {
+                //new planId that is not present on prevDayMonthResults
+                //(created yesterday so it wasn't "found" on that month or new month start)
+                if (!prevDayMonthResults.Any(r => r.ProductId == id))
+                {
+                    _context.SystemPlansStatistics.Add(new SystemPlansStatistics
+                    {
+                        ProductId = id,
+                        StatisticsRange = StatisticsRange.Month,
+                        Timestamp = new DateTime(prevDay.Year, prevDay.Month, DateTime.DaysInMonth(prevDay.Year, prevDay.Month)),
+                        Active = 0
+                    });
+                }
+            }
+
+            await _context.SaveChangesAsync();
+
+            //get all plan subs that expired yesterday
+            var endedSubsYesterday = await _context
+                    .Subscription
+                    .Where(f => plansIds.Contains(f.ProductId) && f.EndTime.Value.Date == prevDay)
+                    .GroupBy(f => f.ProductId)
+                    .Select(f => new { Id = f.Key, Canceled = f.Count() })
+                    .ToListAsync();
+
+            //get all plan subs that started yesterday
+            var startedSubsYesterday = await _context
+                .Subscription
+                .Where(f => plansIds.Contains(f.ProductId) && f.StartTime.Date == prevDay)
+                .GroupBy(f => f.ProductId)
+                .Select(f => new { Id = f.Key, Canceled = f.Count() })
+                .ToListAsync();
+
+            //if plans were started or canceled yesterday, get the old values and update them
+            if (endedSubsYesterday.Any() || startedSubsYesterday.Any())
+            {
+                var prevDayMonthResultsNew = await _context
+                    .SystemPlansStatistics
+                    .Where(f => f.Timestamp.Month == prevDay.Month && f.Timestamp.Year == prevDay.Year)
+                    .ToListAsync();
+
+                prevDayMonthResultsNew.ForEach(plan =>
+                {
+                    //add count of new active plans from previous day (is assumes that was created before)
+                    var startedPlans = startedSubsYesterday.Where(e => e.Id == plan.ProductId);
+                    if (startedPlans.Any())
+                    {
+                        plan.Active += startedPlans.Count();
+                    }
+
+                    //subtract from active and add to canceled (is assumes that was created before)
+                    var endedPlans = endedSubsYesterday.Where(e => e.Id == plan.ProductId);
+                    if (endedPlans.Any())
+                    {
+                        plan.Active -= endedPlans.Count();
+                        plan.Canceled += endedPlans.Count();
+                    }
+
+                    _context.SystemPlansStatistics.Update(plan);
+                });
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Get the system payment statistics by product (plan) by month
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public async Task<ICollection<SystemPaymentStatistics>> GetSystemPaymentStatistics(int? year = null)
+        {
+            year ??= DateTime.Now.Year;
+
+            return await _context
+                .SystemPaymentStatistics
+                .Include(s => s.Product)
+                .Where(c =>
+                    c.Timestamp.Year == year &&
+                    c.StatisticsRange == StatisticsRange.Month)
+                .Select(s => new SystemPaymentStatistics
+                {
+                    Value = s.Value,
+                    ProductId = s.ProductId,
+                    Product = new Product
+                    {
+                        Name = s.Product.Name
+                    },
+                    Timestamp = s.Timestamp
+                })
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Get the system statistics by product (plan)
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
+        public async Task<ICollection<SystemPlansStatistics>> GetSystemPlansStatistics(int? year = null)
+        {
+            year ??= DateTime.Now.Year;
+            return await _context
+                .SystemPlansStatistics
+                .Include(s => s.Product)
+                .Where(c =>
+                    c.Timestamp.Year == year &&
+                    c.StatisticsRange == StatisticsRange.Month)
+                .Select(s => new SystemPlansStatistics
+                {
+                    Active = s.Active,
+                    Canceled = s.Canceled,
+                    ProductId = s.ProductId,
+                    Product = new Product
+                    {
+                        Name = s.Product.Name
+                    },
+                    Timestamp = s.Timestamp
+                })
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Gets the system plans global statistics by product (total count vs canceled)
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ICollection<SystemPlansShortStatistics>> GetSystemPlansShortStatistics()
+        {
+            var plansIds = await _context
+                .Product
+                .Where(f => f.ProductType == ProductType.ClubSubscription)
+                .Select(f => f.Id)
+                .ToListAsync();
+
+            var stats = await _context
+                .Subscription
+                .Include(f => f.Product)
+                .Where(f => plansIds.Contains(f.ProductId))
+                .GroupBy(f => new { f.ProductId, f.Product.Name })
+                .Select(f => new SystemPlansShortStatistics
+                {
+                    Id = f.Key.ProductId,
+                    Total = f.Count(),
+                    Canceled = f.Sum(s => s.Status == SubscriptionStatus.Canceled ? 1 : 0),
+                    Name = f.Key.Name
+                })
+                .ToListAsync();
+
+            return stats;
+        }
+
+        /// <summary>
+        /// Gets the best seller plan (by subscriptions sum)
+        /// </summary>
+        /// <returns></returns>
+        public async Task<Product> BestSellerPlan()
+        {
+            var plansIds = await _context
+                .Product
+                .Where(f => f.ProductType == ProductType.ClubSubscription)
+                .Select(f => f.Id)
+                .ToListAsync();
+
+            var bestSellingProduct = await _context
+                .Subscription
+                .Include(f => f.Product)
+                .Where(f => plansIds.Contains(f.ProductId))
+                .GroupBy(f => new { f.ProductId, f.Product.Name, f.Product.Value })
+                .Select(f => new
+                {
+                    Id = f.Key.ProductId,
+                    Count = f.Count(),
+                    f.Key.Name,
+                    f.Key.Value
+                })
+                .OrderByDescending(f => f.Count)
+                .FirstOrDefaultAsync();
+
+            return new Product
+            {
+                Id = bestSellingProduct.Id,
+                Name = bestSellingProduct.Name,
+                Value = bestSellingProduct.Value
+            };
+        }
+
+        /// <summary>
+        /// Gets the count of clubs that are active and the total count of clubs
+        /// Min = Active
+        /// Max = Total Count
+        /// </summary>
+        /// <returns></returns>
+        public async Task<MinMaxHelper> GetActiveAndOtherClubsCount()
+        {
+            var clubs = await _context.Club
+                .GroupBy(c => c.Status)
+                .Select(f => new
+                {
+                    Status = f.Key,
+                    Count = f.Count()
+                })
+                .ToListAsync();
+
+            return new MinMaxHelper
+            {
+                Min = clubs.Where(f => f.Status == ClubStatus.Active).Sum(f => f.Count),
+                Max = clubs.Sum(f => f.Count)
+            };
+        }
+
+        /// <summary>
+        /// Get all subscriptions for club plans that have the payment delayed
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ICollection<Subscription>> GetDelayedClubSubscriptions()
+        {
+            return await _context
+                .Subscription
+                .Include(s => s.Product)
+                .Include(s => s.Club)
+                .Where(s =>
+                    s.Product.ProductType == ProductType.ClubSubscription &&
+                    s.Status == SubscriptionStatus.Pending &&
+                    s.NextTime.Date < DateTime.Now.Date
+                )
+                .Select(s => new Subscription
+                {
+                    Id = s.Id,
+                    StartTime = s.StartTime,
+                    NextTime = s.NextTime,
+                    EndTime = s.EndTime,
+                    Value = s.Value,
+                    Status = s.Status,
+                    ProductId = s.ProductId,
+                    UserId = s.UserId,
+                    AutoRenew = s.AutoRenew,
+                    Frequency = s.Frequency,
+                    ClubId = s.ClubId,
+                    Club = new Club
+                    {
+                        Id = s.Club.Id,
+                        Name = s.Club.Name,
+                    },
+                    Product = new Product
+                    {
+                        Id = s.Product.Id,
+                        Name = s.Product.Name,
+                    },
+                    User = new User
+                    {
+                        Id = s.User.Id,
+                        FirstName = s.User.FirstName,
+                        LastName = s.User.LastName,
+                    }
+                })
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Get the count of subscriptions for club plans which are active and pending
+        /// </summary>
+        /// <returns></returns>
+        public async Task<MinMaxHelper> GetActiveAndDelayedClubSubscriptionsCount()
+        {
+            var pending = await _context
+                .Subscription
+                .Include(s => s.Product)
+                .Include(s => s.Club)
+                .Where(s =>
+                    s.Product.ProductType == ProductType.ClubSubscription &&
+                    s.Status == SubscriptionStatus.Pending &&
+                    s.NextTime.Date < DateTime.Now.Date
+                )
+                .CountAsync();
+
+            var active = await _context
+                .Subscription
+                .Include(s => s.Product)
+                .Include(s => s.Club)
+                .Where(s =>
+                    s.Product.ProductType == ProductType.ClubSubscription &&
+                    s.Status == SubscriptionStatus.Active
+                )
+                .CountAsync();
+
+            return new MinMaxHelper { Min = pending, Max = active };
+        }
+
+        /// <summary>
+        /// Gets the count of used and the total of created codes
+        /// Min = Used
+        /// Max = Total Count
+        /// </summary>
+        /// <returns></returns>
+        public async Task<MinMaxHelper> GetUsedAndCreatedCodes()
+        {
+            var codes = await _context.CodeClub
+                .GroupBy(c => c.UsedDate == null)
+                .Select(g => new
+                {
+                    Status = g.Key,
+                    Count = g.Count()
+                })
+                .ToListAsync();
+
+            return new MinMaxHelper
+            {
+                Min = codes.Where(f => f.Status == false).Sum(f => f.Count),
+                Max = codes.Sum(f => f.Count),
+            };
+        }
+
+        /// <summary>
+        /// Gets the income for the month and the year (uses previous day as date)
+        /// Min = Month
+        /// Max = Year
+        /// </summary>
+        /// <returns></returns>
+        public async Task<MinMaxHelper> GetMonthYearIncomeShort()
+        {
+            int year = DateTime.Now.AddDays(-1).Year;
+            int month = DateTime.Now.AddDays(.1).Month;
+
+            var payments = await GetSystemPaymentStatistics(year);
+            var monthIncome = payments.Where(p => p.Timestamp.Month == month).Sum(p => p.Value);
+
+            return new MinMaxHelper
+            {
+                //min = month sum, max = year sum
+                Min = monthIncome,
+                Max = payments.Sum(p => p.Value)
+            };
+        }
+
+        public async Task<ICollection<ClubGeneralInfo>> GetClubsGeneralStats()
+        {
+            return await _context.Club
+                .Include(c => c.UsersRoleClub)
+                .Join(
+                _context.Subscription.Include(s => s.Product),
+                club => club.Id,
+                subscription => subscription.ClubId,
+                (club, subscription) => new { club, subscription }
+                )
+                .Select(c => new ClubGeneralInfo
+                {
+                    Id = c.club.Id,
+                    Name = c.club.Name,
+                    ClubStatus = c.club.Status,
+                    SubscriptionName = c.subscription.Product.Name,
+                    StartDate = c.club.CreationDate,
+                    Members = c.club.UsersRoleClub.Where(f => f.RoleId == 10).Count()
+                })
+                .ToListAsync();
         }
     }
 }
