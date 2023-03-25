@@ -13,7 +13,7 @@
         </div>
     </div>
     <h1 style="margin-top:130px !important;" class="text-to-dark">@Html.DisplayFor(model => model.Name)</h1>
-    <a asp-action="TeamList">Voltar</a>
+    <a asp-action="TeamList">@StringLocalizer["Back"]</a>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -36,22 +36,22 @@
                     <label asp-for="Trainer" class="control-label"></label>
                 </div>
                 <div class="form-floating">
-                    <input type="submit" value="Save" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary" />
+                    <input type="submit" value=@StringLocalizer["Save"] style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
     <div class="card mt-3 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
-            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Athlete </a>
+            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">@StringLocalizer["AddAthlete"] </a>
             <table id="table_id" class="display">
                 <thead>
                     <tr>
                         <th class="text-to-dark">
-                            Name
+                            @StringLocalizer["Name"]
                         </th>
                         <th class="text-to-dark">
-                            Age
+                            @StringLocalizer["Age"]
                         </th>
                         <th></th>
                     </tr>
@@ -73,7 +73,7 @@
                                         <input name="athleteId" value="@item.Id" class="form-control" hidden />
                                         <input name="teamId" value="@Model.Id" class="form-control" hidden />
                                         <input name="page" value="EditTeam" class="form-control" hidden />
-                                        <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
+                                        <input type="submit" value=@StringLocalizer["Remove"] style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
                                     </form>
                                 </td>
                             </tr>
@@ -104,7 +104,23 @@
             $("#table_id").DataTable({
                 columnDefs: [
                     { orderable: false, targets: [-1] }
-                ]
+                ],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
             });
         });
         function openCreate() {

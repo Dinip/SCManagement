@@ -2026,12 +2026,36 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>a</value>
     <comment>24-04-2023_Datatables</comment>
   </data>
+  <data name="AddAthlete" xml:space="preserve">
+    <value>Adicionar Atleta</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
   <data name="CreatedBy" xml:space="preserve">
     <value>Criado por</value>
     <comment>25-03-2023_dataTablesFix</comment>
   </data>
+  <data name="CreateTeam" xml:space="preserve">
+    <value>Criar Equipa</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Filtered" xml:space="preserve">
+    <value>Filtrado</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>de</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Próximo</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="NoMatching" xml:space="preserve">
+    <value>Nenhum registro correspondente encontrado</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>A processar...</value>
     <comment>25-03-2023_dataTablesFix</comment>
   </data>
 </root>

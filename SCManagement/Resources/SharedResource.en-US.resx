@@ -1896,12 +1896,36 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>to</value>
     <comment>24-04-2023_Datatables</comment>
   </data>
+  <data name="AddAthlete" xml:space="preserve">
+    <value>Add Athlete</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
   <data name="CreatedBy" xml:space="preserve">
     <value>Created By</value>
     <comment>25-03-2023_dataTablesFix</comment>
   </data>
+  <data name="CreateTeam" xml:space="preserve">
+    <value>Create Team</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Filtered" xml:space="preserve">
+    <value>Filtered</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>from</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
   <data name="Next" xml:space="preserve">
     <value>Next</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="NoMatching" xml:space="preserve">
+    <value>No matching records found</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing...</value>
     <comment>25-03-2023_dataTablesFix</comment>
   </data>
 </root>

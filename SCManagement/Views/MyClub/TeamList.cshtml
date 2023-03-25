@@ -11,7 +11,7 @@
     <h1 style="margin-top:130px !important;" class="text-to-dark mb-5">@StringLocalizer["Teams"]</h1>
     @if (ViewBag.CanCreate == true)
     {
-        <a asp-action="CreateTeam" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Create Team</a>
+        <a asp-action="CreateTeam" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["CreateTeam"]</a>
     }
     <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
@@ -79,7 +79,23 @@
             },
             columnDefs: [
                 { orderable: false, targets: [-1] }
-            ]
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
     });
 </script>
