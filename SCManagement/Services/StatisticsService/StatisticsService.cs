@@ -690,9 +690,9 @@ namespace SCManagement.Services.StatisticsService
 
             return new Product
             {
-                Id = bestSellingProduct.Id,
-                Name = bestSellingProduct.Name,
-                Value = bestSellingProduct.Value
+                Id = bestSellingProduct?.Id ?? 0,
+                Name = bestSellingProduct?.Name ?? "None",
+                Value = bestSellingProduct?.Value ?? 0
             };
         }
 

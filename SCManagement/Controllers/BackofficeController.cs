@@ -201,6 +201,12 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+        public async Task<IActionResult> PlansAdherenceData()
+        {
+            var stats = await _statisticsService.GetSystemPlansShortStatistics();
+            return Json(new { data = stats });
+        }
+
         public async Task<IActionResult> AthletesData(int clubId, int? year)
         {
             var stats = await _statisticsService.GetClubUserStatistics(clubId, 20, year);
