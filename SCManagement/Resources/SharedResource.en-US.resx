@@ -1988,4 +1988,92 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Mark the desired address on the map</value>
     <comment>26-03-2023_helps</comment>
   </data>
+  <data name="AddPeople" xml:space="preserve">
+    <value>Add People To Your Club</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ByUsing" xml:space="preserve">
+    <value>By using our platform you will be able to easily create, customize and manage your events, in addition to managing payments</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FeelReady" xml:space="preserve">
+    <value>I want to start</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncOne" xml:space="preserve">
+    <value>You can mark a path in the event you are creating, so participants can visualize the path they will take</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncsTutorial" xml:space="preserve">
+    <value>A Little of What You Can Do</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncThree" xml:space="preserve">
+    <value>You can always manage your athletes, add training plans, food and or goals to your athletes. With this feature you can almost always be next to your athlete</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncTwo" xml:space="preserve">
+    <value>A club is always better with life and in that regard we mean people. Invite athletes, coaches and staff to your club, let them participate in what is best: sport</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Hi" xml:space="preserve">
+    <value>Hi</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagAtl" xml:space="preserve">
+    <value>Manage Your Athletes</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagClub" xml:space="preserve">
+    <value>Manage Club</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagEvents" xml:space="preserve">
+    <value>Manage Events</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagYourClub" xml:space="preserve">
+    <value>Manage your club simply and efficiently! You can easily manage members, payments, activities and more. Ensuring that everything is always organized and up to date. Take advantage of the ease of management that our platform offers you and focus on what really matters: Enjoying your club!</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="NeverWas" xml:space="preserve">
+    <value>Never before has it been so quick to create a club, invite people and enjoy various features that will make your life easier</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="OurProject" xml:space="preserve">
+    <value>Our Project</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Fast Process</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="PutPath" xml:space="preserve">
+    <value>Mark a Path at Your Event</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Do you feel ready to start?</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="SomeFunc" xml:space="preserve">
+    <value>These are just three features that we are going to show you, so you can enjoy many more</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ThisIs" xml:space="preserve">
+    <value>This is a web application that will be able to offer you different features for managing your club. We love sport as much as you do and together we build a better future</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="WeAre" xml:space="preserve">
+    <value>We are SCManagement</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="WePretend" xml:space="preserve">
+    <value>We intend to provide you with better management of your club, from your members, quotas, coaches, athletes, events, among others. Our objective is to unify all this management in a single platform.</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="YourClubStatistics" xml:space="preserve">
+    <value>You can also always stay up to date with what is happening at your club with just one click, we provide statistics and information about your club</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
 </root>

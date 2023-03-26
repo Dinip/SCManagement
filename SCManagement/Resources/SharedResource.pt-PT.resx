@@ -2118,4 +2118,92 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Assinale no mapa a morada pretendida</value>
     <comment>26-03-2023_helps</comment>
   </data>
+  <data name="AddPeople" xml:space="preserve">
+    <value>Adiciona pessoas Ao Teu Clube</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ByUsing" xml:space="preserve">
+    <value>Ao utilizares a nossa plataforma poderás criar, personalizar e gerir os teus eventos com facilidade, além de gerir pagamentos</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FeelReady" xml:space="preserve">
+    <value>Quero Começar</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncOne" xml:space="preserve">
+    <value>Podes marcar um caminho no evento que estas a criar, assim os participantes podem visualizar o caminho que irão percorrer</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncsTutorial" xml:space="preserve">
+    <value>Um Pouco do Que Podes Fazer</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncThree" xml:space="preserve">
+    <value>Podes sempre gerir os teus atletas, adiciona planos de treino, alimentares e ou metas aos teus atletas. Com esta funcionalidade quase que podes estar sempre ao lado do teu atleta</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncTwo" xml:space="preserve">
+    <value>Um clube é sempre melhor com vida e quanto a isso referimo-nos a pessoas. Convida atletas, treinadores e staff para o teu clube, deixa-os participar no que há de melhor, o desporto</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Hi" xml:space="preserve">
+    <value>Olá</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagAtl" xml:space="preserve">
+    <value>Gere Os Teus Atletas</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagClub" xml:space="preserve">
+    <value>Gerir Clube</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagEvents" xml:space="preserve">
+    <value>Gerir Eventos</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagYourClub" xml:space="preserve">
+    <value>Gere o teu clube de forma simples e eficiente! Poderás facilmente gerir membros, pagamentos, atividades entre outros. Garantindo que tudo esteja sempre organizado e atualizado. Aproveita a facilidade de gestão que a nossa plataforma te oferece e foca-te no que realmente importa: Aproveitar o teu clube!</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="NeverWas" xml:space="preserve">
+    <value>Nunca antes foi tão rápido criar um clube, convidar pessoas e desfrutar de diversas funcionalidades que te vão facilitar a vida</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="OurProject" xml:space="preserve">
+    <value>Nosso Projeto</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Processo Rápido</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="PutPath" xml:space="preserve">
+    <value>Marca Um Caminho No Teu evento</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Sentes-te preparado para começar</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="SomeFunc" xml:space="preserve">
+    <value>Estas são apenas três funcionalidades que te vamos mostrar, pelo que poderás usufruir de muitas mais</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ThisIs" xml:space="preserve">
+    <value>Esta é uma aplicação web que te vai poder oferecer diversas funcionalidades de gestão do teu clube. Nós adoramos desporto tanto como tu e juntos construímos um futuro melhor</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="WeAre" xml:space="preserve">
+    <value>Nós somos o SCManagement</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="WePretend" xml:space="preserve">
+    <value>Pretendemos proporcionar-te uma melhor gestão do teu clube, desde os teus sócios, cotas, treinadores, atletas, eventos entre outros. Temos como objetivo, unificar toda esta gestão numa única plataforma.</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="YourClubStatistics" xml:space="preserve">
+    <value>Poderás também ficar sempre a par do que se passa no teu clube ao passo de apenas um clique, disponibilizamos estatísticas e informações sobre o teu clube</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
 </root>

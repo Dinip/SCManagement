@@ -5,6 +5,65 @@
 
 <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 <link rel="stylesheet" href="~/css/calendar.css" asp-append-version="true" />
+
+<style>
+    section {
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+        section h1 {
+            text-transform: uppercase;
+            font-weight: 900;
+            color: #7a44c2;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        section p {
+            font-size: 16px;
+            font-weight: 300;
+        }
+
+    #hero .col {
+        justify-content: center;
+        flex-direction: column;
+        display: flex;
+    }
+
+    #hero .img-col {
+        justify-content: flex-end;
+        margin-top: 100px;
+    }
+
+    #hero img {
+        max-width: 130%;
+        !important;
+        width: 130%;
+    }
+
+    #hero .card {
+        border: 0;
+        text-align: center;
+    }
+
+    #hero .cards .card {
+        width: 18rem;
+    }
+
+    /* Styling for Icons if added */
+    #hero .icon {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 20px;
+    }
+
+    /* Styling for the Project Section */
+    #projects .projects {
+        margin-bottom: 50px;
+    }
+</style>
+
 @if (SignInManager.IsSignedIn(User))
 {
     <div class="row mt-5 mb-5">
@@ -60,10 +119,107 @@
 }
 else
 {
-    <div class="row align-items-center mt-xl-5">
-        <p class="col-md-4 col-lg-6 text-to-dark" style="text-align:center"> @StringLocalizer["NotDone"]</p>
-        <img src="~/img/under-construction-png_667893.png" class="col-md-4 col-lg-6" alt="NotDone" />
+    <div class="container-fluid">
+        <section id="hero">
+            <div class="container w-100">
+                <div class="row">
+                    <div class="col-lg-6 col-xs-12 col-md-6">
+                        <h1>@StringLocalizer["Hi"],<br>@StringLocalizer["WeAre"]</h1>
+                        <sapn class="text-to-dark">@StringLocalizer["ThisIs"]!</sapn>
+                    </div>
+                    <div class="col-lg-6 col-xs-12 col-md-6" style="max-width:40%; min-width:300px">
+                        <img src="~/img/Software.png" alt="imageSoftware">
+                    </div>
+                </div>
+                <div class="row cards mt-5 w-100">
+                    <div class="col-md-4 d-flex justify-content-center">
+                        <div class="card text-to-dark">
+                            <div class="card-body">
+                                <img src="~/img/click.png" alt="click" class="icon">
+                                <h5 class="card-title text-to-dark">@StringLocalizer["Process"]</h5>
+                                <p class="card-text text-to-dark">@StringLocalizer["NeverWas"]!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center mt-4 mt-sm-4 mt-md-0 mt-lg-0">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="~/img/list.png" alt="list" class="icon">
+                                <h5 class="card-title text-to-dark">@StringLocalizer["ManagEvents"]</h5>
+                                <p class="card-text text-to-dark">@StringLocalizer["ByUsing"].</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 d-flex justify-content-center mt-4 mt-sm-4 mt-md-0 mt-lg-0">
+                        <div class="card">
+                            <div class="card-body">
+                                <img src="~/img/megafone.png" alt="megafone" class="icon">
+                                <h5 class="card-title text-to-dark">@StringLocalizer["ManagClub"]</h5>
+                                <p class="card-text text-to-dark">@StringLocalizer["ManagYourClub"]</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="about-us">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 col-xs-12 col-md-6" >
+                        <img src="~/img/Software2.png" alt="Software" class="img-fluid" />
+                    </div>
+                    <div class="col-lg-6 col-xs-12 col-md-6">
+                        <h1>@StringLocalizer["OurProject"]</h1>
+                        <p class="text-to-dark">@StringLocalizer["WePretend"]</p>
+                        <p class="text-to-dark">@StringLocalizer["YourClubStatistics"]!</p>
+                        <p class="text-to-dark">@StringLocalizer["Ready"]?</p>
+                        <a class="btn btn-primary me-5" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["FeelReady"]!</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="container mt-4">
+            <div class="row align-items-center projects">
+                <div class="col">
+                    <h1>@StringLocalizer["FuncsTutorial"]</h1>
+                    <p class="text-to-dark">@StringLocalizer["SomeFunc"]!</p>
+                </div>
+                <div class="row align-items-center">
+                    <div class="col-lg-4 col-xs-12 col-md-4">
+                        <div class="card mb-3" style="min-height:300px">
+                            <img src="~/img/Func1.jpeg" class="card-img-top" alt="Functionality1" style="border-top-left-radius:20px; border-top-right-radius:20px; max-height:124px;">
+                            <div class="card-body text-to-dark">
+                                <h5 class="card-title text-to-dark">@StringLocalizer["PutPath"]!</h5>
+                                <p class="card-text text-to-dark">@StringLocalizer["FuncOne"].</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-12 col-md-4">
+                        <div class="card mb-3" style="min-height:300px">
+                            <img src="~/img/Func2.jpeg" alt="Functionality2" style="border-top-left-radius:20px; border-top-right-radius:20px; max-height:124px;">
+                            <div class="card-body text-to-dark">
+                                <h5 class="card-title text-to-dark">@StringLocalizer["AddPeople"]!</h5>
+                                <p class="card-text text-to-dark">@StringLocalizer["FuncTwo"]!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-xs-12 col-md-4">
+                        <div class="card mb-3" style="min-height:300px">
+                            <img src="~/img/Func3.jpeg" alt="Functionality3" style="border-top-left-radius:20px; border-top-right-radius:20px; max-height:124px;">
+                            <div class="card-body text-to-dark">
+                                <h5 class="card-title text-to-dark">@StringLocalizer["ManagAtl"]!</h5>
+                                <p class="card-text text-to-dark">@StringLocalizer["FuncThree"]!</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
     </div>
+
 }
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
@@ -87,5 +243,5 @@ else
         date[i].classList.add("text-to-dark");
     }
 
- 
+
 </script>
