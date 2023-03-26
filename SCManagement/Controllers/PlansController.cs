@@ -1193,7 +1193,6 @@ namespace SCManagement.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CompleteGoal(int? id)
         {
             string userId = getUserIdFromAuthedUser();
@@ -1212,8 +1211,7 @@ namespace SCManagement.Controllers
 
             await _planService.UpdateGoal(goal);
 
-            //if u need u can change this 
-            return RedirectToAction("GoalsList", new { id = goal.AthleteId });
+            return Json(new { data = id });
         }
 
         public async Task<IActionResult> GoalsList(string id)
@@ -1230,7 +1228,7 @@ namespace SCManagement.Controllers
             
             if (_clubService.IsClubAthlete(role)) 
             {
-                goals = await _planService.GetMyGoals(userId);
+                goals = await _planService.GetMyGoals(userId, 3);
                 ViewBag.isAthlete = true;
             }
             else 

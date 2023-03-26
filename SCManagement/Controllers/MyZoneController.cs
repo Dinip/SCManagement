@@ -1,18 +1,16 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SCManagement.Models;
-using SCManagement.Services.AzureStorageService.Models;
-using SCManagement.Services.PlansService.Models;
 using SCManagement.Services;
 using SCManagement.Services.AzureStorageService;
+using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
-using System.ComponentModel.DataAnnotations;
-using Xunit.Abstractions;
 
 namespace SCManagement.Controllers
 {
@@ -82,9 +80,6 @@ namespace SCManagement.Controllers
 
             var myTeams = await _teamService.GetTeamsByAthlete(role.UserId, role.ClubId);
 
-            var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId);
-            var myMealPlans = await _planService.GetMyMealPlans(role.UserId);
-
             var myModel = new MyZoneModel
             {
                 UserId = role.UserId,
@@ -96,26 +91,24 @@ namespace SCManagement.Controllers
             return View(myModel);
         }
 
-        public async Task<IActionResult> GetTrainingPlans()
+        public async Task<IActionResult> GetTrainingPlans(int? filter)
         {
-            
-                var userId = getUserIdFromAuthedUser();
 
-                var role = await _userService.GetSelectedRole(userId);
+            var userId = getUserIdFromAuthedUser();
 
-                if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+            var role = await _userService.GetSelectedRole(userId);
 
-                var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId);
+            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-                myTrainingPlans = myTrainingPlans.Where(p => p.EndDate >= DateTime.Now).OrderBy(p => p.StartDate).Take(15).ToList();
-            
-            var obj = myTrainingPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, Modality = p.Modality.Name, PlanId = p.Id });
+            var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId, filter);
+
+            var obj = myTrainingPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, Modality = p.Modality.Name, PlanId = p.Id.ToString() });
 
             return Json(new { data = obj });
-            
+
         }
 
-        public async Task<IActionResult> GetMealPlans()
+        public async Task<IActionResult> GetMealPlans(int? filter)
         {
             var userId = getUserIdFromAuthedUser();
 
@@ -123,14 +116,27 @@ namespace SCManagement.Controllers
 
             if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-            var myMealPlans = await _planService.GetMyMealPlans(role.UserId);
-
-            myMealPlans = myMealPlans.Where(p => p.EndDate >= DateTime.Now).OrderBy(p => p.StartDate).Take(15).ToList();
+            var myMealPlans = await _planService.GetMyMealPlans(role.UserId, filter);
 
             var obj = myMealPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, PlanId = p.Id });
-            
+
             return Json(new { data = obj });
 
+        }
+
+        public async Task<IActionResult> GetGoals(int? filter)
+        {
+            var userId = getUserIdFromAuthedUser();
+
+            var role = await _userService.GetSelectedRole(userId);
+
+            if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
+
+            var myGoals = await _planService.GetMyGoals(userId, filter);
+
+            var obj = myGoals.Select(p => new { Name = p.Name, EndDate = p.EndDate, GoalId = p.Id, IsCompleted= p.isCompleted });
+
+            return Json(new { data = obj });
         }
 
         public async Task<IActionResult> GetBioimpedance()
@@ -191,7 +197,7 @@ namespace SCManagement.Controllers
             };
 
             await _userService.CreateBioimpedance(newBio);
-            
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -242,7 +248,7 @@ namespace SCManagement.Controllers
             };
 
             await _userService.CreateBioimpedance(newBio);
-            
+
             return RedirectToAction(nameof(Index));
         }
 
