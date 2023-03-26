@@ -2041,5 +2041,72 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Clear" xml:space="preserve">
     <value>Limpar</value>
     <comment>24-03-2023</comment>
+  </data>  <data name="EmptyMessage" xml:space="preserve">
+    <value>Nenhum dado disponível na tabela</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="EntriesDatatable" xml:space="preserve">
+    <value>entradas</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="OfDatatable" xml:space="preserve">
+    <value>de</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Anterior</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="RemoveAthlete" xml:space="preserve">
+    <value>Remover Atleta</value>
+    <comment>24-04-2023_TradFix</comment>
+  </data>
+  <data name="RemoveStaff" xml:space="preserve">
+    <value>Remover Staff</value>
+    <comment>24-04-2023_TradFix</comment>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Mostrar</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="Showing" xml:space="preserve">
+    <value>Mostrando</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>a</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="AddAthlete" xml:space="preserve">
+    <value>Adicionar Atleta</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Criado por</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="CreateTeam" xml:space="preserve">
+    <value>Criar Equipa</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Filtered" xml:space="preserve">
+    <value>Filtrado</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>de</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Próximo</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="NoMatching" xml:space="preserve">
+    <value>Nenhum registro correspondente encontrado</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>A processar...</value>
+    <comment>25-03-2023_dataTablesFix</comment>
   </data>
 </root>

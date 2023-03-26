@@ -57,7 +57,7 @@
                                 <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "invisible")">
                                     <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
                                     <input name="page" value="StaffList" class="form-control" hidden />
-                                    <input type="submit" value="Remove staff" class="btn btn-danger" />
+                                    <input type="submit" value=@StringLocalizer["RemoveStaff"] class="btn btn-danger" />
                                 </form>
                             </td>
                         </tr>
@@ -80,7 +80,23 @@
             responsive: true,
             columnDefs: [
                 { orderable: false, targets: [-1, -2] }
-            ]
+            ], 
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
     });
     let modal = document.getElementById("modal")

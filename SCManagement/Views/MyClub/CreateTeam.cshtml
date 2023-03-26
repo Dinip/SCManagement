@@ -57,7 +57,7 @@
                     <form asp-action="CreateTeam">
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                         <div class="form-group w-auto">
-                            <h3><strong>Create Team</strong></h3>
+                            <h3><strong>@StringLocalizer["CreateTeam"]</strong></h3>
                             <div class="d-flex justify-content-center" id="name">
                                 <div class="form-floating mt-3 w-25">
                                     <input asp-for="Name" class="form-control w-100" />
@@ -84,7 +84,7 @@
                             </div>
                         </div>
                         <div class="form-group mt-3">
-                            <input type="submit" value="Create" class="btn btn-primary savebtn" />
+                            <input type="submit" value=@StringLocalizer["Create"] class="btn btn-primary savebtn" />
                         </div>
                     </form>
                 </div>

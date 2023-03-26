@@ -441,6 +441,7 @@
     }
 
     function dataToTables(tab, data) {
+
         if (tab == "Payments") {
             $(`#table-${tab}`).DataTable({
                 data,
@@ -452,7 +453,23 @@
                 destroy: true,
                 lengthMenu: [[2, 6, 12, -1], [2, 6, 12, "All"]],
                 pageLength: 12,
-                order: []
+                order: [],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
             });
         }
 
@@ -467,7 +484,23 @@
                 destroy: true,
                 lengthMenu: [[2, 6, 12, 24, 48, -1], [2, 6, 12, 24, 48, "All"]],
                 pageLength: 24,
-                order: []
+                order: [],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
             });
         }
 
@@ -481,7 +514,23 @@
                 destroy: true,
                 lengthMenu: [[2, 6, 12, -1], [2, 6, 12, "All"]],
                 pageLength: 12,
-                order: []
+                order: [],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
             });
         }
 
@@ -496,7 +545,23 @@
                 destroy: true,
                 lengthMenu: [[2, 6, 12, -1], [2, 6, 12, "All"]],
                 pageLength: 12,
-                order: []
+                order: [],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
             });
         }
     }

@@ -191,31 +191,31 @@
                     <table id="table_id4" class="display" style="width:100%!important;">
                         <thead>
                             <tr class="text-to-dark">
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["Height"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["Weight"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["FatMass"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["LeanMass"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["MuscleMass"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["ViceralFat"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["BasalMetabolism"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["Hydration"]
                                 </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-4" style="padding: 0 10px;">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-5" style="padding: 0 10px;">
                                     @StringLocalizer["LaspUpdateDate"]
                                 </th>
                             </tr>
@@ -271,6 +271,10 @@
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 
 <script type="text/javascript">
+    var strings = {
+        "details": '@Html.Raw(StringLocalizer["Details"].Value.ToString())',
+    }
+
     $(document).ready(function () {
         $.noConflict();
         $("#table_id1").DataTable({
@@ -281,9 +285,11 @@
             "dom": 't',
             "info": false,
         });
+        
         GetTrainingPlans();
         GetMealPlans();
         GetGoalPlans();
+
         $("#table_id4").DataTable({
             ajax: {
                 url: "/MyZone/GetBioimpedance",
