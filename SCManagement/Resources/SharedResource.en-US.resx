@@ -1984,4 +1984,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Please enter a number between {1} and {2}.</value>
     <comment>24-03-2023_templates</comment>
   </data>
+  <data name="TutAddress" xml:space="preserve">
+    <value>Mark the desired address on the map</value>
+    <comment>26-03-2023_helps</comment>
+  </data>
 </root>

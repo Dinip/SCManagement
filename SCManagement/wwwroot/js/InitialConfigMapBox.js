@@ -19,6 +19,7 @@ function PathMapBoxConfig() {
             container: 'map', // Specify the container ID
             style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
             center: [coordsArray[0][0], coordsArray[0][1]], // Specify the starting position
+            marker: false,
             zoom: 12 // Specify the starting zoom
         });
 
@@ -403,6 +404,7 @@ function SearchMapBoxConfig() {
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
         placeholder: tradPlaceholder.value,
+        marker: false,
     });
 
     map.addControl(geocoder, 'top-left');

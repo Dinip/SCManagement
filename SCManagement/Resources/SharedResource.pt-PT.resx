@@ -2041,7 +2041,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Clear" xml:space="preserve">
     <value>Limpar</value>
     <comment>24-03-2023</comment>
-  </data>  <data name="EmptyMessage" xml:space="preserve">
+  </data>
+  <data name="EmptyMessage" xml:space="preserve">
     <value>Nenhum dado disponível na tabela</value>
     <comment>24-04-2023_Datatables</comment>
   </data>
@@ -2112,5 +2113,9 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Error_MaxNumber" xml:space="preserve">
     <value>Por favor insira um numero entre {1} e {2}.</value>
     <comment>24-03-2023_templates</comment>
+  </data>
+  <data name="TutAddress" xml:space="preserve">
+    <value>Assinale no mapa a morada pretendida</value>
+    <comment>26-03-2023_helps</comment>
   </data>
 </root>
