@@ -1947,8 +1947,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Aplicar</value>
-    <comment>22-03-2023 plans</comment>
+    <value>Aplicar Templates</value>
+    <comment>24-03-2023 plans</comment>
   </data>
   <data name="Create Meal Plan" xml:space="preserve">
     <value>Criar plano de alimentação</value>
@@ -2108,5 +2108,9 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="Processing" xml:space="preserve">
     <value>A processar...</value>
     <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Error_MaxNumber" xml:space="preserve">
+    <value>Por favor insira um numero entre {1} e {2}.</value>
+    <comment>24-03-2023_templates</comment>
   </data>
 </root>

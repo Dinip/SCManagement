@@ -40,6 +40,7 @@
                             var userId = isSignedIn ? UserManager.GetUserId(User) : null;
                             var isStaff = string.IsNullOrEmpty(userId) ? false : UserService.IsStaffInAnyClub(userId).Result;
                             var isSystemAdmin = string.IsNullOrEmpty(userId) ? false : UserService.UserIsAdmin(userId).Result;
+                            var isAthlete = string.IsNullOrEmpty(userId) ? false : UserService.IsAtleteInAnyClub(userId).Result;
                         }
 
                         @if (isSignedIn)
@@ -77,6 +78,7 @@
 
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Events" asp-action="Index">@StringLocalizer["Events"]</a>
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["Club Plans"]</a>
+                            
                             @if (isStaff)
                             {
                                 <div class="dropdown nav-item d-none d-md-block" id="dropdown3">
@@ -90,6 +92,11 @@
                                         </li>
                                     </ul>
                                 </div>
+                            }
+
+                            @if (isAthlete)
+                            {
+                                <a class="btn nav-item nav-link text-to-dark" asp-controller="MyZone" asp-action="Index">@StringLocalizer["MyZone"]</a>
                             }
 
                             @if (isSystemAdmin)

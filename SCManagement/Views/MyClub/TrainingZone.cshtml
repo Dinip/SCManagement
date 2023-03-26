@@ -61,22 +61,22 @@
                     @foreach (var teams in Model)
                     {
                         <div id="modal" class="modal">
-                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
+                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
                                 <div id="modal-inner-content">
-                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                    <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#modal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateTeamTrainingPlan" asp-route-teamId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseTrainingTeamTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTeamTrainingPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseTrainingTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         @*Meal modal*@
                         <div id="modal1" class="modal">
-                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
+                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content;; padding:0;">
                                 <div id="modal-inner-content">
-                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                    <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#modal1').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
                                         <a asp-controller="Plans" asp-action="CreateTeamMealPlan" asp-route-teamId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
@@ -135,9 +135,9 @@
                         {
                             @*Training modal*@
                             <div id="AthletesTraining" class="modal">
-                                <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
+                                <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
                                     <div id="modal-inner-content">
-                                        <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                        <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                         <span onclick="$('#AthletesTraining').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                         <div class="d-flex justify-content-evenly mt-3">
                                             <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
@@ -148,9 +148,9 @@
                             </div>
                             @*Meal modal*@
                             <div id="AthletesMeal" class="modal">
-                                <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
+                                <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
                                     <div id="modal-inner-content">
-                                        <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                        <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                         <span onclick="$('#AthletesMeal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                         <div class="d-flex justify-content-evenly mt-3">
                                             <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
@@ -194,12 +194,6 @@
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 
 <script type="text/javascript">
-    let modal2 = document.getElementById("modal2")
-    window.onclick = function (event) {
-        if (event.target == modal2) {
-            $("#modal2").hide();
-        }
-    }
 
     $(document).ready(function () {
         $.noConflict();
@@ -236,23 +230,26 @@
     let teamsBody = document.getElementById("teamsBody");
     let athletesHead = document.getElementById("athletesHead");
     let athletesBody = document.getElementById("athletesBody");
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            $("#modal").hide();
-        }
-    }
 
     function openTeams(){
         teamsHead.classList.remove("d-none");
         athletesHead.classList.add("d-none");
         teamsBody.classList.remove("d-none");
         athletesBody.classList.add("d-none");
+        $("#modal").hide();
+        $("#modal1").hide();
+        $('#AthletesMeal').hide();
+        $('#AthletesTraining').hide();
     }
     function openAthletes() {
         athletesHead.classList.remove("d-none");
         teamsHead.classList.add("d-none");
         athletesBody.classList.remove("d-none");
         teamsBody.classList.add("d-none");
+        $("#modal").hide();
+        $("#modal1").hide();
+        $('#AthletesMeal').hide();
+        $('#AthletesTraining').hide();
     }
 
     function toggleModal() {

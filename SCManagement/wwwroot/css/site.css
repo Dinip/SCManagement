@@ -177,6 +177,7 @@ input:checked + .slider:before {
     backdrop-filter: blur(30px);
     max-height: 900px;
     border-radius: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
 
 .dropdown-menu-full {
@@ -250,6 +251,11 @@ input:checked + .slider:before {
     animation: slideRight 2s ease forwards .5s;
 }
 
+#arrow {
+    opacity: 0;
+    animation: slideUp 2s ease forwards .5s;
+}
+
 @keyframes slideRight {
     0% {
         transform: translateX(-200px);
@@ -283,4 +289,3 @@ input:checked + .slider:before {
         opacity: 1;
     }
 }
-
