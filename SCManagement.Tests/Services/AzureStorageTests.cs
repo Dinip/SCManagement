@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Azure;
 using System.Reflection;
+using Microsoft.Extensions.Localization;
 
 namespace SCManagement.Tests.Services
 {
@@ -25,7 +26,7 @@ namespace SCManagement.Tests.Services
             .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
             .Build();
 
-            _azureStorageService = new AzureStorage(config, A.Fake<ILogger<AzureStorage>>());
+            _azureStorageService = new AzureStorage(config, A.Fake<ILogger<AzureStorage>>(), A.Fake<IStringLocalizer<SharedResource>>());
         }
 
         [Fact]
