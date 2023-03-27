@@ -169,6 +169,26 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+        public async Task<IActionResult> Income()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> CodesCreated()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> Subscription()
+        {
+            return View();
+        }
+
+        public async Task<IActionResult> TermsAndConditions()
+        {
+            return View();
+        }
+
         public async Task<IActionResult> PlansData(int? year)
         {
             var stats = await _statisticsService.GetSystemPlansStatistics(year);
