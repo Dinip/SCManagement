@@ -1,11 +1,15 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using SCManagement.Models;
 using SCManagement.Services;
+using SCManagement.Services.ClubService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.StatisticsService;
 using SCManagement.Services.StatisticsService.Models;
+using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers
@@ -16,12 +20,25 @@ namespace SCManagement.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
         private readonly IStatisticsService _statisticsService;
+        private readonly IClubService _clubService;
+        private readonly ITranslationService _translationService;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
-        public BackofficeController(IUserService userService, UserManager<User> userManager, IStatisticsService statisticsService, IPaymentService paymentService)
+        public BackofficeController(
+            IUserService userService,
+            UserManager<User> userManager,
+            IStatisticsService statisticsService,
+            IPaymentService paymentService,
+            IClubService clubService,
+            ITranslationService translationService,
+            IStringLocalizer<SharedResource> stringLocalizer)
         {
             _userService = userService;
             _userManager = userManager;
             _statisticsService = statisticsService;
+            _clubService = clubService;
+            _translationService = translationService;
+            _stringLocalizer = stringLocalizer;
         }
 
         private string getUserIdFromAuthedUser()
@@ -270,6 +287,61 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> Clubs()
         {
             return View(await _statisticsService.GetClubsGeneralStats());
+        }
+
+        public async Task<IActionResult> SeeAllModality()
+        {
+            ViewBag.Success = TempData["Success"];
+            ViewBag.Cultures = new List<CultureInfo> { new("pt-PT"), new("en-US") };
+            return View(await _clubService.GetModalities());
+        }
+
+        public async Task<IActionResult> CreateModality()
+        {
+            List<CultureInfo> cultures = new List<CultureInfo> {new("pt-PT"), new("en-US") };
+
+            Modality modality = new Modality { ModalityTranslations = new List<ModalityTranslation>() };
+
+            foreach (CultureInfo culture in cultures)
+            {
+                modality.ModalityTranslations.Add(new ModalityTranslation
+                {
+                    Value = "",
+                    Language = culture.Name,
+                    Atribute = "Name",
+                });
+            }
+            
+            return View(modality);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateModality([Bind ("Id", "ModalityTranslations")] Modality modality)
+        {
+            if (!ModelState.IsValid) return View(modality);
+
+            int numberOfEmpty = 0;
+
+            foreach (ModalityTranslation modalityTranslation in modality.ModalityTranslations)
+            {
+                if(modalityTranslation.Value == null || modalityTranslation.Value.Equals(""))
+                {
+                    numberOfEmpty++;
+                }
+            }
+
+            if (numberOfEmpty == modality.ModalityTranslations.Count)
+            {
+                ViewBag.Error = _stringLocalizer["Error_RequiredModalName"];
+                return View(modality);
+            }
+
+            await _translationService.Translate(modality.ModalityTranslations);
+
+            await _clubService.CreateModality(modality);
+
+            TempData["Success"] = "SuccessModality";
+            return RedirectToAction(nameof(SeeAllModality));
         }
     }
 }

@@ -2076,4 +2076,24 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>You can also always stay up to date with what is happening at your club with just one click, we provide statistics and information about your club</value>
     <comment>26-03-2023_tutorial</comment>
   </data>
+  <data name="CreateModality" xml:space="preserve">
+    <value>Create Modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="Error_RequiredModalName" xml:space="preserve">
+    <value>You need at least one name to create the modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="ModalityName" xml:space="preserve">
+    <value>Modality Name in</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SeeAllModality" xml:space="preserve">
+    <value>See All Modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SuccessModality" xml:space="preserve">
+    <value>A modality was created successfully</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
 </root>

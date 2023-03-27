@@ -141,7 +141,7 @@ namespace SCManagement.Controllers
             if (plan == null) return RedirectToAction(nameof(Plans));
 
             ViewBag.SelectedPlan = plan;
-            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
+            ViewBag.Modalities = new SelectList(await _clubService.GetModalitiesToSelectList(), "Id", "Name");
 
             return View(new CreateClubModel());
         }
@@ -173,7 +173,7 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,ModalitiesIds,PlanId")] CreateClubModel clubInput)
         {
-            ViewBag.Modalities = new SelectList(await _clubService.GetModalities(), "Id", "Name");
+            ViewBag.Modalities = new SelectList(await _clubService.GetModalitiesToSelectList(), "Id", "Name");
 
             var clubSubProducts = await _paymentService.GetClubSubscriptionPlans();
             ViewBag.Plans = clubSubProducts;

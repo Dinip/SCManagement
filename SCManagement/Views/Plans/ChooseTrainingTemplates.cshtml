@@ -32,7 +32,7 @@
                                 @Html.DisplayFor(modelItem => item.Description)
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Modality.Name)
+                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.First().Value)
                             </td>
                             <td>
                                 <a asp-action="CreateTrainingPlan" asp-route-id="@item.Id" asp-route-athleteId="@Model.AthleteId" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none; float:right;">@StringLocalizer["Apply"]</a>

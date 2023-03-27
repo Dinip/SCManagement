@@ -60,7 +60,7 @@
                     {
                         <tr>
                             <td class="text-to-dark">
-                                @Html.DisplayFor( _=> trainingPlan.Modality.Name)
+                                @Html.DisplayFor( _=> trainingPlan.Modality.ModalityTranslations.First().Value)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor( _=> trainingPlan.Name)

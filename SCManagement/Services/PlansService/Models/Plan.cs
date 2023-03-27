@@ -25,7 +25,7 @@ namespace SCManagement.Services.PlansService.Models
 
         [DataType(DataType.Date)]
         [IsDateBeforeToday]
-        [DateGreaterThan]
+        [DateGreaterThan (Model = "Plan")]
         [Display(Name = "End Date")]
         public DateTime? EndDate { get; set; }
 

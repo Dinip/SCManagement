@@ -20,12 +20,12 @@ namespace SCManagement.Services.PlansService.Models
 
         [Range(1,1000, ErrorMessage = "Error_MaxNumber")]
         [Display(Name = "Repetitions")]
-        public int Repetitions { get; set; }
+        public int? Repetitions { get; set; }
 
         //Duration is in minutes
         [Range(1, 1000, ErrorMessage = "Error_MaxNumber")]
         [Display(Name = "Duration")]
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
 
     }
 }
