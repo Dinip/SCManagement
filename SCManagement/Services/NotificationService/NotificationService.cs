@@ -2,17 +2,19 @@
 {
     public class NotificationService : INotificationService
     {
-        private readonly SCManagement.Services.BackgroundWorkerService.BackgroundWorkerService _backgroundWorkerService;
+        private readonly BackgroundWorkerService _backgroundWorkerService;
 
-        public NotificationService(SCManagement.Services.BackgroundWorkerService.BackgroundWorkerService backgroundWorkerService)
+        public NotificationService(BackgroundWorkerService backgroundWorkerService)
         {
             _backgroundWorkerService = backgroundWorkerService;
         }
 
-        public async Task NotifyQuotaUpdate(int clubId)
+        public void NotifyQuotaUpdate(int clubId)
         {
             _backgroundWorkerService.Enqueue(async () =>
             {
+                Console.WriteLine("AQUIIIIIIIIIIIIIIIIII");
+                await Task.Delay(10000);
             });
         }
     }

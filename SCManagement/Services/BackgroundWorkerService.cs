@@ -1,11 +1,18 @@
 ﻿using System.Collections.Concurrent;
+using SCManagement.Services.CronJobService;
 
-namespace SCManagement.Services.BackgroundWorkerService
+namespace SCManagement.Services
 {
     public class BackgroundWorkerService : IHostedService
     {
         private readonly BlockingCollection<Func<Task>> _queue = new();
         private readonly CancellationTokenSource _cancellationTokenSource = new();
+        private readonly ILogger<BackgroundWorkerService> _logger;
+        
+        public BackgroundWorkerService(ILogger<BackgroundWorkerService> logger)
+        {
+            _logger = logger;
+        }
 
         public Task StartAsync(CancellationToken cancellationToken)
         {
@@ -26,16 +33,22 @@ namespace SCManagement.Services.BackgroundWorkerService
 
         private async Task ProcessQueue(CancellationToken cancellationToken)
         {
-            while (!cancellationToken.IsCancellationRequested)
+            while (true)
             {
                 try
                 {
-                    Func<Task> job = _queue.Take(cancellationToken);
+                    var job = _queue.Take(cancellationToken);
+                    _logger.LogCritical("Starting background job...");
                     await job();
+                    _logger.LogCritical("Background job completed.");
                 }
                 catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                 {
-                    // Swallow the exception and exit the loop
+                    // Swallow the exception and continue processing the queue
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error processing background job.");
                 }
             }
         }

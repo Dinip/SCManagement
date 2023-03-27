@@ -2,6 +2,6 @@
 {
     public interface INotificationService
     {
-        public Task NotifyQuotaUpdate(int clubId);
+        public void NotifyQuotaUpdate(int clubId);
     }
 }

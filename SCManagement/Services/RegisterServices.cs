@@ -16,6 +16,7 @@ using SCManagement.Services.TranslationService;
 using SCManagement.Services.CronJobService;
 using SCManagement.Services.StatisticsService;
 using SCManagement.Services.PlansService;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Services
 {
@@ -147,7 +148,11 @@ namespace SCManagement.Services
             services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
-            services.AddSingleton<SCManagement.Services.BackgroundWorkerService.BackgroundWorkerService>();
+            services.AddSingleton<BackgroundWorkerService>();
+            services.AddHostedService<BackgroundWorkerService>(provider =>
+                provider.GetService<BackgroundWorkerService>()
+            );
+            services.AddTransient<INotificationService, SCManagement.Services.NotificationService.NotificationService>();
             #endregion
 
             #region cronjobs

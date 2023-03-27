@@ -9,6 +9,7 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService.Models;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services.ClubService
@@ -21,6 +22,7 @@ namespace SCManagement.Services.ClubService
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
         private readonly IPaymentService _paymentService;
+        private readonly INotificationService _notificationService;
 
         public ClubService(
             ApplicationDbContext context,
@@ -28,7 +30,8 @@ namespace SCManagement.Services.ClubService
             IHttpContextAccessor httpContext,
             SharedResourceService sharedResource,
             IAzureStorage azureStorage,
-            IPaymentService paymentService
+            IPaymentService paymentService,
+            INotificationService notificationService
             )
         {
             _context = context;
@@ -37,6 +40,7 @@ namespace SCManagement.Services.ClubService
             _sharedResource = sharedResource;
             _azureStorage = azureStorage;
             _paymentService = paymentService;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -902,7 +906,8 @@ namespace SCManagement.Services.ClubService
             {
                 currentSettings.QuotaFrequency = settings.QuotaFrequency;
                 currentSettings.QuotaFee = settings.QuotaFee;
-                await notifyPartnersQuotaChange(currentSettings.ClubPaymentSettingsId, settings);
+                //await notifyPartnersQuotaChange(currentSettings.ClubPaymentSettingsId, settings);
+                _notificationService.NotifyQuotaUpdate(currentSettings.ClubPaymentSettingsId);
             }
 
             _context.ClubPaymentSettings.Update(currentSettings);
