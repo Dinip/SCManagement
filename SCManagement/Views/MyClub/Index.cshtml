@@ -5,7 +5,7 @@
     ViewData["Title"] = "My Club";
 }
 
-<div class="container w-100">
+<div class="container-fluid p-4 w-100">
     @if (Model == null)
     {
         <div class="text-center" style="margin-top:130px;">
@@ -24,41 +24,47 @@
     }
     else
     {
-        <div class="text-center" style="margin-top:10%;">
+        <div class="text-center" style="margin-top:2%;">
             <h1 class="display-4 mb-5 text-to-dark" style="opacity: 0; animation: slideUp 1.5s ease forwards .5s;">
                 @StringLocalizer["Welcomeclub"] @Model.Name
             </h1>
         </div>
 
         <div class="row d-flex justify-content-center text-center">
-            <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+            <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                 <a asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.Id" style="color:black; text-decoration:none;" title="@StringLocalizer["Public Page"]">
                     <div class="flip-card">
                         <div class="flip-card-inner">
                             <img src="~/img/Home-icon.svg.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                            <strong>@StringLocalizer["Public Page"]</strong>
+                            <div style="position:absolute; bottom:15px;">
+                                <strong style="font-size:100%!important;">@StringLocalizer["Public Page"]</strong>
+                            </div>
                         </div>
                     </div>
                 </a>
             </div>
             @if ((int)ViewBag.RoleId == 50)
             {
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="Edit" style="color:black; text-decoration:none;" title="@StringLocalizer["Edit"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/edit.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["Edit"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["Edit"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
-                    <a asp-controller="MyClub" asp-action="Edit" style="color:black; text-decoration:none;" title="@StringLocalizer["Edit"]">
-                        <div class="flip-card col-md-6">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
+                    <a asp-controller="MyClub" asp-action="PaymentSettings" style="color:black; text-decoration:none;" title="@StringLocalizer["PaymentSettings"]">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/paymentSettings.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong style="font-size:0.7vw;">@StringLocalizer["PaymentSettings"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["PaymentSettings"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -66,52 +72,62 @@
             }
             @if ((int)ViewBag.RoleId >= 40)
             {
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="StaffList" style="color:black; text-decoration:none;" title="Staff">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/staff-8.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>Staff</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">Staff</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="PartnersList" style="color:black; text-decoration:none;" title="@StringLocalizer["Partners"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/partners.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["Partners"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["Partners"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="Codes" style="color:black; text-decoration:none;" title="@StringLocalizer["Codes"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/qr.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["Codes"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["Codes"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="PaymentsRecieved" style="color:black; text-decoration:none;" title="@StringLocalizer["PaymentsRecieved"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/paymentsReceived.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["PaymentsRecieved"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["PaymentsRecieved"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="Statistics" asp-action="Index" style="color:black; text-decoration:none;" title="@StringLocalizer["Statistics"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/statistics.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["Statistics"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["Statistics"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -120,22 +136,26 @@
             }
             @if ((int)ViewBag.RoleId >= 30)
             {
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="AthletesList" style="color:black; text-decoration:none;" title="@StringLocalizer["Athletes"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/athelets.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["Athletes"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["Athletes"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
                 </div>
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="TeamList" style="color:black; text-decoration:none;" title="@StringLocalizer["Teams"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/team-28.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["Teams"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["Teams"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -144,12 +164,14 @@
             }
             @if ((int)ViewBag.RoleId == 20)
             {
-                <div class="col-md-3 col-12 col-sm-6 mt-4 d-flex justify-content-center">
+                <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
                     <a asp-controller="MyClub" asp-action="MyTeams" style="color:black; text-decoration:none;" title="@StringLocalizer["MyTeams"]">
-                        <div class="flip-card col-md-6">
+                        <div class="flip-card">
                             <div class="flip-card-inner">
                                 <img src="~/img/team-28.png" style="height:90%; width:90%; object-fit:contain; border-radius:20px;  margin-bottom:15px;" class="card-img-top" />
-                                <strong>@StringLocalizer["MyTeams"]</strong>
+                                <div style="position:absolute; bottom:15px;">
+                                    <strong style="font-size:100%!important;">@StringLocalizer["MyTeams"]</strong>
+                                </div>
                             </div>
                         </div>
                     </a>
@@ -171,8 +193,8 @@
     }
 
     .flip-card {
-        width: 250px !important;
-        height: 250px !important;
+        width: 100% !important;
+        height: 100% !important;
         perspective: 1000px;
         border-radius: 20px;
         opacity: 0;
@@ -181,13 +203,19 @@
 
     .flip-card-inner {
         padding: 30px;
-        width: 100%;
+        width: 100% !important;
         background-color: white;
-        height: 100%;
+        display: flex;
+        justify-content: center;
+        height: 100% !important;
         text-align: center;
         transition: transform 0.8s;
         transform-style: preserve-3d;
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
         border-radius: 20px;
+    }
+
+    .flip-card-inner:hover{
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
     }
 </style>

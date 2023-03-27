@@ -7,7 +7,7 @@
 <div class="container-fluid ps-5 pe-5">
     <h1 style="margin-top:130px !important;" class="text-to-dark">Goals List</h1>
     <hr />
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
             @if (!ViewBag.isAthlete)
             {
@@ -55,28 +55,31 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.isCompleted)
                             </td>
-                            <td class="d-flex justify-content-end">
-                                @if (ViewBag.isAthlete)
-                                {
-                                    @if(!item.isCompleted)
+                            <td>
+                                <div class ="d-flex justify-content-end">
+                                    @if (ViewBag.isAthlete)
                                     {
-                                        <form asp-action="CompleteGoal">
-                                        <input type="hidden" name="id" value="@item.Id" />
-                                            <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Complete"]</button>
-                                        </form>
+                                        @if (!item.isCompleted)
+                                        {
+                                            <form asp-action="CompleteGoal">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Complete"]</button>
+                                            </form>
+                                        }
                                     }
-                                }
-                                else
-                                {
-                                    @if (!item.isCompleted)
+                                    else
                                     {
-                                        <a asp-action="EditGoal" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
-                                        <form asp-action="DeleteGoal">
-                                            <input type="hidden" name="id" value="@item.Id" />
-                                            <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
-                                        </form>
+                                        @if (!item.isCompleted)
+                                        {
+                                            <a asp-action="EditGoal" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
+                                            <form asp-action="DeleteGoal">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
+                                            </form>
+                                        }
                                     }
-                                }
+                                </div>
+                                
                             </td>
                         </tr>
                     }

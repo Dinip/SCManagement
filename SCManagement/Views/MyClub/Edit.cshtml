@@ -14,9 +14,12 @@
 
 <style>
     .selected {
-        background-color: white !important;
         color: black !important;
         border: 1px solid black;
+        background: linear-gradient(to bottom, #00639A 50%, white 50%);
+        background-size: 100% 200%;
+        background-position: right bottom;
+        transition: all .5s ease-out;
     }
 
     .lang-btn-about {
@@ -35,11 +38,16 @@
         border: 1px solid black;
     }
 
+
     .translatebtn {
         color: white;
         border-radius: 2px;
         background-color: #00639A;
         border: 1px solid black;
+    }
+
+    .translatebtn:hover {
+        background-color: #013d5e;
     }
 
     #map {
@@ -146,14 +154,14 @@
                 <hr style="margin-bottom:20px;" />
                 <div class="About">
                     <label class="control-label text-to-dark">@StringLocalizer["About Us"]</label>
-                    <div class="language-select">
+                    <div class="language-select d-flex">
 
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
                             <input type="button" class="lang-btn lang-btn-about" id="btn-about-@lang.Name" onclick="toggleLang('@lang.Name','about')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
 
                         }
-                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('about')" value="translate" />
+                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('about')" value="@StringLocalizer["Translate"]" />
 
                     </div>
                     <div style="margin-left:11px; z-index:0;">
@@ -165,12 +173,12 @@
                 <hr style="margin-bottom:20px;" />
                 <div class="TermsAndConditions">
                     <label class="control-label text-to-dark">@StringLocalizer["Terms and conditions"]</label>
-                    <div class="language-select">
+                    <div class="language-select d-flex">
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
                             <input type="button" class="lang-btn lang-btn-termsandconditions" id="btn-termsandconditions-@lang.Name" onclick="toggleLang('@lang.Name','termsandconditions')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
                         }
-                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('termsandconditions')" value="translate" />
+                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('termsandconditions')" value="@StringLocalizer["Translate"]" />
 
                     </div>
                     <div style="margin-left:11px;">

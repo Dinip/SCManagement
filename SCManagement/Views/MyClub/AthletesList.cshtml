@@ -16,7 +16,7 @@
         </div>
     </div>
     <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Athletes"]</h1>
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
             <table id="table_id" class="display" style="width:100%!important;">
                 <thead>
@@ -46,12 +46,14 @@
                                     @StringLocalizer["Details"]
                                 </strong>
                             </td>
-                            <td class="justify-content-end d-flex">
-                                <form asp-action="RemoveUser" class="@(ViewBag.UserIsManager ? "": "invisible")">
-                                    <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
-                                    <input name="page" value="AthletesList" class="form-control" hidden />
-                                    <input type="submit" value=@StringLocalizer["RemoveAthlete"] class="btn btn-danger" />
-                                </form>
+                            <td>
+                                <div class="justify-content-end d-flex">
+                                    <form asp-action="RemoveUser" class="@(ViewBag.UserIsManager ? "": "invisible")">
+                                        <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
+                                        <input name="page" value="AthletesList" class="form-control" hidden />
+                                        <input type="submit" value=@StringLocalizer["RemoveAthlete"] class="btn btn-danger" />
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     }

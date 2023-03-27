@@ -2230,4 +2230,12 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Uma modalidade foi criada com sucesso</value>
     <comment>27-03-2023_modalidades</comment>
   </data>
+  <data name="SubscriptionPlans" xml:space="preserve">
+    <value>Planos de Subscrição</value>
+    <comment>26-03-2023</comment>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>Traduzir</value>
+    <comment>27-03-2023_editClub</comment>
+  </data>
 </root>
