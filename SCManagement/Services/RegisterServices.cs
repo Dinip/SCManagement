@@ -147,6 +147,7 @@ namespace SCManagement.Services
             services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();
             services.AddScoped<ApplicationContextService, ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
+            services.AddSingleton<SCManagement.Services.BackgroundWorkerService.BackgroundWorkerService>();
             #endregion
 
             #region cronjobs
