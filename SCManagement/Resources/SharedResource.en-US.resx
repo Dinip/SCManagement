@@ -1984,4 +1984,12 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Please enter a number between {1} and {2}.</value>
     <comment>24-03-2023_templates</comment>
   </data>
+  <data name="SubscriptionPlans" xml:space="preserve">
+    <value>Subscription Plans</value>
+    <comment>26-03-2023</comment>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>Translate</value>
+    <comment>27-03-2023_editClub</comment>
+  </data>
 </root>

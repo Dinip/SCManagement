@@ -7,6 +7,10 @@ document.getElementById("Dropdown1").addEventListener('click', function (event) 
     event.stopPropagation();
 });
 
+function showConfirmedToast() {
+    $("#confirmedToast").show();
+}
+
 
 function darkThemeToggle(event) {
     if (event.checked) {
