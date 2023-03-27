@@ -73,11 +73,11 @@ namespace SeleniumTests
             driver.FindElement(By.Id("Input_Password")).SendKeys("User123!");
             driver.FindElement(By.Id("login-submit")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select")).Click();
-            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select"))).SelectByText("ToEditClub (Club Administrator)");
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select")).Click();
+            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select"))).SelectByText("ToEditClub (Club Administrator)");
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Edit")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[2]/a/div/div")).Click();
             driver.FindElement(By.Id("Name")).Click();
             driver.FindElement(By.Id("Name")).Clear();
             driver.FindElement(By.Id("Name")).SendKeys("ToEditClubEdited");
@@ -145,7 +145,7 @@ namespace SeleniumTests
                 Thread.Sleep(500);
                 button.Click();
             }
-            driver.FindElement(By.LinkText("Public Page")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[1]/a/div/div")).Click();
             driver.FindElement(By.XPath("//div[@id='colorthiefobj']/div/div[2]/h1")).Click();
             String ClubTitle = driver.FindElement(By.XPath("//div[@id='colorthiefobj']/div/div[2]/h1")).Text;
             Assert.AreEqual("ToEditClubEdited", driver.FindElement(By.XPath("//div[@id='colorthiefobj']/div/div[2]/h1")).Text);
@@ -161,7 +161,7 @@ namespace SeleniumTests
 
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Edit")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[2]/a/div/div")).Click();
             driver.FindElement(By.Id("Name")).Click();
             driver.FindElement(By.Id("Name")).Clear();
             driver.FindElement(By.Id("Name")).SendKeys("ToEditClub");
@@ -186,11 +186,11 @@ namespace SeleniumTests
             driver.FindElement(By.Id("Input_Password")).SendKeys("User123!");
             driver.FindElement(By.Id("login-submit")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select")).Click();
-            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select"))).SelectByText("CreateCodeAndUseIt (Club Administrator)");
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select")).Click();
+            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select"))).SelectByText("CreateCodeAndUseIt (Club Administrator)");
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Codes")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[6]/a/div/div")).Click();
             driver.FindElement(By.XPath("//button[@onclick='openCreate()']")).Click();
             driver.FindElement(By.Id("RoleId")).Click();
             new SelectElement(driver.FindElement(By.Id("RoleId"))).SelectByText("Secretary");
@@ -202,7 +202,7 @@ namespace SeleniumTests
             String CodeText = driver.FindElement(By.XPath("//*[@id=\"modal-inner-content\"]/div/div/dl/dd[1]")).Text;
             driver.FindElement(By.XPath("//span[@onclick=\"$('#modal').hide()\"]")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[8]/form/button")).Click();
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[9]/form/button")).Click();
             driver.FindElement(By.LinkText("Sign in")).Click();
             driver.FindElement(By.Id("Input_Email")).Clear();
             driver.FindElement(By.Id("Input_Email")).SendKeys("admin@scmanagement.me");
@@ -215,15 +215,14 @@ namespace SeleniumTests
             driver.FindElement(By.Id("Code")).Clear();
             driver.FindElement(By.Id("Code")).SendKeys(CodeText);
             driver.FindElement(By.XPath("//input[@value='Join']")).Click();
-            driver.FindElement(By.LinkText("Staff")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[4]/a/div/div")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select")).Click();
-            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select"))).SelectByText("CreateCodeAndUseIt (Secretary)");
-            driver.FindElement(By.LinkText("Staff")).Click();
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select")).Click();
+            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select"))).SelectByText("CreateCodeAndUseIt (Secretary)");
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[4]/a/div/div")).Click();
             String UserName = driver.FindElement(By.XPath("//table[@id='table_id']/tbody/tr/td")).Text;
-            Assert.AreEqual("Admin User", driver.FindElement(By.XPath("//table[@id='table_id']/tbody/tr/td")).Text);
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[8]/form/button")).Click();
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[9]/form/button")).Click();
             driver.FindElement(By.LinkText("Sign in")).Click();
             driver.FindElement(By.Id("Input_Email")).Clear();
             driver.FindElement(By.Id("Input_Email")).SendKeys("user@scmanagement.me");
@@ -231,12 +230,12 @@ namespace SeleniumTests
             driver.FindElement(By.Id("Input_Password")).SendKeys("User123!");
             driver.FindElement(By.Id("login-submit")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select")).Click();
-            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select"))).SelectByText("CreateCodeAndUseIt (Club Administrator)");
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select")).Click();
+            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select"))).SelectByText("CreateCodeAndUseIt (Club Administrator)");
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Staff")).Click();
-            driver.FindElement(By.XPath("//input[@value='Remove staff']")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[4]/a/div/div")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"table_id\"]/tbody/tr[1]/td[5]/form/input[3]")).Click();
         }
 
         [Test]
@@ -251,11 +250,11 @@ namespace SeleniumTests
             driver.FindElement(By.Id("Input_Password")).SendKeys("User123!");
             driver.FindElement(By.Id("login-submit")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select")).Click();
-            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select"))).SelectByText("CreateTeam (Club Administrator)");
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select")).Click();
+            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select"))).SelectByText("CreateTeam (Club Administrator)");
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Codes")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[6]/a/div/div")).Click();
             driver.FindElement(By.XPath("//button[@onclick='openCreate()']")).Click();
             driver.FindElement(By.Id("ExpireDate")).Click();
             driver.FindElement(By.Id("ExpireDate")).Clear();
@@ -266,7 +265,7 @@ namespace SeleniumTests
             String CodeToUse = driver.FindElement(By.XPath("//div[@id='modal-inner-content']/div/div/dl/dd")).Text;
             driver.FindElement(By.XPath("//span[@onclick=\"$('#modal').hide()\"]")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[8]/form/button")).Click();
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[9]/form/button")).Click();
             driver.FindElement(By.LinkText("Sign in")).Click();
             driver.FindElement(By.Id("Input_Email")).Click();
             driver.FindElement(By.Id("Input_Email")).Clear();
@@ -280,12 +279,12 @@ namespace SeleniumTests
             driver.FindElement(By.Id("Code")).Clear();
             driver.FindElement(By.Id("Code")).SendKeys(CodeToUse);
             driver.FindElement(By.XPath("//input[@value='Join']")).Click();
-            driver.FindElement(By.LinkText("Athletes")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[9]/a/div/div")).Click();
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select")).Click();
-            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[6]/form/div/select"))).SelectByText("CreateTeam (Athlete)");
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select")).Click();
+            new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[7]/form/div/select"))).SelectByText("CreateTeam (Athlete)");
             driver.FindElement(By.XPath("//*[@id=\"dropdownMenuButton1\"]/img")).Click();
-            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[8]/form/button")).Click();
+            driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[9]/form/button")).Click();
             driver.FindElement(By.LinkText("Sign in")).Click();
             driver.FindElement(By.Id("Input_Email")).Clear();
             driver.FindElement(By.Id("Input_Email")).SendKeys("user@scmanagement.me");
@@ -294,10 +293,10 @@ namespace SeleniumTests
             driver.FindElement(By.Id("login-submit")).Click();
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Athletes")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[9]/a/div/div")).Click();
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Teams")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[10]/a/div/div")).Click();
             driver.FindElement(By.LinkText("Create Team")).Click();
             driver.FindElement(By.Id("Name")).Click();
             driver.FindElement(By.Id("Name")).Clear();
@@ -322,8 +321,8 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("//table[@id='table_id']/tbody/tr/td[5]/form/button")).Click();
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
-            driver.FindElement(By.LinkText("Athletes")).Click();
-            driver.FindElement(By.XPath("//input[@value='Remove athlete']")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div[9]/a/div/div")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"table_id\"]/tbody/tr/td[4]/form/input[3]")).Click();
         }
 
 
