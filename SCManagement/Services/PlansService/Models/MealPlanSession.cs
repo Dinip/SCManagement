@@ -15,7 +15,7 @@ namespace SCManagement.Services.PlansService.Models
         public string MealName { get; set; }
 
         [Required(ErrorMessage = "Error_Required")]
-        [StringLength(60, ErrorMessage = "Error_Length", MinimumLength = 2)]
+        [StringLength(300, ErrorMessage = "Error_Length", MinimumLength = 2)]
         [Display(Name = "Meal Description")]
         public string MealDescription { get; set; }
         

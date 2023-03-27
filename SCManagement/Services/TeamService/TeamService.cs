@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
+using SCManagement.Data.Migrations;
 using SCManagement.Models;
 
 namespace SCManagement.Services.TeamService
@@ -20,8 +22,20 @@ namespace SCManagement.Services.TeamService
         /// <returns>Found team or null</returns>
         public async Task<Team?> GetTeam(int teamId)
         {
-            return await _context.Team.Include(t => t.Modality).Include(u => u.Trainer).Include(u => u.Athletes)
+            var team = await _context.Team
+                .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
+                .Include(u => u.Trainer)
+                .Include(u => u.Athletes)
                 .FirstOrDefaultAsync(t => t.Id == teamId);
+
+            if (team == null) return null;
+
+            //Select only the modality in the current languague 
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            team.Modality.ModalityTranslations = team.Modality.ModalityTranslations.Where(cc => cc.Language == cultureInfo).ToList();
+            
+            return team;
         }
 
         /// <summary>
@@ -31,7 +45,25 @@ namespace SCManagement.Services.TeamService
         /// <returns>List of teams</returns>
         public async Task<IEnumerable<Team>> GetTeams(int clubId)
         {
-            return await _context.Team.Where(t => t.ClubId == clubId).Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            return await _context.Team
+                .Where(t => t.ClubId == clubId)
+                .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
+                .Include(t => t.Trainer)
+                .Select(t => new Team
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    CreationDate = t.CreationDate,
+                    ModalityId = t.ModalityId,
+                    Modality = new Modality { Id = t.ModalityId, ModalityTranslations = t.Modality.ModalityTranslations.Where(cc => cc.Language == cultureInfo).ToList() },
+                    Athletes = t.Athletes,
+                    TrainerId = t.TrainerId,
+                    ClubId = t.ClubId,
+                    Trainer = t.Trainer,
+                    Club = t.Club
+                }).ToListAsync();
         }
 
         /// <summary>
@@ -130,13 +162,28 @@ namespace SCManagement.Services.TeamService
         /// <returns></returns>
         public async Task<IEnumerable<Team>> GetTeamsByTrainer(string userId)
         {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             return await _context.Team.Where(t => t.TrainerId == userId)
                 .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
                 .Include(t => t.Trainer)
                 .Include(t => t.Athletes)
                 .ThenInclude(a => a.TrainingPlans)
                 .Include(t => t.Athletes)
                 .ThenInclude(a => a.MealPlans)
+                .Select(t => new Team
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    CreationDate = t.CreationDate,
+                    ModalityId = t.ModalityId,
+                    Modality = new Modality { Id = t.ModalityId, ModalityTranslations = t.Modality.ModalityTranslations.Where(cc => cc.Language == cultureInfo).ToList() },
+                    Athletes = t.Athletes,
+                    TrainerId = t.TrainerId,
+                    ClubId = t.ClubId,
+                    Trainer = t.Trainer,
+                    Club = t.Club
+                })
                 .ToListAsync();
         }
     }

@@ -2077,4 +2077,24 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>File _NAME_ exceeds the max file size of 10MB</value>
     <comment>27-03-2023_backoffice</comment>
   </data>
+  <data name="CreateModality" xml:space="preserve">
+    <value>Create Modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="Error_RequiredModalName" xml:space="preserve">
+    <value>You need at least one name to create the modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="ModalityName" xml:space="preserve">
+    <value>Modality Name in</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SeeAllModality" xml:space="preserve">
+    <value>See All Modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SuccessModality" xml:space="preserve">
+    <value>A modality was created successfully</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
 </root>

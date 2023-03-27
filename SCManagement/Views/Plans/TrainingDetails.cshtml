@@ -31,7 +31,7 @@
                     @Html.DisplayNameFor(model => model.Modality)
                 </dt>
                 <dd class="col-sm-10 dlBg text-to-dark">
-                    @Html.DisplayFor(model => model.Modality.Name)
+                    @Html.DisplayFor(model => model.Modality.ModalityTranslations.First().Value)
                 </dd>
                 <dt class="col-sm-2 text-to-dark">
                     @Html.DisplayNameFor(model => model.Name)

@@ -1,0 +1,27 @@
+﻿@model SCManagement.Models.Modality
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "CreateModality";
+}
+
+<h1>@StringLocalizer["CreateModality"]</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateModality">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (ViewBag.Error != null)
+            {
+                <div style="color: red">@(ViewBag.Error)</div>
+            }
+            @Html.EditorFor(x => x.ModalityTranslations)
+            <div class="form-group">
+                <input type="submit" value="@StringLocalizer["Create"]" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

@@ -32,7 +32,7 @@
                     {
                         <tr>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Modality.Name)
+                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.First().Value)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Name)

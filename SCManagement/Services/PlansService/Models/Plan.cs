@@ -15,7 +15,7 @@ namespace SCManagement.Services.PlansService.Models
         public string Name { get; set; }
         
         [Required(ErrorMessage = "Error_Required")]
-        [StringLength(60, ErrorMessage = "Error_Length", MinimumLength = 2)]
+        [StringLength(300, ErrorMessage = "Error_Length", MinimumLength = 2)]
         [Display(Name = "Plan Description")]
         public string Description { get; set; }
 
@@ -25,7 +25,7 @@ namespace SCManagement.Services.PlansService.Models
 
         [DataType(DataType.Date)]
         [IsDateBeforeToday]
-        [DateGreaterThan]
+        [DateGreaterThan (Model = "Plan")]
         [Display(Name = "End Date")]
         public DateTime? EndDate { get; set; }
 
