@@ -75,6 +75,7 @@ namespace SCManagement.Controllers
 
             if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
+            ViewBag.FileError = TempData["FileError"];
 
             var EMDUrl = await PrepareUserEMD(role.UserId);
 
@@ -95,14 +96,16 @@ namespace SCManagement.Controllers
         {
 
             var userId = getUserIdFromAuthedUser();
-
+            
             var role = await _userService.GetSelectedRole(userId);
 
             if (role == null || !_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
             var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId, filter);
 
-            var obj = myTrainingPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, Modality = p.Modality.Name, PlanId = p.Id.ToString() });
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+
+            var obj = myTrainingPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, Modality = p.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value, PlanId = p.Id.ToString() });
 
             return Json(new { data = obj });
 
@@ -134,7 +137,7 @@ namespace SCManagement.Controllers
 
             var myGoals = await _planService.GetMyGoals(userId, filter);
 
-            var obj = myGoals.Select(p => new { Name = p.Name, EndDate = p.EndDate, GoalId = p.Id, IsCompleted= p.isCompleted });
+            var obj = myGoals.Select(p => new { Name = p.Name, EndDate = p.EndDate, GoalId = p.Id, IsCompleted = p.isCompleted });
 
             return Json(new { data = obj });
         }
@@ -270,7 +273,15 @@ namespace SCManagement.Controllers
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(FileEMD);
                 if (uploadResult.Error)
                 {
-                    return View("CustomError", "Something wrong");
+                    if (uploadResult.Status.Contains("10MB"))
+                    {
+                        TempData["FileError"] = uploadResult.Status;
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        return View("CustomError", "Something wrong");
+                    }
                 }
                 await _userService.CheckAndDeleteEMD(user);
 

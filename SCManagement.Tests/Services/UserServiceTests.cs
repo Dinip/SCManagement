@@ -17,17 +17,21 @@ namespace SCManagement.Tests.Services
 {
     public class UserServiceTests
     {
-        private readonly ApplicationDbContext _context;
         private readonly UserService _userService;
+        private readonly ApplicationDbContext _context;
+        private readonly SignInManager<User> _signInManager;
         private readonly IAzureStorage _azureStorage;
-        
+        private readonly UserManager<User> _userManager;
+
         public UserServiceTests()
         {
             _context = GetDbContext().Result;
+            _signInManager = A.Fake<SignInManager<User>>();
             _azureStorage = A.Fake<IAzureStorage>();
+            _userManager = A.Fake<UserManager<User>>();
 
             //SUT (system under test)
-            _userService = new UserService(_context, A.Fake<SignInManager<User>>(), _azureStorage);
+            _userService = new UserService(_context, _signInManager, _azureStorage, _userManager);
         }
 
         private async Task<ApplicationDbContext> GetDbContext()

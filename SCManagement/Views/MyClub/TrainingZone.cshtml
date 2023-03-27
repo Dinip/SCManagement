@@ -90,7 +90,7 @@
                                 @Html.DisplayFor(model => teams.Name)
                             </td>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(model => teams.Modality.Name)
+                                @Html.DisplayFor(model => teams.Modality.ModalityTranslations.First().Value)
                             </td>
                             <td style="text-align:center">
                                 <a class="buttons me-2" onclick="toggleModal()">@StringLocalizer["Add"]</a>

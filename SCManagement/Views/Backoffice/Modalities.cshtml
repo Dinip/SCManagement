@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SCManagement.Models.Modality>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "Modalities";
+}
+
+<h1>Modalities</h1>
+
+@if (ViewBag.Success != null)
+{
+    <div style="color: green">@StringLocalizer[ViewBag.Success]</div>
+}
+
+<p>
+    <a asp-action="CreateModality">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            @foreach (var culture in ViewBag.Cultures)
+            {
+                <th>@culture</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>@item.Id</th>
+                @foreach (var translations in item.ModalityTranslations)
+                {
+                    <th>@translations.Value</th>
+                }
+            </tr>
+        }
+    </tbody>
+</table>

@@ -8,6 +8,7 @@ using Unidecode.NET;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.StatisticsService.Models;
 using SCManagement.Services.PlansService.Models;
+using Newtonsoft.Json.Linq;
 
 namespace SCManagement.Data
 {
@@ -94,26 +95,50 @@ namespace SCManagement.Data
 
             //Create Modalities
             builder.Entity<Modality>().HasData(
-                new Modality { Id = 1, Name = "Atletismo" },
-                new Modality { Id = 2, Name = "Basquetebol" },
-                new Modality { Id = 3, Name = "Futebol" },
-                new Modality { Id = 4, Name = "Futsal" },
-                new Modality { Id = 5, Name = "Hóquei em Patins" },
-                new Modality { Id = 6, Name = "Natação" },
-                new Modality { Id = 7, Name = "Voleibol" },
-                new Modality { Id = 8, Name = "BTT" },
-                new Modality { Id = 9, Name = "Taekwondo" },
-                new Modality { Id = 10, Name = "Orientação" }
-                );
+            new Modality { Id = 1 },
+            new Modality { Id = 2 },
+            new Modality { Id = 3 },
+            new Modality { Id = 4 },
+            new Modality { Id = 5 },
+            new Modality { Id = 6 },
+            new Modality { Id = 7 },
+            new Modality { Id = 8 },
+            new Modality { Id = 9 },
+            new Modality { Id = 10 }
+            );
+
+            //Add translations to modalities
+            builder.Entity<ModalityTranslation>().HasData(
+            new ModalityTranslation { Id = 1, ModalityId = 1, Value = "Atletismo", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 2, ModalityId = 1, Value = "Athletics", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 3, ModalityId = 2, Value = "Basquetebol", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 4, ModalityId = 2, Value = "Basketball", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 5, ModalityId = 3, Value = "Futebol", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 6, ModalityId = 3, Value = "Football", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 7, ModalityId = 4, Value = "Futsal", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 8, ModalityId = 4, Value = "Futsal", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 9, ModalityId = 5, Value = "Hóquei em Patins", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 10, ModalityId = 5, Value = "Roller Hockey", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 11, ModalityId = 6, Value = "Natação", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 12, ModalityId = 6, Value = "Swimming", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 13, ModalityId = 7, Value = "Voleibol", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 14, ModalityId = 7, Value = "Volleyball", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 15, ModalityId = 8, Value = "BTT", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 16, ModalityId = 8, Value = "BTT", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 17, ModalityId = 9, Value = "Taekwondo", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 18, ModalityId = 9, Value = "Taekwondo", Atribute = "Name", Language = "en-US" },
+            new ModalityTranslation { Id = 19, ModalityId = 10, Value = "Orientação", Atribute = "Name", Language = "pt-PT" },
+            new ModalityTranslation { Id = 20, ModalityId = 10, Value = "Orientation", Atribute = "Name", Language = "en-US" }
+            );
 
             //Create Roles for the Club
             builder.Entity<RoleClub>().HasData(
-                new RoleClub { Id = 10, RoleName = "Sócio" },
-                new RoleClub { Id = 20, RoleName = "Atleta" },
-                new RoleClub { Id = 30, RoleName = "Treinador" },
-                new RoleClub { Id = 40, RoleName = "Secretaria" },
-                new RoleClub { Id = 50, RoleName = "Administrador de Clube" }
-                );
+            new RoleClub { Id = 10, RoleName = "Sócio" },
+            new RoleClub { Id = 20, RoleName = "Atleta" },
+            new RoleClub { Id = 30, RoleName = "Treinador" },
+            new RoleClub { Id = 40, RoleName = "Secretaria" },
+            new RoleClub { Id = 50, RoleName = "Administrador de Clube" }
+            );
 
             builder.Entity<User>().Navigation(e => e.ProfilePicture).AutoInclude();
             builder.Entity<Team>().HasMany(x => x.Athletes).WithMany("Teams");

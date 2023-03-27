@@ -34,7 +34,7 @@
         </div>
     </div>
     <hr />
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
             <div class="mb-4 mt-2">
                 <a id="createTraining" asp-action="CreateTrainingPlanTemplate" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create New Template"]</a>
@@ -60,7 +60,7 @@
                     {
                         <tr>
                             <td class="text-to-dark">
-                                @Html.DisplayFor( _=> trainingPlan.Modality.Name)
+                                @Html.DisplayFor( _=> trainingPlan.Modality.ModalityTranslations.First().Value)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor( _=> trainingPlan.Name)
@@ -81,7 +81,6 @@
                         </tr>
                     }
                 </tbody>
-
 
                 <thead id="mealHead" class="d-none">
                     <tr>

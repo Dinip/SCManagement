@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Globalization;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SCManagement.Services;
 using SCManagement.Services.StatisticsService;
@@ -183,7 +184,9 @@ namespace SCManagement.Controllers
         {
             if (_applicationContextService.UserRole.RoleId < 40) return NotFound();
             var stats = await _statisticsService.GetClubModalityStatistics(_applicationContextService.UserRole.ClubId, year);
-
+            
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            
             var stats2 =
                 stats
                 .Select(s => new
@@ -191,7 +194,7 @@ namespace SCManagement.Controllers
                     TimeInDate = s.Timestamp,
                     TimeInText = computeTimestampText(s.Timestamp),
                     s.ModalityId,
-                    ModalityName = _stringLocalizer[s.Modality.Name].Value,
+                    ModalityName = s.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value,
                     s.Value
                 })
                 .ToList();

@@ -130,7 +130,7 @@ namespace SCManagement.Controllers
             List<int> ClubModalitiesIds = club.Modalities!.Select(m => m.Id).ToList();
 
             //viewbag that have the modalities of the club
-            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
+            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalitiesToSelectList(), "Id", "Name", ClubModalitiesIds);
 
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
@@ -171,7 +171,7 @@ namespace SCManagement.Controllers
         {
             //check model state
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
-            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", club.ModalitiesIds);
+            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalitiesToSelectList(), "Id", "Name", club.ModalitiesIds);
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             if (!ModelState.IsValid) return View(club);
 
@@ -230,8 +230,13 @@ namespace SCManagement.Controllers
             }
 
             //update photo
-            await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
-
+            var result = await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
+            if (!string.IsNullOrEmpty(result))
+            {
+                ViewBag.ImageError = result;
+                return View(club);
+            }
+            
             await _clubService.UpdateClub(actualClub);
 
             return RedirectToAction(nameof(Index));
@@ -531,8 +536,7 @@ namespace SCManagement.Controllers
             {
                 return View("CustomError", "Error_Unauthorized");
             }
-
-            ViewBag.Modalities = new SelectList(_clubService.GetClub(role.ClubId).Result.Modalities, "Id", "Name");
+            ViewBag.Modalities = new SelectList(await _clubService.GetClubModalities(role.ClubId), "Id", "Name");
 
             return View();
         }

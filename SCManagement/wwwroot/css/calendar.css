@@ -1,8 +1,25 @@
+html {
+    --scrollbarBG: none;
+    --thumbBG: #00639A;
+}
 
+.events-container::-webkit-scrollbar {
+    width: 11px;
+}
+.events-container::-webkit-scrollbar-track {
+    background: var(--scrollbarBG);
+}
+
+.events-container::-webkit-scrollbar-thumb {
+    background-color: var(--thumbBG);
+    border-radius: 6px;
+    border: 3px solid var(--scrollbarBG);
+}
 /*  Events display */
 .events-container {
     overflow-y: scroll;
-    height: 100%;
+    scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    height: 469.6px;
     float: right;
     margin: 0px auto;
     font: 13px Helvetica, Arial, sans-serif;
@@ -12,9 +29,9 @@
     border-top-right-radius: 3px;
 }
 
-    .events-container:after {
-        clear: both;
-    }
+.events-container:after {
+    clear: both;
+}
 
 .event-card {
     padding: 20px 0;
@@ -22,7 +39,7 @@
     margin: 20px auto;
     display: block;
     background: #fff;
-    border-left: 10px solid #52A0FD;
+    border-left: 10px solid #00639A;
     border-radius: 3px;
     box-shadow: 3px 8px 16px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
     -moz-box-shadow: 3px 8px 16px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
@@ -55,12 +72,12 @@
     float: left;
     position: relative;
     margin: 0px auto;
-    height: 100%;
-    width:55%;
+    width: 55%;
     font: 13px Helvetica, Arial, san-serif;
     display: inline-block;
     border-bottom-left-radius: 3px;
     border-top-left-radius: 3px;
+    box-shadow: 3px 8px 16px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
 }
 
     .calendar-container:after {
@@ -136,6 +153,7 @@
     color: white;
     border: none;
     background: #00639A;
+    bottom:25px;
 }
 
 #cancel-button {
@@ -282,7 +300,7 @@
 }
 
 /* Tablets and smaller */
-@media only screen and (max-width: 780px) {
+@media only screen and (max-width: 1000px) {
     .content {
         overflow: visible;
         position: relative;
@@ -303,14 +321,16 @@
         left: 0;
     }
 
-    .events-container {
-        float: none;
-        overflow: visible;
-        margin: 0 auto;
-        padding: 0;
-        display: block;
-        left: 0;
-        border-radius: 3px;
+
+    .months-table {
+        width: 100%;
+    }
+    .days-table {
+        width: 100%;
+    }
+
+    .days-table td {
+        padding:0;
     }
 
     .calendar-container {
@@ -319,57 +339,11 @@
         margin: 0 auto;
         margin-right: 0;
         display: block;
+        width:100%;
         left: 0;
         border-radius: 3px;
         box-shadow: 3px 8px 16px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
         -moz-box-shadow: 3px 8px 16px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
         -webkit-box-shadow: 3px 8px 16px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
-    }
-}
-
-/* Small phone screens */
-@media only screen and (max-width: 400px) {
-    .content, .events-container, .year-header, .calendar-container {
-        width: 100%;
-    }
-
-    .dialog {
-        width: 320px;
-    }
-
-    .months-table {
-        display: block;
-        margin: 0 auto;
-        width: 320px;
-    }
-
-    .event-card {
-        width: 300px;
-    }
-
-    .day {
-        padding: 0 7px;
-    }
-
-    .month {
-        display: inline-block;
-        padding: 10px 10px;
-        font-size: .8rem;
-    }
-
-    .table-date {
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
-    }
-
-    .event-name, .event-count, .event-cancelled {
-        font-size: .8rem;
-    }
-
-    .add-button {
-        bottom: 10px;
-        right: 10px;
-        padding: 0.5rem 1.5rem;
     }
 }

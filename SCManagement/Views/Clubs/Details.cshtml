@@ -66,7 +66,7 @@
                 <div class="col-12 mt-5 mb-5 d-md-flex">
                     <div class="col-md-4 col-12 ms-4"><h4 class="text-to-dark">@StringLocalizer["Modalities"]:</h4></div>
                     <div class="col-md-6 col-10 mt-1 ms-md-0 ms-4">
-                        <span class="text-to-dark">@String.Join(", ", Model.Modalities.Select(s => s.Name))</span>
+                        <span class="text-to-dark">@String.Join(", ", Model.Modalities.Select(s => s.ModalityTranslations.First().Value))</span>
                     </div>
                 </div>
             </div>

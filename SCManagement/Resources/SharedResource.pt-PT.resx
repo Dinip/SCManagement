@@ -2206,4 +2206,36 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Poderás também ficar sempre a par do que se passa no teu clube ao passo de apenas um clique, disponibilizamos estatísticas e informações sobre o teu clube</value>
     <comment>26-03-2023_tutorial</comment>
   </data>
+  <data name="Error_FileMaxSize" xml:space="preserve">
+    <value>Ficheiro _NAME_ excede o limite máximo de 10MB por ficheiro</value>
+    <comment>27-03-2023_backoffice</comment>
+  </data>
+  <data name="CreateModality" xml:space="preserve">
+    <value>Criar Modalidade</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="Error_RequiredModalName" xml:space="preserve">
+    <value>Precisas de no minimo um nome da modalidade para esta ser criada</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="ModalityName" xml:space="preserve">
+    <value>Nome da Modalidade em</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SeeAllModality" xml:space="preserve">
+    <value>Ver Todas as Modalidades</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SuccessModality" xml:space="preserve">
+    <value>Uma modalidade foi criada com sucesso</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SubscriptionPlans" xml:space="preserve">
+    <value>Planos de Subscrição</value>
+    <comment>26-03-2023</comment>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>Traduzir</value>
+    <comment>27-03-2023_editClub</comment>
+  </data>
 </root>
