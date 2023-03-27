@@ -2206,4 +2206,8 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Poderás também ficar sempre a par do que se passa no teu clube ao passo de apenas um clique, disponibilizamos estatísticas e informações sobre o teu clube</value>
     <comment>26-03-2023_tutorial</comment>
   </data>
+  <data name="Error_FileMaxSize" xml:space="preserve">
+    <value>Ficheiro _NAME_ excede o limite máximo de 10MB por ficheiro</value>
+    <comment>27-03-2023_backoffice</comment>
+  </data>
 </root>

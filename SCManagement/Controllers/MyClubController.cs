@@ -230,8 +230,13 @@ namespace SCManagement.Controllers
             }
 
             //update photo
-            await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
-
+            var result = await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
+            if (!string.IsNullOrEmpty(result))
+            {
+                ViewBag.ImageError = result;
+                return View(club);
+            }
+            
             await _clubService.UpdateClub(actualClub);
 
             return RedirectToAction(nameof(Index));

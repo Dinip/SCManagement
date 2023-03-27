@@ -71,7 +71,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
         [BindProperty]
         public InputModel Input { get; set; }
 
-        
+
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -129,7 +129,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 PhoneNumber = phoneNumber,
                 DateOfBirth = user.DateOfBirth,
                 Email = user.Email,
-        };
+            };
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -224,7 +224,14 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.File);
                 if (uploadResult.Error)
                 {
-                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Profile Picure"]}";
+                    if (uploadResult.Status.Contains("10MB"))
+                    {
+                        StatusMessage = uploadResult.Status;
+                    }
+                    else
+                    {
+                        StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["Profile Picure"]}";
+                    }
                     return RedirectToPage();
                 }
                 await CheckAndDeleteProfilePicture(user);
@@ -242,7 +249,14 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.FileEMD);
                 if (uploadResult.Error)
                 {
-                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
+                    if (uploadResult.Status.Contains("10MB"))
+                    {
+                        StatusMessage = uploadResult.Status;
+                    }
+                    else
+                    {
+                        StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
+                    }
                     return RedirectToPage();
                 }
                 await CheckAndDeleteEMD(user);

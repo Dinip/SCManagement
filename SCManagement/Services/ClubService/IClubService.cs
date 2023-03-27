@@ -34,7 +34,7 @@ namespace SCManagement.Services.ClubService
         public Task<IEnumerable<Modality>> GetModalities();
         public bool UserHasRoleInClub(string userId, int clubId, int roleId);
         public Task<IEnumerable<UsersRoleClub>> GetClubPartners(int clubId);
-        public Task UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null);
+        public Task<string> UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null);
         public Task UpdateClubModalities(Club club, IEnumerable<int> ModalitiesIds);
         public Task RemoveClubUser(int userRoleClubId);
         public Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId);

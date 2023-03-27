@@ -635,22 +635,28 @@ namespace SCManagement.Services.ClubService
         /// <param name="remove"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null)
+        public async Task<string> UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null)
         {
             //new profile picture provided, delete old from storage and update club to new one
             if (file != null)
             {
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(file);
+                if (uploadResult.Error)
+                {
+                    return uploadResult.Status ?? "";
+                }
                 await deletePhoto(club);
                 club.Photography = uploadResult.Blob;
-                return;
+                return "";
             }
 
             if (remove)
             {
                 await deletePhoto(club);
-                return;
+                return "";
             }
+            
+            return "";
         }
 
         /// <summary>

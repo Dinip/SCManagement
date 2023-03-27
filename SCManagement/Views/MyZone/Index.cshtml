@@ -240,6 +240,10 @@
                             <strong class="text-to-dark">@StringLocalizer["ExpiryDate"]:</strong>
                         </div>
                         <div>
+                            @if (ViewBag.FileError != null)
+                            {
+                                <p>@ViewBag.FileError</p>
+                            }
                             <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
                                 <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
                                 <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
