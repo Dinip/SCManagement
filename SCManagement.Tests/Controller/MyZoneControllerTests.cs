@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
+using static SCManagement.Controllers.MyZoneController;
 
 namespace SCManagement.Tests.Controller
 {
@@ -96,7 +97,7 @@ namespace SCManagement.Tests.Controller
             };
 
             // Act
-            var result = await _controller.CreateBioimpedance(A.Fake<Bioimpedance>());
+            var result = await _controller.CreateBioimpedance(A.Fake<BioimpedanceModel>());
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
@@ -117,7 +118,7 @@ namespace SCManagement.Tests.Controller
             };
 
             // Act
-            var result = await _controller.CreateBioimpedance(A.Fake<Bioimpedance>());
+            var result = await _controller.CreateBioimpedance(A.Fake<BioimpedanceModel>());
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
