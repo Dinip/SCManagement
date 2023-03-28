@@ -399,7 +399,7 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCode([Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
         {
-            if (!ModelState.IsValid || codeClub.ExpireDate.Date < DateTime.Now) return RedirectToAction("Codes");
+            if (!ModelState.IsValid || codeClub.ExpireDate.Date < DateTime.Now.Date) return RedirectToAction("Codes");
 
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;

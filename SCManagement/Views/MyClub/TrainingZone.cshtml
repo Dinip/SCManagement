@@ -60,11 +60,11 @@
                 <tbody id ="teamsBody">
                     @foreach (var teams in Model)
                     {
-                        <div id="modal" class="modal">
+                        <div id="team-@teams.Id-Training" class="modal">
                             <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
                                 <div id="modal-inner-content">
                                     <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
-                                    <span onclick="$('#modal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
+                                    <span onclick="$('#team-@teams.Id-Training').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
                                         <a asp-controller="Plans" asp-action="CreateTeamTrainingPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
                                         <a asp-controller="Plans" asp-action="ChooseTrainingTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
@@ -73,11 +73,11 @@
                             </div>
                         </div>
                         @*Meal modal*@
-                        <div id="modal1" class="modal">
-                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content;; padding:0;">
+                        <div id="team-@teams.Id-Meal" class="modal">
+                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
                                 <div id="modal-inner-content">
                                     <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
-                                    <span onclick="$('#modal1').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
+                                    <span onclick="$('#team-@teams.Id-Meal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
                                         <a asp-controller="Plans" asp-action="CreateTeamMealPlan" asp-route-teamId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
                                         <a asp-controller="Plans" asp-action="ChooseMealTeamTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
@@ -93,10 +93,10 @@
                                 @Html.DisplayFor(model => teams.Modality.ModalityTranslations.First().Value)
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="toggleModal()">@StringLocalizer["Add"]</a>
+                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Training').show();">@StringLocalizer["Add"]</a>
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="toggleModal1()">@StringLocalizer["Add"]</a>
+                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Meal').show();">@StringLocalizer["Add"]</a>
                             </td>
                         </tr>
 
