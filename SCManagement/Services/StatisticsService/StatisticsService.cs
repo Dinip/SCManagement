@@ -410,6 +410,7 @@ namespace SCManagement.Services.StatisticsService
                 return await _context
                     .ClubModalityStatistics
                     .Include(c => c.Modality)
+                    .ThenInclude(m => m.ModalityTranslations)
                     .Where(c =>
                         c.Timestamp.Year == year &&
                         c.Timestamp.Month == month &&
@@ -422,6 +423,7 @@ namespace SCManagement.Services.StatisticsService
                 return await _context
                     .ClubModalityStatistics
                     .Include(c => c.Modality)
+                    .ThenInclude(m => m.ModalityTranslations)
                     .Where(c =>
                         c.Timestamp.Year == year &&
                         c.ClubId == clubId &&

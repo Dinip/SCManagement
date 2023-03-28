@@ -1,6 +1,10 @@
 ﻿@model SCManagement.Controllers.MyZoneController.MyZoneModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
+@{
+    string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+}
+
 <div class="container-fluid">
     <h1 style="margin-top:130px !important; margin-left:3%" class="text-to-dark">@StringLocalizer["MyZone"]</h1>
     <div id="modal" class="modal">
@@ -47,7 +51,7 @@
                                                 @Html.DisplayFor(modelItem => team.Name) (@team.Club.Name)
                                             </td>
                                             <td class="mt-3 col-lg-6 col-md-6 col-sm-6 col-xs-6 align-middle" style="padding: 0 10px;">
-                                                @Html.DisplayFor(modelItem => team.Modality.ModalityTranslations.First().Value)
+                                                @Html.DisplayFor(modelItem => team.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
                                             </td>
                                         </tr>
                                     }
