@@ -30,6 +30,7 @@ namespace SCManagement.Services.PlansService
         {
             return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId && p.IsTemplate == false)
                 .Include(p => p.Modality)
+                .ThenInclude(p => p.ModalityTranslations)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .ToListAsync();
@@ -39,6 +40,7 @@ namespace SCManagement.Services.PlansService
         {
             return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId && p.AthleteId == athleteId && p.IsTemplate == false)
                 .Include(p => p.Modality)
+                .ThenInclude(p => p.ModalityTranslations)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .ToListAsync();
@@ -69,6 +71,7 @@ namespace SCManagement.Services.PlansService
 
             return await plansQuery
                 .Include(p => p.Modality)
+                .ThenInclude(p => p.ModalityTranslations)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .OrderBy(p => p.StartDate)
@@ -127,6 +130,7 @@ namespace SCManagement.Services.PlansService
         {
             return await _context.TrainingPlans.Where(p => p.Id == planId)
                 .Include(p => p.Modality)
+                .ThenInclude(p => p.ModalityTranslations)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .FirstOrDefaultAsync();
@@ -170,6 +174,7 @@ namespace SCManagement.Services.PlansService
         {
             return await _context.TrainingPlans.Where(p => p.Id == templateId && p.IsTemplate == true)
                 .Include(p => p.Modality)
+                .ThenInclude(p => p.ModalityTranslations)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .FirstAsync();
@@ -187,6 +192,7 @@ namespace SCManagement.Services.PlansService
         {
             return await _context.TrainingPlans.Where(p => p.TrainerId == trainerId && p.IsTemplate == true)
                 .Include(p => p.Modality)
+                .ThenInclude(p => p.ModalityTranslations)
                 .Include(p => p.Trainer)
                 .Include(p => p.TrainingPlanSessions)
                 .ToListAsync();
@@ -231,7 +237,7 @@ namespace SCManagement.Services.PlansService
 
         public async Task<IEnumerable<Goal?>> GetMyGoals(string userId, int? filter)
         {
-            switch(filter)
+            switch (filter)
             {
                 case 1:
                     return await _context.Goals.Where(g => g.AthleteId == userId && g.isCompleted == false).ToListAsync();

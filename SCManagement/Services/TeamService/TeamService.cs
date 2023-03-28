@@ -34,7 +34,7 @@ namespace SCManagement.Services.TeamService
             //Select only the modality in the current languague 
             string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             team.Modality.ModalityTranslations = team.Modality.ModalityTranslations.Where(cc => cc.Language == cultureInfo).ToList();
-            
+
             return team;
         }
 
@@ -150,8 +150,13 @@ namespace SCManagement.Services.TeamService
         /// <returns></returns>
         public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId)
         {
-            return await _context.Team.Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
-                .Include(t => t.Modality).Include(t => t.Trainer).Include(c => c.Club).ToListAsync();
+            return await _context.Team
+                .Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
+                .Include(t => t.Modality)
+                .ThenInclude(t => t.ModalityTranslations)
+                .Include(t => t.Trainer)
+                .Include(c => c.Club)
+                .ToListAsync();
         }
 
         /// <summary>
