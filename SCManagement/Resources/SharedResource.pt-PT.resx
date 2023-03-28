@@ -815,7 +815,7 @@ Tenho 21 anos e sou de Portugal.
  e gentileza.</value>
   </data>
   <data name="DinisAbout" xml:space="preserve">
-    <value>Olá, tenho 21 anos, sou estudante universitário de Engenharia Informática no Instituto Politécnico de Setúbal.
+    <value>Olá, tenho 22 anos, sou estudante universitário de Engenharia Informática no Instituto Politécnico de Setúbal.
 Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   </data>
   <data name="FrontEndDeveloper" xml:space="preserve">
@@ -2341,5 +2341,115 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   <data name="SubEnableAutoSuccess" xml:space="preserve">
     <value>Renovação automática de subscrição ativada</value>
     <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="Cookies" xml:space="preserve">
+    <value>Cookies:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>Licença:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="ShouldNot" xml:space="preserve">
+    <value>Não deve:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="String12" xml:space="preserve">
+    <value />
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsConditionsSCManagement" xml:space="preserve">
+    <value>Termos e Condições para SCManagement</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsCookies" xml:space="preserve">
+    <value>O site usa cookies para ajudar a personalizar a sua experiência online. Ao aceder SCMANAGEMENT, concordou em usar os cookies necessários.
+Um cookie é um arquivo de texto colocado no seu disco rígido por um servidor de páginas web. Os cookies não podem ser usados para executar programas ou enviar vírus para o seu computador. Os cookies são atribuídos exclusivamente a si e só podem ser lidos por um servidor web no domínio que emitiu o cookie.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsIntro" xml:space="preserve">
+    <value>Estes termos e condições descrevem as regras e regulamentos para a utilização do site de SCMANAGEMENT, localizado em</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsIntro2" xml:space="preserve">
+    <value>Ao aceder a este site, presumimos que aceita estes termos e condições. Não continue a utilizar SCMANAGEMENT se não concordar com todos os termos e condições declarados nesta página.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsLicense" xml:space="preserve">
+    <value>Salvo indicação em contrário, SCMANAGEMENT e/ou os seus licenciados possuem os direitos de propriedade intelectual de todo o material em SCMANAGEMENT. Todos os direitos de propriedade intelectual são reservados. Pode aceder de SCMANAGEMENT para o seu uso pessoal sujeito às restrições definidas nestes termos e condições.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot1" xml:space="preserve">
+    <value>Copiar ou republicar o material de SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot2" xml:space="preserve">
+    <value>Vender, alugar ou sublicenciar o material de SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot3" xml:space="preserve">
+    <value>Reproduzir, duplicar ou copiar o material de SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot4" xml:space="preserve">
+    <value>Redistribuir o conteúdo de SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot5" xml:space="preserve">
+    <value>Este acordo deve iniciar na data deste documento.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>Isenção de responsabilidade:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="RemoveLinks" xml:space="preserve">
+    <value>Remoção de links do nosso site:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>Reserva de direitos:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Responsibility" xml:space="preserve">
+    <value>Responsabilidade pelo conteúdo:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer" xml:space="preserve">
+    <value>Na extensão máxima permitida pela lei aplicável, excluímos todas as representações, garantias e condições relacionadas ao nosso site e ao uso deste site. Nada nesta isenção de responsabilidade:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer1" xml:space="preserve">
+    <value>limitará ou excluirá a nossa responsabilidade por morte ou danos pessoais;</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer2" xml:space="preserve">
+    <value>limitar ou excluir a nossa responsabilidade ou a sua responsabilidade por fraude ou deturpação fraudulenta;</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer3" xml:space="preserve">
+    <value>limitar qualquer uma das nossas responsabilidades de qualquer forma que não seja permitida pela lei aplicável; ou excluir qualquer uma das nossas ou suas responsabilidades que não possam ser excluídas sob a lei aplicável.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer4" xml:space="preserve">
+    <value>As limitações e proibições de responsabilidade definidas nesta seção e em outras partes desta isenção de responsabilidade: (a) estão sujeitas ao parágrafo anterior; e (b) regem todas as responsabilidades decorrentes da isenção de responsabilidade, incluindo responsabilidades decorrentes de contratos, atos ilícitos e por violação de dever estatutário.
+Desde que o site e as informações e serviços nele fornecidos sejam gratuitos, não seremos responsáveis por perdas ou danos de qualquer natureza.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsRemoveLinks1" xml:space="preserve">
+    <value>Se encontrar algum link no nosso site que seja ofensivo por qualquer motivo, pode contactar-nos e informar-nos a qualquer momento. Consideraremos as solicitações de remoção de links, mas não somos obrigados a fazê-lo ou a responder diretamente.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsRemoveLinks2" xml:space="preserve">
+    <value>Não garantimos que as informações neste site sejam corretas. Não garantimos sua integridade ou precisão, nem prometemos garantir que o site permaneça disponível ou que o material nele contido seja mantido atualizado.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsReserved" xml:space="preserve">
+    <value>Reservamos o direito de solicitar que remova todos os links ou qualquer link específico para o nosso site. Aprova a remoção imediata de todos os links para nosso site, mediante solicitação. Também nos reservamos o direito de alterar estes termos e condições e a sua política de vinculação a qualquer momento. Ao conectar-se continuamente ao nosso site, concorda em cumprir e seguir estes termos e condições de vinculação.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsResponsibility" xml:space="preserve">
+    <value>Não seremos responsabilizados por qualquer conteúdo que apareça no seu site. Concorda em proteger-nos e defender contra todas as reclamações levantadas no seu site. Nenhum link deve aparecer em qualquer site que possa ser interpretado como calunioso, obsceno ou criminoso, ou que infrinja, de outra forma viole ou defenda a violação ou outra violação de quaisquer direitos de terceiros.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
   </data>
 </root>

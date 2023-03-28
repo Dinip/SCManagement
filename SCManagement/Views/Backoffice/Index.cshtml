@@ -23,7 +23,7 @@
             text-align: center;
         }
  
-    #ic .icon{
+    #circle6 .icon {
         width: 80px;
         height: 80px;
         margin-left:15px;
@@ -31,7 +31,7 @@
 </style>
 
 <div class="container-fluid w-100">
-    <div class="d-flex align-items-center" style="margin-top:130px !important;">
+    <div class="d-flex align-items-center" style="margin-top:130px !important; margin-left:6%">
         <h1 class="text-to-dark">@StringLocalizer["StatisticsBackoffice"]</h1>
     </div>
 
@@ -77,7 +77,7 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
-            <div id="ic" class="circle" id="circle6" title="@StringLocalizer["Circle6Help"]">
+            <div class="circle" id="circle6" title="@StringLocalizer["Circle6Help"]">
                 <img src="~/img/terms.png" alt="termsAndConditions" class="icon">
             </div>
             <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
@@ -116,7 +116,7 @@
             window.location.href = "/Backoffice/DelayedPayments";
         });
         $("#circle6").click(function () {
-            window.location.href = "/Backoffice/TermsAndConditions";
+            window.location.href = "/Home/TermsAndConditions";
         });
     });
 </script>

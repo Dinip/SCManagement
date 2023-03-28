@@ -147,7 +147,7 @@
                    value='@(Model.AutoRenew ? HtmlLocalizer["Disable AutoRenew"] : HtmlLocalizer["Enable AutoRenew"])'
                    class="btn"
                    style="margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;"
-                   onclick="return confirm('@HtmlLocalizer[Model.AutoRenew ? "SubscriptionAutoCancelConfirm" : "SubscriptionAutoEnabledConfirm"]')" 
+                   onclick="return confirm('@HtmlLocalizer[Model.AutoRenew ? "SubscriptionAutoCancelConfirm" : "SubscriptionAutoEnabledConfirm"]')" />
         </form>
 
         <form asp-action="Cancel">

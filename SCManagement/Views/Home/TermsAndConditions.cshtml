@@ -1,0 +1,81 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = @StringLocalizer["Terms&Conditions"];
+}
+
+<style>
+
+</style>
+
+<div class="container-fluid">
+
+    <div class="p-5 text-to-dark" style="text-align:justify">
+
+        <h2 style="text-align:center">@StringLocalizer["TermsConditionsSCManagement"]</h2>
+
+        <p class="mt-4">@StringLocalizer["TermsIntro"] <a href="https://scmanagement.me/.">scmanagement.</a></p>
+
+        <p>@StringLocalizer["TermsIntro2"]</p>
+
+        <h4 class="mt-4">@StringLocalizer["Cookies"]</h4>
+        
+        <p>@StringLocalizer["TermsCookies"]</p>
+
+        <h3 class="mt-4">@StringLocalizer["License"]</h3>
+
+        <p>@StringLocalizer["TermsLicense"]</p>
+
+        <h4 class="mt-4">@StringLocalizer["ShouldNot"]</h4>
+
+        <ul>
+            <li>
+                @StringLocalizer["TermsShouldNot1"]
+            </li>
+            <li>
+                @StringLocalizer["TermsShouldNot2"]
+            </li>
+            <li>
+                @StringLocalizer["TermsShouldNot3"]
+            </li>
+            <li>
+                @StringLocalizer["TermsShouldNot4"]
+            </li>
+            <li>
+                @StringLocalizer["TermsShouldNot5"]
+            </li>
+        </ul>
+
+        <h3 class="mt-4">@StringLocalizer["Responsibility"]</h3>
+        <p>@StringLocalizer["TermsResponsibility"]</p>
+
+        <h3 class="mt-4">@StringLocalizer["Reserved"]</h3>
+        <p>@StringLocalizer["TermsReserved"]</p>
+        
+        <h3 class="mt-4">@StringLocalizer["RemoveLinks"]</h3>
+        <p>@StringLocalizer["TermsRemoveLinks1"]</p>
+        <p>@StringLocalizer["TermsRemoveLinks2"]</p>
+        
+        <h3 class="mt-4">@StringLocalizer["Disclaimer"]</h3>
+        <p>@StringLocalizer["TermsDisclaimer"]</p>
+        
+        <ul>
+            <li>
+                @StringLocalizer["TermsDisclaimer1"]
+            </li>
+            <li>
+                @StringLocalizer["TermsDisclaimer2"]
+            </li>
+            <li>
+                @StringLocalizer["TermsDisclaimer3"]
+            </li>
+            <li>
+                @StringLocalizer["TermsDisclaimer4"]
+            </li>
+        </ul>
+
+        <p class="mt-5" style="text-align: right">@StringLocalizer["Date"]: 28/03/2023,</p>
+        <p style="text-align: right">SCManagement</p>
+    </div>
+
+</div>
