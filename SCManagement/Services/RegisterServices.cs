@@ -17,6 +17,7 @@ using SCManagement.Services.CronJobService;
 using SCManagement.Services.StatisticsService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.NotificationService;
+using SCManagement.Services.BackgroundService;
 
 namespace SCManagement.Services
 {
@@ -153,6 +154,7 @@ namespace SCManagement.Services
                 provider.GetService<BackgroundWorkerService>()
             );
             services.AddTransient<INotificationService, SCManagement.Services.NotificationService.NotificationService>();
+            services.AddTransient<IEmailNotificationService, SCManagement.Services.NotificationService.EmailNotificationService>();
             #endregion
 
             #region cronjobs

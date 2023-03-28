@@ -919,7 +919,7 @@ namespace SCManagement.Controllers
             var updated = await _clubService.UpdateClubPaymentSettings(paymentSettings);
             await _paymentService.UpdateProductClubMembership(updated);
 
-            return View(updated);
+            return RedirectToAction(nameof(PaymentSettings));
         }
 
         public async Task<IActionResult> PaymentsRecieved()
