@@ -18,6 +18,7 @@ using SCManagement.Services;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
+using FluentEmail.Core;
 
 namespace SCManagement.Controllers
 {
@@ -364,6 +365,22 @@ namespace SCManagement.Controllers
 
             //prevent users that arent club admin from removing club secretary (or higher)
             if (userRoleToBeRomoved.RoleId >= 40 && role.RoleId < 50) return View("CustomError", "Error_Unauthorized");
+
+            //Check if the user is athlete and if so, remove all the athlete data (All teams of this club)
+            if (userRoleToBeRomoved.RoleId == 20)
+            {
+                var teams = await _teamService.GetTeamsByAthlete(userRoleToBeRomoved.UserId, userRoleToBeRomoved.ClubId);
+
+                if (teams != null && teams.Count() > 0)
+                {
+                    var user = await _userService.GetUser(userRoleToBeRomoved.UserId);
+
+                    teams.ForEach(async team =>
+                    {
+                        await _teamService.RemoveAthlete(team, user);
+                    });
+                }
+            }
 
             //remove a user(role) from a club
             await _clubService.RemoveClubUser(userRoleToBeRomoved.Id);

@@ -156,6 +156,7 @@ namespace SCManagement.Services.TeamService
                 .ThenInclude(t => t.ModalityTranslations)
                 .Include(t => t.Trainer)
                 .Include(c => c.Club)
+                .Include(a => a.Athletes)
                 .ToListAsync();
         }
 
