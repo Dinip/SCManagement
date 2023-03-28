@@ -2185,4 +2185,114 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Yes</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
   </data>
+  <data name="Cookies" xml:space="preserve">
+    <value>Cookies:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>License:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="ShouldNot" xml:space="preserve">
+    <value>Should Not:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsConditionsSCManagement" xml:space="preserve">
+    <value>Terms and Conditions for SCManagement</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsCookies" xml:space="preserve">
+    <value>The website uses cookies to help personalize your online experience. By accessing SCMANAGEMENT, you agreed to use the necessary cookies.
+A cookie is a text file placed on your hard drive by a web page server. Cookies cannot be used to run programs or deliver viruses to your computer. Cookies are uniquely assigned to you and can only be read by a web server in the domain that issued the cookie.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsIntro" xml:space="preserve">
+    <value>These terms and conditions describe the rules and regulations for using the SCMANAGEMENT website, located at</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsIntro2" xml:space="preserve">
+    <value>By accessing this site, we assume that you accept these terms and conditions. Do not continue to use SCMANAGEMENT if you do not agree with all the terms and conditions stated on this page.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsLicense" xml:space="preserve">
+    <value>Unless otherwise stated, SCMANAGEMENT and/or its licensors own the intellectual property rights in all material on SCMANAGEMENT. All intellectual property rights are reserved. You may access SCMANAGEMENT for your personal use subject to the restrictions defined in these terms and conditions.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot1" xml:space="preserve">
+    <value>Copy or republish material from SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot2" xml:space="preserve">
+    <value>Sell, rent or sublicense material from SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot3" xml:space="preserve">
+    <value>Reproduce, duplicate or copy SCMANAGEMENT material</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot4" xml:space="preserve">
+    <value>Redistribute content from SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot5" xml:space="preserve">
+    <value>This agreement shall commence on the date hereof.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>Disclaimer:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="RemoveLinks" xml:space="preserve">
+    <value>Removing links from our website:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>Reservation of rights:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Responsibility" xml:space="preserve">
+    <value>Responsibility for the content:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="String5" xml:space="preserve">
+    <value />
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer" xml:space="preserve">
+    <value>To the fullest extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and your use of this website. Nothing in this disclaimer:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer1" xml:space="preserve">
+    <value>limit or exclude our liability for death or personal injury;</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer2" xml:space="preserve">
+    <value>limit or exclude our liability or your liability for fraud or fraudulent misrepresentation;</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer3" xml:space="preserve">
+    <value>limit any of our liabilities in any way not permitted by applicable law; or exclude any of our or your liabilities that cannot be excluded under applicable law.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer4" xml:space="preserve">
+    <value>The limitations and prohibitions of liability set out in this section and elsewhere in this disclaimer: (a) are subject to the preceding paragraph; and (b) govern all liabilities arising from the disclaimer, including liabilities arising in contracts, torts and for breach of statutory duty.
+As long as the website and the information and services provided therein are free of charge, we will not be liable for loss or damage of any kind.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsRemoveLinks1" xml:space="preserve">
+    <value>If you find any links on our site that are offensive for any reason, you can contact us and let us know at any time. We will consider requests to remove links, but we are not obligated to do so or respond directly.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsRemoveLinks2" xml:space="preserve">
+    <value>We do not guarantee that the information on this website is correct. We do not guarantee its completeness or accuracy, nor do we promise to ensure that the website remains available or that the material contained therein is kept up to date.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsReserved" xml:space="preserve">
+    <value>We reserve the right to ask you to remove all or any specific links to our website. Approves the immediate removal of all links to our website upon request. We also reserve the right to change these terms and conditions and your binding policy at any time. By continually connecting to our website, you agree to comply with and abide by these terms and conditions of linking.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsResponsibility" xml:space="preserve">
+    <value>We will not be responsible for any content that appears on your site. You agree to protect and defend us against all claims raised on your site. No links shall appear on any website that could be construed as libelous, obscene or criminal, or that infringes, otherwise violates or advocates the infringement or other violation of any third party rights.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
 </root>

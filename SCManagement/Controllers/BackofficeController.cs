@@ -201,11 +201,6 @@ namespace SCManagement.Controllers
             return View();
         }
 
-        public async Task<IActionResult> TermsAndConditions()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> PlansData(int? year)
         {
             var stats = await _statisticsService.GetSystemPlansStatistics(year);
