@@ -635,12 +635,9 @@ namespace SCManagement.Services.PaymentService
             if (!string.IsNullOrEmpty(subscription.SubscriptionKey))
             {
                 var success = await deleteSubscriptionId(subscription.SubscriptionKey!, subscription.Product.ClubId);
-                if (success)
-                {
-                    subscription.AutoRenew = false;
-                    subscription.SubscriptionKey = null;
-                    subscription.CardInfoData = null;
-                }
+                subscription.AutoRenew = false;
+                subscription.SubscriptionKey = null;
+                subscription.CardInfoData = null;
             }
 
             //cancel pending payments
@@ -648,7 +645,7 @@ namespace SCManagement.Services.PaymentService
             if (payments.Any())
             {
                 payments.ForEach(p => p.PaymentStatus = PaymentStatus.Canceled);
-                _context.Update(payments);
+                _context.Payment.UpdateRange(payments);
             }
 
             subscription.Status = subscription.NextTime.Date <= DateTime.Now.Date ? SubscriptionStatus.Canceled : SubscriptionStatus.Pending_Cancel;

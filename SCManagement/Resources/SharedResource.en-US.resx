@@ -2185,4 +2185,28 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Yes</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
   </data>
+  <data name="SubscriptionAutoCancelConfirm" xml:space="preserve">
+    <value>Are you sure that you want to cancel the auto renewal for that subscription?</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubscriptionAutoEnabledConfirm" xml:space="preserve">
+    <value>Are you sure that you want to enable the auto renewal for that subscription?</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubscriptionCancelConfirm" xml:space="preserve">
+    <value>Are you sure that you want to cancel the subscription? It will be canceled at the end of the payment cycle</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubCancelAutoSuccess" xml:space="preserve">
+    <value>Subscription auto renew disabled</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubCancelSuccess" xml:space="preserve">
+    <value>Subscription canceled</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubEnableAutoSuccess" xml:space="preserve">
+    <value>Subscription auto renew enabled</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
 </root>

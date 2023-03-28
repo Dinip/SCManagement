@@ -1,5 +1,5 @@
 ﻿@model SCManagement.Services.PaymentService.Models.Subscription
-
+@inject IHtmlLocalizer<SharedResource> HtmlLocalizer
 
 <style>
     dt {
@@ -18,7 +18,7 @@
     <h4 class="text-to-dark">Subscription</h4>
     <hr />
 
-    <div style="color:red;" id="error"></div>
+    <div style="color:red;" id="inner-error"></div>
 
     <dl class="row">
         <dt class="col-sm-4 dlBg text-to-dark">
@@ -119,7 +119,10 @@
             </dd>
         }
     </dl>
-    @if (!Model.AutoRenew)
+    @if (!Model.AutoRenew &&
+    Model.Status != SCManagement.Services.PaymentService.Models.SubscriptionStatus.Pending_Cancel &&
+    Model.Status != SCManagement.Services.PaymentService.Models.SubscriptionStatus.Canceled
+    )
     {
         <div class="mb-3 text-to-dark">
             Your subscription is set to manual renew! You can enable auto renew and set a credit/debit card
@@ -129,54 +132,37 @@
     }
 
 </div>
-<div>
-    @if (Model.Product.ProductType == SCManagement.Services.PaymentService.Models.ProductType.ClubSubscription)
+<div style="display:flex;">
+    @if (Model.Status != SCManagement.Services.PaymentService.Models.SubscriptionStatus.Pending_Cancel &&
+    Model.Status != SCManagement.Services.PaymentService.Models.SubscriptionStatus.Canceled)
     {
-        <button style=" margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="updatePlanPick(@Model.Id)">Update Plan</button>
+        @if (Model.Product.ProductType == SCManagement.Services.PaymentService.Models.ProductType.ClubSubscription)
+        {
+            <button style=" margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="updatePlanPick(@Model.Id)">Update Plan</button>
+        }
+
+        <form asp-action="UpdateAutoRenew">
+            <input name="Id" value="@Model.Id" class="form-control" hidden />
+            <input type="submit"
+                   value='@(Model.AutoRenew ? HtmlLocalizer["Disable AutoRenew"] : HtmlLocalizer["Enable AutoRenew"])'
+                   class="btn"
+                   style="margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;"
+                   onclick="return confirm('@HtmlLocalizer[Model.AutoRenew ? "SubscriptionAutoCancelConfirm" : "SubscriptionAutoEnabledConfirm"]')" 
+        </form>
+
+        <form asp-action="Cancel">
+            <input name="Id" value="@Model.Id" class="form-control" hidden />
+            <input type="submit"
+                   value='Cancel'
+                   class="btn"
+                   style="margin-right: 10px; color:white; border-radius: 10px; padding: 5px 15px 5px 15px; background-color: red; border-color: black;"
+                   onclick="return confirm('@HtmlLocalizer["SubscriptionCancelConfirm"]')" />
+        </form>
     }
-    <button style="margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="updateAutoRenew(@Model.Id, '@Model.AutoRenew')">@(Model.AutoRenew ? "Disable AutoRenew" : "Enable AutoRenew")</button>
-    <button style="margin-right: 10px; color:white; border-radius: 10px; padding: 5px 15px 5px 15px; background-color: red; border-color: black;" onclick="cancelSub(@Model.Id)">
-        Cancel
-    </button>
 </div>
 
 <script src="~/js/site.js" asp-append-version="true"></script>
 <script>
-    const cancelSub = (id) => {
-        const res = confirm("Are you sure that you want to cancel the subscription? It will be canceled at the end of the payment cycle")
-        if (res) {
-            $.ajax({
-                url: `/Subscription/Cancel`,
-                data: { id },
-                type: 'POST',
-                async: false,
-                success: function (result) {
-                    window.location = '/Subscription'
-                }
-            });
-        }
-    }
-
-    const updateAutoRenew = (id, enabled) => {
-        let res = null
-        if (enabled == "True") {
-            res = confirm("Are you sure that you want to cancel the auto renewal for that subscription?")
-        } else {
-            res = confirm("Are you sure that you want to enable the auto renewal for that subscription?")
-        }
-        if (res) {
-            $.ajax({
-                url: `/Subscription/UpdateAutoRenew`,
-                data: { id },
-                type: 'POST',
-                async: false,
-                success: function (result) {
-                    window.location = `/Subscription?subId=${id}`
-                }
-            });
-        }
-    }
-
     function updatePlanPick(id) {
         $.ajax({
             url: `/Subscription/PlansPartial/${id}`,
@@ -184,7 +170,6 @@
             async: false,
             success: function (result) {
                 $("#modal-inner-content").html(result);
-                console.log(document.getElementsByClassName("modal-content").length);
                 document.getElementsByClassName("modal-content")[0].classList.remove("w-50");
                 document.getElementsByClassName("modal-content")[0].classList.add("w-25");
                 $(".modal-content");

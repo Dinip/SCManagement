@@ -2318,4 +2318,28 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Sim</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
   </data>
+  <data name="SubscriptionAutoCancelConfirm" xml:space="preserve">
+    <value>Tens a certeza que queres cancelar a removação automática desta subscrição?</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubscriptionAutoEnabledConfirm" xml:space="preserve">
+    <value>Tens a certeza que queres ativar a renovação automática desta subscrição?</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubscriptionCancelConfirm" xml:space="preserve">
+    <value>Tens a certeza que queres cancelar a subscrição? Será cancelada no final do ciclo de pagamento</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubCancelAutoSuccess" xml:space="preserve">
+    <value>Renovação automática de subscrição cancelada</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubCancelSuccess" xml:space="preserve">
+    <value>Subscrição cancelada</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubEnableAutoSuccess" xml:space="preserve">
+    <value>Renovação automática de subscrição ativada</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
 </root>
