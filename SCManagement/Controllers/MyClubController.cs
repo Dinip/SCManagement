@@ -506,9 +506,7 @@ namespace SCManagement.Controllers
             //Only Manager or Trainer can create teams
             ViewBag.CanCreate = (_clubService.IsClubManager(role) | _clubService.IsClubTrainer(role)) ? true : false;
 
-            var team = await _teamService.GetTeams(role.ClubId);
-
-            return View(team);
+            return View(await _teamService.GetTeams(role.ClubId));
         }
 
         /// <summary>
