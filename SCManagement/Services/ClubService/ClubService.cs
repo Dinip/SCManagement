@@ -116,17 +116,6 @@ namespace SCManagement.Services.ClubService
                 .Include(c => c.ClubTranslations)
                 .Include(c => c.ClubPaymentSettings)
                 .FirstOrDefaultAsync(m => m.Id == id);
-
-            if (club == null) return null;
-
-            //Select only the modalities in the current languague 
-            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
-            club.Modalities = club.Modalities.Select(m => new Modality
-            {
-                Id = m.Id,
-                ModalityTranslations = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).ToList(),
-            }).ToList();
-
             return club;
         }
 

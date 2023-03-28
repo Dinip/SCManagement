@@ -1,0 +1,287 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = @StringLocalizer["Income"];
+}
+
+<style>
+    #selectYear {
+        font-size: 16px;
+        padding: 8px 24px 8px 12px;
+        border-radius: 4px;
+        border: none;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        background-color: lightgray;
+        color: #333;
+        cursor: pointer;
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+    }
+
+    selectYear:hover {
+        background-color: #e0e0e0;
+    }
+
+        selectYear:hover option {
+            display: block;
+        }
+
+    selectYear option {
+        display: none;
+        background-color: #f5f5f5;
+        color: #333;
+        padding: 8px 12px;
+    }
+
+
+        selectYear option:checked:hover {
+            background-color: #2196f3;
+            color: #fff;
+        }
+
+    selectYear:focus {
+        outline: none;
+    }
+</style>
+
+<div class="container-fluid ps-5 pe-5">
+
+    <div class="d-flex align-items-center" style="margin-top:130px !important;">
+        <h1 class="text-to-dark">@StringLocalizer["Income"]</h1>
+    </div>
+
+    <div class="d-flex row mt-5">
+        <h4 class="text-to-dark col-lg-6 col-md-6 col-12">@StringLocalizer["BestMonth"]: <span id="bestMonth"></span></h4>
+        <h4 class="text-to-dark col-lg-6 col-md-6 col-12 mt-sm-2 mt-lg-0 mt-md-0 mt-2">@StringLocalizer["Average"]: <span id="average"></span>€/@StringLocalizer["Month"]</h4>
+    </div>
+
+    <div class="ms-2 mt-5">
+        <span class="text-to-dark">@StringLocalizer["SelectYear"]</span>
+        <select id="selectYear" onchange="changeYear(this)" class="text-to-dark"></select>
+    </div>
+
+    <div class="tables-list tab-pane active p-0 mt-5" id="div-table-Payments">
+        <div class="d-md-flex justify-content-evenly">
+            <table id="table-IncomeData" class="table table-bordered text-to-dark col-xs-12 col-sm-12 col-md-6">
+                <thead class="thead-dark text-white">
+                    <tr>
+                        <th class="text-to-dark">@StringLocalizer["Name"]</th>
+                        <th class="text-to-dark">@StringLocalizer["Month"]</th>
+                        <th class="text-to-dark">@StringLocalizer["Value"]</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <div class="col-xs-12 col-sm-12 col-md-6 w-sm-100 d-flex justify-content-center">
+                <canvas id="chart-IncomeData"></canvas>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+
+
+<script>
+
+    $(document).ready(async function () {
+        $.noConflict()
+        loadYears()
+
+        const d = await loadData("IncomeData")
+        document.getElementById("bestMonth").textContent = bestMonth(d);
+        document.getElementById("average").textContent = calculateAverage(d);
+        dataToTables("IncomeData", d)
+        dataToGraphs("IncomeData", d)
+    });
+
+    function loadData(tab, year = new Date().getFullYear()) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/BackOffice/${tab}?year=${year}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function dataToTables(tab, data) {
+        if (tab == "IncomeData") {
+            $(`#table-${tab}`).DataTable({
+                data: data.filter(f => f.productName != "None"),
+                columns: [
+                    { "data": "productName" },
+                    { "data": "timeInText" },
+                    { "data": "value" },
+                ],
+                destroy: true,
+                lengthMenu: [[2, 6, 12, -1], [2, 6, 12, "All"]],
+                pageLength: 12,
+                order: [],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
+            });
+        }
+    }
+
+    function dataToGraphs(tab, data) {
+
+        const ctx = document.getElementById(`chart-${tab}`).getContext('2d');
+        let cfg
+
+        let chartStatus = Chart.getChart(`chart-${tab}`);
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+
+        if (tab == "IncomeData") {
+
+            const customData = data.reduce((acc, item) => {
+                const { timeInDate, timeInText, productName, value } = item;
+                const index = acc.findIndex((i) => i.timeInDate === timeInDate);
+                if (index === -1) {
+                    acc.push({
+                        timeInDate,
+                        timeInText,
+                        [productName]: value,
+                        x: timeInText,
+                    });
+                } else {
+                    acc[index][productName] = value;
+                }
+                return acc;
+            }, []);
+
+            const productNames = [...new Set(data.map((i) => i.productName))];
+
+            cfg = {
+                type: 'bar',
+                data: {
+                    datasets: productNames.filter(f => f != "None").map(m => (
+                        {
+                            label: m,
+                            data: customData,
+                            parsing: {
+                                yAxisKey: m
+                            }
+                        }))
+                },
+                options: {
+                    scales: {
+                        x: {
+                            stacked: true
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    }
+                }
+            }
+        }
+
+        new Chart(ctx, cfg)
+    }
+
+    function calculateAverage(inputData) {
+        let monthlyTotals = {};
+
+        for (let i = 0; i < inputData.length; i++) {
+            let monthObj = inputData[i];
+
+            if (monthObj.value > 0) {
+                let month = monthObj.timeInDate.slice(0, 7);
+                if (!monthlyTotals[month]) {
+                    monthlyTotals[month] = 0;
+                }
+                monthlyTotals[month] += monthObj.value;
+            }
+        }
+
+        let numMonths = Object.keys(monthlyTotals).length;
+        let total = Object.values(monthlyTotals).reduce((a, b) => a + b, 0);
+        let average = total / numMonths;
+        return average || 0;
+    }
+
+
+    function bestMonth(inputData) {
+        let monthlyTotals = {};
+        let highestMonth = "";
+        let highestValue = 0;
+
+        for (let i = 0; i < inputData.length; i++) {
+            let monthObj = inputData[i];
+
+            if (monthObj.value > 0) {
+                let month = monthObj.timeInDate.slice(0, 7);
+
+                if (!monthlyTotals[month]) {
+                    monthlyTotals[month] = 0;
+                }
+
+                monthlyTotals[month] += monthObj.value;
+
+                if (monthlyTotals[month] > highestValue) {
+                    highestMonth = month;
+                    highestValue = monthlyTotals[month];
+                }
+            }
+        }
+
+        const highestMonthName = inputData.find(f => f.timeInDate.startsWith(highestMonth)).timeInText.replace(/ \d{4}/g, "");
+
+        return `${highestMonthName} (${highestValue}€)`
+    }
+
+    function loadYears() {
+        const sel = document.getElementById('selectYear')
+        const currentYear = new Date().getFullYear()
+        const startYear = currentYear - 3
+        for (let i = currentYear; i >= startYear; i--) {
+            const opt = document.createElement('option')
+            if (i == currentYear) {
+                opt.selected = true
+            }
+            opt.value = i
+            opt.innerHTML = i
+            sel.appendChild(opt)
+        }
+    }
+
+    async function changeYear(elem) {
+        const d = await loadData("IncomeData", elem.value);
+        document.getElementById("bestMonth").textContent = bestMonth(d);
+        document.getElementById("average").textContent = calculateAverage(d);
+        dataToTables("IncomeData", d)
+        dataToGraphs("IncomeData", d)
+
+    }
+
+</script>

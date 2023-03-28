@@ -5,10 +5,118 @@
     ViewData["Title"] = "Backoffice";
 }
 
-<div>
-  <div>Backoffice Soon™️</div>
-    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="UserAccess">@StringLocalizer["UserAccess"]</a>
-    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="Clubs">@StringLocalizer["Clubs"]</a>
-    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="DelayedPayments">@StringLocalizer["DelayedPayments"]</a>
-    <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="Modalities">@StringLocalizer["Modalities"]</a>
+<style>
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+        .circle span {
+            word-wrap: break-word;
+            text-align: center;
+        }
+ 
+    #ic .icon{
+        width: 80px;
+        height: 80px;
+        margin-left:15px;
+    }
+</style>
+
+<div class="container-fluid w-100">
+    <div class="d-flex align-items-center" style="margin-top:130px !important;">
+        <h1 class="text-to-dark">@StringLocalizer["StatisticsBackoffice"]</h1>
+    </div>
+
+    <div class="row mt-5 w-100">
+        <div class="col-xs-12 col-sm-12 col-md-4 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle1" title="@StringLocalizer["Circle1Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Clubs.Min<br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Clubs.Max</span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["SportsClubs"]</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 mt-lg-0 mt-sm-3 mt-md-0 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle2" title="@StringLocalizer["Circle2Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Income.Min€ <span class="fs-6">@StringLocalizer["Month"]</span> <br> <span class="fs-6">@StringLocalizer["And"]</span> <br> @Model.Income.Max€ <span class="fs-6">@StringLocalizer["Year"]</span></span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["Income"]</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 mt-lg-0 mt-sm-3 mt-md-0 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle3" title="@StringLocalizer["Circle3Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Codes.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Codes.Max</span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["CodesCreated"]</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle4" title="@StringLocalizer["Circle4Help"]">
+                <span class="text-black fw-bold fs-5 fs-sm-5" style="text-align: center"> @Model.BestSeller.Name <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.BestSeller.Value€ <span class="fs-6">@StringLocalizer["Month"]</span></span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["GreaterAdherence"]</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle5" title="@StringLocalizer["Circle5Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Payments.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @(Model.Payments.Min + Model.Payments.Max)</span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["DelayedPayments"]</span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div id="ic" class="circle" id="circle6" title="@StringLocalizer["Circle6Help"]">
+                <img src="~/img/terms.png" alt="termsAndConditions" class="icon">
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["Terms&Conditions"]</span>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        @*
+            Estes botoes precisam de existir algures na pagina de backoffice.
+            O manage plans ainda nao está feito mas fica ja ai o botao pronto (-Dinis)
+        *@
+        <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="UserAccess">@StringLocalizer["UserAccess"]</a>
+        <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="Modalities">@StringLocalizer["Modalities"]</a>
+        <a class="btn btn1 btn-primary btn-lg col mt-3" asp-controller="Backoffice" asp-action="ManagePlans">@StringLocalizer["ManagePlans_NOT_DONE!!"]</a>
+    </div>
 </div>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#circle1").click(function () {
+            window.location.href = "/Backoffice/Clubs";
+        });
+        $("#circle2").click(function () {
+            window.location.href = "/Backoffice/Income";
+        });
+        $("#circle3").click(function () {
+            window.location.href = "/Backoffice/CodesCreated";
+        });
+        $("#circle4").click(function () {
+            window.location.href = "/Backoffice/Subscription";
+        });
+        $("#circle5").click(function () {
+            window.location.href = "/Backoffice/DelayedPayments";
+        });
+        $("#circle6").click(function () {
+            window.location.href = "/Backoffice/TermsAndConditions";
+        });
+    });
+</script>

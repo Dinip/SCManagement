@@ -2105,4 +2105,84 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Translate</value>
     <comment>27-03-2023_editClub</comment>
   </data>
+  <data name="And" xml:space="preserve">
+    <value>and</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="CodesCreated" xml:space="preserve">
+    <value>Codes Created</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="DelayedPayments" xml:space="preserve">
+    <value>Delayed Payments</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="GreaterAdherence" xml:space="preserve">
+    <value>Greater Adherence</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="SportsClubs" xml:space="preserve">
+    <value>Sports Clubs</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="StatisticsBackoffice" xml:space="preserve">
+    <value>Statistics Backoffice</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Terms&amp;Conditions" xml:space="preserve">
+    <value>Terms &amp; Conditions</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Average</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="BestMonth" xml:space="preserve">
+    <value>Best Month</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle1Help" xml:space="preserve">
+    <value>Number of active clubs out of total clubs created</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle2Help" xml:space="preserve">
+    <value>Total amount received per month and per year</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle3Help" xml:space="preserve">
+    <value>Number of codes used out of the total number created</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle4Help" xml:space="preserve">
+    <value>Plan that was most purchased and its monthly amount</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle5Help" xml:space="preserve">
+    <value>Number of late payments out of total existing payments</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle6Help" xml:space="preserve">
+    <value>Terms and conditions</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="NotConfirm" xml:space="preserve">
+    <value>Do you really want to notify?</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Notify" xml:space="preserve">
+    <value>Notify</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
 </root>

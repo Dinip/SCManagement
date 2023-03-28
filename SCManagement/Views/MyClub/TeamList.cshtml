@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "TeamList";
+    string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
 
 
@@ -45,7 +46,7 @@
                                 @Html.DisplayFor(modelItem => item.CreationDate)
                             </td>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.First().Value)
+                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Trainer.FullName)

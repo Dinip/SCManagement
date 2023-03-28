@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "AthleteTrainingPlans";
+    string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
 <div class="container-fluid ps-5 pe-5">
     <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Training Plans</h1>
@@ -32,7 +33,7 @@
                     {
                         <tr>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.First().Value)
+                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Name)
