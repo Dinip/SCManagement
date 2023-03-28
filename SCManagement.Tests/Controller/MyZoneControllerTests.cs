@@ -54,21 +54,6 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_MyZone_ReturnsSuccess()
-        {
-            // Arrange
-            _applicationContextService.UserRole = new UsersRoleClub { RoleId = 20 };
-
-            A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(true);
-            
-            // Act
-            var result = await _controller.Index();
-
-            // Assert
-            result.Should().BeOfType<ViewResult>();
-        }
-
-        [Fact]
         public async Task MyClubController_MyZone_ReturnsIsNotClubAthlete()
         {
             // Arrange

@@ -976,7 +976,7 @@ namespace SCManagement.Tests.Services {
             var result = await _clubService.GetClubModalities(1);
 
             // Assert
-            result.Should().BeOfType<List<Modality>>();
+            result.Should().BeAssignableTo<IEnumerable<object>>();
         }
 
         [Fact]

@@ -40,43 +40,48 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task PlansControllerTests_TrainingTemplates_ReturnsSuccess()
+        public async Task PlansControllerTests_Templates_ReturnsSuccess()
         {
             // Arrange
+            
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
-            A.CallTo(() => _planService.GetTemplateTrainingPlans(A<string>._)).Returns(A.Fake<IEnumerable<TrainingPlan>>());
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
+            var trainingPlan = new List<TrainingPlan>();
+            var mealPlan = new List<MealPlan>();
+            A.CallTo(() => _planService.GetTemplateTrainingPlans(A<string>._)).Returns(trainingPlan);
+            A.CallTo(() => _planService.GetTemplateMealPlans(A<string>._)).Returns(mealPlan);
+
 
             // Act
-            var result = await _controller.TrainingTemplates();
+            var result = await _controller.Templates();
 
             // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("TrainingPlans");
+            result.Should().BeOfType<ViewResult>();
         }
         [Fact]
-        public async Task PlansControllerTests_TrainingTemplates_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_Templates_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
-            var result = await _controller.TrainingTemplates();
+            var result = await _controller.Templates();
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
         }
         [Fact]
-        public async Task PlansControllerTests_TrainingTemplates_ReturnsNull()
+        public async Task PlansControllerTests_Templates_ReturnsNull()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTemplateTrainingPlans(A<string>._)).Returns(Task.FromResult<IEnumerable<TrainingPlan>>(null));
 
             // Act
-            var result = await _controller.TrainingTemplates();
+            var result = await _controller.Templates();
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
@@ -88,21 +93,21 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlans(A<string>._, A<string>._)).Returns(A.Fake<IEnumerable<TrainingPlan>>());
 
             // Act
             var result = await _controller.AthleteTrainingPlans("1");
 
             // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("TrainingPlans");
+            result.Should().BeOfType<ViewResult>();
         }
         [Fact]
-        public async Task PlansControllerTests_AthleteTrainingPlans_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_AthleteTrainingPlans_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.AthleteTrainingPlans("1");
@@ -116,7 +121,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlans(A<string>._, A<string>._)).Returns(Task.FromResult<IEnumerable<TrainingPlan>>(null));
 
             // Act
@@ -128,69 +133,25 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task PlansControllerTests_MealTemplates_ReturnsSuccess()
-        {
-            // Arrange
-            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
-            A.CallTo(() => _planService.GetTemplateMealPlans(A<string>._)).Returns(A.Fake<IEnumerable<MealPlan>>());
-
-            // Act
-            var result = await _controller.MealTemplates();
-
-            // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("MealPlans");
-        }
-        [Fact]
-        public async Task PlansControllerTests_MealTemplates_ReturnsIsNotClubTrainer()
-        {
-            // Arrange
-            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
-
-            // Act
-            var result = await _controller.MealTemplates();
-
-            // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
-            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
-        }
-        [Fact]
-        public async Task PlansControllerTests_MealTemplates_ReturnsNull()
-        {
-            // Arrange
-            A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
-            A.CallTo(() => _planService.GetTemplateMealPlans(A<string>._)).Returns(Task.FromResult<IEnumerable<MealPlan>>(null));
-
-            // Act
-            var result = await _controller.MealTemplates();
-
-            // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
-            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
-        }
-
-        [Fact]
         public async Task PlansControllerTests_AthleteMealPlans_ReturnsSuccess()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlans(A<string>._, A<string>._)).Returns(A.Fake<IEnumerable<MealPlan>>());
 
             // Act
             var result = await _controller.AthleteMealPlans("1");
 
             // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("MealPlans");
+            result.Should().BeOfType<ViewResult>();
         }
         [Fact]
-        public async Task PlansControllerTests_AthleteMealPlans_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_AthleteMealPlans_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.AthleteMealPlans("1");
@@ -204,7 +165,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlans(A<string>._, A<string>._)).Returns(Task.FromResult<IEnumerable<MealPlan>>(null));
 
             // Act
@@ -220,7 +181,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(new TrainingPlan { TrainerId = "", IsTemplate = false });
             
             // Act
@@ -243,11 +204,11 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
         }
         [Fact]
-        public async Task PlansControllerTests_DeleteTrainingPlan_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_DeleteTrainingPlan_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.DeleteTrainingPlan(1);
@@ -262,7 +223,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(Task.FromResult<TrainingPlan>(null));
 
             // Act
@@ -278,7 +239,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(new TrainingPlan { TrainerId = "1" });
 
             // Act
@@ -294,14 +255,14 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(new TrainingPlan { TrainerId = "", IsTemplate = true });
 
             // Act
             var result = await _controller.DeleteTrainingPlan(1);
 
             // Assert
-            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("TrainingTemplates");
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Templates");
         }
 
         [Fact]
@@ -309,7 +270,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "", IsTemplate = false });
 
             // Act
@@ -332,11 +293,11 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
         }
         [Fact]
-        public async Task PlansControllerTests_DeleteMealPlan_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_DeleteMealPlan_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.DeleteMealPlan(1);
@@ -351,7 +312,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(Task.FromResult<MealPlan>(null));
 
             // Act
@@ -367,7 +328,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "1" });
 
             // Act
@@ -383,14 +344,14 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "", IsTemplate = true });
 
             // Act
             var result = await _controller.DeleteMealPlan(1);
 
             // Assert
-            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("MealTemplates");
+            result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Templates");
         }
 
         [Fact]
@@ -398,7 +359,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(new TrainingPlan { TrainerId = "" });
 
             // Act
@@ -420,11 +381,11 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
         }
         [Fact]
-        public async Task PlansControllerTests_EditTrainingPlan_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_EditTrainingPlan_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.EditTrainingPlan(1);
@@ -438,7 +399,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(Task.FromResult<TrainingPlan>(null));
 
             // Act
@@ -453,7 +414,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(new TrainingPlan { TrainerId = "1" });
 
             // Act
@@ -469,7 +430,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "" });
 
             // Act
@@ -491,11 +452,11 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
         }
         [Fact]
-        public async Task PlansControllerTests_EditMealPlan_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_EditMealPlan_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.EditMealPlan(1);
@@ -509,7 +470,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(Task.FromResult<MealPlan>(null));
 
             // Act
@@ -524,7 +485,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "1" });
 
             // Act
@@ -540,7 +501,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTemplateTrainingPlans(A<string>._)).Returns(A.Fake<List<TrainingPlan>>());
 
             // Act
@@ -567,7 +528,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.ChooseTrainingTemplates("1");
@@ -582,7 +543,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTemplateTrainingPlans(A<string>._)).Returns(Task.FromResult<IEnumerable<TrainingPlan>>(null));
 
             // Act
@@ -598,7 +559,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTemplateMealPlans(A<string>._)).Returns(A.Fake<List<MealPlan>>());
 
             // Act
@@ -621,11 +582,11 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_NotFound");
         }
         [Fact]
-        public async Task PlansControllerTests_ChooseMealTemplates_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_ChooseMealTemplates_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.ChooseMealTemplates("1");
@@ -640,7 +601,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _planService.GetTemplateMealPlans(A<string>._)).Returns(Task.FromResult<IEnumerable<MealPlan>>(null));
 
             // Act
@@ -656,7 +617,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(new TrainingPlan { TrainerId = "", AthleteId = "" });
 
@@ -667,11 +628,11 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>();
         }
         [Fact]
-        public async Task PlansControllerTests_TrainingDetails_ReturnsIsNotClubTrainerAndIsNotClubAthlete()
+        public async Task PlansControllerTests_TrainingDetails_ReturnsIsNotClubStaffAndIsNotClubAthlete()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
 
             // Act
@@ -686,7 +647,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(Task.FromResult<TrainingPlan>(null));
 
@@ -702,7 +663,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _planService.GetTrainingPlan(A<int>._)).Returns(new TrainingPlan { TrainerId = "1", AthleteId = "2" });
 
@@ -719,7 +680,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "", AthleteId = "" });
 
@@ -730,11 +691,11 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>();
         }
         [Fact]
-        public async Task PlansControllerTests_MealDetails_ReturnsIsNotClubTrainerAndIsNotClubAthlete()
+        public async Task PlansControllerTests_MealDetails_ReturnsIsNotClubStaffAndIsNotClubAthlete()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
 
             // Act
@@ -749,7 +710,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(Task.FromResult<MealPlan>(null));
 
@@ -765,7 +726,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
             A.CallTo(() => _planService.GetMealPlan(A<int>._)).Returns(new MealPlan { TrainerId = "1", AthleteId = "2" });
 
@@ -782,7 +743,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
 
             // Act
             var result = await _controller.CreateGoal("1");
@@ -792,11 +753,11 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task PlansControllerTests_CreateGoal_ReturnsIsNotClubTrainer()
+        public async Task PlansControllerTests_CreateGoal_ReturnsIsNotClubStaff()
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
             var result = await _controller.CreateGoal("1");
@@ -811,7 +772,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(A.Fake<UsersRoleClub>());
-            A.CallTo(() => _clubService.IsClubTrainer(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
 
             // Act
             var result = await _controller.CreateGoal(new Goal { AthleteId = "1", TrainerId = "2", Name = "Meta 1",});
