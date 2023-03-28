@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "MyTeams";
+    string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
 
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
@@ -36,7 +37,7 @@
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.First().Value)
+                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Trainer.FullName)

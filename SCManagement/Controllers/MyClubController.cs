@@ -506,7 +506,9 @@ namespace SCManagement.Controllers
             //Only Manager or Trainer can create teams
             ViewBag.CanCreate = (_clubService.IsClubManager(role) | _clubService.IsClubTrainer(role)) ? true : false;
 
-            return View(await _teamService.GetTeams(role.ClubId));
+            var team = await _teamService.GetTeams(role.ClubId);
+
+            return View(team);
         }
 
         /// <summary>
@@ -643,7 +645,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,TrainerId,ModalityId")] TeamModel team)
         {
             if (id == null) return View("CustomError", "Error_NotFound");
-
+            
             //check model state
             if (!ModelState.IsValid) return View(team);
 
