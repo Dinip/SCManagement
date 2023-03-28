@@ -176,7 +176,6 @@ input:checked + .slider:before {
 .card {
     background: #3d4245;
     backdrop-filter: blur(30px);
-    max-height: 900px;
     border-radius: 20px;
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 }
