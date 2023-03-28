@@ -2238,6 +2238,14 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Ano</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
   </data>
+  <data name="Average" xml:space="preserve">
+    <value>Média</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="BestMonth" xml:space="preserve">
+    <value>Melhor Mês</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
   <data name="Circle1Help" xml:space="preserve">
     <value>Número de clubes ativos do total de clubes criados</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
@@ -2260,6 +2268,22 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
   </data>
   <data name="Circle6Help" xml:space="preserve">
     <value>Termos e Condições</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Não</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="NotConfirm" xml:space="preserve">
+    <value>Quer mesmo notificar?</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Notify" xml:space="preserve">
+    <value>Notificar</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Sim</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
   </data>
 </root>

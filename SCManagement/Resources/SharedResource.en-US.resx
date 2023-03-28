@@ -2108,6 +2108,14 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Year</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
   </data>
+  <data name="Average" xml:space="preserve">
+    <value>Average</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="BestMonth" xml:space="preserve">
+    <value>Best Month</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
   <data name="Circle1Help" xml:space="preserve">
     <value>Number of active clubs out of total clubs created</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
@@ -2130,6 +2138,22 @@ I have experience in the area and I am very focused on my goals.</value>
   </data>
   <data name="Circle6Help" xml:space="preserve">
     <value>Terms and conditions</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="NotConfirm" xml:space="preserve">
+    <value>Do you really want to notify?</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Notify" xml:space="preserve">
+    <value>Notify</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
     <comment>27-03-2023_StatisticsBackoffice</comment>
   </data>
 </root>

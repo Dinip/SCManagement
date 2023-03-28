@@ -2,13 +2,25 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "Delayed Payments";
+    ViewData["Title"] = @StringLocalizer["DelayedPayments"];
 }
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
 
+<style>
+    #modal1 {
+        min-width:132px;
+        min-height:132px;
+    }
+</style>
+
 <div class="container-fluid ps-5 pe-5">
-    @if(ViewBag.Message != null)
+
+    <div class="d-flex align-items-center" style="margin-top:130px !important; margin-left:3%">
+        <h1 class="text-to-dark">@StringLocalizer["DelayedPayments"]</h1>
+    </div>
+
+    @if (ViewBag.Message != null)
     {
         <div style="color:green;">@StringLocalizer[ViewBag.Message]</div>
     }
@@ -48,19 +60,29 @@
                             <td class="text-to-dark">
                                 @Html.DisplayFor(_ => subscription.Value)€
                             </td>
-                            <td class="justify-content-end d-flex">
-                                <form asp-action="NotifyMissingPayment">
+                            <td class="justify-content-end">
+                                <form asp-action="NotifyMissingPayment" id="myForm">
                                     <input name="subId" value="@subscription.Id" class="form-control" hidden />
                                     <input type="submit"
-                                           value='@StringLocalizer["Notify"]'
-                                           class='btn btn-primary'
-                                           onclick="return confirm('@StringLocalizer["NotifyConfirm"]')" />
+                                       value='@StringLocalizer["Notify"]'
+                                       class='btn btn-primary'
+                                       onclick="toggleRemoveModal()" />
                                 </form>
                             </td>
                         </tr>
                     }
                 </tbody>
             </table>
+        </div>
+    </div>
+
+    <div id="modal1" class="modal">
+        <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+            <span class="text-to-dark">@StringLocalizer["NotConfirm"]</span>
+            <div class="d-flex justify-content-end mt-3">
+                <a onclick="confirmAction()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Yes"]</a>
+                <a onclick="$('#modal1').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red;"><strong>@StringLocalizer["No"]</strong></a>
+            </div>
         </div>
     </div>
 </div>
@@ -76,7 +98,36 @@
             order: [],
             columnDefs: [
                 { orderable: false }
-            ]
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
     });
+
+    document.getElementById('myForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+        toggleRemoveModal();
+    });
+
+    function toggleRemoveModal() {
+        $("#modal1").show();
+    }
+
+    function confirmAction() {
+        document.getElementById('myForm').submit();
+    }
 </script>
