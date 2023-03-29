@@ -8,13 +8,6 @@
     
 }
 
-<div id="modal" class="modal">
-    <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
-        <span onclick="$('#modal').hide()" class="close">&times;</span> 
-        <iframe id="frame" src="@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : Model.EMDUrl)" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%"></iframe>
-    </div>
-</div>
-
 <div id="modal1" class="modal">
     <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
         <span class="text-to-dark">@StringLocalizer["Are u sure you want to delete?"]</span>
@@ -178,7 +171,6 @@
                 document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`).classList.remove("invisible")
             } else {
                 document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`).value = null
-                //alert(only + ' ' + `${allowedTypes.join('/')}` + '' + allow); //falta traduzir
                 $(".toast").show();
                 document.getElementById('alertText').innerHTML = "only" + ' ' + `${allowedTypes.join('/')}` + ' ' + "allowed";
             }
