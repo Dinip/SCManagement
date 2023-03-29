@@ -55,8 +55,6 @@ namespace SCManagement.Services.EmailService
 
             var response = await email.SendAsync();
 
-            Console.WriteLine(response);
-
             _logger.LogInformation(response.Successful
                                    ? $"Email to {toEmail} queued successfully!"
                                    : $"Failure Email to {toEmail}");

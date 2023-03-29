@@ -23,7 +23,7 @@ namespace SCManagement.Services.NotificationService
             BackgroundWorkerService backgroundWorker,
             IServiceProvider serviceProvider,
             SharedResourceService sharedResource,
-            IHttpContextAccessor httpContext,
+            IHttpContextAccessor httpContext
             )
         {
             _backgroundWorker = backgroundWorker;
