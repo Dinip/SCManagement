@@ -214,10 +214,10 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 await CheckAndDeleteProfilePicture(user);
             }
 
-            if (Input.RemoveEMD)
-            {
-                await CheckAndDeleteEMD(user);
-            }
+            //if (Input.RemoveEMD)
+            //{
+            //    await CheckAndDeleteEMD(user);
+            //}
 
             if (Input.File != null)
             {
@@ -244,30 +244,30 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if (Input.FileEMD != null)
-            {
-                BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.FileEMD);
-                if (uploadResult.Error)
-                {
-                    if (uploadResult.Status.Contains("10MB"))
-                    {
-                        StatusMessage = uploadResult.Status;
-                    }
-                    else
-                    {
-                        StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
-                    }
-                    return RedirectToPage();
-                }
-                await CheckAndDeleteEMD(user);
-                user.EMD = uploadResult.Blob;
-                var result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
-                {
-                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
-                    return RedirectToPage();
-                }
-            }
+            //if (Input.FileEMD != null)
+            //{
+            //    BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.FileEMD);
+            //    if (uploadResult.Error)
+            //    {
+            //        if (uploadResult.Status.Contains("10MB"))
+            //        {
+            //            StatusMessage = uploadResult.Status;
+            //        }
+            //        else
+            //        {
+            //            StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
+            //        }
+            //        return RedirectToPage();
+            //    }
+            //    await CheckAndDeleteEMD(user);
+            //    user.EMD = uploadResult.Blob;
+            //    var result = await _userManager.UpdateAsync(user);
+            //    if (!result.Succeeded)
+            //    {
+            //        StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
+            //        return RedirectToPage();
+            //    }
+            //}
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = _stringLocalizer["StatusMessage_ProfileUpdate"];
