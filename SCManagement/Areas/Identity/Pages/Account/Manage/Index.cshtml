@@ -8,13 +8,6 @@
     
 }
 
-<div id="modal" class="modal">
-    <div class="modal-content" style="margin-top:7%; margin-bottom:0; min-height:70%">
-        <span onclick="$('#modal').hide()" class="close">&times;</span> 
-        <iframe id="frame" src="@(Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : Model.EMDUrl)" title="EMD" frameborder="0" style="overflow:hidden;height:600px;width:100%"></iframe>
-    </div>
-</div>
-
 <div id="modal1" class="modal">
     <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
         <span class="text-to-dark">@StringLocalizer["Are u sure you want to delete?"]</span>
@@ -86,30 +79,7 @@
                     </div>
                 </div>
                 <hr style="margin-bottom:20px;" />
-                
-                @if (Model.IsAtleteInAnyClub != false)
-                {
-                    <div class="row h-auto">
-                        <div class="col-2">
-                            <strong class="text-to-dark">EMD</strong>
-                        </div>
-                        <div class="col-10 text-end">
-                            <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" style="margin-right:20px;" onclick="toggleModal()"></i>
-
-
-
-                            <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
                             
-
-                            <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
-                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')" ></i>
-                            <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
-                        </div>
-                    </div>
-                    <hr style="margin-bottom:20px;" />
-                    
-                }
-               
                 
 
                 <button id="update-profile-button" style="border-radius: 10px;
@@ -123,10 +93,7 @@
                 <div>
                     <input id="selectedFile" asp-for="Input.File" type="file" class="form-control d-none" accept="image/*"
                            onchange="handleUpload(this, 'image')" />
-                    <input id="selectedFileForEMD" asp-for="Input.FileEMD" type="file" class="form-control d-none" accept="application/pdf"
-                           onchange="handleUpload(this, 'pdf')" />
                     <input id="removeImage" asp-for="Input.RemoveImage" type="hidden" />
-                    <input id="removeEMD" asp-for="Input.RemoveEMD" type="hidden" />
                 </div>
             </form>
         </div>
@@ -204,7 +171,6 @@
                 document.getElementById(`btnRemove${fileType === 'image' ? 'Image' : 'EMD'}`).classList.remove("invisible")
             } else {
                 document.getElementById(`selectedFile${fileType === 'image' ? '' : 'ForEMD'}`).value = null
-                //alert(only + ' ' + `${allowedTypes.join('/')}` + '' + allow); //falta traduzir
                 $(".toast").show();
                 document.getElementById('alertText').innerHTML = "only" + ' ' + `${allowedTypes.join('/')}` + ' ' + "allowed";
             }

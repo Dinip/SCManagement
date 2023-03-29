@@ -2,11 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 #nullable disable
 
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Encodings.Web;
-using System.Threading.Tasks;
-using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -60,10 +56,6 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
 
         public string ProfilePictureUrl { get; set; }
 
-        public string EMDUrl { get; set; }
-
-        public bool IsAtleteInAnyClub { get; set; }
-
         /// <summary>
         ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
         ///     directly from your code. This API may change or be removed in future releases.
@@ -105,9 +97,7 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             public DateTime? DateOfBirth { get; set; }
 
             public IFormFile? File { get; set; }
-            public IFormFile? FileEMD { get; set; }
             public bool RemoveImage { get; set; } = false;
-            public bool RemoveEMD { get; set; } = false;
         }
 
         private async Task LoadAsync(User user)
@@ -115,12 +105,9 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             var userWithPFP = await _context.Users.Include(u => u.ProfilePicture).FirstOrDefaultAsync(u => u.Id == user.Id);
-            var userWithEMD = await _context.Users.Include(u => u.EMD).FirstOrDefaultAsync(u => u.Id == user.Id);
 
-            IsAtleteInAnyClub = await _userService.IsAtleteInAnyClub(user.Id);
             Username = userName;
             ProfilePictureUrl = userWithPFP.ProfilePicture == null ? "https://cdn.scmanagement.me/public/user_placeholder.png" : userWithPFP.ProfilePicture.Uri;
-            EMDUrl = userWithEMD.EMD == null ? _stringLocalizer["Pending_Add"] : userWithEMD.EMD.Uri;
 
             Input = new InputModel
             {
@@ -158,8 +145,8 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 return Page();
             }
 
-            //override user with information about profile picture and EMD
-            user = await _context.Users.Include(c => c.ProfilePicture).Include(c => c.EMD).FirstAsync(u => u.Id == user.Id);
+            //override user with information about profile picture
+            user = await _context.Users.Include(c => c.ProfilePicture).FirstAsync(u => u.Id == user.Id);
 
             //Checks if the user first name is diferent from the user first name saved, and if so trie to update 
             if (user.FirstName != Input.FirstName)
@@ -214,11 +201,6 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 await CheckAndDeleteProfilePicture(user);
             }
 
-            if (Input.RemoveEMD)
-            {
-                await CheckAndDeleteEMD(user);
-            }
-
             if (Input.File != null)
             {
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.File);
@@ -244,31 +226,6 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if (Input.FileEMD != null)
-            {
-                BlobResponseDto uploadResult = await _azureStorage.UploadAsync(Input.FileEMD);
-                if (uploadResult.Error)
-                {
-                    if (uploadResult.Status.Contains("10MB"))
-                    {
-                        StatusMessage = uploadResult.Status;
-                    }
-                    else
-                    {
-                        StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
-                    }
-                    return RedirectToPage();
-                }
-                await CheckAndDeleteEMD(user);
-                user.EMD = uploadResult.Blob;
-                var result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
-                {
-                    StatusMessage = $"{_stringLocalizer["StatusMessage_ErrorUpdate"]} {_stringLocalizer["EMD"]}";
-                    return RedirectToPage();
-                }
-            }
-
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = _stringLocalizer["StatusMessage_ProfileUpdate"];
             return RedirectToPage();
@@ -283,19 +240,6 @@ namespace SCManagement.Areas.Identity.Pages.Account.Manage
                 await _azureStorage.DeleteAsync(user.ProfilePicture.Uuid);
                 _context.BlobDto.Remove(user.ProfilePicture);
                 user.ProfilePicture = null;
-                //update user and save changes
-                _context.Update(user);
-                await _context.SaveChangesAsync();
-            }
-        }
-
-        private async Task CheckAndDeleteEMD(User user)
-        {
-            if (user.EMD != null)
-            {
-                await _azureStorage.DeleteAsync(user.EMD.Uuid);
-                _context.BlobDto.Remove(user.EMD);
-                user.EMD = null;
                 //update user and save changes
                 _context.Update(user);
                 await _context.SaveChangesAsync();
