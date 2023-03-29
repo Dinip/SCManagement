@@ -1,44 +1,31 @@
-﻿@model SCManagement.Models.Team
+﻿@model IEnumerable<SCManagement.Models.User>
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 <h1>Atletas</h1>
     
 <form method="post" asp-action="AddTeamAthletes">
-@*    <table class="table">
-        <tr>
-            <th>@Html.DisplayNameFor(model => model.FullName)</th>
-            <th>@Html.DisplayNameFor(model => model.Age)</th>
-            <th></th>
-        </tr>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>@Html.DisplayFor(modelItem => item.FullName)</td>
-                <td>@Html.DisplayFor(modelItem => item.Age)</td>
-                <td><input type="checkbox" name="selectedAthletes" value="@item.Id"></td>
-
-            </tr>
-        }
-    </table>*@
-    
-
     <div class="row col-12 ps-5 pe-5 pb-5 flex-wrap">
         <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
             <div class="card-body d-flex flex-column text-to-dark">
                 <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
                     <table id="table_id1" class="display" style="width:100%!important;">
                         <thead>
-                            <tr class="text-to-dark">
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                    @StringLocalizer["Fullname"]
-                                </th>
-                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                    @StringLocalizer["Age"]
-                                </th>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.FullName)</th>
+                                <th>@Html.DisplayNameFor(model => model.Age)</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.FullName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Age)</td>
+                                <td><input type="checkbox" name="selectedAthletes" value="@item.Id"></td>
+
+                            </tr>
+                        }
                         </tbody>
                     </table>
                 </div>
@@ -46,11 +33,7 @@
             </div>
         </div>
     </div>
-
     <button>@StringLocalizer["ButtonAdd"]</button>
-
-
-    
 </form>
 
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
@@ -61,25 +44,8 @@
 <script>
     
     $(document).ready(function () {
-        console.log("@Model.Id")
-
         $.noConflict();
         $("#table_id1").DataTable({
-            ajax: {
-                url: "/MyClub/GetAthletesAvailable/@Model.Id",
-                type: "GET",
-                dataType: "json",
-            },
-            columns: [
-                { "data": "fullName" },
-                { "data": "age" },
-                {
-                    "data": "id",
-                    "render": function (data, type, row) {
-                        return '<input type="checkbox" name="selectedAthletes" value="' + data + '"/>';
-                    }
-                }
-            ],
             destroy: true,
             responsive: true,
             "dom": 't',

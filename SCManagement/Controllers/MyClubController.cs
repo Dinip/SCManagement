@@ -713,20 +713,12 @@ namespace SCManagement.Controllers
             //if he is trainer need to be the trainer of the team
             if (_clubService.IsClubTrainer(role) && team.TrainerId != _applicationContextService.UserId) return View("CustomError", "Error_Unauthorized");
 
-            return PartialView("_PartialAddTeamAthletes", team);
-        }
-
-        public async Task<IActionResult> GetAthletesAvailable(int id)
-        {
-            Team? team = await _teamService.GetTeam(id);
-
-            if (team == null) return View("CustomError", "Error_NotFound");
-
             List<User> clubAthletes = (await _clubService.GetAthletes(team.ClubId)).ToList();
             //check which athletes are available 
             IEnumerable<User> avaliableAthletes = clubAthletes.Where(x => !team.Athletes.Any(y => y.Id == x.Id)).ToList();
 
-            return Json(new { data = avaliableAthletes });
+
+            return PartialView("_PartialAddTeamAthletes", avaliableAthletes);
         }
 
 
