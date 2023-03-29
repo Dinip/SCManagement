@@ -2,7 +2,7 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = Model.Name + "Details";
+    ViewData["Title"] = Model.Name + @StringLocalizer["Details"];
     string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
 

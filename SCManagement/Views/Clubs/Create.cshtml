@@ -1,7 +1,7 @@
 ﻿@model SCManagement.Controllers.ClubsController.CreateClubModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = @StringLocalizer["Create a club"];
     var plan = (SCManagement.Services.PaymentService.Models.Product)ViewBag.SelectedPlan;
 
 }

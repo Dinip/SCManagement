@@ -2319,4 +2319,72 @@ As long as the website and the information and services provided therein are fre
     <value>We will not be responsible for any content that appears on your site. You agree to protect and defend us against all claims raised on your site. No links shall appear on any website that could be construed as libelous, obscene or criminal, or that infringes, otherwise violates or advocates the infringement or other violation of any third party rights.</value>
     <comment>28-03-2023_TermsAndConditions</comment>
   </data>
+  <data name="AthletesList" xml:space="preserve">
+    <value>Athletes List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="AthleteTrainingPlans" xml:space="preserve">
+    <value>Athlete Training Plans</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="CodesList" xml:space="preserve">
+    <value>Codes List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Confirm password</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="CreateGoal" xml:space="preserve">
+    <value>Create Goal</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="EditGoal" xml:space="preserve">
+    <value>Edit Goal</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="EditTeam" xml:space="preserve">
+    <value>Edit Team</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="GoalsList" xml:space="preserve">
+    <value>Goals List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Home Page</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="MealDetails" xml:space="preserve">
+    <value>Meal Details</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="MealPlanTemplates" xml:space="preserve">
+    <value>Meal Plan Templates</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="MyClub" xml:space="preserve">
+    <value>My Club</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="ResendEmailConfirmation" xml:space="preserve">
+    <value>Resend email confirmation</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="StaffList" xml:space="preserve">
+    <value>Staff List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="TeamList" xml:space="preserve">
+    <value>Team List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="TrainingDetails" xml:space="preserve">
+    <value>Training Details</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="TrainingPlanTemplates" xml:space="preserve">
+    <value>Training Plan Templates</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
 </root>

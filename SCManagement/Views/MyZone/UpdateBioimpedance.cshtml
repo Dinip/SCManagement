@@ -1,6 +1,9 @@
 ﻿@model SCManagement.Models.Bioimpedance
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
+@{
+    ViewData["Title"] = @StringLocalizer["UpdateBio"];
+}
 
 <div class="container">
     <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["UpdateBio"]</h1>

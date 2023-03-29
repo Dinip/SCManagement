@@ -2,7 +2,7 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "MyTeams";
+    ViewData["Title"] = @StringLocalizer["MyTeams"];
     string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
 
