@@ -11,6 +11,7 @@ using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService.Models;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services.ClubService
@@ -23,6 +24,7 @@ namespace SCManagement.Services.ClubService
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
         private readonly IPaymentService _paymentService;
+        private readonly INotificationService _notificationService;
 
         public ClubService(
             ApplicationDbContext context,
@@ -30,7 +32,8 @@ namespace SCManagement.Services.ClubService
             IHttpContextAccessor httpContext,
             SharedResourceService sharedResource,
             IAzureStorage azureStorage,
-            IPaymentService paymentService
+            IPaymentService paymentService,
+            INotificationService notificationService
             )
         {
             _context = context;
@@ -39,6 +42,7 @@ namespace SCManagement.Services.ClubService
             _sharedResource = sharedResource;
             _azureStorage = azureStorage;
             _paymentService = paymentService;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -934,58 +938,12 @@ namespace SCManagement.Services.ClubService
             {
                 currentSettings.QuotaFrequency = settings.QuotaFrequency;
                 currentSettings.QuotaFee = settings.QuotaFee;
-                await notifyPartnersQuotaChange(currentSettings.ClubPaymentSettingsId, settings);
+                _notificationService.NotifyQuotaUpdate(currentSettings.ClubPaymentSettingsId, settings);
             }
 
             _context.ClubPaymentSettings.Update(currentSettings);
             await _context.SaveChangesAsync();
             return currentSettings;
-        }
-
-        private async Task notifyPartnersQuotaChange(int clubId, ClubPaymentSettings settings)
-        {
-            var partners = await GetClubPartners(clubId);
-            var club = await GetClub(clubId);
-
-            string hostUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}";
-
-            foreach (var partner in partners)
-            {
-                var sub = await _context.Subscription
-                    .Include(p => p.Product)
-                    .FirstOrDefaultAsync(f =>
-                    f.UserId == partner.UserId &&
-                    f.Product.ClubId == clubId &&
-                    f.Product.ProductType == PaymentService.Models.ProductType.ClubMembership
-                );
-                if (sub != null && sub.AutoRenew)
-                {
-                    await _paymentService.CancelAutoSubscription(sub.Id);
-                }
-
-                if (!partner.User.Email.ToLower().Contains("scmanagement"))
-                {
-                    string lang = partner.User.Language;
-
-                    string emailBody = _sharedResource.Get("Email_ClubFees", lang);
-
-                    Dictionary<string, string> values = new Dictionary<string, string>
-                    {
-                    { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.ToString(), lang) },
-                    { "_PRICE_", $"{settings.QuotaFee.ToString()}€"},
-                    { "_CLUB_", club.Name },
-                    { "_SUBSCRIPTION_", sub != null ? $"{hostUrl}/Subscription?subId={sub.Id}" : $"{hostUrl}/Subscription"},
-                    };
-
-                    foreach (KeyValuePair<string, string> entry in values)
-                    {
-                        emailBody = emailBody.Replace(entry.Key, entry.Value);
-                    }
-
-                    await _emailSender.SendEmailAsync(partner.User.Email, _sharedResource.Get("Subject_ClubFees", lang), emailBody);
-                }
-            }
-            return;
         }
 
         public async Task<ClubSlots> ClubAthleteSlots(int clubId)
