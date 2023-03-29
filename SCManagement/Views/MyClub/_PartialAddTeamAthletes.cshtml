@@ -1,10 +1,10 @@
-﻿@model IEnumerable<SCManagement.Models.User>
+﻿@model SCManagement.Models.Team
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 <h1>Atletas</h1>
     
 <form method="post" asp-action="AddTeamAthletes">
-    <table class="table">
+@*    <table class="table">
         <tr>
             <th>@Html.DisplayNameFor(model => model.FullName)</th>
             <th>@Html.DisplayNameFor(model => model.Age)</th>
@@ -19,9 +19,90 @@
 
             </tr>
         }
-    </table>
+    </table>*@
+    
+
+    <div class="row col-12 ps-5 pe-5 pb-5 flex-wrap">
+        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+            <div class="card-body d-flex flex-column text-to-dark">
+                <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                    <table id="table_id1" class="display" style="width:100%!important;">
+                        <thead>
+                            <tr class="text-to-dark">
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
+                                    @StringLocalizer["Fullname"]
+                                </th>
+                                <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
+                                    @StringLocalizer["Age"]
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <button>@StringLocalizer["ButtonAdd"]</button>
+
+
+    
 </form>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+
+<script>
+    
+    $(document).ready(function () {
+        console.log("@Model.Id")
+
+        $.noConflict();
+        $("#table_id1").DataTable({
+            ajax: {
+                url: "/MyClub/GetAthletesAvailable/@Model.Id",
+                type: "GET",
+                dataType: "json",
+            },
+            columns: [
+                { "data": "fullName" },
+                { "data": "age" },
+                {
+                    "data": "id",
+                    "render": function (data, type, row) {
+                        return '<input type="checkbox" name="selectedAthletes" value="' + data + '"/>';
+                    }
+                }
+            ],
+            destroy: true,
+            responsive: true,
+            "dom": 't',
+            "info": false,
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
+        });
+    })
+</script>
 
 @section Scripts {
     @{

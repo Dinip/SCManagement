@@ -61,11 +61,11 @@
                     {
                         @foreach (var item in Model.Athletes)
                         {
-                            <tr onclick="openDetails('@item.Id')" style="cursor:pointer">
-                                <td class="text-to-dark">
+                            <tr style="cursor:pointer">
+                                <td onclick="openDetails('@item.Id')" class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.FullName)
                                 </td>
-                                <td class="text-to-dark">
+                                <td onclick="openDetails('@item.Id')" class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.Age)
                                 </td>
                                 <td class="d-flex justify-content-end">
