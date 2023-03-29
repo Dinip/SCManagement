@@ -416,7 +416,7 @@ namespace SCManagement.Controllers
                 {
                     
                 }
-                else if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
+                else if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now || myEvent.Fee < 0)
                 {
                     return View("CustomError", "Error_InvalidInput");
                 }
