@@ -19,6 +19,7 @@ using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
 using FluentEmail.Core;
+using SCManagement.Data.Migrations;
 
 namespace SCManagement.Controllers
 {
@@ -719,6 +720,7 @@ namespace SCManagement.Controllers
 
             return PartialView("_PartialAddTeamAthletes", avaliableAthletes);
         }
+
 
         /// <summary>
         /// Adds an athlete to a team (post)

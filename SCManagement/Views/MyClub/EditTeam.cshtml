@@ -8,7 +8,7 @@
     <div id="modal" class="modal">
         <div class="modal-content">
             <span onclick="$('#modal').hide()" class="close">&times;</span>
-            <div id="modal-inner-content">
+            <div id="modal-inner-content" class="text-to-dark">
             </div>
         </div>
     </div>
@@ -61,11 +61,11 @@
                     {
                         @foreach (var item in Model.Athletes)
                         {
-                            <tr onclick="openDetails('@item.Id')" style="cursor:pointer">
-                                <td class="text-to-dark">
+                            <tr style="cursor:pointer">
+                                <td onclick="openDetails('@item.Id')" class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.FullName)
                                 </td>
-                                <td class="text-to-dark">
+                                <td onclick="openDetails('@item.Id')" class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.Age)
                                 </td>
                                 <td class="d-flex justify-content-end">
@@ -92,6 +92,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
         let modal = document.getElementById("modal")
         window.onclick = function (event) {
