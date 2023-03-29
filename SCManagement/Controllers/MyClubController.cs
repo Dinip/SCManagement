@@ -375,13 +375,11 @@ namespace SCManagement.Controllers
                 {
                     var user = await _userService.GetUser(userRoleToBeRomoved.UserId);
 
-                    teams.ForEach(async team =>
-                    {
-                        await _teamService.RemoveAthlete(team, user);
-                    });
+                    var tasks = teams.Select(team => _teamService.RemoveAthlete(team, user));
+                    await Task.WhenAll(tasks);
                 }
             }
-
+            
             //remove a user(role) from a club
             await _clubService.RemoveClubUser(userRoleToBeRomoved.Id);
 
