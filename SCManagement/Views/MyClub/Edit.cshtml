@@ -2,7 +2,7 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = @StringLocalizer["Edit"];
     string ShowRemoveButton() => (Model.PhotoUri != null && Model.PhotoUri.Contains("uploads")) ? "" : "d-none";
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

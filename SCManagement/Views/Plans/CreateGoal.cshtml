@@ -1,11 +1,11 @@
 ﻿@model SCManagement.Services.PlansService.Models.Goal
 @inject IStringLocalizer<SharedResource> StringLocalizer
 @{
-    ViewData["Title"] = "CreateGoal";
+    ViewData["Title"] = @StringLocalizer["CreateGoal"];
 }
 
 <div class="container ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Create Goal</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["CreateGoal"]</h1>
     <hr />
     <div class="card mt-5 shadow" style="border-radius:20px;">
         <div class="card-body">

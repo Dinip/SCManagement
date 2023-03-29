@@ -3,7 +3,7 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 @model ResendEmailConfirmationModel
 @{
-    ViewData["Title"] = "Resend email confirmation";
+    ViewData["Title"] = @StringLocalizer["ResendEmailConfirmation"];
 }
 
 
@@ -30,7 +30,7 @@
                 </div>
                 <div class="row d-flex mt-5 justify-content-center">
                     <div class="col-lg-6 col-12">
-                        <h2 class="fw-bold mt-3 mb-4">@ViewData["Title"]?</h2>
+                        <h2 class="fw-bold mt-3 mb-4 text-to-dark">@ViewData["Title"]?</h2>
                         <form id="account" method="post">
                             <!-- 2 column grid layout with text inputs for the first and last names -->
                             <div asp-validation-summary="ModelOnly" class="text-danger"></div> <!-- Validations -->
