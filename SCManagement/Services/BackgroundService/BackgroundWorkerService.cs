@@ -40,7 +40,7 @@ namespace SCManagement.Services.BackgroundService
                     var job = _queue.Take(cancellationToken);
                     _logger.LogCritical($"{DateTime.Now} - Starting background job...");
                     await job();
-                    _logger.LogCritical($"{DateTime.Now} -  Background job completed.");
+                    _logger.LogCritical($"{DateTime.Now} - Background job completed.");
                 }
                 catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
                 {

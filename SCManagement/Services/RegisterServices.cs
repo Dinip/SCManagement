@@ -147,14 +147,14 @@ namespace SCManagement.Services
             services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
             services.AddTransient<IPlanService, SCManagement.Services.PlansService.PlanService>();
             services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();
-            services.AddScoped<ApplicationContextService, ApplicationContextService>();
+            services.AddScoped<ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
             services.AddSingleton<BackgroundWorkerService>();
             services.AddHostedService<BackgroundWorkerService>(provider =>
                 provider.GetService<BackgroundWorkerService>()
             );
             services.AddTransient<INotificationService, SCManagement.Services.NotificationService.NotificationService>();
-            services.AddTransient<IEmailNotificationService, SCManagement.Services.NotificationService.EmailNotificationService>();
+            services.AddTransient<IBackgroundHelperService, BackgroundHelperService>();
             #endregion
 
             #region cronjobs

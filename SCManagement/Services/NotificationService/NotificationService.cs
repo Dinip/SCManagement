@@ -8,6 +8,7 @@ using SCManagement.Models;
 using SCManagement.Services.BackgroundService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Services.NotificationService
 {
@@ -15,21 +16,18 @@ namespace SCManagement.Services.NotificationService
     {
         private readonly BackgroundWorkerService _backgroundWorker;
         private readonly IServiceProvider _serviceProvider;
-        private readonly IEmailNotificationService _emailNotificationService;
         private readonly SharedResourceService _sharedResource;
         private readonly string _hostUrl;
 
         public NotificationService(
             BackgroundWorkerService backgroundWorker,
             IServiceProvider serviceProvider,
-            IEmailNotificationService emailNotificationService,
             SharedResourceService sharedResource,
-            IHttpContextAccessor httpContext
+            IHttpContextAccessor httpContext,
             )
         {
             _backgroundWorker = backgroundWorker;
             _serviceProvider = serviceProvider;
-            _emailNotificationService = emailNotificationService;
             _sharedResource = sharedResource;
             _hostUrl = $"{httpContext.HttpContext.Request.Scheme}://{httpContext.HttpContext.Request.Host}";
         }
@@ -39,7 +37,8 @@ namespace SCManagement.Services.NotificationService
             _backgroundWorker.Enqueue(async () =>
             {
                 using var scope = _serviceProvider.CreateScope();
-                var _context = scope.ServiceProvider.GetService<ApplicationDbContext>();
+                var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
                 var partnersIds = await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 10).Select(u => u.UserId).ToListAsync();
                 var clubName = await _context.Club.Where(c => c.Id == clubId).Select(c => c.Name).FirstAsync();
@@ -66,17 +65,13 @@ namespace SCManagement.Services.NotificationService
 
                 foreach (var partner in partners)
                 {
+
                     var sub = subs.FirstOrDefault(s => s.UserId == partner.Id);
 
                     if (sub != null && sub.AutoRenew)
                     {
-                        //_backgroundWorker.Enqueue(async () =>
-                        //{
-                        //    using var scope2 = _serviceProvider.CreateScope();
-                        //    var _paymentService = scope2.ServiceProvider.GetService<IPaymentService>();
-
-                        //    await _paymentService.CancelAutoSubscription(sub.Id);
-                        //});
+                        var pay = scope.ServiceProvider.GetRequiredService<IPaymentService>();
+                        await pay.CancelAutoSubscription(sub.Id);
                     }
 
                     Dictionary<string, string> values = new Dictionary<string, string>
@@ -87,11 +82,46 @@ namespace SCManagement.Services.NotificationService
                         { "_SUBSCRIPTION_", sub != null ? $"{_hostUrl}/Subscription?subId={sub.Id}" : $"{_hostUrl}/Subscription"},
                     };
 
-                    _emailNotificationService.SendEmail(partner.Email, partner.Language, "ClubFees", values);
+                    _backgroundHelperService.SendEmail(partner.Email, partner.Language, "ClubFees", values);
                 }
                 return;
             });
         }
+
+        //NOT COMPLETED
+        public void NotifyPlans(ICollection<Plan> plans)
+        {
+            _backgroundWorker.Enqueue(async () =>
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
+
+                var aId = plans.Select(s => s.AthleteId.ToString()).ToList();
+                var tId = plans.First().TrainerId;
+                var trainerName = await _context.Users.Where(f => f.Id == tId).Select(f => f.FullName).FirstAsync();
+
+                bool isMeal = plans.First().GetType() == typeof(MealPlan);
+
+                var users = await getUsersInfosToNotify(_context, aId);
+
+                foreach (var user in users)
+                {
+                    Plan plan = plans.First(s => s.AthleteId == user.Id);
+
+                    Dictionary<string, string> values = new Dictionary<string, string>
+                    {
+                        { "_PLANTYPE_", isMeal ? _sharedResource.Get("Meal", user.Language) : _sharedResource.Get("Train", user.Language)},
+                        { "_USERNAME_", $"{user.FullName}"},
+                        { "_TRAINER_", trainerName },
+                        { "_PLANURL_",  $"{_hostUrl}/Plans/Details/{plan.Id}" },
+                    };
+
+                    _backgroundHelperService.SendEmail(user.Email, user.Language, "PlanCreate", values);
+                }
+            });
+        }
+
 
         private async Task<ICollection<User>> getUsersInfosToNotify(ApplicationDbContext _context, ICollection<string> userIds)
         {

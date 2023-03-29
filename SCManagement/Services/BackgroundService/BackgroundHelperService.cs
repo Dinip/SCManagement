@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using SCManagement.Services.BackgroundService;
+using SCManagement.Services.PaymentService;
 
-namespace SCManagement.Services.NotificationService
+namespace SCManagement.Services.BackgroundService
 {
-    public class EmailNotificationService : IEmailNotificationService
+    public class BackgroundHelperService : IBackgroundHelperService
     {
         private readonly IEmailSender _emailSender;
         private readonly SharedResourceService _sharedResource;
         private readonly BackgroundWorkerService _backgroundWorker;
 
-        public EmailNotificationService(IEmailSender emailSender, SharedResourceService sharedResource, BackgroundWorkerService backgroundWorker)
+        public BackgroundHelperService(IEmailSender emailSender, SharedResourceService sharedResource, BackgroundWorkerService backgroundWorker)
         {
             _emailSender = emailSender;
             _sharedResource = sharedResource;
@@ -22,9 +22,9 @@ namespace SCManagement.Services.NotificationService
             {
                 if (email.Contains("scmanagement")) return;
 
-                string emailBody = _sharedResource.Get($"Email_{EmailName}", lang);
+                var emailBody = _sharedResource.Get($"Email_{EmailName}", lang);
 
-                foreach (KeyValuePair<string, string> entry in values)
+                foreach (var entry in values)
                 {
                     emailBody = emailBody.Replace(entry.Key, entry.Value);
                 }
