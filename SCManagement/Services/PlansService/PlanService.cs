@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Services.PlansService.Models;
 
@@ -13,17 +14,17 @@ namespace SCManagement.Services.PlansService
             _context = context;
         }
 
-        public async Task<TrainingPlan> CreateTrainingPlan(TrainingPlan plan)
+        public async Task<ICollection<TrainingPlan>> CreateTrainingPlan(ICollection<TrainingPlan> plans)
         {
-            _context.TrainingPlans.Add(plan);
+            _context.TrainingPlans.AddRange(plans);
             await _context.SaveChangesAsync();
-            return plan;
+            return plans;
         }
-        public async Task<MealPlan> CreateMealPlan(MealPlan plan)
+        public async Task<ICollection<MealPlan>> CreateMealPlan(ICollection<MealPlan> plans)
         {
-            _context.MealPlans.Add(plan);
+            _context.MealPlans.AddRange(plans);
             await _context.SaveChangesAsync();
-            return plan;
+            return plans;
         }
 
         public async Task<IEnumerable<TrainingPlan?>> GetTrainingPlans(string trainerId)
@@ -251,6 +252,51 @@ namespace SCManagement.Services.PlansService
                     return await _context.Goals.Where(g => g.AthleteId == userId && g.EndDate > DateTime.Now).ToListAsync();
             }
 
+        }
+
+        public async Task<IEnumerable<object>> GetModalities(string athleteId, string trainerId)
+        {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+
+            var modalitiesIds = await _context.Team
+                .Include(t => t.Athletes)
+                .Where(t => t.TrainerId == trainerId && t.Athletes.Any(a => a.Id == athleteId))
+                .Select(t => t.ModalityId)
+                .Distinct()
+                .ToListAsync();
+
+            var modalitiesList = await _context.Modality
+                .Include(m => m.ModalityTranslations)
+                .Where(m => modalitiesIds.Contains(m.Id))
+                .Select(m => new
+                {
+                    m.Id,
+                    Name = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).FirstOrDefault().Value,
+                }).ToListAsync();
+
+            return modalitiesList;
+        }
+
+        public async Task<IEnumerable<object>> GetModalities(string trainerId)
+        {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+
+            var modalitiesIds = await _context.Team
+                .Where(t => t.TrainerId == trainerId)
+                .Select(t => t.ModalityId)
+                .Distinct()
+                .ToListAsync();
+
+            var modalitiesList = await _context.Modality
+                .Include(m => m.ModalityTranslations)
+                .Where(m => modalitiesIds.Contains(m.Id))
+                .Select(m => new
+                {
+                    m.Id,
+                    Name = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).FirstOrDefault().Value,
+                }).ToListAsync();
+
+            return modalitiesList;
         }
     }
 }
