@@ -237,7 +237,7 @@ namespace SCManagement.Controllers
                 ViewBag.ImageError = result;
                 return View(club);
             }
-            
+
             await _clubService.UpdateClub(actualClub);
 
             return RedirectToAction(nameof(Index));
@@ -417,6 +417,9 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> CreateCode([Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
         {
             if (!ModelState.IsValid || codeClub.ExpireDate.Date < DateTime.Now.Date) return RedirectToAction("Codes");
+            
+            var validRoles = await _clubService.GetRoles(); //excludes partners and club admin
+            if (!validRoles.Any(r => r.Id == codeClub.RoleId)) return RedirectToAction("Codes");
 
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
@@ -660,7 +663,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> EditTeam(int? id, [Bind("Id,Name,TrainerId,ModalityId")] TeamModel team)
         {
             if (id == null) return View("CustomError", "Error_NotFound");
-            
+
             //check model state
             if (!ModelState.IsValid) return View(team);
 
@@ -874,7 +877,7 @@ namespace SCManagement.Controllers
             var bio = await _userService.GetLastBioimpedance(user.Id);
 
             if (bio != null)
-            { 
+            {
                 ViewBag.HaveBio = true;
                 ViewBag.Weight = bio.Weight == null ? "" : bio.Weight;
                 ViewBag.Height = bio.Height == null ? "" : bio.Height;
@@ -889,7 +892,7 @@ namespace SCManagement.Controllers
             else
                 ViewBag.HaveBio = false;
 
-            
+
 
             return PartialView("_PartialUserDetails", user);
         }
