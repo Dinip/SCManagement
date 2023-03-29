@@ -1,0 +1,75 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "Operations";
+}
+
+<style>
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 60%;
+        aspect-ratio: 1;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+    @@media only screen and (max-width: 575px) {
+        .circle {
+            width: 50%;
+        }
+    }
+
+    .circle:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+    }
+
+    .circle span {
+        word-wrap: break-word;
+        text-align: center;
+    }
+
+    #ic .icon {
+        width: 80px;
+        height: 80px;
+        margin-left: 15px;
+    }
+</style>
+<div class="container w-100">
+    <div class="d-flex justify-content-center w-100" style="margin-top:150px !important; text-align: center;">
+        <h1 class="text-to-dark">@StringLocalizer["Operations"]</h1>
+    </div>
+    <hr />
+    <div class="d-flex row justify-content-center mt-5">
+        <a class="col-md-4 col-sm-6 col-12 mt-3" asp-controller="Backoffice" asp-action="UserAccess" style="text-decoration:none;">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="circle" id="circle1" title="@StringLocalizer["UserAccess"]">
+                    <div style="text-align: center; width:90%;">
+                        <span class="text-black fw-bold text-wrap fs-5" style="text-align: center"> @StringLocalizer["UserAccess"]</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="col-md-4 col-sm-6 col-12 mt-3" asp-controller="Backoffice" asp-action="Modalities" style="text-decoration:none;">
+            <div class=" d-flex justify-content-center align-items-center">
+                <div class="circle" id="circle1" title="@StringLocalizer["Modalities"]">
+                    <div style="text-align: center; width:90%;">
+                        <span class="text-black fw-bold text-wrap fs-5" style="text-align: center">@StringLocalizer["Modalities"]</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <a class="col-md-4 col-sm-6 col-12 mt-3" asp-controller="Backoffice" asp-action="ManagePlans" style="text-decoration:none;">
+            <div class="d-flex justify-content-center align-items-center">
+                <div class="circle" id="circle1" title="@StringLocalizer["ManagePlans_NOT_DONE!!"]">
+                    <div style="text-align: center; width:90%;">
+                        <span class="text-black fw-bold fs-5" style="text-align: center;">@StringLocalizer["ManagePlans_NOT_DONE!!"]</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </div>
+</div>

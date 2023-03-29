@@ -4,11 +4,35 @@
 @{
     ViewData["Title"] = "Clubs";
 }
+<style>
+    .buttons, .btn-outline-primary {
+        color: white;
+        border-radius: 5px;
+        background-color: #00639A;
+        border-color: #00639A;
+        padding: 6px 12px;
+        text-decoration: none;
+    }
 
+        .buttons:hover, .btn-outline-primary.active, .btn-check:checked + .btn-outline-primary, .btn-outline-primary:hover {
+            color: white;
+            text-decoration: none;
+            background-color: #013d5e;
+            border-color: #013d5e;
+        }
+
+    .sorting_asc::before, .sorting_asc::after {display:none;}
+
+    .sorting_desc::before, .sorting_desc::after {
+        display: none;
+    }
+</style>
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
 
 <div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Clubs"]</h1>
+    <hr />
     <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
         <div class="card-body">
             <table id="table-clubs" class="display" style="width:100%!important;">
@@ -52,7 +76,9 @@
                                 @StringLocalizer[club.ClubStatus.ToString()]
                             </td>
                             <td>
-                                <button class='btn btn-primary' onclick="moreInfo(@club.Id)">@StringLocalizer["More Info"]</button>
+                                <div class="d-flex justify-content-end">
+                                    <button id="moreInfoBtn-@club.Id" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="moreInfo(@club.Id)">@StringLocalizer["More"]</button>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -60,12 +86,61 @@
             </table>
         </div>
     </div>
+
+    <div id="moreInfo" class="d-flex row d-none mt-5">
+
+        <div class="col-12 col-lg-6">
+            <div class="w-100 d-flex justify-content-end">
+                <div class="w-50">
+                    <div class="btn-group w-100" role="group" aria-label="Basic radio toggle button group">
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
+                        <label class="btn btn-outline-primary" for="btnradio1">@StringLocalizer["Athletes"]</label>
+
+                        <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
+                        <label class="btn btn-outline-primary" for="btnradio2">@StringLocalizer["Partners"]</label>
+                    </div>
+                </div>
+            </div>
+
+            <table id="table-month" class="display" style="width:100%!important;">
+                <thead>
+                    <tr>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Month"]
+                        </th>
+                        <th class="text-to-dark">
+                            @StringLocalizer["Members"]
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="text-to-dark"></tbody>
+            </table>
+        </div>
+        <div class="col-12 col-lg-6 mt-5">
+            <canvas class="w-100" id="chart-ClubData"></canvas>
+        </div>
+    </div>
+
+
 </div>
+
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
+
+    function openAthletes(d) {
+        dataToTables("AthletesData", d)
+        dataToGraphs("AthletesData", d)
+    }
+
+    function openPartners(d) {
+        dataToTables("PartnersData", d)
+        dataToGraphs("PartnersData", d)
+    }
+
     $(document).ready(function () {
         $.noConflict();
         $("#table-clubs").DataTable({
@@ -73,12 +148,180 @@
             order: [],
             columnDefs: [
                 { orderable: false }
-            ]
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
     });
 
-    function moreInfo(clubId) {
+    async function moreInfo(clubId) {
         //query Athletes or Partners JSON to build graphs
-        console.log(clubId)
+        $("#table-month").DataTable().destroy();
+        document.getElementById("moreInfo").classList.remove("d-none")
+        const d1 = await loadData("PartnersData", clubId)
+        const d2 = await loadData("AthletesData", clubId)
+        dataToTables("AthletesData", d2)
+        dataToGraphs("AthletesData", d2)
+        $(function () {
+            $('#btnradio1').on('click', function (e) {
+                openAthletes(d2)
+            })
+
+            $('#btnradio2').on('click', function (e) {
+                openPartners(d1)
+            })
+        })
+        
+    }
+
+    function loadData(tab, clubId, year = new Date().getFullYear()) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/BackOffice/${tab}?year=${year}&clubId=${clubId}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function dataToTables(tab, data) {
+        $(`#table-month`).DataTable({
+            data: data.filter(f => f.timeInDate != "None"),
+            columns: [
+                { "data": "timeInText" },
+                { "data": "value" },
+            ],
+            'columnDefs': [{
+                'targets': [0, 1], // column index (start from 0)
+                'orderable': false, // set orderable false for selected columns
+            }],
+            "ordering": false,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            destroy: true,
+            pageLength: 12,
+            language: {
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+            },
+        });
+    }
+
+    function dataToGraphs(tab, data) {
+
+        const ctx = document.getElementById(`chart-ClubData`).getContext('2d');
+        let cfg
+
+        let chartStatus = Chart.getChart(`chart-ClubData`);
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+        if (tab == "PartnersData") {
+            const customData = data.map(d => ({ ...d, x: d.timeInText, y: d.value }))
+            cfg = {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: '@StringLocalizer["PartnersV2"]',
+                        data: customData,
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#808080'
+                            },
+                            grid: {
+                                color: '#808080'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#808080'
+                            },
+                            grid: {
+                                color: '#808080'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#808080'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        if (tab == "AthletesData") {
+            const customData = data.map(d => ({ ...d, x: d.timeInText, y: d.value }))
+            cfg = {
+                type: 'line',
+                data: {
+                    datasets: [{
+                        label: '@StringLocalizer["Athletes"]',
+                        data: customData,
+                        fill: false,
+                        tension: 0.1
+                    }]
+                },
+
+                options: {
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: '#808080'
+                            },
+                            grid: {
+                                color: '#808080'
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: '#808080'
+                            },
+                            grid: {
+                                color: '#808080'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#808080'
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        new Chart(ctx, cfg)
     }
 </script>

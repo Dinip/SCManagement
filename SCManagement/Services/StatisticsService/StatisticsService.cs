@@ -861,7 +861,7 @@ namespace SCManagement.Services.StatisticsService
                     ClubStatus = c.club.Status,
                     SubscriptionName = c.subscription.Product.Name,
                     StartDate = c.club.CreationDate,
-                    Members = c.club.UsersRoleClub.Where(f => f.RoleId == 10).Count()
+                    Members = c.club.UsersRoleClub.Count()
                 })
                 .ToListAsync();
         }
