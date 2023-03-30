@@ -967,12 +967,5 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
             return modality;
         }
-        
-        public async Task<bool> IsAthlete(UsersRoleClub user)
-        {
-            return await _context.UsersRoleClub.AnyAsync(u => u.UserId == user.UserId && u.RoleId == 20);
-        }
     }
-
-    
 }

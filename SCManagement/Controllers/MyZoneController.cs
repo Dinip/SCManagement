@@ -73,7 +73,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
             ViewBag.FileError = TempData["FileError"];
 
@@ -99,7 +99,7 @@ namespace SCManagement.Controllers
             
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
             var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId, filter);
 
@@ -117,7 +117,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
             var myMealPlans = await _planService.GetMyMealPlans(role.UserId, filter);
 
@@ -133,7 +133,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
             var myGoals = await _planService.GetMyGoals(userId, filter);
 
@@ -148,7 +148,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
             var bios = await _userService.GetBioimpedances(role.UserId);
 
@@ -162,7 +162,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
 
             var bios = await _userService.GetBioimpedances(role.UserId);
@@ -179,7 +179,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
 
 
@@ -210,7 +210,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
             var bio = await _userService.GetLastBioimpedance(role.UserId);
 
@@ -227,7 +227,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
 
 
@@ -259,7 +259,7 @@ namespace SCManagement.Controllers
 
             var role = await _userService.GetSelectedRole(userId);
 
-            if (role == null || !(await _clubService.IsAthlete(role))) return View("CustomError", "Error_Unauthorized");
+            if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
 
 

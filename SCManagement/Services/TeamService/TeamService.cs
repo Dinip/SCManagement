@@ -125,12 +125,29 @@ namespace SCManagement.Services.TeamService
         /// Get all the teams that a user belongs to
         /// </summary>
         /// <param name="userId"></param>
-        /// <param name="clubId"></param>
         /// <returns></returns>
         public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId)
         {
             return await _context.Team
                 .Where(t => t.Athletes.Any(a => a.Id == userId))
+                .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
+                .Include(t => t.Trainer)
+                .Include(c => c.Club)
+                .Include(a => a.Athletes)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Get all the teams that a user belongs to in a club
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId)
+        {
+            return await _context.Team
+                .Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
                 .Include(t => t.Modality)
                 .ThenInclude(m => m.ModalityTranslations)
                 .Include(t => t.Trainer)
