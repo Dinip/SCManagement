@@ -22,6 +22,7 @@ namespace SCManagement.Models
         public bool IsPublic { get; set; }
 
         [Display(Name = "Fee")]
+        [Range(0, float.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
         public float Fee { get; set; }
 
         public int? LocationId { get; set; }

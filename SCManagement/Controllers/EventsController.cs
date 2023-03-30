@@ -204,7 +204,7 @@ namespace SCManagement.Controllers
                     }
                 }
 
-                if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now || myEvent.Fee < 0)
+                if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
                 {
                     return View("CustomError", "Error_InvalidInput");
                 }
@@ -416,7 +416,7 @@ namespace SCManagement.Controllers
                 {
                     
                 }
-                else if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now || myEvent.Fee < 0)
+                else if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
                 {
                     return View("CustomError", "Error_InvalidInput");
                 }
