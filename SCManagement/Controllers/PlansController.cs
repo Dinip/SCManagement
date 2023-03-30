@@ -258,7 +258,9 @@ namespace SCManagement.Controllers
 
             if (!await _userService.IsStaffInAnyClub(userId)) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.Modalities = new SelectList(await _clubService.GetClubModalities((await _teamService.GetTeam((int)teamId)).ClubId), "Id", "Name");
+            var team = await _teamService.GetTeam((int)teamId);
+
+            ViewBag.Modalities = new SelectList((await _clubService.GetModalitiesToSelectList()).Where(m => m.Id == team.ModalityId).ToList(), "Id", "Name");
             ViewBag.Apply = false;
             ViewBag.TeamId = teamId;
 
@@ -1197,11 +1199,13 @@ namespace SCManagement.Controllers
 
             if (!await _userService.IsStaffInAnyClub(userId)) return View("CustomError", "Error_Unauthorized");
 
-            var template = await _planService.GetTemplateTrainingPlans(userId);
+            var templates = (await _planService.GetTemplateTrainingPlans(userId));
 
-            if (template == null) return View("CustomError", "Error_NotFound");
+            if (templates == null) return View("CustomError", "Error_NotFound");
+            
+            var team = await _teamService.GetTeam(id);
 
-            return View(new ChooseTrainingTeamTemplate { TrainingPlans = template, TeamId = id });
+            return View(new ChooseTrainingTeamTemplate { TrainingPlans = templates.Where(m => m.ModalityId == team.ModalityId), TeamId = id });
         }
 
         public class ChooseMealTeamTemplate
@@ -1216,11 +1220,11 @@ namespace SCManagement.Controllers
 
             if (!await _userService.IsStaffInAnyClub(userId)) return View("CustomError", "Error_Unauthorized");
 
-            var template = await _planService.GetTemplateMealPlans(userId);
+            var templates = await _planService.GetTemplateMealPlans(userId);
 
-            if (template == null) return View("CustomError", "Error_NotFound");
+            if (templates == null) return View("CustomError", "Error_NotFound");
 
-            return View(new ChooseMealTeamTemplate { MealPlans = template, TeamId = id });
+            return View(new ChooseMealTeamTemplate { MealPlans = templates, TeamId = id });
         }
     }
 }
