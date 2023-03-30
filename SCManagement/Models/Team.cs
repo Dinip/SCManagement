@@ -39,3 +39,5 @@ namespace SCManagement.Models
         public Club? Club { get; set; }
     }
 }
+
+

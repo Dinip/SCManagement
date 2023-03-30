@@ -9,12 +9,6 @@
     <hr />
     <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
-            @if (!ViewBag.isAthlete)
-            {
-                <div class="mb-3">
-                    <a asp-action="CreateGoal" asp-route-id="@(ViewBag.athleteId)" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Create"]</a>
-                </div>
-            }
             <table id="table_id" class="display">
                 <thead>
                     <tr>
@@ -57,26 +51,13 @@
                             </td>
                             <td>
                                 <div class ="d-flex justify-content-end">
-                                    @if (ViewBag.isAthlete)
+                                    @if (!item.isCompleted)
                                     {
-                                        @if (!item.isCompleted)
-                                        {
-                                            <form asp-action="CompleteGoal">
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Complete"]</button>
-                                            </form>
-                                        }
-                                    }
-                                    else
-                                    {
-                                        @if (!item.isCompleted)
-                                        {
-                                            <a asp-action="EditGoal" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
-                                            <form asp-action="DeleteGoal">
-                                                <input type="hidden" name="id" value="@item.Id" />
-                                                <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
-                                            </form>
-                                        }
+                                        <a asp-action="EditGoal" asp-route-id="@item.Id" class="me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Edit"]</a>
+                                        <form asp-action="DeleteGoal">
+                                            <input type="hidden" name="id" value="@item.Id" />
+                                            <button type="submit" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["Delete"]</button>
+                                        </form>
                                     }
                                 </div>
                                 

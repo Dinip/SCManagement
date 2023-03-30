@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <None Remove="Views\Clubs\Details.cshtml~RF98922a.TMP" />
+    <None Remove="Views\Plans\GoalsList.cshtml~RFc3026c.TMP" />
   </ItemGroup>
 
   <ItemGroup>
