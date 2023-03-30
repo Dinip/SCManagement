@@ -372,7 +372,7 @@ namespace SCManagement.Controllers
             {
                 var teams = await _teamService.GetTeamsByAthlete(userRoleToBeRomoved.UserId, userRoleToBeRomoved.ClubId);
 
-                if (teams != null && teams.Count() > 0)
+                if (teams != null && teams.Any())
                 {
                     var user = await _userService.GetUser(userRoleToBeRomoved.UserId);
 
@@ -844,7 +844,7 @@ namespace SCManagement.Controllers
             //Check if is athlete
             if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-            var teams = await _teamService.GetTeamsByAthlete(_applicationContextService.UserId, role.ClubId);
+            var teams = await _teamService.GetTeamsByAthlete(_applicationContextService.UserId);
 
             return View(teams);
         }
@@ -957,11 +957,8 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> TrainingZone()
         {
-            //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
-
-            //Check if is trainer
-            if (!_clubService.IsClubStaff(role)) return View("CustomError", "Error_Unauthorized");
+            if (!await _userService.IsStaffInAnyClub(role.UserId)) return View("CustomError", "Error_Unauthorized");
 
             ViewBag.HaveMealTemplate = ((await _planService.GetTemplateMealPlans(role.UserId))?.Any() ?? false);
             ViewBag.HaveTrainingTemplate = ((await _planService.GetTemplateTrainingPlans(role.UserId))?.Any() ?? false);

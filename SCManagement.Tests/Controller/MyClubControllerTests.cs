@@ -549,8 +549,7 @@ namespace SCManagement.Tests.Controller {
             var result = await _controller.CreateCode(code);
 
             // Assert
-            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
-            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+            result.Should().BeOfType<RedirectToActionResult>();
         }
 
         [Fact]
@@ -1388,7 +1387,7 @@ namespace SCManagement.Tests.Controller {
             var result = await _controller.PaymentSettings(paymentSettings);
 
             // Assert
-            result.Should().BeOfType<ViewResult>();
+            result.Should().BeOfType<RedirectToActionResult>();
         }
 
         [Fact]

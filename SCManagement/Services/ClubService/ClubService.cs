@@ -967,5 +967,6 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
             return modality;
         }
+        
     }
 }

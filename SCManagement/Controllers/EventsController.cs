@@ -270,6 +270,7 @@ namespace SCManagement.Controllers
             [Display(Name = "Public Event")]
             public bool IsPublic { get; set; }
             [Display(Name = "Fee")]
+            [Range(0, float.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
             public float Fee { get; set; }
             [Display(Name = "Event Have Route")]
             public bool HaveRoute { get; set; }
