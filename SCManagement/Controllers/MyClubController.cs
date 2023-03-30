@@ -370,7 +370,7 @@ namespace SCManagement.Controllers
             //Check if the user is athlete and if so, remove all the athlete data (All teams of this club)
             if (userRoleToBeRomoved.RoleId == 20)
             {
-                var teams = await _teamService.GetTeamsByAthlete(userRoleToBeRomoved.UserId, userRoleToBeRomoved.ClubId);
+                var teams = await _teamService.GetTeamsByAthlete(userRoleToBeRomoved.UserId);
 
                 if (teams != null && teams.Count() > 0)
                 {
@@ -844,7 +844,7 @@ namespace SCManagement.Controllers
             //Check if is athlete
             if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-            var teams = await _teamService.GetTeamsByAthlete(_applicationContextService.UserId, role.ClubId);
+            var teams = await _teamService.GetTeamsByAthlete(_applicationContextService.UserId);
 
             return View(teams);
         }

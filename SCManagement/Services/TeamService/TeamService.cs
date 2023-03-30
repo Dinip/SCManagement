@@ -127,10 +127,10 @@ namespace SCManagement.Services.TeamService
         /// <param name="userId"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId)
+        public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId)
         {
             return await _context.Team
-                .Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
+                .Where(t => t.Athletes.Any(a => a.Id == userId))
                 .Include(t => t.Modality)
                 .ThenInclude(m => m.ModalityTranslations)
                 .Include(t => t.Trainer)
