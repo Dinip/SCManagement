@@ -240,6 +240,7 @@ namespace SCManagement.Controllers
             }
 
             await _clubService.UpdateClub(actualClub);
+            await _paymentService.UpdateProductClubMembership(actualClub.ClubPaymentSettings);
 
             return RedirectToAction(nameof(Index));
         }
