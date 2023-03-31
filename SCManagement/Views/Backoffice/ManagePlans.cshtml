@@ -2,9 +2,8 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "ManagePlans";
+    ViewData["Title"] = "Manage Plans";
 }
-
 
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
@@ -18,7 +17,7 @@
 
 <div class="container-fluid ps-5 pe-5">
     <div class="d-flex align-items-center" style="margin-top:130px !important; margin-left:3%">
-        <h1 class="text-to-dark">@StringLocalizer["ManagePlans"]</h1>
+        <h1 class="text-to-dark">@StringLocalizer["Manage Plans"]</h1>
     </div>
 
     <p>
@@ -76,7 +75,7 @@
                                 @Html.DisplayFor(modelItem => item.AthleteSlots)
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="/Backoffice/EditPlan/@item.Id">Edit</a>
+                                <a class="btn btn-primary" href="/Backoffice/EditPlan/@item.Id">@StringLocalizer["Edit"]</a>
                                 <form asp-action="TogglePlan" id="toggle-plan-form">
                                     <input name="planId" value="@item.Id" class="form-control" hidden />
                                     <input type="submit"

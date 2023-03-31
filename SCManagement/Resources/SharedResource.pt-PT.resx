@@ -2354,10 +2354,6 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Não deve:</value>
     <comment>28-03-2023_TermsAndConditions</comment>
   </data>
-  <data name="String12" xml:space="preserve">
-    <value />
-    <comment>28-03-2023_TermsAndConditions</comment>
-  </data>
   <data name="TermsConditionsSCManagement" xml:space="preserve">
     <value>Termos e Condições para SCManagement</value>
     <comment>28-03-2023_TermsAndConditions</comment>
@@ -2451,5 +2447,52 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
   <data name="TermsResponsibility" xml:space="preserve">
     <value>Não seremos responsabilizados por qualquer conteúdo que apareça no seu site. Concorda em proteger-nos e defender contra todas as reclamações levantadas no seu site. Nenhum link deve aparecer em qualquer site que possa ser interpretado como calunioso, obsceno ou criminoso, ou que infrinja, de outra forma viole ou defenda a violação ou outra violação de quaisquer direitos de terceiros.</value>
     <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="PlanCreated" xml:space="preserve">
+    <value>Plano _NAME_ criado</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanDeleteSuccess" xml:space="preserve">
+    <value>Plano _NAME_ eliminado</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanToggleStatus" xml:space="preserve">
+    <value>Tens a certeza que queres alterar o estado do plano?</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdated" xml:space="preserve">
+    <value>Plano _NAME_ atualizado</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdateStatusDisabled" xml:space="preserve">
+    <value>Plano _NAME_ foi desativado</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdateStatusEnabled" xml:space="preserve">
+    <value>Plano _NAME_ foi ativado</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Desativar</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Enable" xml:space="preserve">
+    <value>Ativar</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Back to List" xml:space="preserve">
+    <value>Voltar à lista</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Create Plan" xml:space="preserve">
+    <value>Criar plano</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Edit Plan" xml:space="preserve">
+    <value>Editar plano</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Manage Plans" xml:space="preserve">
+    <value>Gerir planos</value>
   </data>
 </root>

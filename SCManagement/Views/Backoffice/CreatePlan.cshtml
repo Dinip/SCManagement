@@ -1,7 +1,11 @@
 ﻿@model SCManagement.Controllers.BackofficeController.CustomPlanModel
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
-<h4>Plan</h4>
-<hr />
+
+@{
+    ViewData["Title"] = "Create Plan";
+}
+
 <div class="row">
     <div class="col-md-4">
         <form asp-action="CreatePlan">
@@ -32,13 +36,13 @@
                 <span asp-validation-for="AthleteSlots" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="@StringLocalizer["Create"]" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="ManagePlans">Back to List</a>
+    <a asp-action="ManagePlans">@StringLocalizer["Back to List"]</a>
 </div>
 

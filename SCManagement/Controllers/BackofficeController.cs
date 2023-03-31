@@ -188,17 +188,17 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
-        public async Task<IActionResult> Income()
+        public ActionResult Income()
         {
             return View();
         }
 
-        public async Task<IActionResult> CodesCreated()
+        public ActionResult CodesCreated()
         {
             return View();
         }
 
-        public async Task<IActionResult> Subscription()
+        public ActionResult Subscription()
         {
             return View();
         }
@@ -374,15 +374,17 @@ namespace SCManagement.Controllers
         {
             var plan = await _paymentService.GetProduct(planId);
 
-            if (plan == null)
-            {
-                TempData["Error"] = _stringLocalizer["PlanUpdateStatusError"];
-                return RedirectToAction(nameof(ManagePlans));
-            }
+            if (plan == null) return View("CustomError", "Error_NotFound");
 
             plan.Enabled = !plan.Enabled;
             var updated = await _paymentService.UpdateProduct(plan);
-            TempData["Message"] = _stringLocalizer["PlanUpdateStatusSuccess"];
+            if (plan.Enabled)
+            {
+                TempData["Message"] = _stringLocalizer["PlanUpdateStatusDisabled"].Value.Replace("_NAME_", plan.Name);
+            } else
+            {
+                TempData["Message"] = _stringLocalizer["PlanUpdateStatusEnabled"].Value.Replace("_NAME_", plan.Name);
+            }
 
             return RedirectToAction(nameof(ManagePlans));
         }
@@ -403,7 +405,7 @@ namespace SCManagement.Controllers
             if (!ModelState.IsValid) return View(plan);
 
             var created = await _paymentService.CreateProduct(plan.ConvertToProduct());
-            TempData["Message"] = _stringLocalizer["PlanCreated"].Value.Replace("_PRODUCT_", created.Name);
+            TempData["Message"] = _stringLocalizer["PlanCreated"].Value.Replace("_NAME_", created.Name);
 
             return RedirectToAction(nameof(ManagePlans));
         }
@@ -412,12 +414,12 @@ namespace SCManagement.Controllers
         {
             var plan = await _paymentService.GetClubSubscriptionPlan(id, true);
             if (plan == null) return View("CustomError", "Error_NotFound");
-            
+
             bool anyUsing = await _paymentService.AnySubscriptionUsingPlan(plan.Id);
-            
+
             ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name", plan.Frequency);
             ViewBag.Using = anyUsing;
-            
+
             return View(new CustomPlanModel().ConvertFromProduct(plan));
         }
 
@@ -450,7 +452,7 @@ namespace SCManagement.Controllers
             }
 
             var updated = await _paymentService.UpdateProduct(oldPlan);
-            TempData["Message"] = _stringLocalizer["PlanUpdated"].Value.Replace("_PRODUCT_", updated.Name);
+            TempData["Message"] = _stringLocalizer["PlanUpdated"].Value.Replace("_NAME_", updated.Name);
 
             return RedirectToAction(nameof(ManagePlans));
         }
@@ -461,14 +463,10 @@ namespace SCManagement.Controllers
         {
             var plan = await _paymentService.GetProduct(planId);
 
-            if (plan == null)
-            {
-                TempData["Error"] = _stringLocalizer["PlanDeleteError"];
-                return RedirectToAction(nameof(ManagePlans));
-            }
+            if (plan == null) return View("CustomError", "Error_NotFound");
 
             await _paymentService.DeleteProduct(planId);
-            TempData["Message"] = _stringLocalizer["PlanDeleteSuccess"];
+            TempData["Message"] = _stringLocalizer["PlanDeleteSuccess"].Value.Replace("_NAME_", plan.Name);
 
             return RedirectToAction(nameof(ManagePlans));
         }
