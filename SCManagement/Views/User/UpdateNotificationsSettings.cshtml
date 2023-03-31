@@ -1,0 +1,51 @@
+﻿@model SCManagement.Controllers.UserController.EditNotificationsSettings
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "UpdateNotificationsSettings";
+}
+
+<h1>Notification</h1>
+<hr />
+<div class="row">
+    <form asp-action="UpdateNotificationsSettings">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @foreach (var notifications in Model.Notifications)
+        {
+            <h5>@StringLocalizer[@notifications.Key]</h5>
+            <input type="button" onclick="toggle('@notifications.Key', true)" value="Check all">
+            <input type="button" onclick="toggle('@notifications.Key', false)" value="Uncheck all">
+            <div class="row">
+                @foreach (var notification in notifications.Value)
+                {
+                    <div class="row @notifications.Key">
+                        @Html.Hidden($"Notifications[{notification.Id}].Id", notification.Id)
+                        @Html.Hidden($"Notifications[{notification.Id}].Type", notification.Type)
+                        @Html.Hidden($"Notifications[{notification.Id}].UserId", notification.UserId)
+                        <div class="col-md-8">
+                            @StringLocalizer[@notification.Type.ToString()]
+                        </div>
+                        <div class="col-md-4">
+                            @Html.CheckBox($"Notifications[{notification.Id}].IsEnabled", notification.IsEnabled)
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+
+    function toggle(key, value) {
+        var checkboxes = document.getElementsByClassName(key);
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].querySelector('input[type="checkbox"]').checked = value;
+        }
+    }
+
+</script>
+

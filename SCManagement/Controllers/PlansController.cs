@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SCManagement.Models;
 using SCManagement.Models.Validations;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
 using SCManagement.Services.TeamService;
@@ -22,19 +23,22 @@ namespace SCManagement.Controllers
         private readonly IUserService _userService;
         private readonly IPlanService _planService;
         private readonly ITeamService _teamService;
+        private readonly INotificationService _notificationService;
 
         public PlansController(
             UserManager<User> userManager,
             IClubService clubService,
             IUserService userService,
             IPlanService planService,
-            ITeamService teamService)
+            ITeamService teamService,
+            INotificationService notificationService)
         {
             _userManager = userManager;
             _clubService = clubService;
             _userService = userService;
             _planService = planService;
             _teamService = teamService;
+            _notificationService = notificationService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -365,7 +369,9 @@ namespace SCManagement.Controllers
                     });
                 }
 
-                await _planService.CreateTrainingPlan(trains);
+                var listOfPlans = await _planService.CreateTrainingPlan(trains);
+
+                _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }
@@ -476,7 +482,9 @@ namespace SCManagement.Controllers
                     }
                 };
 
-                await _planService.CreateTrainingPlan(trains);
+                var listOfPlans = await _planService.CreateTrainingPlan(trains);
+
+                _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }
@@ -686,7 +694,9 @@ namespace SCManagement.Controllers
                     });
                 }
 
-                await _planService.CreateMealPlan(meals);
+                var listOfPlans = await _planService.CreateMealPlan(meals);
+
+                _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }
@@ -788,7 +798,9 @@ namespace SCManagement.Controllers
                     }
                 };
 
-                await _planService.CreateMealPlan(meals);
+                var listOfPlans = await _planService.CreateMealPlan(meals);
+
+                _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
                 return RedirectToAction("TrainingZone", "MyClub");
             }

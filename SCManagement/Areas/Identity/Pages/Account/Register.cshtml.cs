@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using SCManagement.Models;
+using static SCManagement.Models.Notification;
 
 namespace SCManagement.Areas.Identity.Pages.Account
 {
@@ -134,6 +135,18 @@ namespace SCManagement.Areas.Identity.Pages.Account
                     user.Language = currentCulture.Value!.Split("|")?[0].Split("=")[1];
                 }
 
+                //notifications settings
+                List<Notification> notification = new List<Notification>();
+                foreach (var item in Enum.GetValues(typeof(NotificationType)))
+                {
+                    notification.Add(new Notification
+                    {
+                        Type = (NotificationType)item,
+                        IsEnabled = true
+                    });
+                }
+
+                user.Notifications = notification;
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
 

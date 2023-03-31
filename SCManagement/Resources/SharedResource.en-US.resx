@@ -2387,4 +2387,200 @@ As long as the website and the information and services provided therein are fre
     <value>Training Plan Templates</value>
     <comment>29-03-2023_FixTitles</comment>
   </data>
+  <data name="Added_To_Team" xml:space="preserve">
+    <value>Added To Team</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Athletes_Number_Almost_Full" xml:space="preserve">
+    <value>Athletes Number Almost Full</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Club_Edited" xml:space="preserve">
+    <value>Club Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Club_Quota_Update" xml:space="preserve">
+    <value>Club Quota Update</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Canceled" xml:space="preserve">
+    <value>Event Canceled</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Created" xml:space="preserve">
+    <value>Event Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Edited" xml:space="preserve">
+    <value>Event Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Assigned" xml:space="preserve">
+    <value>Goal Assigned</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Completed" xml:space="preserve">
+    <value>Goal Completed</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Deleted" xml:space="preserve">
+    <value>Goal Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Edited" xml:space="preserve">
+    <value>Goal Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="MealPlan_Assigned" xml:space="preserve">
+    <value>Meal Plan Assigned</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="MealPlan_Deleted" xml:space="preserve">
+    <value>Meal Plan Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="MealPlan_Edited" xml:space="preserve">
+    <value>Meal Plan Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="NotificationsSettings" xml:space="preserve">
+    <value>Notification Settings</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Payment_Late" xml:space="preserve">
+    <value>Payment Late</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Payment_Received" xml:space="preserve">
+    <value>Payment Received</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Plan_Descontinued" xml:space="preserve">
+    <value>Plan Descontinued</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Removed_From_Team" xml:space="preserve">
+    <value>Removed From Team</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Canceled" xml:space="preserve">
+    <value>Subscription Canceled</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Expired" xml:space="preserve">
+    <value>Subscription Expired</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Extended" xml:space="preserve">
+    <value>Subscription Extended</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Renewed" xml:space="preserve">
+    <value>Subscription Renewed</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Started" xml:space="preserve">
+    <value>Subscription Started</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Team_Created" xml:space="preserve">
+    <value>Team Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Team_Deleted" xml:space="preserve">
+    <value>Team Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Team_Edited" xml:space="preserve">
+    <value>Team Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan_Assigned" xml:space="preserve">
+    <value>Training Plan Assigned</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan_Deleted" xml:space="preserve">
+    <value>Training Plan Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan_Edited" xml:space="preserve">
+    <value>Training Plan Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PlanCreated" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;New plan created template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            New _PLANTYPE_ Created&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;A new _PLANTYPE_ has been created for you by _TRAINER_. Please
+                                            review the details below and click the button to view the plan.&lt;br&gt;&lt;br&gt;&lt;/p&gt; &lt;a
+                                            href="_PLANURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Check _PLANTYPE_&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PlanCreated" xml:space="preserve">
+    <value>Plan Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
 </root>

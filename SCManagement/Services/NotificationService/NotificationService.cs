@@ -9,6 +9,7 @@ using SCManagement.Services.BackgroundService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.PlansService.Models;
+using static SCManagement.Models.Notification;
 
 namespace SCManagement.Services.NotificationService
 {
@@ -43,7 +44,7 @@ namespace SCManagement.Services.NotificationService
                 var partnersIds = await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 10).Select(u => u.UserId).ToListAsync();
                 var clubName = await _context.Club.Where(c => c.Id == clubId).Select(c => c.Name).FirstAsync();
 
-                var partners = await getUsersInfosToNotify(_context, partnersIds);
+                var partners = await getUsersInfosToNotify(_context, partnersIds,NotificationType.Club_Quota_Update);
 
                 var product = await _context.Product
                     .Where(p =>
@@ -87,9 +88,8 @@ namespace SCManagement.Services.NotificationService
                 return;
             });
         }
-
-        //NOT COMPLETED
-        public void NotifyPlans(ICollection<Plan> plans)
+       
+        public void NotifyPlansCreate(IEnumerable<Plan> plans)
         {
             _backgroundWorker.Enqueue(async () =>
             {
@@ -98,37 +98,44 @@ namespace SCManagement.Services.NotificationService
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
                 var aId = plans.Select(s => s.AthleteId.ToString()).ToList();
+
                 var tId = plans.First().TrainerId;
                 var trainerName = await _context.Users.Where(f => f.Id == tId).Select(f => f.FullName).FirstAsync();
 
                 bool isMeal = plans.First().GetType() == typeof(MealPlan);
+                NotificationType notificationType = isMeal ? NotificationType.MealPlan_Assigned : NotificationType.TrainingPlan_Assigned;
 
-                var users = await getUsersInfosToNotify(_context, aId);
+                var users = await getUsersInfosToNotify(_context, aId, notificationType);
 
                 foreach (var user in users)
                 {
-                    Plan plan = plans.First(s => s.AthleteId == user.Id);
-
-                    Dictionary<string, string> values = new Dictionary<string, string>
+                    if (user.Notifications.FirstOrDefault(n => n.Type == notificationType).IsEnabled)
                     {
-                        { "_PLANTYPE_", isMeal ? _sharedResource.Get("Meal", user.Language) : _sharedResource.Get("Train", user.Language)},
-                        { "_USERNAME_", $"{user.FullName}"},
-                        { "_TRAINER_", trainerName },
-                        { "_PLANURL_",  $"{_hostUrl}/Plans/Details/{plan.Id}" },
-                    };
+                        Plan plan = plans.First(s => s.AthleteId == user.Id);
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "PlanCreate", values);
+                        Dictionary<string, string> values = new Dictionary<string, string>
+                        {
+                            { "_PLANTYPE_", isMeal ? _sharedResource.Get("Meal Plan", user.Language) : _sharedResource.Get("Train", user.Language)},
+                            { "_USERNAME_", $"{user.FullName}"},
+                            { "_TRAINER_", trainerName },
+                            { "_PLANURL_",  isMeal ? $"{_hostUrl}/Plans/MealDetails/{plan.Id}" : $"{_hostUrl}/Plans/TrainingDetails/{plan.Id}" },
+                        };
+
+                        _backgroundHelperService.SendEmail(user.Email, user.Language, "PlanCreated", values);
+                    }
+                    
                 }
             });
         }
 
 
-        private async Task<ICollection<User>> getUsersInfosToNotify(ApplicationDbContext _context, ICollection<string> userIds)
+        private async Task<ICollection<User>> getUsersInfosToNotify(ApplicationDbContext _context, ICollection<string> userIds, NotificationType notificationType)
         {
             //maybe also include notification settings to check if the
             //user has the specified notification enabled or not
             return await _context.Users
-                .Where(u => userIds.Contains(u.Id))
+                .Include(u => u.Notifications)
+                .Where(u => userIds.Contains(u.Id) && u.Notifications.Any(n => n.Type == notificationType && n.IsEnabled == true))
                 .Select(u => new User
                 {
                     Id = u.Id,

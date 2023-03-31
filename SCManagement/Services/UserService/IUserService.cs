@@ -7,7 +7,9 @@ namespace SCManagement.Services.UserService
         public Task UpdateUser(User user);
         public Task<User?> GetUser(string userId);
         public Task<User?> GetUserWithRoles(string userId);
+        public Task<User?> GetUserWithNotifications(string userId);
         public Task UpdateSelectedRole(string userId, int usersRoleClubId);
+        public Task UpdateNotifications(ICollection<Notification> userNotifications);
         public Task<UsersRoleClub> GetSelectedRole(string userId);
         public Task<bool> IsAtleteInAnyClub(string userId);
         public Task<Bioimpedance> CreateBioimpedance(Bioimpedance bioimpedance);

@@ -4,6 +4,7 @@ using MimeKit.Encodings;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
+using static SCManagement.Models.Notification;
 
 namespace SCManagement.Services.UserService
 {
@@ -63,6 +64,13 @@ namespace SCManagement.Services.UserService
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
+        public async Task<User?> GetUserWithNotifications(string userId)
+        {
+            return await _context.Users
+                .Include(u => u.Notifications)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
         /// <summary>
         /// Updates the default tuple (club + role) for the given user
         /// </summary>
@@ -77,6 +85,15 @@ namespace SCManagement.Services.UserService
                 //set selected for the specified role and the old selected role to false
                 item.Selected = item.Id == usersRoleClubId;
                 _context.Update(item);
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateNotifications(ICollection<Notification> notifications)
+        {
+            foreach (Notification notification in notifications)
+            {
+                _context.Notifications.Update(notification);
             }
             await _context.SaveChangesAsync();
         }
