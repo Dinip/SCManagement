@@ -3,8 +3,12 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
+trigger:
+  - master
+  - sprint4
+
 pool:
-  vmImage: 'Ubuntu 22.04'
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildConfiguration: 'Release'
