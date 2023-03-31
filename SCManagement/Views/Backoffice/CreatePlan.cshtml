@@ -1,0 +1,44 @@
+﻿@model SCManagement.Controllers.BackofficeController.CustomPlanModel
+
+<h4>Plan</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreatePlan">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Value" class="control-label"></label>
+                <input asp-for="Value" type="number" min="0" step="0.1" class="form-control" />
+                <span asp-validation-for="Value" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Frequency" class="control-label"></label>
+                <select asp-for="Frequency" class="form-control" asp-items="ViewBag.Frequency"></select>
+                <span asp-validation-for="Frequency" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
+                </label>
+            </div>
+            <div class="form-group">
+                <label asp-for="AthleteSlots" class="control-label"></label>
+                <input asp-for="AthleteSlots" type="number" min="0" step="1" class="form-control" />
+                <span asp-validation-for="AthleteSlots" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="ManagePlans">Back to List</a>
+</div>
+
