@@ -113,7 +113,7 @@
                     $("input[aria-controls='table_id']").addClass("text-to-dark");
                 },
             });
-
+            setTheme(localStorage.getItem("theme") || "light")
 
             // Adiciona um evento onchange aos botões de opção
             let radioButtons = document.querySelectorAll('input[type="radio"][name="FilterEvent"]');

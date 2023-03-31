@@ -6,18 +6,44 @@
 }
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
+<style>
+    .btn-danger {
+        color: white;
+        background-color: #00639A;
+        border-color: #00639A;
+    }
 
+        .btn-danger:hover {
+            color: white;
+            background-color: #013d5e;
+            border-color: #013d5e;
+        }
+
+    .btn-warning{
+        color: white;
+        background-color: red;
+        border-color: red;
+    }
+
+        .btn-warning:hover {
+        color: white;
+        background-color: darkred;
+        border-color: darkred;
+    }
+</style>
 <div class="container-fluid ps-5 pe-5">
-    @if (ViewBag.Error != null)
-    {
-        <div style="color: red">@StringLocalizer[ViewBag.Error].Value.Replace("_USER_", ViewBag.User)</div>
-    }
-    else if (ViewBag.Message != null)
-    {
-        <div style="color:green;">@StringLocalizer[ViewBag.Message].Value.Replace("_USER_", ViewBag.User)</div>
-    }
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["UserAccess"]</h1>
+    <hr />
     <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
         <div class="card-body">
+            @if (ViewBag.Error != null)
+            {
+                <div class="mb-2" style="color: red">@StringLocalizer[ViewBag.Error].Value.Replace("_USER_", ViewBag.User)</div>
+            }
+            else if (ViewBag.Message != null)
+            {
+                <div class="mb-2" style="color:green;">@StringLocalizer[ViewBag.Message].Value.Replace("_USER_", ViewBag.User)</div>
+            }
             <table id="table-users" class="display" style="width:100%!important;">
                 <thead>
                     <tr>
@@ -45,9 +71,9 @@
                                     <input name="userId" value="@user.Id" class="form-control" hidden />
                                     <input name="newRole" value="@(user.IsAdmin ? "Regular" : "Administrator")" class="form-control" hidden />
                                     <input type="submit"
-                                           value='@(user.IsAdmin ? StringLocalizer["RemoveAdmin"]: StringLocalizer["AddAdmin"])'
-                                           class='btn @(user.IsAdmin ? (ViewBag.IgnoredUsers.Contains(user.Id) ? "invisible" : "btn-warning"): "btn-danger")'
-                                           onclick="return confirm('@StringLocalizer[user.IsAdmin ? "RemoveAdminConfirm" : "AddAdminConfirm"].Value.Replace("_USER_", user.FullName)')" />
+                                       value='@(user.IsAdmin ? StringLocalizer["RemoveAdmin"]: StringLocalizer["AddAdmin"])'
+                                       class='btn @(user.IsAdmin ? (ViewBag.IgnoredUsers.Contains(user.Id) ? "invisible" : "btn-warning"): "btn-danger")'
+                                       onclick="return confirm('@StringLocalizer[user.IsAdmin ? "RemoveAdminConfirm" : "AddAdminConfirm"].Value.Replace("_USER_", user.FullName)')" />
                                 </form>
                             </td>
                         </tr>
@@ -71,5 +97,6 @@
                 { orderable: false }
             ]
         });
+        setTheme(localStorage.getItem("theme") || "light")
     });
 </script>

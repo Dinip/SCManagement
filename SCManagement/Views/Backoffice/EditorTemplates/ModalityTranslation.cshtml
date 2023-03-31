@@ -5,10 +5,10 @@
     ViewData["Title"] = "ModalityTranslation";
 }
 
-<h1>@StringLocalizer["ModalityName"] @Model.Language</h1>
+<strong>@StringLocalizer["ModalityName"] @Model.Language</strong>
 
-<div id="@Model.Atribute.ToLower()-@Model.Language" class="row form-outline @Model.Atribute.ToLower()-lang" style="margin-bottom:20px;">
-    <textarea asp-for="Value" data-lang="@Model.Language" style="border:0; border-radius:5px; margin-top:-3px; border-top-left-radius:0 !important;"></textarea>
+<div id="@Model.Atribute.ToLower()-@Model.Language" class="form-outline mt-2 @Model.Atribute.ToLower()-lang" style="margin-bottom:20px;">
+    <textarea asp-for="Value" data-lang="@Model.Language" class="w-100" style="border:0; border-radius:5px;"></textarea>
     @Html.HiddenFor(x => x.Id)
     @Html.HiddenFor(x => x.Language)
     @Html.HiddenFor(x => x.Atribute)

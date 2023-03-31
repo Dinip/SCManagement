@@ -7,7 +7,7 @@ namespace SCManagement.Services.StatisticsService.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public int Total { get; set; }
+        public int Active { get; set; }
         public int Canceled { get; set; }
     }
 }

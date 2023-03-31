@@ -44,6 +44,11 @@ function setTheme(theme) {
     let flabels = document.getElementsByClassName('form-label');
     let tables = document.getElementsByClassName('table');
     let textareas = document.getElementsByTagName('textarea');
+    let datatablesInfo = document.getElementsByClassName('dataTables_info');
+    let datatablesPagination = document.getElementsByClassName('dataTables_paginate');
+    let datatablesPaginateBtn = document.getElementsByClassName('paginate_button');
+    let tableWrapper = document.getElementsByClassName('dataTables_wrapper');
+
     if (theme === "dark") {
         darkToggle.checked = true
         darkToggle1.checked = true
@@ -61,6 +66,35 @@ function setTheme(theme) {
         for (let i = 0; i < tables.length; i++) {
             tables[i].classList.add("table-dark");
         }
+
+        for (let i = 0; i < datatablesInfo.length; i++) {
+            datatablesInfo[i].style.color = 'white';
+        }
+
+        for (let i = 0; i < datatablesPagination.length; i++) {
+            datatablesPagination[i].style.color = 'white';
+        }
+
+        for (let i = 0; i < datatablesPaginateBtn.length; i++) {
+            datatablesPaginateBtn[i].style.color = 'white';
+        }
+        for (let i = 0; i < tableWrapper.length; i++) {
+            let datatablesLables = tableWrapper[i].querySelectorAll('label');
+            let datatablesSelects = tableWrapper[i].querySelectorAll('select');
+
+            if (datatablesLables) {
+                for (let i = 0; i < datatablesLables.length; i++) {
+                    datatablesLables[i].style.color = 'white';
+                }
+            }
+
+            if (datatablesSelects) {
+                for (let i = 0; i < datatablesSelects.length; i++) {
+                    datatablesSelects[i].style.color = 'white';
+                }
+            }
+        }
+
 
         for (let i = 0; i < clabels.length; i++) {
             clabels[i].style.color = 'white';
@@ -136,6 +170,36 @@ function setTheme(theme) {
         for (let i = 0; i < texts.length; i++) {
             texts[i].style.color = 'black';
         }
+
+        for (let i = 0; i < datatablesInfo.length; i++) {
+            datatablesInfo[i].style.color = 'black';
+        }
+
+        for (let i = 0; i < datatablesPagination.length; i++) {
+            datatablesPagination[i].style.color = 'black';
+        }
+
+        for (let i = 0; i < datatablesPaginateBtn.length; i++) {
+            datatablesPaginateBtn[i].style.color = 'black';
+        }
+
+        for (let i = 0; i < tableWrapper.length; i++) {
+            let datatablesLables = tableWrapper[i].querySelectorAll('label');
+            let datatablesSelects = tableWrapper[i].querySelectorAll('select');
+
+            if (datatablesLables) {
+                for (let i = 0; i < datatablesLables.length; i++) {
+                    datatablesLables[i].style.color = 'black';
+                }
+            }
+
+            if (datatablesSelects) {
+                for (let i = 0; i < datatablesSelects.length; i++) {
+                    datatablesSelects[i].style.color = 'black';
+                }
+            }
+        }
+
 
         for (let i = 0; i < clabels.length; i++) {
             clabels[i].style.color = 'black';

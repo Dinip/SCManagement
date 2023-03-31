@@ -218,6 +218,7 @@
                 },
             },
         });
+        setTheme(localStorage.getItem("theme") || "light")
         let atheletes = document.getElementsByClassName('athletes');
         for (let i = 0; i < atheletes.length; i++) {
             atheletes[i].classList.remove("odd");

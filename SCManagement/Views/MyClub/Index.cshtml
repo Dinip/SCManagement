@@ -5,6 +5,43 @@
     ViewData["Title"] = "My Club";
 }
 
+<style>
+    .btn1 {
+        border-radius: 10px;
+        margin-left: 20px;
+        padding: 5px 25px 5px 25px;
+        background-color: #00639A;
+        border-color: #00639A;
+    }
+
+    .flip-card {
+        width: 100% !important;
+        height: 100% !important;
+        perspective: 1000px;
+        border-radius: 20px;
+        opacity: 0;
+        animation: slideUp 1.5s ease forwards .5s;
+    }
+
+    .flip-card-inner {
+        padding: 30px;
+        width: 100% !important;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        height: 100% !important;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        border-radius: 20px;
+    }
+
+        .flip-card-inner:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+        }
+</style>
+
 <div class="container-fluid p-4 w-100">
     @if (Model == null)
     {
@@ -183,39 +220,3 @@
     }
 </div>
 <script src="~/js/site.js" asp-append-version="true"></script>
-<style>
-    .btn1 {
-        border-radius: 10px;
-        margin-left: 20px;
-        padding: 5px 25px 5px 25px;
-        background-color: #00639A;
-        border-color: #00639A;
-    }
-
-    .flip-card {
-        width: 100% !important;
-        height: 100% !important;
-        perspective: 1000px;
-        border-radius: 20px;
-        opacity: 0;
-        animation: slideUp 1.5s ease forwards .5s;
-    }
-
-    .flip-card-inner {
-        padding: 30px;
-        width: 100% !important;
-        background-color: white;
-        display: flex;
-        justify-content: center;
-        height: 100% !important;
-        text-align: center;
-        transition: transform 0.8s;
-        transform-style: preserve-3d;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-        border-radius: 20px;
-    }
-
-    .flip-card-inner:hover{
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
-    }
-</style>

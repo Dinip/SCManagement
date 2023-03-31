@@ -5,6 +5,7 @@
     ViewData["Title"] = "Clubs";
 }
 <style>
+
     .buttons, .btn-outline-primary {
         color: white;
         border-radius: 5px;
@@ -166,6 +167,7 @@
                 },
             },
         });
+        setTheme(localStorage.getItem("theme") || "light")
     });
 
     async function moreInfo(clubId) {
@@ -227,6 +229,7 @@
                 "processing": "@StringLocalizer["Processing"]",
             },
         });
+        setTheme(localStorage.getItem("theme") || "light")
     }
 
     function dataToGraphs(tab, data) {
