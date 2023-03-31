@@ -810,7 +810,15 @@ namespace SCManagement.Controllers
 
             if (trainingPlan.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.Modalities = new SelectList(await _planService.GetModalities(trainingPlan.AthleteId, userId), "Id", "Name");
+            if (trainingPlan.IsTemplate)
+            {
+                ViewBag.Modalities = new SelectList(await _planService.GetModalities(userId), "Id", "Name");
+            }
+            else
+            {
+                ViewBag.Modalities = new SelectList(await _planService.GetModalities(trainingPlan.AthleteId, userId), "Id", "Name");
+            }
+            
             ViewBag.IsTemplate = trainingPlan.IsTemplate;
             
             return View(trainingPlan);
@@ -826,7 +834,15 @@ namespace SCManagement.Controllers
 
             if (trainingPlan.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.Modalities = new SelectList(await _planService.GetModalities(trainingPlan.AthleteId, userId), "Id", "Name");
+            if (trainingPlan.IsTemplate)
+            {
+                ViewBag.Modalities = new SelectList(await _planService.GetModalities(userId), "Id", "Name");
+            }
+            else
+            {
+                ViewBag.Modalities = new SelectList(await _planService.GetModalities(trainingPlan.AthleteId, userId), "Id", "Name");
+            }
+
             ViewBag.IsTemplate = trainingPlan.IsTemplate;
 
             if (action == "Add sessions")
@@ -919,7 +935,6 @@ namespace SCManagement.Controllers
 
             if (mealPlan.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.Modalities = new SelectList(await _planService.GetModalities(mealPlan.AthleteId, userId), "Id", "Name");
             ViewBag.IsTemplate = mealPlan.IsTemplate;
 
             if (action == "Add sessions")

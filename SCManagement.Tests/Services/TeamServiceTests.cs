@@ -276,7 +276,7 @@ namespace SCManagement.Tests.Services
             // Arrange
             var team = new Team
             {
-                Name = "Team 4",
+                Name = "Team X",
                 ClubId = 1,
                 ModalityId = 2,
                 CreationDate = DateTime.Now,
@@ -294,7 +294,7 @@ namespace SCManagement.Tests.Services
 
             // Assert
             result.Should().BeOfType<Team>();
-            _context.Team.FirstOrDefault(t => t.Name == "Team 4").Should().BeNull();
+            _context.Team.FirstOrDefault(t => t.Name == "Team X").Should().BeNull();
             await _teamService.DeleteTeam(team);
         }
 

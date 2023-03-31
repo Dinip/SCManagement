@@ -191,7 +191,7 @@ namespace SeleniumTests
             //Edit Event
             driver.FindElement(By.LinkText("Events")).Click();
             driver.FindElement(By.LinkText("Details")).Click();
-            Thread.Sleep(200);
+            Thread.Sleep(1000);
             driver.FindElement(By.LinkText("Edit")).Click();
             //Disable have route checkbox
             if (driver.FindElement(By.Id("ckbHaveRoute")).Displayed)

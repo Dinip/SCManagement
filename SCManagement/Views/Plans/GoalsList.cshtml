@@ -80,7 +80,8 @@
         $("#table_id").DataTable({
             responsive: true,
             columnDefs: [
-                { orderable: false, targets: [-1] }
+                { orderable: false, targets: [-1] },
+                { targets: [2], orderData: [2], orderSequence:["desc", "asc"]}
             ],
             language: {
                 "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",

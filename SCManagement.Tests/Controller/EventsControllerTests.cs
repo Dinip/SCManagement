@@ -789,22 +789,89 @@ namespace SCManagement.Tests.Controller {
         public async Task EventsController_Edit_Post_ReturnsDateError()
         {
             // Arrange
+            var a = new List<EventTranslation>()
+            {
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Details",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Details",
+                }
+            };
+
             var even = new EventModel
             {
                 Id = 1,
-                StartDate = DateTime.Now.AddDays(4),
-                EndDate = DateTime.Now.AddDays(10),
-                EnrollLimitDate = DateTime.Now,
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
                 IsPublic = true,
                 Fee = 10,
+                Route = "Lisboa",
                 HaveRoute = true,
+                EventTranslationsName = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
             };
 
             var eventAUX = new Event
             {
-                StartDate = DateTime.Now.AddDays(4),
-                EndDate = DateTime.Now.AddDays(10),
-                EnrollLimitDate = DateTime.Now,
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true
@@ -813,13 +880,14 @@ namespace SCManagement.Tests.Controller {
             even.EventAux = JsonSerializer.Serialize(eventAUX);
 
             var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1, ClubId = 1, };
+            var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
 
-
             // Act
+            even.EndDate = even.StartDate.AddDays(-1);
+
             var result = await _eventsController.Edit(1, even);
 
             // Assert

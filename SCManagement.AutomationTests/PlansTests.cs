@@ -1,5 +1,6 @@
 ﻿
 using System;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -117,7 +118,8 @@ namespace SeleniumTests
             driver.FindElement(By.LinkText("Training zone")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
             driver.FindElement(By.XPath("//*[@id=\"athletesBody\"]/tr/td[5]/a[1]")).Click();
-            driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='×'])[5]/following::strong[1]")).Click();
+            Thread.Sleep(500);
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/div[4]/div/div/div[2]/a[1]")).Click();
             driver.FindElement(By.Id("Name")).Click();
             driver.FindElement(By.Id("Name")).Clear();
             driver.FindElement(By.Id("Name")).SendKeys("Teste");
@@ -143,7 +145,6 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Cancel'])[1]/following::button[1]")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
             driver.FindElement(By.XPath("//tbody[@id='athletesBody']/tr/td[5]/a[2]")).Click();
-            driver.FindElement(By.LinkText("Details")).Click();
             driver.FindElement(By.LinkText("Edit")).Click();
             driver.FindElement(By.Name("action")).Click();
             driver.FindElement(By.Id("MealPlanSessions_1__MealName")).Click();
@@ -160,8 +161,6 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Add Sessions'])[1]/following::button[1]")).Click();
             driver.FindElement(By.XPath("//html/body/div/main/div/div/div/div/form/div[5]/div[3]/div/div[4]")).Click();
             driver.FindElement(By.XPath("/html/body/div/main/div/div/div/div/form/div[6]/div[3]/button")).Click();
-
-
             #endregion
 
             //Create Training Plan
@@ -170,7 +169,7 @@ namespace SeleniumTests
             driver.FindElement(By.LinkText("Training zone")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
             driver.FindElement(By.XPath("//*[@id=\"athletesBody\"]/tr/td[4]/a[1]")).Click();
-            driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='×'])[4]/following::strong[1]")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div[2]/div/div[3]/div/div/div[2]/a[1]")).Click();
             driver.FindElement(By.Id("Name")).Click();
             driver.FindElement(By.Id("Name")).Clear();
             driver.FindElement(By.Id("Name")).SendKeys("Train");
@@ -200,7 +199,6 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("//form[@id='form']/div[7]/div[3]/button")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
             driver.FindElement(By.XPath("//*[@id=\"athletesBody\"]/tr/td[4]/a[2]")).Click();
-            driver.FindElement(By.LinkText("Details")).Click();
             driver.FindElement(By.LinkText("Edit")).Click();
             driver.FindElement(By.Name("action")).Click();
             driver.FindElement(By.Id("TrainingPlanSessions_1__ExerciseName")).Click();
@@ -243,6 +241,8 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("//input[@value='Create']")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
             driver.FindElement(By.LinkText("See")).Click();
+            //Order By date
+            driver.FindElement(By.XPath("/html/body/div/main/div/div/div/div/table/thead/tr/th[3]")).Click();
             driver.FindElement(By.LinkText("Edit")).Click();
             driver.FindElement(By.Id("EndDate")).Click();
             driver.FindElement(By.Id("EndDate")).Click();
@@ -273,15 +273,18 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("//*[@id=\"table_id3\"]/tbody/tr/td[4]/a")).Click();
             driver.FindElement(By.LinkText("MyZone")).Click();
 
+            //See training plan
             var button = driver.FindElement(By.XPath("//table[@id='table_id2']/tbody/tr/td[5]/a"));
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(false);", button);
-            Thread.Sleep(500);
+            Thread.Sleep(1000);
             button.Click();
 
             driver.FindElement(By.LinkText("MyZone")).Click();
 
             button = driver.FindElement(By.LinkText("Insert Bioimpedance"));
-            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(false);", button);
+            ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", button);
+            Thread.Sleep(500);
+            ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollBy(0,-200);");
             Thread.Sleep(500);
             button.Click();
             
@@ -305,9 +308,11 @@ namespace SeleniumTests
             button = driver.FindElement(By.LinkText("Insert Bioimpedance"));
             ((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", button);
             Thread.Sleep(500);
+            ((IJavaScriptExecutor)driver).ExecuteScript("window.scrollBy(0,-200);");
+            Thread.Sleep(500);
             button.Click();
-            
-            
+
+
             driver.FindElement(By.Id("muscleMass")).Click();
             driver.FindElement(By.Id("muscleMass")).Clear();
             driver.FindElement(By.Id("muscleMass")).SendKeys("12");
@@ -332,11 +337,13 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[8]/form/div/select")).Click();
             new SelectElement(driver.FindElement(By.XPath("//ul[@id='Dropdown1']/li[8]/form/div/select"))).SelectByText("PlansClub (Club Administrator)");
 
+            //remove meal plan
             driver.FindElement(By.LinkText("Trainer zone")).Click();
             driver.FindElement(By.LinkText("Training zone")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
             driver.FindElement(By.XPath("//tbody[@id='athletesBody']/tr/td[5]/a[2]")).Click();
             driver.FindElement(By.XPath("//table[@id='table_id']/tbody/tr/td[4]/div/form/button")).Click();
+            //remove training plan
             driver.FindElement(By.LinkText("Trainer zone")).Click();
             driver.FindElement(By.LinkText("Training zone")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
@@ -346,65 +353,8 @@ namespace SeleniumTests
             driver.FindElement(By.LinkText("Training zone")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
             driver.FindElement(By.LinkText("See")).Click();
-            driver.FindElement(By.LinkText("Trainer zone")).Click();
-            driver.FindElement(By.LinkText("Training zone")).Click();
-            driver.FindElement(By.LinkText("Add")).Click();
-            driver.FindElement(By.XPath("//div[@id='modal-inner-content']/div[2]/a/strong")).Click();
-            driver.FindElement(By.Id("Name")).Click();
-            driver.FindElement(By.Id("Name")).Clear();
-            driver.FindElement(By.Id("Name")).SendKeys("Teste");
-            driver.FindElement(By.Id("Description")).Click();
-            driver.FindElement(By.Id("Description")).Clear();
-            driver.FindElement(By.Id("Description")).SendKeys("teste");
-            driver.FindElement(By.Id("EndDate")).Click();
-            driver.FindElement(By.Id("EndDate")).Clear();
-            driver.FindElement(By.Id("EndDate")).SendKeys(DateTime.Now.AddDays(1).ToString("dd-MM-yyyy"));
-            driver.FindElement(By.Id("TrainingPlanSessions_0__ExerciseName")).Click();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__ExerciseName")).Clear();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__ExerciseName")).SendKeys("run");
-            driver.FindElement(By.Id("TrainingPlanSessions_0__ExerciseDescription")).Click();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__ExerciseDescription")).Clear();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__ExerciseDescription")).SendKeys("run");
-            driver.FindElement(By.Id("TrainingPlanSessions_0__Repetitions")).Click();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__Repetitions")).Clear();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__Repetitions")).SendKeys("2");
-            driver.FindElement(By.Id("TrainingPlanSessions_0__Duration")).Click();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__Duration")).Clear();
-            driver.FindElement(By.Id("TrainingPlanSessions_0__Duration")).SendKeys("50");
-            driver.FindElement(By.XPath("//form[@id='form']/div[7]/div[3]/button")).Click();
-            driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
-            driver.FindElement(By.XPath("//tbody[@id='athletesBody']/tr/td[4]/a[2]")).Click();
-            driver.FindElement(By.LinkText("Trainer zone")).Click();
-            driver.FindElement(By.LinkText("Training zone")).Click();
-            driver.FindElement(By.XPath("//a[@onclick='toggleModal1()']")).Click();
-            driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='×'])[3]/following::a[1]")).Click();
-            driver.FindElement(By.Id("Name")).Click();
-            driver.FindElement(By.Id("Name")).Clear();
-            driver.FindElement(By.Id("Name")).SendKeys("Comer");
-            driver.FindElement(By.Id("Description")).Click();
-            driver.FindElement(By.Id("Description")).Clear();
-            driver.FindElement(By.Id("Description")).SendKeys("Comer");
-            driver.FindElement(By.Id("EndDate")).Click();
-            driver.FindElement(By.Id("EndDate")).Clear();
-            driver.FindElement(By.Id("EndDate")).SendKeys(DateTime.Now.AddDays(1).ToString("dd-MM-yyyy"));
-            driver.FindElement(By.Id("MealPlanSessions_0__MealName")).Click();
-            driver.FindElement(By.Id("MealPlanSessions_0__MealName")).Clear();
-            driver.FindElement(By.Id("MealPlanSessions_0__MealName")).SendKeys("Pao");
-            driver.FindElement(By.Id("MealPlanSessions_0__MealDescription")).Click();
-            driver.FindElement(By.Id("MealPlanSessions_0__MealDescription")).Clear();
-            driver.FindElement(By.Id("MealPlanSessions_0__MealDescription")).SendKeys("Come");
-            driver.FindElement(By.Id("MealPlanSessions_0__Time")).Click();
-            driver.FindElement(By.Id("MealPlanSessions_0__Time")).Clear();
-            driver.FindElement(By.Id("MealPlanSessions_0__Time")).SendKeys("01:00");
-            driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Cancel'])[1]/following::button[1]")).Click();
-            driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
-            driver.FindElement(By.XPath("//tbody[@id='athletesBody']/tr/td[5]/a[2]")).Click();
-            driver.FindElement(By.XPath("//table[@id='table_id']/tbody/tr/td[4]/div/form/button")).Click();
-            driver.FindElement(By.LinkText("Trainer zone")).Click();
-            driver.FindElement(By.LinkText("Training zone")).Click();
-            driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Teams'])[1]/following::label[1]")).Click();
-            driver.FindElement(By.XPath("//tbody[@id='athletesBody']/tr/td[4]/a[2]")).Click();
-            driver.FindElement(By.XPath("//table[@id='table_id']/tbody/tr/td[5]/div/form/button")).Click();
+
+            //Remove athlete and Team
             driver.FindElement(By.LinkText("Clubs")).Click();
             driver.FindElement(By.LinkText("My Club")).Click();
             driver.FindElement(By.XPath("//div[10]/a/div/div/img")).Click();
@@ -514,9 +464,8 @@ namespace SeleniumTests
             driver.FindElement(By.Id("TrainingPlanSessions_1__ExerciseName")).SendKeys("Simples");
             driver.FindElement(By.XPath("/html/body/div/main/div/div/div/div/form/div[4]/div[2]/div/div[5]/button")).Click();
             driver.FindElement(By.XPath("//*[@id=\"form\"]/div[5]/div[3]/button")).Click();
-            driver.FindElement(By.LinkText("Details")).Click();
             driver.FindElement(By.LinkText("Edit")).Click();
-            driver.FindElement(By.Name("action")).Click();
+            driver.FindElement(By.XPath("/html/body/div/main/div/div/div/div/form/div[5]/div[2]/button")).Click();
             driver.FindElement(By.Id("TrainingPlanSessions_1__ExerciseName")).Click();
             driver.FindElement(By.Id("TrainingPlanSessions_1__ExerciseName")).Clear();
             driver.FindElement(By.Id("TrainingPlanSessions_1__ExerciseName")).SendKeys("Vai");
@@ -565,7 +514,6 @@ namespace SeleniumTests
             driver.FindElement(By.XPath("/html/body/div/main/div/div/div/div/form/div[3]/div[2]/div/div[4]/button")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Cancel'])[1]/following::button[1]")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='Training'])[1]/following::label[1]")).Click();
-            driver.FindElement(By.LinkText("Details")).Click();
             driver.FindElement(By.LinkText("Edit")).Click();
             driver.FindElement(By.Name("action")).Click();
             driver.FindElement(By.Id("MealPlanSessions_1__MealName")).Click();
@@ -595,7 +543,7 @@ namespace SeleniumTests
             driver.FindElement(By.Id("EndDate")).Clear();
             driver.FindElement(By.Id("EndDate")).SendKeys(DateTime.Now.AddDays(10).ToString("dd/MM/yyyy"));
             driver.FindElement(By.XPath("//form[@id='form']/div[4]/div[3]/button")).Click();
-            driver.FindElement(By.XPath("//a[@onclick='toggleModal1()']")).Click();
+            driver.FindElement(By.XPath("//*[@id=\"teamsBody\"]/tr[1]/td[4]/a")).Click();
             driver.FindElement(By.XPath("(.//*[normalize-space(text()) and normalize-space(.)='New Plan'])[2]/following::strong[1]")).Click();
             driver.FindElement(By.LinkText("Apply Template")).Click();
             driver.FindElement(By.Id("EndDate")).Click();

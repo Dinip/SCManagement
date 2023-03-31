@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using static SCManagement.Controllers.MyZoneController;
+using System.Data;
 
 namespace SCManagement.Tests.Controller
 {
@@ -58,7 +59,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             _applicationContextService.UserRole = new UsersRoleClub { RoleId = 30 };
-            A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(false);
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(false);
 
             // Act
             var result = await _controller.Index();
@@ -73,7 +74,7 @@ namespace SCManagement.Tests.Controller
         {
             //Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
-            A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(true);
 
             var bioimpedance = new Bioimpedance
             {
@@ -83,6 +84,7 @@ namespace SCManagement.Tests.Controller
 
             // Act
             var result = await _controller.CreateBioimpedance(A.Fake<BioimpedanceModel>());
+
 
             // Assert
             result.Should().BeOfType<RedirectToActionResult>().Which.ActionName.Should().Be("Index");
@@ -147,7 +149,7 @@ namespace SCManagement.Tests.Controller
         {
             // Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
-            A.CallTo(() => _clubService.IsClubAthlete(A<UsersRoleClub>._)).Returns(true);
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(true);
             A.CallTo(() => _userService.GetLastBioimpedance(A<string>._)).Returns(Task.FromResult<Bioimpedance>(null));
 
             // Act
