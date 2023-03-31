@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using FluentEmail.Core;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -16,26 +17,23 @@ namespace SCManagement.Services.NotificationService
     public class NotificationService : INotificationService
     {
         private readonly BackgroundWorkerService _backgroundWorker;
-        private readonly IServiceProvider _serviceProvider;
         private readonly SharedResourceService _sharedResource;
         private readonly string _hostUrl;
 
         public NotificationService(
             BackgroundWorkerService backgroundWorker,
-            IServiceProvider serviceProvider,
             SharedResourceService sharedResource,
             IHttpContextAccessor httpContext
             )
         {
             _backgroundWorker = backgroundWorker;
-            _serviceProvider = serviceProvider;
             _sharedResource = sharedResource;
             _hostUrl = $"{httpContext.HttpContext.Request.Scheme}://{httpContext.HttpContext.Request.Host}";
         }
 
         public void NotifyQuotaUpdate(int clubId, ClubPaymentSettings newValues)
         {
-            _backgroundWorker.Enqueue(async () =>
+            _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
                 using var scope = _serviceProvider.CreateScope();
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -44,7 +42,7 @@ namespace SCManagement.Services.NotificationService
                 var partnersIds = await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 10).Select(u => u.UserId).ToListAsync();
                 var clubName = await _context.Club.Where(c => c.Id == clubId).Select(c => c.Name).FirstAsync();
 
-                var partners = await getUsersInfosToNotify(_context, partnersIds,NotificationType.Club_Quota_Update);
+                var partners = await getUsersInfosToNotify(_context, partnersIds, NotificationType.Club_Quota_Update);
 
                 var product = await _context.Product
                     .Where(p =>
@@ -88,10 +86,10 @@ namespace SCManagement.Services.NotificationService
                 return;
             });
         }
-       
+
         public void NotifyPlansCreate(IEnumerable<Plan> plans)
         {
-            _backgroundWorker.Enqueue(async () =>
+            _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
                 using var scope = _serviceProvider.CreateScope();
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
@@ -109,11 +107,9 @@ namespace SCManagement.Services.NotificationService
 
                 foreach (var user in users)
                 {
-                    if (user.Notifications.FirstOrDefault(n => n.Type == notificationType).IsEnabled)
-                    {
-                        Plan plan = plans.First(s => s.AthleteId == user.Id);
+                    Plan plan = plans.First(s => s.AthleteId == user.Id);
 
-                        Dictionary<string, string> values = new Dictionary<string, string>
+                    Dictionary<string, string> values = new Dictionary<string, string>
                         {
                             { "_PLANTYPE_", isMeal ? _sharedResource.Get("Meal Plan", user.Language) : _sharedResource.Get("Train", user.Language)},
                             { "_USERNAME_", $"{user.FullName}"},
@@ -121,9 +117,7 @@ namespace SCManagement.Services.NotificationService
                             { "_PLANURL_",  isMeal ? $"{_hostUrl}/Plans/MealDetails/{plan.Id}" : $"{_hostUrl}/Plans/TrainingDetails/{plan.Id}" },
                         };
 
-                        _backgroundHelperService.SendEmail(user.Email, user.Language, "PlanCreated", values);
-                    }
-                    
+                    _backgroundHelperService.SendEmail(user.Email, user.Language, "PlanCreated", values);
                 }
             });
         }

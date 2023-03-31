@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
+using static SCManagement.Models.Notification;
 
 #nullable disable
 
@@ -33,6 +34,11 @@ namespace SCManagement.Data.Migrations
                 name: "IX_Notifications_UserId",
                 table: "Notifications",
                 column: "UserId");
+
+            foreach (var item in Enum.GetValues(typeof(NotificationType)))
+            {
+                migrationBuilder.Sql($"INSERT INTO Notifications (UserId, IsEnabled, Type) SELECT Id, 1, {(int)item} FROM AspNetUsers");
+            }
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)

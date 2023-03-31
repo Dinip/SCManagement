@@ -18,7 +18,7 @@ namespace SCManagement.Services.BackgroundService
 
         public void SendEmail(string email, string lang, string EmailName, Dictionary<string, string> values)
         {
-            _backgroundWorker.Enqueue(async () =>
+            _backgroundWorker.Enqueue(async (_) =>
             {
                 if (email.Contains("scmanagement")) return;
 
