@@ -23,6 +23,7 @@ namespace SCManagement.Tests.Services
         public TranslationServiceTests()
         {
             var config = new ConfigurationBuilder()
+            .AddEnvironmentVariables()
             .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
             .Build();
 
