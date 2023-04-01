@@ -653,7 +653,7 @@ namespace SCManagement.Controllers
             if (team == null) return View("CustomError", "Error_NotFound");
 
             //check role
-            if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId || (team.TrainerId != role.UserId && !_clubService.IsClubManager(role))) return View("CustomError", "Error_Unauthorized");
 
             //check role Trainer
             //if its trainer will use userId
