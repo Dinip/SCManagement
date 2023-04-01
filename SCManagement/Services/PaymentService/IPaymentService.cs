@@ -38,7 +38,7 @@ namespace SCManagement.Services.PaymentService
         public Task UpdateProductClubMembership(ClubPaymentSettings clubPaymentSettings);
         public Task TestAccount(string id, string key);
 
-        public Task<Subscription> CreateMembershipSubscription(UsersRoleClub partner);
+        public Task<Subscription> CreateMembershipSubscription(string userId, int clubId);
         public Task<Subscription?> GetMembershipSubscription(string userId, int clubId);
 
         public Task<bool> ClubHasValidKey(int clubId);

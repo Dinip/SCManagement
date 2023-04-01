@@ -507,7 +507,7 @@ namespace SCManagement.Services.PaymentService
                 StartTime = now,
                 NextTime = now,
                 Value = product.Value,
-                Status = SubscriptionStatus.Waiting,
+                Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
                 UserId = userId,
                 AutoRenew = false,
@@ -523,7 +523,7 @@ namespace SCManagement.Services.PaymentService
                 ProductId = product.Id,
                 Value = product.Value,
                 CreatedAt = now,
-                PaymentStatus = PaymentStatus.Pending,
+                PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
                 UserId = userId,
                 SubscriptionId = sub.Id,
                 PaymentKey = Guid.NewGuid().ToString(),
@@ -965,14 +965,16 @@ namespace SCManagement.Services.PaymentService
             }
         }
 
+
         /// <summary>
         /// Creates a club membership subscription for a given user in a given club
         /// </summary>
-        /// <param name="partner"></param>
+        /// <param name="clubId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<Subscription> CreateMembershipSubscription(UsersRoleClub partner)
+        public async Task<Subscription> CreateMembershipSubscription(string userId, int clubId)
         {
-            var product = await _context.Product.FirstAsync(p => p.ProductType == ProductType.ClubMembership && p.ClubId == partner.ClubId);
+            var product = await _context.Product.FirstAsync(p => p.ProductType == ProductType.ClubMembership && p.ClubId == clubId);
 
             DateTime now = DateTime.Now;
 
@@ -983,7 +985,7 @@ namespace SCManagement.Services.PaymentService
                 Value = product.Value,
                 Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
-                UserId = partner.UserId,
+                UserId = userId,
                 AutoRenew = false,
                 Frequency = product.Frequency.Value,
             };
@@ -997,7 +999,7 @@ namespace SCManagement.Services.PaymentService
                 Value = product.Value,
                 CreatedAt = now,
                 PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
-                UserId = partner.UserId,
+                UserId = userId,
                 SubscriptionId = sub.Id,
                 PaymentKey = Guid.NewGuid().ToString(),
             };

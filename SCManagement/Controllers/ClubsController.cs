@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService;
@@ -180,6 +181,10 @@ namespace SCManagement.Controllers
 
             if (!ModelState.IsValid) return View(clubInput);
 
+            var plan = await _paymentService.GetProduct(clubInput.PlanId);
+            if (plan == null) return View(clubInput);
+            if (plan.ProductType != Services.PaymentService.Models.ProductType.ClubSubscription) return View(clubInput);
+
             //get id of the user
             string userId = getUserIdFromAuthedUser();
 
@@ -187,6 +192,7 @@ namespace SCManagement.Controllers
             {
                 Name = clubInput.Name,
                 Modalities = (await _clubService.GetModalities()).Where(m => clubInput.ModalitiesIds.Contains(m.Id)).ToList(),
+                Status = plan.Value > 0 ? ClubStatus.Waiting_Payment : ClubStatus.Active,
             };
 
             if (!clubSubProducts.Any(s => s.Id == clubInput.PlanId))
@@ -229,8 +235,9 @@ namespace SCManagement.Controllers
             if (!_clubService.IsClubMember(userId, club.Id) || !_clubService.IsClubPartner(userId, club.Id))
             {
                 //add a associate to the club
-                var role = await _clubService.AddPartnerToClub(userId, club.Id, UserRoleStatus.Pending_Payment);
-                var sub = await _paymentService.CreateMembershipSubscription(role);
+                var sub = await _paymentService.CreateMembershipSubscription(userId, club.Id);
+                await _clubService.AddPartnerToClub(userId, club.Id, sub.Value > 0 ? UserRoleStatus.Pending_Payment : UserRoleStatus.Active);
+
                 return RedirectToAction("Index", "Subscription", new { subId = sub.Id });
             }
 
