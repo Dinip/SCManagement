@@ -488,7 +488,7 @@
                     "data": null,
                     "render": function (data, type, row, meta) {
                         if (!data.isCompleted) {
-                            return `<a onclick="CompleteGoal(${data.goalId})" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Complete"]</a>`;
+                            return `<a onclick="CompleteGoal(${data.goalId})" style="cursor: pointer; color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Complete"]</a>`;
                         } else {
                             return "";
                         }
@@ -526,7 +526,15 @@
             url: "/Plans/CompleteGoal",
             type: "POST",
             dataType: "json",
-            data: { id: idGoal }
+            data: { id: idGoal },
+            success: function () {
+                // a meta foi concluída com sucesso
+                ClearFilterGoals();
+            },
+            error: function () {
+                // ocorreu um erro ao tentar concluir a meta
+
+            }
         })
     }
 
