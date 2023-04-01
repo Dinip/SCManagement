@@ -25,7 +25,14 @@ steps:
     azureSubscription: 'Azure for Students (f23e2eb0-6c83-45fa-bdef-24179a185f43)'
     KeyVaultName: 'scmanagement-dev'
     SecretsFilter: '*'
-    RunAsPreJob: true
+    RunAsPreJob: false
+
+- task: FileTransform@1
+  displayName: 'Set Unit Tests Settings'
+  inputs:
+    folderPath: '$(projectsDirectory)'
+    fileType: 'json'
+    targetFiles: '**/appsettings.json
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test $(buildConfiguration)'

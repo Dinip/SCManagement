@@ -23,7 +23,7 @@ namespace SCManagement.Tests.Services
         public AzureStorageTests()
         {
             var config = new ConfigurationBuilder()
-            .AddEnvironmentVariables()
+            .AddJsonFile("appsettings.json", optional: true)
             .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
             .Build();
 
