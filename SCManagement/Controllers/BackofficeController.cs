@@ -480,7 +480,7 @@ namespace SCManagement.Controllers
             public string Name { get; set; }
 
             [Display(Name = "Value")]
-            [Range(1, float.MaxValue, ErrorMessage = "Error_MaxNumber")]
+            [Range(0, float.MaxValue, ErrorMessage = "Error_MaxNumber")]
             public float Value { get; set; }
 
             [Display(Name = "Subscription Frequency")]
@@ -489,6 +489,7 @@ namespace SCManagement.Controllers
             public bool Enabled { get; set; } = true;
 
             [Display(Name = "Athlete Slots")]
+            [Range(1,int.MaxValue, ErrorMessage = "Error_MaxNumber")]
             public int AthleteSlots { get; set; }
 
             public Product ConvertToProduct()

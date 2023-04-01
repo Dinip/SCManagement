@@ -13,28 +13,38 @@
         min-width: 132px;
         min-height: 132px;
     }
+
+    .btn-danger {
+        color: white;
+        border-radius: 10px;
+        background-color: red;
+        border-color: red;
+    }
+
+    .btn-info {
+        border-radius: 10px;
+    }
 </style>
 
 <div class="container-fluid ps-5 pe-5">
-    <div class="d-flex align-items-center" style="margin-top:130px !important; margin-left:3%">
+    <div style="margin-top:130px !important;">
         <h1 class="text-to-dark">@StringLocalizer["Manage Plans"]</h1>
     </div>
-
-    <p>
-        <a asp-action="CreatePlan">@StringLocalizer["Create Plan"]</a>
-    </p>
-
+    <hr />
     <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
-        @if (ViewBag.Error != null)
-        {
-            <div style="color:red;">@StringLocalizer[ViewBag.Error]</div>
-        }
-        else if (ViewBag.Message != null)
-        {
-            <div style="color:green;">@StringLocalizer[ViewBag.Message]</div>
-        }
         <div class="card-body">
-            <table class="table" id="table-plans">
+            <p>
+                <a asp-action="CreatePlan" class="btn" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Create Plan"]</a>
+            </p>
+            @if (ViewBag.Error != null)
+            {
+                <div style="color:red;">@StringLocalizer[ViewBag.Error]</div>
+            }
+            else if (ViewBag.Message != null)
+            {
+                <div style="color:green;">@StringLocalizer[ViewBag.Message]</div>
+            }
+            <table class="display" id="table-plans" style="width:100%!important;">
                 <thead>
                     <tr>
                         <th>
@@ -75,14 +85,16 @@
                                 @Html.DisplayFor(modelItem => item.AthleteSlots)
                             </td>
                             <td>
-                                <a class="btn btn-primary" href="/Backoffice/EditPlan/@item.Id">@StringLocalizer["Edit"]</a>
-                                <form asp-action="TogglePlan" id="toggle-plan-form">
-                                    <input name="planId" value="@item.Id" class="form-control" hidden />
-                                    <input type="submit"
+                                <div class="d-flex justify-content-end">
+                                    <a class="btn btn-primary me-2" href="/Backoffice/EditPlan/@item.Id" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Edit"]</a>
+                                    <form asp-action="TogglePlan" id="toggle-plan-form-@item.Id" class="toggle-plan-form">
+                                        <input name="planId" value="@item.Id" class="form-control" hidden />
+                                        <input type="submit"
                                            data-action="@(!item.Enabled)"
                                            value='@(item.Enabled ? StringLocalizer["Disable"] : StringLocalizer["Enable"])'
                                            class='btn @(item.Enabled ? "btn-danger" : "btn-info")' />
-                                </form>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -134,12 +146,17 @@
         });
     });
 
-    document.getElementById('toggle-plan-form').addEventListener('submit', function (event) {
-        event.preventDefault();
-        $("#modalConfirm").show();
-    });
+    let currentForm;
+    let toggleform = document.getElementsByClassName('toggle-plan-form')
+    for (let i = 0; i < toggleform.length; i++) {
+        toggleform[i].addEventListener('submit', function (event) {
+            event.preventDefault();
+            $("#modalConfirm").show();
+            currentForm = toggleform[i].getAttribute("id");
+        });
+    }
 
     function confirmAction() {
-        document.getElementById('toggle-plan-form').submit();
+        document.getElementById(currentForm).submit();
     }
 </script>
