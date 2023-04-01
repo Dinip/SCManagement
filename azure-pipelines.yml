@@ -8,12 +8,21 @@ trigger:
   - sprint4
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Install DotNet 6.0.x'
+  inputs:
+    version: '6.0.x'
+    includePreviewVersions: true
+
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGetTool'
+
 - script: dotnet restore
   displayName: 'dotnet restore'
 
