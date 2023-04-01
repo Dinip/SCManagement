@@ -182,8 +182,7 @@ namespace SCManagement.Controllers
             if (!ModelState.IsValid) return View(clubInput);
 
             var plan = await _paymentService.GetProduct(clubInput.PlanId);
-            if (plan == null) return View(clubInput);
-            if (plan.ProductType != Services.PaymentService.Models.ProductType.ClubSubscription) return View(clubInput);
+            if (plan == null || plan.ProductType != Services.PaymentService.Models.ProductType.ClubSubscription) return View(clubInput);
 
             //get id of the user
             string userId = getUserIdFromAuthedUser();
