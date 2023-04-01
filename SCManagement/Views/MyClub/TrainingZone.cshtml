@@ -77,8 +77,8 @@
                                     <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#team-@teams.Id-Meal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateTeamMealPlan" asp-route-teamId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseMealTeamTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTeamMealPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseMealTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -214,6 +214,7 @@
                 },
             },
         });
+        setTheme(localStorage.getItem("theme") || "light")
         let atheletes = document.getElementsByClassName('athletes');
         for (let i = 0; i < atheletes.length; i++) {
             atheletes[i].classList.remove("odd");

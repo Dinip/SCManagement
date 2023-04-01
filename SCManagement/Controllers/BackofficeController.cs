@@ -186,17 +186,22 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
-        public async Task<IActionResult> Income()
+        public IActionResult Income()
         {
             return View();
         }
 
-        public async Task<IActionResult> CodesCreated()
+        public IActionResult CodesCreated()
         {
             return View();
         }
 
-        public async Task<IActionResult> Subscription()
+        public IActionResult Subscription()
+        {
+            return View();
+        }
+
+        public IActionResult Operations()
         {
             return View();
         }
@@ -210,6 +215,7 @@ namespace SCManagement.Controllers
                 {
                     TimeInDate = s.Timestamp,
                     TimeInText = computeTimestampText(s.Timestamp),
+                    ProductId = (int)s.ProductId,
                     ProductName = s.Product.Name,
                     s.Active,
                     s.Canceled
@@ -223,7 +229,7 @@ namespace SCManagement.Controllers
                 //check if stats2 has an entry with the same value as "month" in the TimeInDate field
                 if (!stats2.Any(s => s.TimeInDate == month))
                 {
-                    stats2.Add(new { TimeInDate = month, TimeInText = computeTimestampText(month), ProductName = "None", Active = 0, Canceled = 0 });
+                    stats2.Add(new { TimeInDate = month, TimeInText = computeTimestampText(month), ProductId = 0, ProductName = "None", Active = 0, Canceled = 0 });
                 }
             }
 
@@ -313,7 +319,7 @@ namespace SCManagement.Controllers
 
         public async Task<IActionResult> CreateModality()
         {
-            List<CultureInfo> cultures = new List<CultureInfo> {new("pt-PT"), new("en-US") };
+            List<CultureInfo> cultures = new List<CultureInfo> { new("pt-PT"), new("en-US") };
 
             Modality modality = new Modality { ModalityTranslations = new List<ModalityTranslation>() };
 
@@ -326,12 +332,12 @@ namespace SCManagement.Controllers
                     Atribute = "Name",
                 });
             }
-            
+
             return View(modality);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateModality([Bind ("Id", "ModalityTranslations")] Modality modality)
+        public async Task<IActionResult> CreateModality([Bind("Id", "ModalityTranslations")] Modality modality)
         {
             if (!ModelState.IsValid) return View(modality);
 
@@ -339,7 +345,7 @@ namespace SCManagement.Controllers
 
             foreach (ModalityTranslation modalityTranslation in modality.ModalityTranslations)
             {
-                if(modalityTranslation.Value == null || modalityTranslation.Value.Equals(""))
+                if (modalityTranslation.Value == null || modalityTranslation.Value.Equals(""))
                 {
                     numberOfEmpty++;
                 }

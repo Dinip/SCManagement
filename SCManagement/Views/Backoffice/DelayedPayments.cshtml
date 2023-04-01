@@ -16,16 +16,17 @@
 
 <div class="container-fluid ps-5 pe-5">
 
-    <div class="d-flex align-items-center" style="margin-top:130px !important; margin-left:3%">
+    <div class="d-flex align-items-center" style="margin-top:130px !important;">
         <h1 class="text-to-dark">@StringLocalizer["DelayedPayments"]</h1>
     </div>
+    <hr />
 
-    @if (ViewBag.Message != null)
-    {
-        <div style="color:green;">@StringLocalizer[ViewBag.Message]</div>
-    }
     <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
         <div class="card-body">
+            @if (ViewBag.Message != null)
+            {
+                <div style="color:green;">@StringLocalizer[ViewBag.Message]</div>
+            }
             <table id="table-payments" class="display" style="width:100%!important;">
                 <thead>
                     <tr>
@@ -60,13 +61,14 @@
                             <td class="text-to-dark">
                                 @Html.DisplayFor(_ => subscription.Value)€
                             </td>
-                            <td class="justify-content-end">
+                            <td>
                                 <form asp-action="NotifyMissingPayment" id="myForm">
                                     <input name="subId" value="@subscription.Id" class="form-control" hidden />
                                     <input type="submit"
                                        value='@StringLocalizer["Notify"]'
-                                       class='btn btn-primary'
-                                       onclick="toggleRemoveModal()" />
+                                       class='btn btn-primary float-end'
+                                       onclick="toggleRemoveModal()" 
+                                       style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                                 </form>
                             </td>
                         </tr>

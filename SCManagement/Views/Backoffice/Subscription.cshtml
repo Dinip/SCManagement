@@ -1,5 +1,301 @@
-﻿
-
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
 @{
     ViewData["Title"] = "Subscription";
 }
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
+
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["SubscriptionAdherence"]</h1>
+    <hr />
+    <div id="mainInfo" class="d-flex row mt-5">
+        <div class="col-12 col-xl-8">
+            <div class="card shadow h-100" style="min-height:fit-content !important; border-radius:20px;">
+                <div class="card-body">
+                    <table id="table-adherence" class="display" style="width:100%!important; height:300px!important;">
+                        <thead>
+                            <tr>
+                                <th class="text-to-dark">
+                                    @StringLocalizer["Name"]
+                                </th>
+                                <th class="text-to-dark">
+                                    @StringLocalizer["Active"]
+                                </th>
+                                <th class="text-to-dark">
+                                    @StringLocalizer["Canceled"]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-to-dark"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-4">
+            <canvas id="chart-AdherenceData"></canvas>
+        </div>
+    </div>
+
+    <div id="moreInfo" class="d-flex row mt-5">
+        <div class="col-12 col-xl-6">
+            <div class="card shadow h-100" style="min-height:fit-content !important; border-radius:20px;">
+                <div class="card-body">
+                    <div id="PlansFilter" class="mb-3 mt-2 float-end"> 
+                        <span id="nothing"></span>
+                    </div>
+                    <table id="table-month" class="display" style="width:100%!important;">
+                        <thead>
+                            <tr>
+                                <th class="text-to-dark">
+                                    @StringLocalizer["Month"]
+                                </th>
+                                <th class="text-to-dark">
+                                    @StringLocalizer["Active"]
+                                </th>
+                                <th class="text-to-dark">
+                                    @StringLocalizer["Canceled"]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-to-dark"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-xl-6 mt-5">
+            <canvas class="w-100" id="chart-AdherenceDataMonth"></canvas>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+
+    $(document).ready(async function () {
+        $.noConflict();
+        const d1 = await loadData("PlansAdherenceData")
+        const d2 = await loadData("PlansData")
+        let plansFilter = document.getElementById('nothing');
+        const productNames = d2.filter(item => item.productName !== "None")
+                                .reduce((names, item) => {
+                                    if (!names.includes(item.productName)) {
+                                        names.push(item.productName);
+                                    }
+                                    return names;
+                                }, []);
+        for (let i = 0; i < productNames.length; i++) {
+            plansFilter.insertAdjacentHTML("afterend", `<label for="Plan-${productNames[i]}" class="text-to-dark ms-1">${productNames[i]}</ label>`)
+            plansFilter.insertAdjacentHTML("afterend", `<input id="Plan-${productNames[i]}" onclick="filterData('${productNames[i]}')" type="radio" class="ms-3" checked name="FilterPlan" style="accent - color: #00639A">`)
+        }
+
+        $("#table-adherence").DataTable({
+            data: d1,
+            columns: [
+                { "data": "name" },
+                { "data": "active" },
+                { "data": "canceled" },
+            ],
+            responsive: true,
+            "ordering": false,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            order: [],
+            columnDefs: [
+                { orderable: false }
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
+        });
+        mainDataToGraph(d1)
+        dataToTables("Club Plan XS", d2)
+        dataToGraphs("PlansData", "Club Plan XS", d2)
+        setTheme(localStorage.getItem("theme") || "light")
+
+    });
+
+    async function filterData(plan) {
+        const d2 = await loadData("PlansData")
+        dataToTables(plan, d2)
+        dataToGraphs("PlansData", plan, d2)
+    }
+
+    function loadData(tab) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/BackOffice/${tab}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function dataToTables(plan, data) {
+        $(`#table-month`).DataTable().destroy();
+        $(`#table-month`).DataTable({
+            data: data.filter(f => f.timeInDate != "None" && (f.productName == plan || f.productId == 0)),
+            columns: [
+                { "data": "timeInText" },
+                { "data": "active" },
+                { "data": "canceled" },
+            ],
+            'columnDefs': [{
+                'targets': [0, 1], // column index (start from 0)
+                'orderable': false, // set orderable false for selected columns
+            }],
+            "ordering": false,
+            "searching": false,
+            "paging": false,
+            "info": false,
+            destroy: true,
+            pageLength: 12,
+            language: {
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+            },
+        });
+        setTheme(localStorage.getItem("theme") || "light")
+    }
+
+    function mainDataToGraph(data) {
+        const ctx = document.getElementById(`chart-AdherenceData`).getContext('2d');
+        let cfg
+
+        let chartStatus = Chart.getChart(`chart-AdherenceData`);
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+        const customData = data.map(d => ({ ...d, name: d.name, total: d.active + d.canceled }))
+
+        cfg = {
+            type: 'doughnut',
+            data: {
+                datasets: [{
+                    data: customData.map(d => d.total),
+                    backgroundColor: [
+                        '#88d0f7',
+                        '#05a2fa',
+                        '#919191',
+                        '#00639A'
+                    ],
+                }],
+                labels: customData.map(d => d.name),
+            },
+            options: {
+                maintainAspectRatio: false,
+                aspectRatio: 0.8,
+                scales: {
+                    x: {
+                        ticks: {
+                            display: false
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            display: false
+                        },
+                        grid: {
+                            display: false
+                        },
+                        border: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#808080'
+                        }
+                    }
+                }
+            }
+        }
+
+        new Chart(ctx, cfg)
+    }
+
+
+    function dataToGraphs(tab, plan, data) {
+
+        const ctx = document.getElementById(`chart-AdherenceDataMonth`).getContext('2d');
+        let cfg
+
+        let chartStatus = Chart.getChart(`chart-AdherenceDataMonth`);
+        if (chartStatus != undefined) {
+            chartStatus.destroy();
+        }
+        const cdata = data.filter(f => f.productName == plan || f.productId == 0)
+        const customData = cdata.map(d => ({ ...d, x: d.timeInText, y: d.active }))
+        cfg = {
+            type: 'bar',
+            data: {
+                datasets: [{
+                    data: customData,
+                    fill: false,
+                    tension: 0.1
+                }],
+            },
+            options: {
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#808080'
+                        },
+                        grid: {
+                            color: '#808080'
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#808080'
+                        },
+                        grid: {
+                            color: '#808080'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#808080'
+                        }
+                    }
+                }
+            }
+        }
+
+        new Chart(ctx, cfg)
+    }
+</script>

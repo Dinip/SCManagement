@@ -111,10 +111,18 @@
 
                             @if (isSystemAdmin)
                             {
-                                <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Backoffice" asp-action="Index">@StringLocalizer["Backoffice"]</a>
+                                <div class="dropdown nav-item d-none d-md-block" id="dropdown4">
+                                    <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">@StringLocalizer["Backoffice"]</a>
+                                    <ul class="dropdown-menu dropdown-menu2 nav-item shadow" id="dropdownMenu3" style="margin-top: 16px; border:none; border-radius:0;">
+                                        <li style="padding: 5px;">
+                                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Backoffice" asp-action="Index">@StringLocalizer["Stats"]</a>
+                                        </li>
+                                        <li style="padding: 5px;">
+                                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Backoffice" asp-action="Operations">@StringLocalizer["Operations"]</a>
+                                        </li>
+                                    </ul>
+                                </div>
                             }
-
-                            <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="About">@StringLocalizer["About Us"]</a>
 
                             <hr />
                             <div class="dropdown d-block d-md-none nav-item">
@@ -239,10 +247,12 @@
         if (document.getElementById("dropdown3") != null)
             document.getElementById("dropdown3").classList.add("dropdown");
 
+        if (document.getElementById("dropdown4") != null)
+            document.getElementById("dropdown4").classList.add("dropdown");
+
         function closeToast() {
             $("#confirmedToast").hide();
         }
-
         
     </script>
     @await RenderSectionAsync("Scripts", required: false)

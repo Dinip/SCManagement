@@ -117,6 +117,7 @@
                 },
         });
         document.getElementById("btn-back").setAttribute("href", `${document.referrer.toString().toLowerCase().includes('teamlist') ? '/MyClub/TeamList' : '/MyClub/MyTeams'}`)
+        setTheme(localStorage.getItem("theme") || "light")
     });
 
     function openDetails(id) {

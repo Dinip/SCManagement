@@ -635,7 +635,7 @@ namespace SCManagement.Services.StatisticsService
         }
 
         /// <summary>
-        /// Gets the system plans global statistics by product (total count vs canceled)
+        /// Gets the system plans global statistics by product (active vs canceled)
         /// </summary>
         /// <returns></returns>
         public async Task<ICollection<SystemPlansShortStatistics>> GetSystemPlansShortStatistics()
@@ -654,7 +654,7 @@ namespace SCManagement.Services.StatisticsService
                 .Select(f => new SystemPlansShortStatistics
                 {
                     Id = f.Key.ProductId,
-                    Total = f.Count(),
+                    Active = f.Sum(s => s.Status == SubscriptionStatus.Active ? 1 : 0),
                     Canceled = f.Sum(s => s.Status == SubscriptionStatus.Canceled ? 1 : 0),
                     Name = f.Key.Name
                 })
@@ -863,7 +863,7 @@ namespace SCManagement.Services.StatisticsService
                     ClubStatus = c.club.Status,
                     SubscriptionName = c.subscription.Product.Name,
                     StartDate = c.club.CreationDate,
-                    Members = c.club.UsersRoleClub.Where(f => f.RoleId == 10).Count()
+                    Members = c.club.UsersRoleClub.Count()
                 })
                 .ToListAsync();
         }

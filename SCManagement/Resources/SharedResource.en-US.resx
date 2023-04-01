@@ -2403,4 +2403,8 @@ As long as the website and the information and services provided therein are fre
     <value>Note: This is using a testing payment system. You can pay with credit card or mbway and have your payment processed automatically. The data used in those cases is fake, for mbway, please use the number 911234567 and for credit card, it will have fake cards on the paying page.</value>
     <comment>01-04-2023_payments</comment>
   </data>
+  <data name="Members" xml:space="preserve">
+    <value>Members</value>
+    <comment>29-03-2023_clubsStats</comment>
+  </data>
 </root>
