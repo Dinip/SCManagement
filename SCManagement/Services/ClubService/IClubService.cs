@@ -55,5 +55,7 @@ namespace SCManagement.Services.ClubService
         public Task<ClubPaymentSettings> UpdateClubPaymentSettings(ClubPaymentSettings settings);
         public Task<ClubSlots> ClubAthleteSlots(int clubId);
         public Task<Modality> CreateModality(Modality modality);
+        public Task<UsersRoleClub> GetAdminRole(int clubId);
+
     }
 }

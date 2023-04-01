@@ -967,6 +967,13 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
             return modality;
         }
-        
+
+        public async Task<UsersRoleClub> GetAdminRole(int clubId)
+        {
+            return await _context.UsersRoleClub
+                .Where(c => c.ClubId == clubId && c.RoleId == 50).FirstOrDefaultAsync();
+               
+        }
+
     }
 }

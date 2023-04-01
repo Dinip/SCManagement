@@ -13,7 +13,7 @@
         </div>
     </div>
     <h1 style="margin-top:130px !important;" class="text-to-dark">@Html.DisplayFor(model => model.Name)</h1>
-    <a asp-action="TeamList">@StringLocalizer["Back"]</a>
+    <a asp-action="TeamList" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary">@StringLocalizer["Back"]</a>
     <hr />
     <div class="row">
         <div class="col-md-4">
@@ -32,7 +32,7 @@
                     <span asp-validation-for="ModalityId" class="text-danger"></span>
                 </div>
                 <div class="form-floating" style="margin-bottom:20px;">
-                    @if(ViewBag.IsManager != null){
+                    @if(ViewBag.IsManager != null && ViewBag.IsManager == true){
                         <select asp-for="TrainerId" data-placeholder=@StringLocalizer["Choose trainer"] class="form-control" asp-items="ViewBag.ClubTrainers"></select>
                         <span asp-validation-for="TrainerId" class="text-danger"></span>
                     }else

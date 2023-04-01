@@ -368,6 +368,21 @@ namespace SCManagement.Controllers
             //prevent users that arent club admin from removing club secretary (or higher)
             if (userRoleToBeRomoved.RoleId >= 40 && role.RoleId < 50) return View("CustomError", "Error_Unauthorized");
 
+            //Check if the user is trainer and if so, transfer all teams to admin
+            if(userRoleToBeRomoved.RoleId == 30 || userRoleToBeRomoved.RoleId == 40)
+            {
+                var adminRole = await _clubService.GetAdminRole(userRoleToBeRomoved.ClubId);
+                await _teamService.TransferOwnerOfAllTeams(userRoleToBeRomoved.UserId, adminRole.UserId);
+                //var teams = await _teamService.GetTeamsByTrainer(userRoleToBeRomoved.UserId);
+
+                //if (teams != null && teams.Any())
+                //{
+                //    
+
+                //    _teamService.TransferOwnerOfAllTeams(userRoleToBeRomoved.UserId, adminRole.UserId));
+                //}
+            }
+
             //Check if the user is athlete and if so, remove all the athlete data (All teams of this club)
             if (userRoleToBeRomoved.RoleId == 20)
             {

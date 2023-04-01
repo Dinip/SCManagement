@@ -174,5 +174,22 @@ namespace SCManagement.Services.TeamService
                 .ThenInclude(a => a.MealPlans)
                 .ToListAsync();
         }
+
+        public async Task TransferOwnerOfAllTeams(string trainerId, string AdminId)
+        {
+            var teams = await GetTeamsByTrainer(trainerId);
+
+            if(teams != null && teams.Count()> 0)
+            {
+                foreach(Team team in teams)
+                {
+                    team.TrainerId = AdminId;
+                    _context.Team.Update(team);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SCManagement.Models;
+﻿using System.Runtime.CompilerServices;
+using SCManagement.Models;
 
 namespace SCManagement.Services.TeamService
 {
@@ -19,5 +20,6 @@ namespace SCManagement.Services.TeamService
         public Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId);
 
         public Task<IEnumerable<Team>> GetTeamsByTrainer(string userId);
+        public Task TransferOwnerOfAllTeams(string trainerId, string AdminId);
     }
 }
