@@ -32,7 +32,7 @@ steps:
   inputs:
     folderPath: '$(projectsDirectory)'
     fileType: 'json'
-    targetFiles: '**/appsettings.json
+    targetFiles: '**/appsettings.json'
 
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test $(buildConfiguration)'
