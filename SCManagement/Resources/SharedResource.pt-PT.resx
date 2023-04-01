@@ -2520,4 +2520,20 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <value>Modelos de Plano de Treinamento</value>
     <comment>29-03-2023_FixTitles</comment>
   </data>
+  <data name="PaymentProcessing" xml:space="preserve">
+    <value>O teu pagamento está a ser processado, por favor espera um pouco!</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="PaymentProcessingCard" xml:space="preserve">
+    <value>O teu pagamento está a ser processado ou então à espera que configures o teu cartão, clicando no link acima.</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="SelectPaymentMethod" xml:space="preserve">
+    <value>Seleciona o método de pagamento que queres utilizar:</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="SelectPaymentMethodAlert" xml:space="preserve">
+    <value>Nota: Este sistema de pagamento está em modo de teste. Podes pagar tanto com cartão de crédito como com mbway para teres os teus pagamentos processados automáticamente. Os dados utilizados nestes casos, são falsos, sendo que para o mbway deves usar o número 911234567 e para o cartão de crédito, a página de pagamento terá cartões falsos.</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
 </root>

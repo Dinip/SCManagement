@@ -58,7 +58,7 @@
 
 <form asp-action="PaySinglePayment">
     <input hidden asp-for="Id" />
-    <span div="mt-2 mb-4">Select the payment method you want:</span>
+    <span div="mt-2 mb-4">@StringLocalizer["SelectPaymentMethod"]</span>
     <div style="border: 1px solid grey !important; border-radius:15px;" class="mb-3">
         <div class="cc-selector d-flex justify-content-center">
             @foreach (var method in ViewBag.PaymentMethods)
@@ -68,17 +68,22 @@
             }
         </div>
     </div>
+    <div style="display: flex; justify-content: center;">
+        <div id="mbway-div" style="display: none;">
+            <label asp-for="PhoneNumber" class="control-label mb-1"></label>
+            <input asp-for="PhoneNumber" type="tel" placeholder="961234567" pattern="[0-9]{9}" class="mb-3 form-control" />
+        </div>
+    </div>
 
-    <input asp-for="PhoneNumber" type="tel" placeholder="961234567" pattern="[0-9]{9}" style="display:none;" class="mb-3" />
-
+    <div class="mt-2 mb-4" style="color: orange;">@StringLocalizer["SelectPaymentMethodAlert"]</div>
     <input type="submit" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" value=@StringLocalizer["Complete Payment"] class="btn btn-primary" />
 </form>
 
 <script>
     const selectedOption = (event) => {
         if (event.getAttribute("id") == "mbway")
-            document.querySelector("input[type='tel']").style.display = "block"
+            document.querySelector("#mbway-div").style.display = "block"
         else
-            document.querySelector("input[type='tel']").style.display = "none"
+            document.querySelector("#mbway-div").style.display = "none"
     }
 </script>

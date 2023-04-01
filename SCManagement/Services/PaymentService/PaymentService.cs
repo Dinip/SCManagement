@@ -304,6 +304,8 @@ namespace SCManagement.Services.PaymentService
 
             payment.CardInfoData = buildCardInfo(info);
 
+            var clubIdInClubSub = 0;
+
             if (payment.SubscriptionId != null)
             {
                 var subscription = await _context.Subscription.FindAsync(payment.SubscriptionId);
@@ -311,6 +313,7 @@ namespace SCManagement.Services.PaymentService
                 {
                     subscription.Status = SubscriptionStatus.Active;
                     subscription.NextTime = DateTime.Now.Add(Subscription.AddTime(subscription.Frequency)).Date.Add(new TimeSpan(1, 0, 0));
+                    clubIdInClubSub = (int)subscription.ClubId;
                     _context.Subscription.Update(subscription);
                 }
             }
@@ -322,7 +325,7 @@ namespace SCManagement.Services.PaymentService
 
             if (payment.Product.ProductType == ProductType.ClubSubscription && payment.PaymentStatus == PaymentStatus.Paid)
             {
-                await updateClubSubStatus((int)payment.Product.ClubId, ClubStatus.Active);
+                await updateClubSubStatus(clubIdInClubSub, ClubStatus.Active);
             }
 
             if (payment.Product.ProductType == ProductType.ClubMembership && payment.PaymentStatus == PaymentStatus.Paid)

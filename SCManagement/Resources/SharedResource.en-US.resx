@@ -2387,4 +2387,20 @@ As long as the website and the information and services provided therein are fre
     <value>Training Plan Templates</value>
     <comment>29-03-2023_FixTitles</comment>
   </data>
+  <data name="PaymentProcessing" xml:space="preserve">
+    <value>Your payment is still processing, please wait a bit!</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="PaymentProcessingCard" xml:space="preserve">
+    <value>Your payment is either still processing or waiting for you to click on the url above to pay.</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="SelectPaymentMethod" xml:space="preserve">
+    <value>Select the payment method you want:</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="SelectPaymentMethodAlert" xml:space="preserve">
+    <value>Note: This is using a testing payment system. You can pay with credit card or mbway and have your payment processed automatically. The data used in those cases is fake, for mbway, please use the number 911234567 and for credit card, it will have fake cards on the paying page.</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
 </root>
