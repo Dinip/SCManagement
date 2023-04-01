@@ -1,12 +1,12 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SCManagement.Models;
-using SCManagement.Services;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.PaymentService;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.StatisticsService;
 using SCManagement.Services.StatisticsService.Models;
 using SCManagement.Services.TranslationService;
@@ -20,6 +20,7 @@ namespace SCManagement.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
         private readonly IStatisticsService _statisticsService;
+        private readonly IPaymentService _paymentService;
         private readonly IClubService _clubService;
         private readonly ITranslationService _translationService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
@@ -36,6 +37,7 @@ namespace SCManagement.Controllers
             _userService = userService;
             _userManager = userManager;
             _statisticsService = statisticsService;
+            _paymentService = paymentService;
             _clubService = clubService;
             _translationService = translationService;
             _stringLocalizer = stringLocalizer;
@@ -105,7 +107,7 @@ namespace SCManagement.Controllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserAccess(string userId, string newRole)
         {
             if (newRole != "Administrator" && newRole != "Regular")
@@ -148,7 +150,7 @@ namespace SCManagement.Controllers
         }
 
         [HttpPost]
-        [AutoValidateAntiforgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> NotifyMissingPayment(int subId)
         {
             //NOTIFICATION CONTROLLER
@@ -363,6 +365,166 @@ namespace SCManagement.Controllers
 
             TempData["Success"] = "SuccessModality";
             return RedirectToAction(nameof(Modalities));
+        }
+
+        public async Task<IActionResult> ManagePlans()
+        {
+            ViewBag.Message = TempData["Message"];
+            ViewBag.Error = TempData["Error"];
+            return View(await _paymentService.GetClubSubscriptionPlans(true));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> TogglePlan(int planId)
+        {
+            var plan = await _paymentService.GetProduct(planId);
+
+            if (plan == null) return View("CustomError", "Error_NotFound");
+
+            plan.Enabled = !plan.Enabled;
+            var updated = await _paymentService.UpdateProduct(plan);
+            if (plan.Enabled)
+            {
+                TempData["Message"] = _stringLocalizer["PlanUpdateStatusDisabled"].Value.Replace("_NAME_", plan.Name);
+            } else
+            {
+                TempData["Message"] = _stringLocalizer["PlanUpdateStatusEnabled"].Value.Replace("_NAME_", plan.Name);
+            }
+
+            return RedirectToAction(nameof(ManagePlans));
+        }
+
+        public async Task<IActionResult> CreatePlan()
+        {
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name");
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePlan([Bind("Name,Value,Frequency,Enabled,AthleteSlots")] CustomPlanModel plan)
+        {
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name");
+
+            if (!ModelState.IsValid) return View(plan);
+
+            var created = await _paymentService.CreateProduct(plan.ConvertToProduct());
+            TempData["Message"] = _stringLocalizer["PlanCreated"].Value.Replace("_NAME_", created.Name);
+
+            return RedirectToAction(nameof(ManagePlans));
+        }
+
+        public async Task<IActionResult> EditPlan(int id)
+        {
+            var plan = await _paymentService.GetClubSubscriptionPlan(id, true);
+            if (plan == null) return View("CustomError", "Error_NotFound");
+
+            bool anyUsing = await _paymentService.AnySubscriptionUsingPlan(plan.Id);
+
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name", plan.Frequency);
+            ViewBag.Using = anyUsing;
+
+            return View(new CustomPlanModel().ConvertFromProduct(plan));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditPlan(int id, [Bind("Id,Name,Value,Frequency,Enabled,AthleteSlots")] CustomPlanModel plan)
+        {
+            if (plan == null) return View("CustomError", "Error_NotFound");
+            ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name");
+            bool anyUsing = await _paymentService.AnySubscriptionUsingPlan(plan.Id);
+            ViewBag.Using = anyUsing;
+
+            if (!ModelState.IsValid) return View(plan);
+
+            var oldPlan = await _paymentService.GetClubSubscriptionPlan(id, true);
+            if (oldPlan == null) return View("CustomError", "Error_NotFound");
+
+            if (anyUsing)
+            {
+                oldPlan.Name = plan.Name;
+                oldPlan.Enabled = plan.Enabled;
+            }
+            else
+            {
+                oldPlan.Name = plan.Name;
+                oldPlan.Value = plan.Value;
+                oldPlan.Frequency = plan.Frequency;
+                oldPlan.Enabled = plan.Enabled;
+                oldPlan.AthleteSlots = plan.AthleteSlots;
+            }
+
+            var updated = await _paymentService.UpdateProduct(oldPlan);
+            TempData["Message"] = _stringLocalizer["PlanUpdated"].Value.Replace("_NAME_", updated.Name);
+
+            return RedirectToAction(nameof(ManagePlans));
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeletePlan(int planId)
+        {
+            var plan = await _paymentService.GetProduct(planId);
+
+            if (plan == null) return View("CustomError", "Error_NotFound");
+
+            await _paymentService.DeleteProduct(planId);
+            TempData["Message"] = _stringLocalizer["PlanDeleteSuccess"].Value.Replace("_NAME_", plan.Name);
+
+            return RedirectToAction(nameof(ManagePlans));
+        }
+
+        public class CustomPlanModel
+        {
+            public int Id { get; set; }
+
+            [Display(Name = "Name")]
+            [StringLength(50, ErrorMessage = "Error_Length", MinimumLength = 2)]
+            public string Name { get; set; }
+
+            [Display(Name = "Value")]
+            [Range(0, float.MaxValue, ErrorMessage = "Error_MaxNumber")]
+            public float Value { get; set; }
+
+            [Display(Name = "Subscription Frequency")]
+            public SubscriptionFrequency Frequency { get; set; }
+
+            public bool Enabled { get; set; } = true;
+
+            [Display(Name = "Athlete Slots")]
+            [Range(1,int.MaxValue, ErrorMessage = "Error_MaxNumber")]
+            public int AthleteSlots { get; set; }
+
+            public Product ConvertToProduct()
+            {
+                return new Product
+                {
+                    Id = Id,
+                    Name = Name,
+                    Value = Value,
+                    Frequency = Frequency,
+                    Enabled = Enabled,
+                    ProductType = ProductType.ClubSubscription,
+                    AthleteSlots = AthleteSlots,
+                    IsSubscription = true,
+                };
+            }
+
+            public CustomPlanModel ConvertFromProduct(Product product)
+            {
+                return new CustomPlanModel
+                {
+                    Id = product.Id,
+                    Name = product.Name,
+                    Value = product.Value,
+                    Frequency = product.Frequency.Value,
+                    Enabled = product.Enabled,
+                    AthleteSlots = product.AthleteSlots.Value,
+                };
+            }
         }
     }
 }

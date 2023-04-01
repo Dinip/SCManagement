@@ -1,0 +1,129 @@
+﻿@model SCManagement.Controllers.BackofficeController.CustomPlanModel
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+
+@{
+    ViewData["Title"] = "Edit Plan";
+}
+
+<style>
+    #modalConfirm {
+        min-width: 132px;
+        min-height: 132px;
+    }
+</style>
+
+<div id="modalConfirm" class="modal">
+    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+        <span class="text-to-dark">@StringLocalizer["PlanDeleteConfirm"]</span>
+        <div class="d-flex justify-content-end mt-3">
+            <a onclick="confirmAction()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%; cursor: pointer;">@StringLocalizer["Yes"]</a>
+            <a onclick="$('#modalConfirm').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red; cursor: pointer;"><strong>@StringLocalizer["No"]</strong></a>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="d-flex align-items-center" style="margin-top:130px !important;">
+        <h1 class="text-to-dark">@StringLocalizer["CreatePlan"]</h1>
+    </div>
+    <hr />
+    <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
+        <div class="card-body">
+            <form asp-action="EditPlan">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-floating">
+                    <input asp-for="Name" class="form-control" />
+                    <label asp-for="Name" class="control-label"></label>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="d-flex mt-3 justify-content-between">
+                    <div class="form-floating col-4">
+                        <input asp-for="Value" type="number" min="0" step="0.1" class="form-control" disabled="@ViewBag.Using" />
+                        <label asp-for="Value" class="control-label"></label>
+                        <span asp-validation-for="Value" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating col-3">
+                        <select asp-for="Frequency" class="form-control" asp-items="ViewBag.Frequency" disabled=@ViewBag.Using></select>
+                        <label asp-for="Frequency" class="control-label"></label>
+                        <span asp-validation-for="Frequency" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating col-4">
+                        <input asp-for="AthleteSlots" type="number" min="1" step="1" class="form-control" disabled=@ViewBag.Using />
+                        <label asp-for="AthleteSlots" class="control-label"></label>
+                        <span asp-validation-for="AthleteSlots" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group form-check mt-3">
+                    <label class="form-check-label">
+                        <input class="form-check-input" asp-for="Enabled" /> @Html.DisplayNameFor(model => model.Enabled)
+                    </label>
+                </div>
+                <div class="d-flex justify-content-end mt-3">
+                    <div class="form-group">
+                        <input type="submit" value="@StringLocalizer["Save"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border: 3px solid #00639A;" />
+                    </div>
+                    <div>
+                        <a asp-action="ManagePlans" class="btn btn-primary ms-2" style="color:black; border-radius: 10px; background-color: white; border: 3px solid #00639A;">@StringLocalizer["Cancel"]</a>
+                    </div>
+                </div>
+            </form>
+            @if (ViewBag.Using == false)
+            {
+                <div class="d-flex justify-content-end mt-3">
+                    <form asp-action="DeletePlan" id="delete-plan-form">
+                        <input name="planId" value="@Model.Id" class="form-control" hidden />
+                        <input type="submit"
+                           value='@StringLocalizer["Delete"]'
+                           class='btn btn-danger'
+                           style="color:white; border-radius: 10px; background-color: red; border-color: red;" />
+                    </form>
+                </div>
+                
+            }
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table-plans").DataTable({
+            responsive: true,
+            order: [],
+            columnDefs: [
+                { orderable: false }
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
+        });
+    });
+
+    document.getElementById('delete-plan-form').addEventListener('submit', function (event) {
+        event.preventDefault();
+        $("#modalConfirm").show();
+    });
+
+    function confirmAction() {
+        document.getElementById('delete-plan-form').submit();
+    }
+</script>

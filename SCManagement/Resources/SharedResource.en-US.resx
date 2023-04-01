@@ -2435,4 +2435,52 @@ As long as the website and the information and services provided therein are fre
     <value>Sponsor</value>
     <comment>01-04-2023</comment>
   </data>
+  <data name="PlanCreated" xml:space="preserve">
+    <value>Plan _NAME_ was created</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanDeleteSuccess" xml:space="preserve">
+    <value>Plan _NAME_ was eliminated</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanToggleStatus" xml:space="preserve">
+    <value>Are you sure that you want to change the plan status?</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdated" xml:space="preserve">
+    <value>Plan _NAME_ was updated</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdateStatusDisabled" xml:space="preserve">
+    <value>Plan _NAME_ was disabled</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdateStatusEnabled" xml:space="preserve">
+    <value>Plan _NAME_ was activated</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Enabled</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Back to List" xml:space="preserve">
+    <value>Back to List</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Create Plan" xml:space="preserve">
+    <value>Create Plan</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Edit Plan" xml:space="preserve">
+    <value>Edit Plan</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Manage Plans" xml:space="preserve">
+    <value>Manage Plans</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
 </root>

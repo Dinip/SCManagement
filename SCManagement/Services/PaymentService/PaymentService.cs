@@ -473,12 +473,16 @@ namespace SCManagement.Services.PaymentService
         /// Gets all available club subscription plans (enabled)
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Product>> GetClubSubscriptionPlans()
+        public async Task<IEnumerable<Product>> GetClubSubscriptionPlans(bool? includeDisabled = false)
         {
-            return await _context.Product
-                .Where(p => p.ProductType == ProductType.ClubSubscription && p.Enabled)
-                .OrderBy(p => p.AthleteSlots)
-                .ToListAsync();
+            var query = _context.Product.Where(p => p.ProductType == ProductType.ClubSubscription);
+
+            if (includeDisabled != true)
+            {
+                query = query.Where(p => p.Enabled == true);
+            }
+
+            return await query.OrderBy(p => p.AthleteSlots).ToListAsync();
         }
 
         /// <summary>
@@ -1059,10 +1063,45 @@ namespace SCManagement.Services.PaymentService
         /// </summary>
         /// <param name="planId"></param>
         /// <returns></returns>
-        public async Task<Product?> GetClubSubscriptionPlan(int planId)
+        public async Task<Product?> GetClubSubscriptionPlan(int planId, bool? includeDisabled = false)
         {
-            return await _context.Product
-                .FirstOrDefaultAsync(p => p.ProductType == ProductType.ClubSubscription && p.Enabled && p.Id == planId);
+            var query = _context.Product.Where(p => p.ProductType == ProductType.ClubSubscription && p.Id == planId);
+
+            if (includeDisabled != true)
+            {
+                query = query.Where(p => p.Enabled == true);
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+        public async Task<Product> UpdateProduct(Product product)
+        {
+            _context.Product.Update(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<Product> CreateProduct(Product product)
+        {
+            _context.Product.Add(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<bool> AnySubscriptionUsingPlan(int planId)
+        {
+            return await _context.Subscription.Where(s => s.ProductId == planId).AnyAsync();
+        }
+
+        public async Task DeleteProduct(int productId)
+        {
+            var product = await _context.Product.FindAsync(productId);
+            if (product == null) return;
+
+            _context.Product.Remove(product);
+            await _context.SaveChangesAsync();
         }
     }
 }

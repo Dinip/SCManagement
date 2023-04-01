@@ -19,8 +19,8 @@ namespace SCManagement.Services.PaymentService
         public Task<IEnumerable<Subscription>> GetSubscriptions(string userId);
         public Task<Subscription?> GetSubscription(int id);
 
-        public Task<IEnumerable<Product>> GetClubSubscriptionPlans();
-        public Task<Product?> GetClubSubscriptionPlan(int planId);
+        public Task<IEnumerable<Product>> GetClubSubscriptionPlans(bool? includeDisabled = false);
+        public Task<Product?> GetClubSubscriptionPlan(int planId, bool? includeDisabled = false);
         public Task<Subscription> SubscribeClubToPlan(int clubId, string userId, int planId);
         public Task UpgradeClubPlan(int subId, int newPlanId);
 
@@ -42,5 +42,9 @@ namespace SCManagement.Services.PaymentService
         public Task<Subscription?> GetMembershipSubscription(string userId, int clubId);
 
         public Task<bool> ClubHasValidKey(int clubId);
+        public Task<Product> UpdateProduct(Product product);
+        public Task<Product> CreateProduct(Product product);
+        public Task<bool> AnySubscriptionUsingPlan(int planId);
+        public Task DeleteProduct(int productId);
     }
 }
