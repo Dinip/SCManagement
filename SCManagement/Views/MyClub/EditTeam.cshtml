@@ -20,7 +20,7 @@
             <form asp-action="EditTeam">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="TrainerId" />
+                
                 <div class="form-floating" style="margin-bottom:20px;">
                     <input asp-for="Name" class="form-control" />
                     <label asp-for="Name" class="control-label"></label>
@@ -32,7 +32,14 @@
                     <span asp-validation-for="ModalityId" class="text-danger"></span>
                 </div>
                 <div class="form-floating" style="margin-bottom:20px;">
-                    <a disabled class="form-control">@Model.Trainer.FullName</a>
+                    @if(ViewBag.IsManager != null){
+                        <select asp-for="TrainerId" data-placeholder=@StringLocalizer["Choose trainer"] class="form-control" asp-items="ViewBag.ClubTrainers"></select>
+                        <span asp-validation-for="TrainerId" class="text-danger"></span>
+                    }else
+                    {
+                        <a disabled class="form-control">@Model.Trainer.FullName</a>
+                        <input type="hidden" asp-for="TrainerId" />
+                    }
                     <label asp-for="Trainer" class="control-label"></label>
                 </div>
                 <div class="form-floating">

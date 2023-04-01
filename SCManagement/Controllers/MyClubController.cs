@@ -640,6 +640,20 @@ namespace SCManagement.Controllers
             //check role
             if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
 
+            //check role Trainer
+            //if its trainer will use userId
+            if (_clubService.IsClubTrainer(role))
+            {
+                ViewBag.IsManager = false;
+            }
+
+            //if its admin will send trainers IDs to selectList
+            else if (_clubService.IsClubManager(role))
+            {
+                ViewBag.IsManager = true;
+                ViewBag.ClubTrainers = new SelectList(await _clubService.GetClubStaff(role.ClubId), "UserId", "User.FullName");
+            }
+
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
 
@@ -679,10 +693,11 @@ namespace SCManagement.Controllers
 
 
             //Check if team have modification
-            if (teamToUpdate.Name == team.Name && teamToUpdate.ModalityId == team.ModalityId) return RedirectToAction(nameof(TeamList));
+            if (teamToUpdate.Name == team.Name && teamToUpdate.ModalityId == team.ModalityId && teamToUpdate.TrainerId == team.TrainerId) return RedirectToAction(nameof(TeamList));
 
             teamToUpdate.Name = team.Name;
             teamToUpdate.ModalityId = team.ModalityId;
+            teamToUpdate.TrainerId = team.TrainerId;
 
             //Update Team On DataBase
             await _teamService.UpdateTeam(teamToUpdate);

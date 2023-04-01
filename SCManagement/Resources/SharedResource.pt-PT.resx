@@ -2520,4 +2520,32 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <value>Modelos de Plano de Treinamento</value>
     <comment>29-03-2023_FixTitles</comment>
   </data>
+  <data name="Enrolls" xml:space="preserve">
+    <value>Inscrições</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Event Location" xml:space="preserve">
+    <value>Localização do Evento</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Event Result Type" xml:space="preserve">
+    <value>Tipo de Resultado</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultPosition" xml:space="preserve">
+    <value>Posição</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultScore" xml:space="preserve">
+    <value>Pontuação</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultTime" xml:space="preserve">
+    <value>Tempo</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Sponsor" xml:space="preserve">
+    <value>Organização</value>
+    <comment>01-04-2023</comment>
+  </data>
 </root>
