@@ -42,7 +42,11 @@ namespace SCManagement.Services.AzureStorageService
             }
 
             // Get a reference to a container named in appsettings.json and then create it
-            BlobContainerClient container = new BlobContainerClient(_storageConnectionString, _storageContainerName);
+            BlobContainerClient container = new BlobContainerClient(
+                _storageConnectionString,
+                _storageContainerName,
+                new BlobClientOptions { Retry = { MaxRetries = 2, Delay = TimeSpan.FromSeconds(30) } }
+                );
             //await container.CreateAsync();
 
             string uuid = Guid.NewGuid().ToString();
@@ -59,7 +63,7 @@ namespace SCManagement.Services.AzureStorageService
                 {
                     var blobHttpHeader = new BlobHttpHeaders { ContentType = blob.ContentType };
                     // Upload the file async
-                    await client.UploadAsync(data, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
+                    await client.UploadAsync(data, new BlobUploadOptions { HttpHeaders = blobHttpHeader, });
                 }
 
                 // Everything is OK and file got uploaded
@@ -101,7 +105,11 @@ namespace SCManagement.Services.AzureStorageService
         /// <returns>An object with the deleted information</returns>
         public async Task<BlobResponseDto> DeleteAsync(string FileUUID)
         {
-            BlobContainerClient client = new BlobContainerClient(_storageConnectionString, _storageContainerName);
+            BlobContainerClient client = new BlobContainerClient(
+                _storageConnectionString,
+                _storageContainerName,
+                new BlobClientOptions { Retry = { MaxRetries = 2, Delay = TimeSpan.FromSeconds(30) } }
+                );
 
             BlobClient file = client.GetBlobClient(FileUUID.ToString());
 
