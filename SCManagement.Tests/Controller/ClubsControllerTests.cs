@@ -137,7 +137,7 @@ namespace SCManagement.Tests.Controller
             var clubToCreate = new CreateClubModel { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 }, PlanId = 1 };
             var clubSubProducts = new List<Product>() { new Product { Id = 1 } };
             A.CallTo(() => _clubService.CreateClub(A<Club>._, A<string>._)).Returns(createdClub);
-            A.CallTo(() => _paymentService.GetClubSubscriptionPlans()).Returns(clubSubProducts);
+            A.CallTo(() => _paymentService.GetClubSubscriptionPlans(false)).Returns(clubSubProducts);
 
             // Act
             var result = await _controller.Create(clubToCreate);
@@ -159,7 +159,7 @@ namespace SCManagement.Tests.Controller
             var clubToCreate = new CreateClubModel { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 }, PlanId = 1 };
             var clubSubProducts = new List<Product>() { new Product { Id = 3 } };
             A.CallTo(() => _clubService.CreateClub(A<Club>._, A<string>._)).Returns(createdClub);
-            A.CallTo(() => _paymentService.GetClubSubscriptionPlans()).Returns(clubSubProducts);
+            A.CallTo(() => _paymentService.GetClubSubscriptionPlans(false)).Returns(clubSubProducts);
 
             // Act
             var result = await _controller.Create(clubToCreate);

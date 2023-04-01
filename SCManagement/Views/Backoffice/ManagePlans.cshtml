@@ -1,74 +1,100 @@
-﻿@model IEnumerable<SCManagement.Services.PaymentService.Models.Subscription>
+﻿@model IEnumerable<SCManagement.Services.PaymentService.Models.Product>
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = @StringLocalizer["DelayedPayments"];
+    ViewData["Title"] = "Manage Plans";
 }
+
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
 
 <style>
-    #modal1 {
-        min-width:132px;
-        min-height:132px;
+    #modalConfirm {
+        min-width: 132px;
+        min-height: 132px;
+    }
+
+    .btn-danger {
+        color: white;
+        border-radius: 10px;
+        background-color: red;
+        border-color: red;
+    }
+
+    .btn-info {
+        border-radius: 10px;
     }
 </style>
 
 <div class="container-fluid ps-5 pe-5">
-
-    <div class="d-flex align-items-center" style="margin-top:130px !important;">
-        <h1 class="text-to-dark">@StringLocalizer["DelayedPayments"]</h1>
+    <div style="margin-top:130px !important;">
+        <h1 class="text-to-dark">@StringLocalizer["Manage Plans"]</h1>
     </div>
     <hr />
     <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
         <div class="card-body">
-            @if (ViewBag.Message != null)
+            <p>
+                <a asp-action="CreatePlan" class="btn" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Create Plan"]</a>
+            </p>
+            @if (ViewBag.Error != null)
+            {
+                <div style="color:red;">@StringLocalizer[ViewBag.Error]</div>
+            }
+            else if (ViewBag.Message != null)
             {
                 <div style="color:green;">@StringLocalizer[ViewBag.Message]</div>
             }
-            <table id="table-payments" class="display" style="width:100%!important;">
+            <table class="display" id="table-plans" style="width:100%!important;">
                 <thead>
                     <tr>
-                        <th class="text-to-dark">
-                            @Html.DisplayNameFor(model => model.Club)
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
                         </th>
-                        <th class="text-to-dark">
-                            @Html.DisplayNameFor(model => model.NextTime)
-                        </th>
-                        <th class="text-to-dark">
-                            @Html.DisplayNameFor(model => model.Product)
-                        </th>
-                        <th class="text-to-dark">
+                        <th>
                             @Html.DisplayNameFor(model => model.Value)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Frequency)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Enabled)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AthleteSlots)
                         </th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var subscription in Model)
+                    @foreach (var item in Model)
                     {
                         <tr>
-                            <td class="text-to-dark">
-                                @subscription.Club.Name (@subscription.User.FullName)
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Name)
                             </td>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor(_ => subscription.NextTime.Date)
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Value)
                             </td>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor(_ => subscription.Product.Name)
+                            <td>
+                                @Html.DisplayFor(modelItem => StringLocalizer[item.Frequency.ToString()].Value)
                             </td>
-                            <td class="text-to-dark">
-                                @Html.DisplayFor(_ => subscription.Value)€
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Enabled)
                             </td>
-                            <td class="justify-content-end">
-                                <form asp-action="NotifyMissingPayment" id="myForm-@subscription.Id" class="toggle-plan-form">
-                                    <input name="subId" value="@subscription.Id" class="form-control" hidden />
-                                    <input type="submit"
-                                       value='@StringLocalizer["Notify"]'
-                                       class='btn btn-primary float-end'
-                                       onclick="toggleRemoveModal()" 
-                                       style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
-                                </form>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AthleteSlots)
+                            </td>
+                            <td>
+                                <div class="d-flex justify-content-end">
+                                    <a class="btn btn-primary me-2" href="/Backoffice/EditPlan/@item.Id" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Edit"]</a>
+                                    <form asp-action="TogglePlan" id="toggle-plan-form-@item.Id" class="toggle-plan-form">
+                                        <input name="planId" value="@item.Id" class="form-control" hidden />
+                                        <input type="submit"
+                                           data-action="@(!item.Enabled)"
+                                           value='@(item.Enabled ? StringLocalizer["Disable"] : StringLocalizer["Enable"])'
+                                           class='btn @(item.Enabled ? "btn-danger" : "btn-info")' />
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     }
@@ -77,16 +103,17 @@
         </div>
     </div>
 
-    <div id="modal1" class="modal">
+    <div id="modalConfirm" class="modal">
         <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
-            <span class="text-to-dark">@StringLocalizer["NotConfirm"]</span>
+            <span class="text-to-dark">@StringLocalizer["PlanToggleStatus"]</span>
             <div class="d-flex justify-content-end mt-3">
                 <a onclick="confirmAction()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%; cursor: pointer;">@StringLocalizer["Yes"]</a>
-                <a onclick="$('#modal1').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red; cursor: pointer;"><strong>@StringLocalizer["No"]</strong></a>
+                <a onclick="$('#modalConfirm').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red; cursor: pointer;"><strong>@StringLocalizer["No"]</strong></a>
             </div>
         </div>
     </div>
 </div>
+
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
@@ -94,7 +121,7 @@
 <script type="text/javascript">
     $(document).ready(function () {
         $.noConflict();
-        $("#table-payments").DataTable({
+        $("#table-plans").DataTable({
             responsive: true,
             order: [],
             columnDefs: [
@@ -121,10 +148,10 @@
 
     let currentForm;
     let toggleform = document.getElementsByClassName('toggle-plan-form')
-    for (let i = 0; i < toggleform.length;i++){
+    for (let i = 0; i < toggleform.length; i++) {
         toggleform[i].addEventListener('submit', function (event) {
             event.preventDefault();
-            $("#modal1").show();
+            $("#modalConfirm").show();
             currentForm = toggleform[i].getAttribute("id");
         });
     }
