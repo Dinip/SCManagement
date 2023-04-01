@@ -136,6 +136,7 @@ namespace SCManagement.Services.ClubService
                .Include(c => c.Photography)
                .Include(c => c.Address)
                .Include(c => c.ClubTranslations)
+               .Where(c => c.Status == ClubStatus.Active)
                .Select(s =>
                new Club
                {
@@ -614,7 +615,7 @@ namespace SCManagement.Services.ClubService
                 Name = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).FirstOrDefault().Value
             }).ToListAsync();
         }
-        
+
         /// <summary>
         /// Allow to know if a user have a role in the club
         /// </summary>
@@ -679,7 +680,7 @@ namespace SCManagement.Services.ClubService
                 await deletePhoto(club);
                 return "";
             }
-            
+
             return "";
         }
 
@@ -836,7 +837,7 @@ namespace SCManagement.Services.ClubService
                .Include(c => c.Photography)
                .Include(c => c.Address)
                .Include(c => c.ClubTranslations)
-               .Where(c => string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower().Trim()))
+               .Where(c => c.Status == ClubStatus.Active && (string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower().Trim())))
                .Select(s =>
                new Club
                {
@@ -967,6 +968,6 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
             return modality;
         }
-        
+
     }
 }
