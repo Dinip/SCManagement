@@ -2407,4 +2407,32 @@ As long as the website and the information and services provided therein are fre
     <value>Members</value>
     <comment>29-03-2023_clubsStats</comment>
   </data>
+  <data name="Enrolls" xml:space="preserve">
+    <value>Enrolls</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Event Location" xml:space="preserve">
+    <value>Event Location</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Event Result Type" xml:space="preserve">
+    <value>Event Result Type</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultPosition" xml:space="preserve">
+    <value>Position</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultScore" xml:space="preserve">
+    <value>Score</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultTime" xml:space="preserve">
+    <value>Time</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Sponsor" xml:space="preserve">
+    <value>Sponsor</value>
+    <comment>01-04-2023</comment>
+  </data>
 </root>

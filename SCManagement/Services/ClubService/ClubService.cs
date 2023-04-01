@@ -261,17 +261,6 @@ namespace SCManagement.Services.ClubService
             return result ?? new UsersRoleClub { Id = 0, UserId = userId, ClubId = 0, RoleId = 0, Selected = false };
         }
 
-
-        /// <summary>
-        /// Gets the admin user of a given club
-        /// </summary>
-        /// <param name="clubId">id of the club to get the admin</param>
-        /// <returns>admin user of the club</returns>
-        private User getClubAdmin(int clubId)
-        {
-            return _context.UsersRoleClub.Where(r => r.ClubId == clubId && r.RoleId == 50).Include(r => r.User).Select(r => r.User).FirstOrDefault()!;
-        }
-
         /// <summary>
         /// Sends an email to the club admin with a given subject and body
         /// and replaces the values in the body with the values in the dictionary
@@ -284,7 +273,7 @@ namespace SCManagement.Services.ClubService
         /// <returns></returns>
         private async Task sendEmailToClubAdmin(int clubId, string keySubject, string keyContent, Dictionary<string, string>? values = null)
         {
-            User admin = getClubAdmin(clubId);
+            User admin = (await GetAdminRole(clubId)).User;
             string emailBody = _sharedResource.Get(keyContent, admin.Language);
 
             if (values != null)
@@ -969,5 +958,12 @@ namespace SCManagement.Services.ClubService
             return modality;
         }
 
+        public async Task<UsersRoleClub> GetAdminRole(int clubId)
+        {
+            return await _context.UsersRoleClub
+                .Include(c=>c.User)
+                .Where(c => c.ClubId == clubId && c.RoleId == 50)
+                .FirstOrDefaultAsync();    
+        }
     }
 }

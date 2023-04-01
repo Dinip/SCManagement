@@ -276,6 +276,7 @@ namespace SCManagement.Controllers
             public bool HaveRoute { get; set; }
             public string? Route { get; set; }
 
+            [Display(Name = "Event Result Type")]
             public ResultType EventResultType { get; set; }
             [Display(Name = "Max Enrolls")]
             [Range(0, int.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
@@ -288,9 +289,6 @@ namespace SCManagement.Controllers
 
             public string? EventAux { get; set; }
             public DateTime? CreationDate { get; set; }
-
-
-
         }
 
         [Authorize]
