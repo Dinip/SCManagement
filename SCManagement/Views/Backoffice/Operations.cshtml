@@ -7,8 +7,9 @@
 <style>
     .flip-card {
         min-width:170px;
+        min-height: 200px;
         width: 100% !important;
-        height: 170% !important;
+        height: 100% !important;
         perspective: 1000px;
         border-radius: 20px;
         opacity: 0;
@@ -45,7 +46,7 @@
         <h1 class="text-to-dark">@StringLocalizer["Operations"]</h1>
     </div>
     <hr />
-    <div class="row d-flex justify-content-evenly text-center">
+    <div class="d-flex row justify-content-evenly text-center">
         <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
             <a asp-controller="Backoffice" asp-action="UserAccess" style="text-decoration:none;">
                 <div class="flip-card">
