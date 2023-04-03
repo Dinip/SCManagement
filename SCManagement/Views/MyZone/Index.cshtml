@@ -185,6 +185,8 @@
     </div>
 </div>
 
+<div id="timeline"></div>
+
 
 <h2 class="text-to-dark ms-5 mb-3">@StringLocalizer["Bio"]</h2>
 <a asp-action="CreateBioimpedance" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" class="ms-5">@StringLocalizer["CreateBioimpedance"]</a>
@@ -273,14 +275,29 @@
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script src="https://unpkg.com/timelines-chart"></script>
 
 <script type="text/javascript">
     var strings = {
         "details": '@Html.Raw(StringLocalizer["Details"].Value.ToString())',
     }
 
-    $(document).ready(function () {
+    $(document).ready(async function () {
         $.noConflict();
+
+        teamsTable()
+        bioimpedanceTable()
+
+        GetTrainingPlans()
+        GetMealPlans()
+        GetGoalPlans()
+
+        setTheme(localStorage.getItem("theme") || "light")
+
+        buildTimeline()
+    });
+
+    function teamsTable() {
         $("#table_id1").DataTable({
             responsive: true,
             "searching": false,
@@ -306,10 +323,9 @@
             },
         });
 
-        GetTrainingPlans();
-        GetMealPlans();
-        GetGoalPlans();
+    }
 
+    function bioimpedanceTable() {
         $("#table_id4").DataTable({
             ajax: {
                 url: "/MyZone/GetBioimpedance",
@@ -362,13 +378,9 @@
                 },
             },
         });
-        setTheme(localStorage.getItem("theme") || "light")
-
-    });
-
+    }
 
     const modal = document.getElementById("modal")
-
 
     function GetTrainingPlans(filter) {
         $("#table_id2").DataTable({
@@ -415,7 +427,6 @@
             },
         });
     }
-
 
     function GetMealPlans(filter) {
         $("#table_id3").DataTable({
@@ -543,7 +554,6 @@
         GetGoalPlans(0);
     }
 
-
     window.onclick = function (event) {
         if (event.target == modal) {
             $("#modal").hide();
@@ -553,7 +563,6 @@
     function closeToast() {
         $(".toast").hide();
     }
-
 
     function toggleModal() {
         $("#modal").show();
@@ -608,4 +617,137 @@
         document.getElementById(`remove${fileType === 'image' ? 'Image' : 'EMD'}`).value = true
         $('#modal1').hide()
     }
+
+    function convertDataToNewFormat(data, label) {
+        const newFormat = [];
+        let currentLabel = `${label} (1)`;
+        let currentData = [{ timeRange: [data[0].startDate, data[0].endDate], val: data[0].name }];
+        let currentEnd = new Date(data[0].endDate);
+        for (let i = 1; i < data.length; i++) {
+            const item = data[i];
+            const startDate = new Date(item.startDate);
+            const endDate = new Date(item.endDate);
+            if (startDate >= currentEnd) {
+                // add to the current label and data array
+                currentData.push({ timeRange: [item.startDate, item.endDate], val: item.name });
+                // update the end date if necessary
+                currentEnd = endDate;
+            } else {
+                // start a new label and data array
+                newFormat.push({ label: currentLabel, data: currentData });
+                currentLabel = `${label} (${newFormat.length + 1})`;
+                currentData = [{ timeRange: [item.startDate, item.endDate], val: item.name }];
+                currentEnd = endDate;
+            }
+        }
+        // push the last label and data array
+        newFormat.push({ label: currentLabel, data: currentData });
+        return newFormat;
+    }
+
+    const buildTimeline = async () => {
+        let training = await loadTrainingPlans("3")
+        let meals = await loadMealsPlans("3")
+        let goals = await loadGoals("3")
+
+        let allData = [
+          ...training.map(f => ({ ...f, type: "Training" })),
+          ...meals.map(f => ({ ...f, type: "Meal" })),
+          ...goals.map(f => ({ ...f, type: "Goals" }))
+        ]
+
+        const timelineData = [
+            {
+                group: "@StringLocalizer["Training Plans"]",
+                data: convertDataToNewFormat(training, "@StringLocalizer["Training"]"),
+            },
+            {
+                group: "@StringLocalizer["Meal Plans"]",
+                data: convertDataToNewFormat(meals, "@StringLocalizer["Meals"]"),
+            },
+            {
+                group: "@StringLocalizer["Goals"]",
+                data: convertDataToNewFormat(goals, "@StringLocalizer["Goals"]"),
+            }
+        ]
+
+        const openDetailsOnClick = (clickData) => {
+            const found = allData.find(f => f.name == clickData.labelVal && f.startDate == clickData.data.timeRange[0] && f.endDate == clickData.data.timeRange[1])
+            if (found?.type != "Goals") {
+              console.log("aqui")
+              window.open(`/Plans/${found.type}Details/${found.planId}`, '_blank')
+            }
+        }
+
+
+        const myChart = TimelinesChart();
+        myChart
+            .data(timelineData)
+            .zQualitative(true)
+            .maxLineHeight(48)
+            .zoomX([getDateThreeMonthsAgo(), getDateThreeMonthsFromNow()])
+            .onSegmentClick(openDetailsOnClick)
+            (document.getElementById('timeline'))
+    }
+
+    function getDateThreeMonthsAgo() {
+        const date = new Date();
+        date.setMonth(date.getMonth() - 3);
+        return date;
+    }
+
+    function getDateThreeMonthsFromNow() {
+        const date = new Date();
+        date.setMonth(date.getMonth() + 3);
+        return date;
+    }
+
+    function loadMealsPlans(filter) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/MyZone/GetMealPlans/?filter=${filter}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function loadTrainingPlans(filter) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/MyZone/GetTrainingPlans/?filter=${filter}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function loadGoals(filter) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/MyZone/GetGoals/?filter=${filter}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
 </script>
