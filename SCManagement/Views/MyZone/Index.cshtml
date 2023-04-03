@@ -651,54 +651,64 @@
         let goals = await loadGoals("3")
 
         let allData = [
-          ...training.map(f => ({ ...f, type: "Training" })),
-          ...meals.map(f => ({ ...f, type: "Meal" })),
-          ...goals.map(f => ({ ...f, type: "Goals" }))
+            ...training.map(f => ({ ...f, type: "Training" })),
+            ...meals.map(f => ({ ...f, type: "Meal" })),
+            ...goals.map(f => ({ ...f, type: "Goals" }))
         ]
 
-        const timelineData = [
-            {
-                group: "@StringLocalizer["Training Plans"]",
-                data: convertDataToNewFormat(training, "@StringLocalizer["Training"]"),
-            },
-            {
-                group: "@StringLocalizer["Meal Plans"]",
-                data: convertDataToNewFormat(meals, "@StringLocalizer["Meals"]"),
-            },
-            {
-                group: "@StringLocalizer["Goals"]",
-                data: convertDataToNewFormat(goals, "@StringLocalizer["Goals"]"),
-            }
-        ]
+        const timelineData = []
+        if (training.length) {
+            timelineData.push(
+                {
+                    group: "@StringLocalizer["Training Plans"]",
+                    data: convertDataToNewFormat(training, "@StringLocalizer["Training"]"),
+                }
+            )
+        }
+        if (meals.length) {
+            timelineData.push(
+                {
+                    group: "@StringLocalizer["Meal Plans"]",
+                    data: convertDataToNewFormat(meals, "@StringLocalizer["Meals"]"),
+                }
+            )
+        }
+        if (goals.length) {
+            timelineData.push(
+                {
+                    group: "@StringLocalizer["Goals"]",
+                    data: convertDataToNewFormat(goals, "@StringLocalizer["Goals"]"),
+                }
+            )
+        }
 
         const openDetailsOnClick = (clickData) => {
             const found = allData.find(f => f.name == clickData.labelVal && f.startDate == clickData.data.timeRange[0] && f.endDate == clickData.data.timeRange[1])
             if (found?.type != "Goals") {
-              console.log("aqui")
-              window.open(`/Plans/${found.type}Details/${found.planId}`, '_blank')
+                console.log("aqui")
+                window.open(`/Plans/${found.type}Details/${found.planId}`, '_blank')
             }
         }
-
 
         const myChart = TimelinesChart();
         myChart
             .data(timelineData)
             .zQualitative(true)
             .maxLineHeight(48)
-            .zoomX([getDateThreeMonthsAgo(), getDateThreeMonthsFromNow()])
+            .zoomX([getDateOneMonthAgo(), getDateOneMonthFromNow()])
             .onSegmentClick(openDetailsOnClick)
             (document.getElementById('timeline'))
     }
 
-    function getDateThreeMonthsAgo() {
+    function getDateOneMonthAgo() {
         const date = new Date();
-        date.setMonth(date.getMonth() - 3);
+        date.setMonth(date.getMonth() - 1);
         return date;
     }
 
-    function getDateThreeMonthsFromNow() {
+    function getDateOneMonthFromNow() {
         const date = new Date();
-        date.setMonth(date.getMonth() + 3);
+        date.setMonth(date.getMonth() + 1);
         return date;
     }
 
