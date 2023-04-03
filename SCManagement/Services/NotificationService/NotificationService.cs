@@ -536,14 +536,15 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
+                //change this line for what u need
+                List<string> strings = new List<string>();
+                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Canceled);
 
                 foreach (var user in users)
                 {
                     Dictionary<string, string> values = new Dictionary<string, string>
                     {
                         { "_USERNAME_", $"{user.FullName}"},
-                        { "_EVENTNAME_", $"{eveName}"},
-                        { "_CLUBNAME_", clubName },
                     };
 
                     _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionCanceled", values);
@@ -559,14 +560,15 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
+                //change this line for what u need
+                List<string> strings = new List<string>();
+                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Expired);
 
                 foreach (var user in users)
                 {
                     Dictionary<string, string> values = new Dictionary<string, string>
                     {
                         { "_USERNAME_", $"{user.FullName}"},
-                        { "_EVENTNAME_", $"{eveName}"},
-                        { "_CLUBNAME_", clubName },
                     };
 
                     _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionExpired", values);
@@ -582,14 +584,15 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
+                //change this line for what u need
+                List<string> strings = new List<string>();
+                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Extended);
 
                 foreach (var user in users)
                 {
                     Dictionary<string, string> values = new Dictionary<string, string>
                     {
                         { "_USERNAME_", $"{user.FullName}"},
-                        { "_EVENTNAME_", $"{eveName}"},
-                        { "_CLUBNAME_", clubName },
                     };
 
                     _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionExtended", values);
@@ -605,14 +608,15 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
+                //change this line for what u need
+                List<string> strings = new List<string>();
+                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Extended);
 
                 foreach (var user in users)
                 {
                     Dictionary<string, string> values = new Dictionary<string, string>
                     {
                         { "_USERNAME_", $"{user.FullName}"},
-                        { "_EVENTNAME_", $"{eveName}"},
-                        { "_CLUBNAME_", clubName },
                     };
 
                     _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionRenewed", values);
@@ -628,14 +632,15 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
+                //change this line for what u need
+                List<string> strings = new List<string>();
+                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Started);
 
                 foreach (var user in users)
                 {
                     Dictionary<string, string> values = new Dictionary<string, string>
                     {
                         { "_USERNAME_", $"{user.FullName}"},
-                        { "_EVENTNAME_", $"{eveName}"},
-                        { "_CLUBNAME_", clubName },
                     };
 
                     _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionStarted", values);

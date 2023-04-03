@@ -5,7 +5,6 @@ using SCManagement.Services.EventService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.UserService;
 using FakeItEasy;
-using FakeItEasy.Creation;
 using FluentAssertions;
 using SCManagement.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,7 @@ using static SCManagement.Controllers.EventsController;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.TranslationService;
 using System.Text.Json;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Tests.Controller {
     public class EventsControllerTests {
@@ -23,6 +23,7 @@ namespace SCManagement.Tests.Controller {
         private readonly IPaymentService _paymentService;
         private readonly ITranslationService _translationService;
         private readonly EventsController _eventsController;
+        private readonly INotificationService _notificationService;
 
         public EventsControllerTests()
         {
@@ -32,9 +33,10 @@ namespace SCManagement.Tests.Controller {
             _clubService = A.Fake<IClubService>();
             _paymentService = A.Fake<IPaymentService>();
             _translationService = A.Fake<ITranslationService>();
+            _notificationService = A.Fake<INotificationService>();
 
             //SUT (system under test)
-            _eventsController = new EventsController(_eventService, _userService, _userManager, _clubService, _paymentService, _translationService);
+            _eventsController = new EventsController(_eventService, _userService, _userManager, _clubService, _paymentService, _translationService, _notificationService);
         }
 
         [Fact]

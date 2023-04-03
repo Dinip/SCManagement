@@ -1,8 +1,10 @@
-﻿using FluentAssertions;
+﻿using FakeItEasy;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.TeamService;
 using System;
 using System.Collections.Generic;
@@ -16,13 +18,15 @@ namespace SCManagement.Tests.Services
     {
         private readonly TeamService _teamService;
         private readonly ApplicationDbContext _context;
+        private readonly INotificationService _notificationService;
 
         public TeamServiceTests()
         {
             _context = GetDbContext().Result;
+            _notificationService = A.Fake<INotificationService>();
 
             //SUT (system under test)
-            _teamService = new TeamService(_context);
+            _teamService = new TeamService(_context, _notificationService);
         }
 
         private async Task<ApplicationDbContext> GetDbContext()
