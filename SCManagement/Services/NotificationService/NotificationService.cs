@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using FluentEmail.Core;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using SCManagement.Data;
-using SCManagement.Data.Migrations;
 using SCManagement.Models;
 using SCManagement.Services.BackgroundService;
+using SCManagement.Services.ClubService.Models;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.PlansService.Models;
@@ -32,20 +29,28 @@ namespace SCManagement.Services.NotificationService
             _hostUrl = $"{httpContext.HttpContext.Request.Scheme}://{httpContext.HttpContext.Request.Host}";
         }
 
-        private async Task<ICollection<User>> getUsersInfosToNotify(ApplicationDbContext _context, ICollection<string> userIds, NotificationType notificationType)
+        //if notification type is null, ignore checking if the user
+        //has that notification type enabled and notify anyways
+        private async Task<ICollection<User>> getUsersInfosToNotify(ApplicationDbContext _context, ICollection<string> userIds, NotificationType? notificationType)
         {
-            return await _context.Users
+            var users = _context.Users
                 .Include(u => u.Notifications)
-                .Where(u => userIds.Contains(u.Id) && u.Notifications.Any(n => n.Type == notificationType && n.IsEnabled == true))
-                .Select(u => new User
-                {
-                    Id = u.Id,
-                    FirstName = u.FirstName,
-                    LastName = u.LastName,
-                    Email = u.Email,
-                    Language = u.Language
-                })
-                .ToListAsync();
+                .Where(u => userIds.Contains(u.Id));
+
+            if (notificationType != null)
+            {
+                users.Where(u => u.Notifications.Any(n => n.Type == notificationType && n.IsEnabled == true));
+            }
+
+            return await users.Select(u => new User
+            {
+                Id = u.Id,
+                FirstName = u.FirstName,
+                LastName = u.LastName,
+                Email = u.Email,
+                Language = u.Language
+            })
+            .ToListAsync();
         }
 
         public void NotifyQuotaUpdate(int clubId, ClubPaymentSettings newValues)
@@ -81,7 +86,6 @@ namespace SCManagement.Services.NotificationService
 
                 foreach (var partner in partners)
                 {
-
                     var sub = subs.FirstOrDefault(s => s.UserId == partner.Id);
 
                     if (sub != null && sub.AutoRenew)
@@ -100,7 +104,6 @@ namespace SCManagement.Services.NotificationService
 
                     _backgroundHelperService.SendEmail(partner.Email, partner.Language, "ClubFees", values);
                 }
-                return;
             });
         }
 
@@ -214,7 +217,7 @@ namespace SCManagement.Services.NotificationService
                 foreach (var user in users)
                 {
                     Dictionary<string, string> values = new Dictionary<string, string>
-                    {   
+                    {
                         { "_USERNAME_", $"{user.FullName}"},
                         { "_TRAINER_", trainerName },
                         { "_GOALURL_", $"{_hostUrl}/Plans/GoalDetails/{goal.Id}" }
@@ -443,7 +446,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
-        public void NotifyAthletesNumberAlmostFull(Product product)
+        public void NotifyAthletesNumberAlmostFull(int clubId, ClubSlots slots)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
@@ -451,22 +454,23 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
-                var clubName = (await _context.Club.FirstOrDefaultAsync(f => f.Id == product.ClubId)).Name;
+                var clubName = await _context.Club.Where(f => f.Id == clubId).Select(f => f.Name).FirstAsync();
+                var clubAdminId = await _context.UsersRoleClub.Where(f => f.ClubId == clubId && f.RoleId == 50).Select(f => f.UserId).FirstAsync();
 
-                //change this line for what u need
-                List<string> strings = new List<string>();
-                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Athletes_Number_Almost_Full);
+                List<string> userIds = new List<string>() { clubAdminId };
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Athletes_Number_Almost_Full);
+                var user = users.First();
 
-                foreach (var user in users)
+                Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    Dictionary<string, string> values = new Dictionary<string, string>
-                    {
-                        { "_USERNAME_", $"{user.FullName}"},
-                        { "_CLUBNAME_", clubName },
-                    };
+                    { "_USERNAME_", $"{user.FullName}"},
+                    { "_CLUBNAME_", clubName },
+                    { "_SLOTS_USED_", slots.UsedSlots.ToString() },
+                    { "_SLOTS_TOTAL_", slots.TotalSlots.ToString()},
+                    { "_PERCENT_USED_", (slots.UsedSlots * 100 / slots.TotalSlots) + "%" }
+                };
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "PaymentLate", values);
-                }
+                _backgroundHelperService.SendEmail(user.Email, user.Language, "AthleteSlotsAlmostFull", values);
             });
         }
 
@@ -500,7 +504,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
-        public void NotifyPaymentReceived(Payment payment)
+        public void NotifyPaymentReceived(int payId)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
@@ -508,23 +512,21 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
-                var userName = (await _context.Users.FirstOrDefaultAsync(u => u.Id == payment.UserId)).FullName;
+                var payment = await _context.Payment.Include(p => p.Product).FirstAsync(p => p.Id == payId);
 
-                //change this line for what u need
-                List<string> strings = new List<string>();
-                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Payment_Received);
+                List<string> userIds = new List<string> { payment.UserId };
 
-                foreach (var user in users)
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Payment_Received);
+                var user = users.First();
+
+                Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    Dictionary<string, string> values = new Dictionary<string, string>
-                    {
-                        { "_USERNAME_", $"{user.FullName}"},
-                        { "_PAYMENTUSERNAME_", userName },
-                        { "_VALUE_", payment.Value.ToString() },
-                    };
+                    { "_USERNAME_", user.FullName },
+                    { "_PRODUCT_", payment.Product.Name },
+                    { "_VALUE_", payment.Value.ToString() },
+                };
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "PaymentReceived", values);
-                }
+                _backgroundHelperService.SendEmail(user.Email, user.Language, "PaymentReceived", values);
             });
         }
 
@@ -536,23 +538,26 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
-                //change this line for what u need
-                List<string> strings = new List<string>();
-                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Canceled);
+                List<string> userIds = new List<string> { subscription.UserId };
 
-                foreach (var user in users)
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Subscription_Canceled);
+                var user = users.First();
+
+                Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    Dictionary<string, string> values = new Dictionary<string, string>
-                    {
-                        { "_USERNAME_", $"{user.FullName}"},
-                    };
+                    { "_USERNAME_", user.FullName },
+                    { "_ID_", $"{_hostUrl}/Subscription?subId={subscription.Id}"},
+                    { "_PRODUCT_", subscription.Product.Name },
+                    { "_FREQUENCY_", _sharedResource.Get(subscription.Frequency.ToString(), user.Language) },
+                    { "_VALUE_", subscription.Value.ToString() },
+                };
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionCanceled", values);
-                }
+                _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionRenewed", values);
+
             });
         }
 
-        public void NotifySubscriptionExpired(Subscription subscription)
+        public void NotifySubscriptionExpired(ICollection<int> subIds)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
@@ -560,23 +565,52 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
-                //change this line for what u need
-                List<string> strings = new List<string>();
-                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Expired);
-
-                foreach (var user in users)
+                var subs = await _context.Subscription
+                .Include(s => s.Product)
+                .Where(s => subIds.Contains(s.Id))
+                .Select(s => new Subscription
                 {
+                    Id = s.Id,
+                    Frequency = s.Frequency,
+                    Value = s.Value,
+                    Product = new Product
+                    {
+                        Name = s.Product.Name,
+                        ProductType = s.Product.ProductType,
+                    },
+                })
+                .ToListAsync();
+
+                List<string> userIds = new List<string>();
+                userIds = subs.Select(s => s.UserId).Distinct().ToList();
+
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Subscription_Expired);
+
+                foreach (var subscription in subs)
+                {
+                    var user = users.Where(u => u.Id == subscription.UserId).First();
                     Dictionary<string, string> values = new Dictionary<string, string>
                     {
-                        { "_USERNAME_", $"{user.FullName}"},
+                        { "_USERNAME_", user.FullName },
+                        { "_ID_", $"{_hostUrl}/Subscription?subId={subscription.Id}"},
+                        { "_PRODUCT_", subscription.Product.Name },
+                        { "_FREQUENCY_", _sharedResource.Get(subscription.Frequency.ToString(), user.Language) },
+                        { "_VALUE_", subscription.Value.ToString() },
                     };
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionExpired", values);
+                    if (subscription.Product.ProductType == ProductType.ClubSubscription) // club plan
+                    {
+                        _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionExpiredClubPlan", values);
+                    }
+                    else
+                    {
+                        _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionExpiredPartner", values);
+                    }
                 }
             });
         }
 
-        public void NotifySubscriptionExtended(Subscription subscription)
+        public void NotifySubscriptionRenewed(int subId)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
@@ -584,23 +618,28 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
-                //change this line for what u need
-                List<string> strings = new List<string>();
-                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Extended);
+                var subscription = await _context.Subscription.Include(s => s.Product).Where(s => s.Id == subId).FirstAsync();
 
-                foreach (var user in users)
+                List<string> userIds = new List<string> { subscription.UserId };
+
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Subscription_Renewed);
+                var user = users.First();
+
+                Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    Dictionary<string, string> values = new Dictionary<string, string>
-                    {
-                        { "_USERNAME_", $"{user.FullName}"},
-                    };
+                    { "_USERNAME_", user.FullName },
+                    { "_ID_", $"{_hostUrl}/Subscription?subId={subscription.Id}"},
+                    { "_PRODUCT_", subscription.Product.Name },
+                    { "_FREQUENCY_", _sharedResource.Get(subscription.Frequency.ToString(), user.Language) },
+                    { "_NEXTDATE_", subscription.NextTime.ToString() },
+                    { "_VALUE_", subscription.Value.ToString() },
+                };
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionExtended", values);
-                }
+                _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionRenewed", values);
             });
         }
 
-        public void NotifySubscriptionRenewed(Subscription subscription)
+        public void NotifySubscriptionStarted(int subId)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
@@ -608,23 +647,27 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
-                //change this line for what u need
-                List<string> strings = new List<string>();
-                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Extended);
+                var subscription = await _context.Subscription.Include(s => s.Product).Where(s => s.Id == subId).FirstAsync();
 
-                foreach (var user in users)
+                List<string> userIds = new List<string> { subscription.UserId };
+
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Subscription_Started);
+                var user = users.First();
+
+                Dictionary<string, string> values = new Dictionary<string, string>
                 {
-                    Dictionary<string, string> values = new Dictionary<string, string>
-                    {
-                        { "_USERNAME_", $"{user.FullName}"},
-                    };
+                    { "_USERNAME_", user.FullName },
+                    { "_ID_", $"{_hostUrl}/Subscription?subId={subscription.Id}"},
+                    { "_PRODUCT_", subscription.Product.Name },
+                    { "_FREQUENCY_", _sharedResource.Get(subscription.Frequency.ToString(), user.Language) },
+                    { "_VALUE_", subscription.Value.ToString() },
+                };
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionRenewed", values);
-                }
+                _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionStarted", values);
             });
         }
 
-        public void NotifySubscriptionStarted(Subscription subscription)
+        public void NotifyEventJoined(EventEnroll eventEnroll, bool needsPayment)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
             {
@@ -632,18 +675,145 @@ namespace SCManagement.Services.NotificationService
                 var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
                 var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
 
-                //change this line for what u need
-                List<string> strings = new List<string>();
-                var users = await getUsersInfosToNotify(_context, strings, NotificationType.Subscription_Started);
+                var evt = await _context.Event.Include(e => e.EventTranslations).FirstAsync(e => e.Id == eventEnroll.EventId);
+
+                List<string> userIds = new List<string> { eventEnroll.UserId };
+
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Event_Joined);
+                var user = users.First();
+
+                Dictionary<string, string> values = new Dictionary<string, string>
+                {
+                    { "_USERNAME_", user.FullName },
+                    { "_ID_", $"{_hostUrl}/Events/Details/{evt.Id}"},
+                    { "_NAME_", evt.EventTranslations.First(f=>f.Language == user.Language && f.Atribute == "Name").Value },
+                    { "_FEE_", evt.Fee.ToString() },
+                };
+
+                if (needsPayment)
+                {
+                    //informs that have 4 hours to pay or will be removed from the event
+                    _backgroundHelperService.SendEmail(user.Email, user.Language, "EventJoinedPayed", values);
+                }
+                else
+                {
+                    //can be used after the payment is done or when an event is free, just
+                    //informs the user that has been added to the event
+                    _backgroundHelperService.SendEmail(user.Email, user.Language, "EventJoinedConfirm", values);
+                }
+            });
+        }
+
+        public void NotifyEventLeft(EventEnroll eventEnroll, bool missingPayment)
+        {
+            _backgroundWorker.Enqueue(async (_serviceProvider) =>
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
+
+                var evt = await _context.Event.Include(e => e.EventTranslations).FirstAsync(e => e.Id == eventEnroll.EventId);
+
+                List<string> userIds = new List<string> { eventEnroll.UserId };
+
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Event_Left);
+                var user = users.First();
+
+                Dictionary<string, string> values = new Dictionary<string, string>
+                {
+                    { "_USERNAME_", user.FullName },
+                    { "_ID_", $"{_hostUrl}/Events/Details/{evt.Id}"},
+                    { "_NAME_", evt.EventTranslations.First(f=>f.Language == user.Language && f.Atribute == "Name").Value },
+                    { "_FEE_", evt.Fee.ToString() },
+                };
+
+                if (missingPayment)
+                {
+                    //informs that the user was removed from the event because is missing payment
+                    //for more than 4 hours
+                    _backgroundHelperService.SendEmail(user.Email, user.Language, "EventLeftMissingPay", values);
+                }
+                else
+                {
+                    //informs that the user was removed from the event (by themself)
+                    _backgroundHelperService.SendEmail(user.Email, user.Language, "EventLeft", values);
+                }
+            });
+        }
+
+        public void NotifyPlanDiscontinued(int productId)
+        {
+            _backgroundWorker.Enqueue(async (_serviceProvider) =>
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
+
+                var userIdsThatHavePlan = await _context.Subscription.Where(s => s.ProductId == productId).Select(s=>s.UserId).Distinct().ToListAsync();
+                var users = await getUsersInfosToNotify(_context, userIdsThatHavePlan, NotificationType.Plan_Discontinued);
+                var plan = await _context.Product.FirstAsync(p => p.Id == productId);
 
                 foreach (var user in users)
                 {
                     Dictionary<string, string> values = new Dictionary<string, string>
                     {
-                        { "_USERNAME_", $"{user.FullName}"},
+                        { "_USERNAME_", user.FullName },
+                        { "_PRODUCT_", plan.Name },
+                        { "_VALUE_", plan.Value.ToString() },
                     };
 
-                    _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionStarted", values);
+                    _backgroundHelperService.SendEmail(user.Email, user.Language, "PlanDiscontinued", values);
+                }
+            });
+        }
+
+        public void NotifySubscriptionRenewTime(ICollection<int> subIds)
+        {
+            _backgroundWorker.Enqueue(async (_serviceProvider) =>
+            {
+                using var scope = _serviceProvider.CreateScope();
+                var _context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var _backgroundHelperService = scope.ServiceProvider.GetRequiredService<IBackgroundHelperService>();
+
+                var subs = await _context.Subscription
+                .Include(s => s.Product)
+                .Where(s => subIds.Contains(s.Id))
+                .Select(s => new Subscription
+                {
+                    Id = s.Id,
+                    Frequency = s.Frequency,
+                    Value = s.Value,
+                    NextTime = s.NextTime,
+                    Product = new Product { Name = s.Product.Name },
+                })
+                .ToListAsync();
+
+                List<string> userIds = new List<string>();
+                userIds = subs.Select(s => s.UserId).Distinct().ToList();
+
+                var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Subscription_RenewTime);
+
+                foreach (var subscription in subs)
+                {
+                    var user = users.Where(u => u.Id == subscription.UserId).First();
+                    Dictionary<string, string> values = new Dictionary<string, string>
+                    {
+                        { "_USERNAME_", user.FullName },
+                        { "_ID_", $"{_hostUrl}/Subscription?subId={subscription.Id}"},
+                        { "_PRODUCT_", subscription.Product.Name },
+                        { "_FREQUENCY_", _sharedResource.Get(subscription.Frequency.ToString(), user.Language) },
+                        { "_LIMITDATE_", subscription.NextTime.AddDays(3).ToString() },
+                        { "_VALUE_", subscription.Value.ToString() },
+                    };
+
+                    if (subscription.AutoRenew)
+                    {
+                        _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionRenewTimeAuto", values);
+                    }
+                    else
+                    {
+                        _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionRenewTime", values);
+                    }
                 }
             });
         }

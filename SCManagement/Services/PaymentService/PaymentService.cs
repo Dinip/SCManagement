@@ -335,6 +335,7 @@ namespace SCManagement.Services.PaymentService
 
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();
+            _notificationService.NotifyPaymentReceived(payment.Id);
         }
 
         /// <summary>
@@ -349,6 +350,7 @@ namespace SCManagement.Services.PaymentService
             var enroll = await _context.EventEnroll.FirstAsync(e => e.UserId == userId && e.EventId == eventId);
             enroll.EnrollStatus = status;
             _context.EventEnroll.Update(enroll);
+            _notificationService.NotifyEventJoined(enroll, false);
         }
 
         /// <summary>
@@ -467,6 +469,8 @@ namespace SCManagement.Services.PaymentService
 
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
+            _notificationService.NotifySubscriptionRenewed(subscription.Id);
+            _notificationService.NotifyPaymentReceived(payment.Id);
         }
 
         /// <summary>
@@ -528,7 +532,7 @@ namespace SCManagement.Services.PaymentService
             _context.Payment.Add(pay);
             await _context.SaveChangesAsync();
 
-            _notificationService.NotifySubscriptionStarted(sub);
+            _notificationService.NotifySubscriptionStarted(sub.Id);
 
             return sub;
         }
@@ -1003,7 +1007,7 @@ namespace SCManagement.Services.PaymentService
 
             _context.Payment.Add(pay);
             await _context.SaveChangesAsync();
-            _notificationService.NotifySubscriptionStarted(sub);
+            _notificationService.NotifySubscriptionStarted(sub.Id);
 
             return sub;
         }

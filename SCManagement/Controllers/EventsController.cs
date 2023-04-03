@@ -578,6 +578,8 @@ namespace SCManagement.Controllers
             });
 
             var pay = await _paymentService.CreateEventPayment(enroll);
+            var needsPayment = pay != null;
+            _notificationService.NotifyEventJoined(enroll, needsPayment);
 
             if (pay != null) return RedirectToAction("Index", "Payment", new { payId = pay.Id });
 
@@ -613,6 +615,8 @@ namespace SCManagement.Controllers
 
             await _eventService.CancelEventEnroll(enrollRoRemove);
             await _paymentService.CancelEventPayment(enrollRoRemove);
+
+            _notificationService.NotifyEventLeft(enrollRoRemove, false);
 
             return RedirectToAction(nameof(Details), new { id = id });
         }

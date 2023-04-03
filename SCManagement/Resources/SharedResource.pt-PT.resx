@@ -3608,13 +3608,10 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
                                 &lt;tr&gt;
                                     &lt;td style="padding:0 35px;"&gt;
                                         &lt;h1
-                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
-                                            
-Número de atletas quase cheio&lt;/h1&gt; &lt;span
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;Número de atletas quase cheio&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
-                                            _USERNAME_,&lt;br&gt;&lt;br&gt;O número de atletas no teu clube _CLUBNAME_ está quase cheio, deves considerar atualizar o teu plano. Se tiveres alguma dúvida ou precisares de mais informações, entra em contato conosco.
- Muito obrigado!
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;O número de atletas do plano do teu clube _CLUBNAME_ está perto do limite (_SLOTS_USED_ de _SLOTS_TOTAL_, sendo equivalente a _PERCENT_USED_). Deves considerar atualizar o teu plano. Se tiveres alguma dúvida ou precisares de mais informações, entra em contato conosco.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;
                                     &lt;/td&gt;
                                 &lt;/tr&gt;

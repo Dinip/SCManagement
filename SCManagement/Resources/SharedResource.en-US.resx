@@ -3483,8 +3483,7 @@ As long as the website and the information and services provided therein are fre
                                             style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
                                             Athletes Number Almost Full&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
-                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_, &lt;br&gt;&lt;br&gt;The number of athletes in your club _CLUBNAME_ is almost full, you may want to consider upgrading your plan. If you have any questions or need more information, please contact us.
- Thank you very much!
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_, &lt;br&gt;&lt;br&gt;Your _CLUBNAME_ club's plan capacity is close to the maximum athlete limit (_SLOTS_USED_ of _SLOTS_TOTAL_, equivalent to _PERCENT_USED_). You should consider upgrading your plan. If you have any questions or need more information, please contact us.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;
                                     &lt;/td&gt;
                                 &lt;/tr&gt;

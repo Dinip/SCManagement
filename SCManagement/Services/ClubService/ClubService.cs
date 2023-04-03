@@ -432,6 +432,13 @@ namespace SCManagement.Services.ClubService
             cc.UsedDate = DateTime.Now;
             _context.CodeClub.Update(cc);
             await _context.SaveChangesAsync();
+
+            //check if used slots are almost full (> 80%)
+            if ((slots.UsedSlots * 100 / slots.TotalSlots) >= 80)
+            {
+                _notificationService.NotifyAthletesNumberAlmostFull(cc.ClubId, slots);
+            }
+
             return await Task.FromResult(new KeyValuePair<bool, string>(true, "Success"));
         }
 
@@ -614,7 +621,7 @@ namespace SCManagement.Services.ClubService
                 Name = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).FirstOrDefault().Value
             }).ToListAsync();
         }
-        
+
         /// <summary>
         /// Allow to know if a user have a role in the club
         /// </summary>
@@ -679,7 +686,7 @@ namespace SCManagement.Services.ClubService
                 await deletePhoto(club);
                 return "";
             }
-            
+
             return "";
         }
 
@@ -967,6 +974,6 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
             return modality;
         }
-        
+
     }
 }
