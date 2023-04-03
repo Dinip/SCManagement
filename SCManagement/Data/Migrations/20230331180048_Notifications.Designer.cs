@@ -12,7 +12,7 @@ using SCManagement.Data;
 namespace SCManagement.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230330191127_Notifications")]
+    [Migration("20230331180048_Notifications")]
     partial class Notifications
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

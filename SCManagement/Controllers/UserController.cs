@@ -87,11 +87,22 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateNotificationsSettings(Dictionary<int, Notification> notifications)
         {
-            if (!ModelState.IsValid) return View("CustomError", "Error_NotFound");
+            if (!ModelState.IsValid) return View("CustomError", "Error_Unauthorized");
 
-            List<Notification> notificationsToUpdate = new List<Notification>();
-            notificationsToUpdate.AddRange(notifications.Values.ToList());
-            await _userService.UpdateNotifications(notificationsToUpdate);
+            string userId = getUserIdFromAuthedUser();
+            List<Notification> oldNotifications = (await _userService.GetUserWithNotifications(userId)).Notifications.ToList();
+            var newNotifications = notifications.Values.ToList();
+
+            oldNotifications.ForEach(notification =>
+            {
+                var v = newNotifications.First(f => f.Type == notification.Type);
+                if (v != null)
+                {
+                    notification.IsEnabled = v.IsEnabled;
+                }
+            });
+
+            await _userService.UpdateNotifications(oldNotifications);
             
             return RedirectToAction("Index", "Home");
         }

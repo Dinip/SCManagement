@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using SCManagement.Controllers;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
 using SCManagement.Services.TeamService;
@@ -27,6 +28,7 @@ namespace SCManagement.Tests.Controller
         private readonly IUserService _userService;
         private readonly IPlanService _planService;
         private readonly ITeamService _teamService;
+        private readonly INotificationService _notificationService;
 
         public PlansControllerTests()
         {
@@ -35,9 +37,10 @@ namespace SCManagement.Tests.Controller
             _userService = A.Fake<IUserService>();
             _planService = A.Fake<IPlanService>();
             _teamService = A.Fake<ITeamService>();
+            _notificationService = A.Fake<INotificationService>();
 
             //SUT (system under test)
-            _controller = new PlansController(_userManager, _clubService, _userService, _planService, _teamService);
+            _controller = new PlansController(_userManager, _clubService, _userService, _planService, _teamService, _notificationService);
         }
 
         [Fact]

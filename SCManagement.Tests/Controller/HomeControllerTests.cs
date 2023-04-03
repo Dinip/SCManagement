@@ -48,17 +48,5 @@ namespace SCManagement.Tests.Controller
             // Assert
             result.Should().BeOfType<ViewResult>();
         }
-
-        [Fact]
-        public void HomeController_Settings_ReturnsSuccess()
-        {
-            // Arrange
-
-            // Act
-            var result = _controller.Settings();
-
-            // Assert
-            result.Should().BeOfType<ViewResult>();
-        }
     }
 }

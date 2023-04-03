@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.EventService;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
@@ -23,6 +24,7 @@ namespace SCManagement.Controllers
         private readonly IClubService _clubService;
         private readonly IPaymentService _paymentService;
         private readonly ITranslationService _translationService;
+        private readonly INotificationService _notificationService;
 
         public EventsController(
             IEventService eventService,
@@ -30,7 +32,8 @@ namespace SCManagement.Controllers
             UserManager<User> userManager,
             IClubService clubService,
             IPaymentService paymentService,
-            ITranslationService translationService
+            ITranslationService translationService,
+            INotificationService notificationService
             )
         {
             _eventService = eventService;
@@ -39,6 +42,7 @@ namespace SCManagement.Controllers
             _clubService = clubService;
             _paymentService = paymentService;
             _translationService = translationService;
+            _notificationService = notificationService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -241,7 +245,7 @@ namespace SCManagement.Controllers
                     await _paymentService.CreateProductEvent(createdEvent);
                 }
 
-
+                _notificationService.NotifyEventCreate(createdEvent);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -476,9 +480,11 @@ namespace SCManagement.Controllers
                 translations.AddRange(myEvent.EventTranslationsDetails);
                 eventToUpdate.EventTranslations = translations;
 
-                await _eventService.UpdateEvent(eventToUpdate);
+                var eveUpdated = await _eventService.UpdateEvent(eventToUpdate);
 
                 await _paymentService.UpdateProductEvent(eventToUpdate);
+
+                _notificationService.NotifyEventEdit(eveUpdated);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -517,6 +523,8 @@ namespace SCManagement.Controllers
             await _paymentService.UpdateProductEvent(myEvent, true);
             await _eventService.RemoveEventAddress(myEvent);
             await _eventService.DeleteEvent(myEvent);
+
+            _notificationService.NotifyEventDeleted(myEvent);
 
             return RedirectToAction(nameof(Index));
         }

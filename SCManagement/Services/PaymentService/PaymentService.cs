@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.StatisticsService.Models;
 
@@ -11,10 +12,12 @@ namespace SCManagement.Services.PaymentService
     {
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
-        public PaymentService(ApplicationDbContext context, IConfiguration configuration)
+        private readonly INotificationService _notificationService;
+        public PaymentService(ApplicationDbContext context, IConfiguration configuration, INotificationService notificationService)
         {
             _context = context;
             _configuration = configuration;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -525,6 +528,8 @@ namespace SCManagement.Services.PaymentService
             _context.Payment.Add(pay);
             await _context.SaveChangesAsync();
 
+            _notificationService.NotifySubscriptionStarted(sub);
+
             return sub;
         }
 
@@ -664,6 +669,7 @@ namespace SCManagement.Services.PaymentService
 
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
+            _notificationService.NotifySubscriptionCanceled(subscription);
             return;
         }
 
@@ -997,6 +1003,7 @@ namespace SCManagement.Services.PaymentService
 
             _context.Payment.Add(pay);
             await _context.SaveChangesAsync();
+            _notificationService.NotifySubscriptionStarted(sub);
 
             return sub;
         }

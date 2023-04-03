@@ -12,6 +12,7 @@ using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
 using SCManagement.Services.TeamService;
 using SCManagement.Services.UserService;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SCManagement.Controllers
 {
@@ -126,7 +127,11 @@ namespace SCManagement.Controllers
 
             await _planService.DeleteTrainingPlan(plan);
 
-            if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
+            if (!plan.IsTemplate)
+            {
+                _notificationService.NotifyPlanDeleted(plan);
+                return RedirectToAction(nameof(AthleteTrainingPlans), new { id = plan.AthleteId });
+            }
 
             return RedirectToAction(nameof(Templates));
         }
@@ -150,7 +155,11 @@ namespace SCManagement.Controllers
 
             await _planService.DeleteMealPlan(plan);
 
-            if (!plan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = plan.AthleteId });
+            if (!plan.IsTemplate)
+            {
+                _notificationService.NotifyPlanDeleted(plan);
+                return RedirectToAction(nameof(AthleteMealPlans), new { id = plan.AthleteId });
+            }
 
             return RedirectToAction(nameof(Templates));
         }
@@ -203,7 +212,7 @@ namespace SCManagement.Controllers
             {
                 if (!ModelState.IsValid) return View(trainingPlan);
 
-                List<TrainingPlan> trains= new List<TrainingPlan>() { trainingPlan };
+                List<TrainingPlan> trains = new List<TrainingPlan>() { trainingPlan };
 
                 await _planService.CreateTrainingPlan(trains);
 
@@ -385,7 +394,7 @@ namespace SCManagement.Controllers
 
             if (!await _userService.IsStaffInAnyClub(userId)) return View("CustomError", "Error_Unauthorized");
 
-            ViewBag.Modalities = new SelectList(await _planService.GetModalities(athleteId,userId), "Id", "Name");
+            ViewBag.Modalities = new SelectList(await _planService.GetModalities(athleteId, userId), "Id", "Name");
             ViewBag.Apply = false;
 
             var trains = new CreateTrainingPlanModel()
@@ -778,7 +787,7 @@ namespace SCManagement.Controllers
                 if (mealPlan.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
 
                 if (!ModelState.IsValid) return View(mealPlan);
-                
+
                 List<MealPlan> meals = new List<MealPlan>(){
                     new MealPlan()
                     {
@@ -824,7 +833,7 @@ namespace SCManagement.Controllers
 
             ViewBag.Modalities = new SelectList(await _planService.GetModalities(trainingPlan.AthleteId, userId), "Id", "Name");
             ViewBag.IsTemplate = trainingPlan.IsTemplate;
-            
+
             return View(trainingPlan);
         }
 
@@ -892,7 +901,12 @@ namespace SCManagement.Controllers
                     actualTrainingPlan.EndDate = trainingPlan.EndDate;
                 }
 
-                await _planService.UpdateTrainingPlan(actualTrainingPlan);
+                var updated = await _planService.UpdateTrainingPlan(actualTrainingPlan);
+
+                if (!updated.IsTemplate)
+                {
+                    _notificationService.NotifyPlanEdit(updated);
+                }
 
                 if (!actualTrainingPlan.IsTemplate) return RedirectToAction(nameof(AthleteTrainingPlans), new { id = actualTrainingPlan.AthleteId });
 
@@ -984,7 +998,12 @@ namespace SCManagement.Controllers
                     actualMealPlan.EndDate = mealPlan.EndDate;
                 }
 
-                await _planService.UpdateMealPlan(actualMealPlan);
+                var updated = await _planService.UpdateMealPlan(actualMealPlan);
+
+                if (!updated.IsTemplate)
+                {
+                    _notificationService.NotifyPlanEdit(updated);
+                }
 
                 if (!actualMealPlan.IsTemplate) return RedirectToAction(nameof(AthleteMealPlans), new { id = actualMealPlan.AthleteId });
 
@@ -1105,9 +1124,10 @@ namespace SCManagement.Controllers
 
             if (!await _userService.IsStaffInAnyClub(userId)) return View("CustomError", "Error_Unauthorized");
 
-            await _planService.CreateGoal(goal);
+            var goalSaved = await _planService.CreateGoal(goal);
 
-            //if u need u can change this 
+            _notificationService.NotifyGoalCreate(goalSaved);
+
             return RedirectToAction("TrainingZone", "MyClub");
         }
 
@@ -1138,9 +1158,10 @@ namespace SCManagement.Controllers
 
             if (goal.TrainerId != userId) return View("CustomError", "Error_Unauthorized");
 
-            await _planService.UpdateGoal(goal);
+            var goalEdited = await _planService.UpdateGoal(goal);
 
-            //if u need u can change this 
+            _notificationService.NotifyGoalEdited(goalEdited);
+
             return RedirectToAction("GoalsList", new { id = goal.AthleteId });
         }
 
@@ -1160,7 +1181,8 @@ namespace SCManagement.Controllers
 
             await _planService.DeleteGoal(goal);
 
-            //if u need u can change this 
+            _notificationService.NotifyGoalDeleted(goal);
+
             return RedirectToAction("GoalsList", new { id = goal.AthleteId });
         }
 
@@ -1179,7 +1201,9 @@ namespace SCManagement.Controllers
 
             goal.isCompleted = true;
 
-            await _planService.UpdateGoal(goal);
+            var goalCompleted = await _planService.UpdateGoal(goal);
+
+            _notificationService.NotifyGoalCompleted(goalCompleted);
 
             return Json(new { data = id });
         }
@@ -1214,7 +1238,7 @@ namespace SCManagement.Controllers
             var templates = (await _planService.GetTemplateTrainingPlans(userId));
 
             if (templates == null) return View("CustomError", "Error_NotFound");
-            
+
             var team = await _teamService.GetTeam(id);
 
             return View(new ChooseTrainingTeamTemplate { TrainingPlans = templates.Where(m => m.ModalityId == team.ModalityId), TeamId = id });
@@ -1237,6 +1261,21 @@ namespace SCManagement.Controllers
             if (templates == null) return View("CustomError", "Error_NotFound");
 
             return View(new ChooseMealTeamTemplate { MealPlans = templates, TeamId = id });
+        }
+
+        public async Task<IActionResult> GoalDetails(int id)
+        {
+            string userId = getUserIdFromAuthedUser();
+
+            if (!await _userService.IsAtleteInAnyClub(userId)) return View("CustomError", "Error_Unauthorized");
+
+            var goal = await _planService.GetGoal(id);
+
+            if (goal == null) return View("CustomError", "Error_NotFound");
+
+            if (goal.AthleteId != userId) return View("CustomError", "Error_Unauthorized");
+
+            return View(goal);
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Collections.Generic;
 using SCManagement.Services.PaymentService.Models;
 using FluentAssertions.Common;
 using SCManagement.Services.PaymentService;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Tests.Services {
     public class ClubServiceTests {
@@ -24,6 +25,7 @@ namespace SCManagement.Tests.Services {
         private readonly IAzureStorage _azureStorage;
         private readonly ClubService _clubService;
         private readonly IPaymentService _paymentService;
+        private readonly INotificationService _notificationService;
 
         public ClubServiceTests()
         {
@@ -33,9 +35,10 @@ namespace SCManagement.Tests.Services {
             _sharedResource = A.Fake<SharedResourceService>();
             _azureStorage = A.Fake<IAzureStorage>();
             _paymentService = A.Fake<IPaymentService>();
+            _notificationService = A.Fake<INotificationService>();
 
             //SUT (system under test)
-            _clubService = new ClubService(_context, _emailSender, _httpContext, _sharedResource, _azureStorage, _paymentService);
+            _clubService = new ClubService(_context, _emailSender, _httpContext, _sharedResource, _azureStorage, _paymentService, _notificationService);
         }
 
         private async Task<ApplicationDbContext> GetDbContext()

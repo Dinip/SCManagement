@@ -91,10 +91,7 @@ namespace SCManagement.Services.UserService
 
         public async Task UpdateNotifications(ICollection<Notification> notifications)
         {
-            foreach (Notification notification in notifications)
-            {
-                _context.Notifications.Update(notification);
-            }
+            _context.Notifications.UpdateRange(notifications);
             await _context.SaveChangesAsync();
         }
 
