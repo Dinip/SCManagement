@@ -52,6 +52,7 @@
                             var isStaff = string.IsNullOrEmpty(userId) ? false : UserService.IsStaffInAnyClub(userId).Result;
                             var isSystemAdmin = string.IsNullOrEmpty(userId) ? false : UserService.UserIsAdmin(userId).Result;
                             var isAthlete = string.IsNullOrEmpty(userId) ? false : UserService.IsAtleteInAnyClub(userId).Result;
+                            var user = isSignedIn ? UserManager.GetUserAsync(User).Result : null;
                         }
 
                         @if (isSignedIn)
@@ -129,7 +130,22 @@
                                 <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false">
                                     More
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-full" style="border-bottom:none !important;" role="menu" id="Dropdown">
+                                <ul class="dropdown-menu dropdown-menu-full" style="border-bottom:none !important; margin-top:0;" role="menu" id="Dropdown">
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title=@StringLocalizer["Profile"]>@user?.FullName</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="Settings">@StringLocalizer["Settings"]</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="TermsAndConditions">@StringLocalizer["Terms&Conditions"]</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Payment" asp-action="Index">@StringLocalizer["Wallet"]</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Subscription" asp-action="Index">@StringLocalizer["Subscriptions"]</a>
+                                    </li>
                                     <li class="mt-2" style="padding: 5px;">
                                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg text-to-dark"></i>
                                         <label class="text-to-dark">DarkMode</label>
@@ -145,7 +161,6 @@
                                         </label>
                                     </li>
                                     <li class="mt-2 d-flex justify-content-center align-items-center w-100" style="padding: 5px;">
-                                        <span class="text-to-dark me-2">@StringLocalizer["Club Selected"]:</span>
                                         <div class="w-auto">
                                             @await Component.InvokeAsync("UserClubContext")
                                         </div>

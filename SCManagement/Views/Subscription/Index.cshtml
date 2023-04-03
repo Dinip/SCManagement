@@ -24,7 +24,7 @@
             {
                 <p style="color: green;">@StringLocalizer[ViewBag.Message]</p>
             }
-            <table id="table_id" class="display">
+            <table id="table_id" class="display" style="width:100%!important;">
                 <thead>
                     <tr>
                         <th class="text-to-dark">
@@ -96,7 +96,10 @@
     </div>
 </div>
 
+<script src="~/js/site.js" asp-append-version="true"></script>
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
     window.onload = () => {
@@ -107,6 +110,7 @@
     $(document).ready(function () {
         $.noConflict();
         $("#table_id").DataTable({
+            responsive: true,
             language: {
                 "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
                 "emptyTable": "@StringLocalizer["EmptyMessage"]",
