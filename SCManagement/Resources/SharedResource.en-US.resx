@@ -3246,8 +3246,8 @@ As long as the website and the information and services provided therein are fre
                                             Event Edited&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
-                                            _USERNAME_,&lt;br&gt;&lt;br&gt;The event _EVENTNAME_ has been edited by _EVENTEDITOR_. You can check the new Event details by clicking the button.
-                                            If you have any questions or need more information, please contact the event editor _EVENTEDITOR_.
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;The event _EVENTNAME_ has been edited by _EVENTCLUBNAME_.. You can check the new Event details by clicking the button.
+                                            If you have any questions or need more information, please contact the club _EVENTCLUBNAME_. 
                                              Thanks.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_EVENTURL_"
@@ -3691,7 +3691,7 @@ As long as the website and the information and services provided therein are fre
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
                                             _USERNAME_,&lt;br&gt;&lt;br&gt;Your subscription to _PRODUCT_ with the value of _VALUE_, paid every _FREQUENCY_, has been canceled.
-                                            If you have any questions or need more information, please contact the _PRODUCT_ owner.
+                                            If you have any questions or need more information, please contact us.
                                              Thanks.
                                             &lt;br&gt;&lt;/p&gt;
                                     &lt;/td&gt;
@@ -3836,7 +3836,7 @@ As long as the website and the information and services provided therein are fre
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
                                             _USERNAME_,&lt;br&gt;&lt;br&gt;The subscription of Partner _PRODUCT_ , with the value _VALUE_ and the frequency _FREQUENCY_, has expired.
-                                             If you have any questions or need more information, please contact club owner.
+                                             If you have any questions or need more information, please contact the club owner.
                                              Thanks.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_ID_"
@@ -3983,8 +3983,8 @@ As long as the website and the information and services provided therein are fre
                                             Subscription Started&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
-                                            _USERNAME_,&lt;br&gt;&lt;br&gt;You started a _PRODUCT_ subscription. This subscription has a _FREQUENCY_ frequency and has a cost of _VALUE_. You can check your subscription status by clicking the button.
-                                            If you have any questions or need more information, please contact _PRODUCT_ owner.
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;You have started a _PRODUCT_ subscription. This subscription has a _FREQUENCY_ frequency and has a cost of _VALUE_. You can check your subscription status by clicking the button.
+                                            If you have any questions or need more information, please contact us.
                                              Thanks.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_ID_"
@@ -4237,7 +4237,7 @@ Hello _USERNAME_,&lt;br&gt;&lt;br&gt;Your enrollment for the event called _NAME_
                                             style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
                                             Event Joined Payed&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
-                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_,&lt;br&gt;&lt;br&gt; you are trying to join a paid event called _NAME_, you have four hours to pay _FEE_ to confirm your enrollment. If you have any questions or need more information, please contact us.
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_,&lt;br&gt;&lt;br&gt; You are trying to join a paid event called _NAME_, you have four hours to pay the value _FEE_ to confirm your enrollment. If you have any questions or need more information, please contact us.
  Thank you very much!
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_ID_"

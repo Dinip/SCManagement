@@ -2765,7 +2765,7 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                             &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;
                                                 Olá _USERNAME_ ,&lt;br&gt;&lt;br&gt;Gostaríamos de informar que o teu _PLANTYPE_ com o nome _PLANNAME_ foi removido pelo treinador _TRAINER_.
-                                                Se tiveres alguma dúvida ou precisares de mais informações, por favor entra em contato com o treinador_TRAINER_.
+                                                Se tiveres alguma dúvida ou precisares de mais informações, por favor entra em contato com o treinador _TRAINER_.
                                                 Obrigado.&lt;br&gt;&lt;br&gt;&lt;/p&gt; 
                                     &lt;/td&gt;
                                 &lt;/tr&gt;
@@ -3301,7 +3301,7 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
                                             _USERNAME_,&lt;br&gt;&lt;br&gt;O evento _EVENTNAME_ foi organizado pelo clube _CLUBNAME_. Poderás acedar a mais informações ao pressionar o botão.
-                                            Se tiver alguma questão ou deseja mais informações, por favor contacte o organizador do evento.
+                                            Se tiveres alguma questão ou desejares mais informações, por favor contacta o organizador do evento.
                                              Obrigado.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_EVENTURL_"
@@ -3375,7 +3375,7 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
                                             _USERNAME_,&lt;br&gt;&lt;br&gt;O evento _EVENTNAME_ foi editado pelo clube _EVENTCLUBNAME_. Poderás acedar a novas informações ao pressionar o botão.
-                                            Se tiver alguma questão ou deseja mais informações, por favor contacte _EVENTEDITOR_.
+                                            Se tiver alguma questão ou deseja mais informações, por favor contacta o clube _EVENTCLUBNAME_. 
                                              Obrigado.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_EVENTURL_"
@@ -3825,7 +3825,7 @@ Pagamento Atrasado&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
                                             _USERNAME_,&lt;br&gt;&lt;br&gt;A tua subscrição a _PRODUCT_ com o valor de _VALUE_, pago a cada _FREQUENCY_, foi cancelada.
-                                            Se tiver alguma questão ou deseja mais informações, por favor contacte o dono do _PRODUCT_.
+                                            Se tiver alguma questão ou deseja mais informações, por favor contacte-nos.
                                              Obrigado.
                                             &lt;br&gt;&lt;/p&gt;
                                     &lt;/td&gt;
@@ -4118,7 +4118,7 @@ Pagamento Atrasado&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
                                             _USERNAME_,&lt;br&gt;&lt;br&gt;Iniciaste uma subscrição do _PRODUCT_. Esta subscrição tem uma frequência de _FREQUENCY_ e custa _VALUE_. Poderás verificar o estado da tua subscrição ao pressionar o botão.
-                                            Se tiveres alguma questão ou desejares mais informações, por favor contacta o dono do_PRODUCT_.
+                                            Se tiveres alguma questão ou desejares mais informações, por favor contacte-nos.
                                              Obrigado.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_ID_"
