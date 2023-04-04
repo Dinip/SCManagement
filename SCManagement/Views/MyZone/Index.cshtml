@@ -9,14 +9,25 @@
 
 <style>
 
-    .reset-zoom-btn {
-        margin-left: 20% !important;
+    .vis-label{
+        background-color:#00639A;
     }
 
+    .vis-timeline{
+        border-radius:10px;
+    }
+
+    .vis-inner{
+        color:white;
+    }
 
     .mdCard {
         min-height: none !important;
         height: auto !important;
+    }
+
+    .vis-rolling-mode-btn{
+        visibility:visible !important;
     }
 
 </style>
@@ -207,9 +218,9 @@
     </div>
     <div class="row col-12 p-5 flex-wrap">
         <h2 class="text-to-dark">@StringLocalizer["TimeLine"]</h2>
-        <div class="card mt-3 shadow" style="height:100% !important;min-height:280px;  border-radius:20px;">
-            <div id="cardSize" class="card-body d-flex flex-column text-to-dark">
-                <div id="timeline" style="width:100% !important;"></div>
+        <div class="card mt-3 shadow p-0" style="height:100% !important; border-radius:20px;">
+            <div id="cardSize" class="card-body d-flex flex-column text-to-dark" style="height:100% !important;">
+                <div id="timeline" style="width:100% !important; height:100% !important;"></div>
             </div>
         </div>
     </div>
@@ -326,6 +337,7 @@
         setTheme(localStorage.getItem("theme") || "light")
 
         buildTimeline()
+
     });
 
     function teamsTable() {
@@ -662,7 +674,7 @@
                 group: "Training",
                 id: `training-${f.planId}`,
                 originalId: f.planId,
-                style: "cursor: pointer; background-color: orange;",
+                style: "cursor: pointer; background-color: #00639A; color:white;",
                 className: "trainingItems"
             })),
             ...meals.map(f => ({
@@ -672,7 +684,7 @@
                 group: "Meal",
                 id: `meal-${f.planId}`,
                 originalId: f.planId,
-                style: "cursor: pointer; background-color: red;"
+                style: "cursor: pointer; background-color: #004870; color:white;"
             })),
             ...goals.map(f => ({
                 start: new Date(f.startDate),
@@ -681,7 +693,7 @@
                 group: "Goal",
                 id: `goal-${f.goalId}`,
                 originalId: f.planId,
-                style: "cursor: pointer; background-color: yellow;"
+                style: "cursor: pointer; background-color: #6fb6de; color:white;"
             }))
         ]
 
@@ -696,11 +708,11 @@
         let groups = [
             {
                 id: "Training",
-                content: '@HtmlLocalizer["Training Plans"]',
+                content: '@HtmlLocalizer["Training Plan"]',
             },
             {
                 id: "Meal",
-                content: '@HtmlLocalizer["Meal Plans"]'
+                content: '@HtmlLocalizer["Meal Plan"]'
             },
             {
                 id: "Goal",
@@ -716,6 +728,22 @@
             const item = allData.find(f => f.id === props.item)
             window.open(`/Plans/${item.group}Details/${item.originalId}`, '_blank')
         }
+
+        timeline.on("changed", () => {
+            let visText = document.getElementsByClassName("vis-text")
+            let theme = localStorage.getItem("theme")
+
+            if (visText) {
+                for (let i = 0; i < visText.length; i++) {
+                    visText[i].classList.add('text-to-dark');
+                    if (theme == "dark") {
+                        visText[i].style.color = 'white';
+                    } else {
+                        visText[i].style.color = 'black';
+                    }
+                }
+            }
+        })
     }
 
     function getDateOneMonthAgo() {
