@@ -89,6 +89,8 @@ namespace SCManagement.Controllers
 
             };
 
+            ViewBag.Lang = Thread.CurrentThread.CurrentCulture.Name;
+
             return View(myModel);
         }
 
@@ -96,16 +98,27 @@ namespace SCManagement.Controllers
         {
 
             var userId = getUserIdFromAuthedUser();
-            
+
             var role = await _userService.GetSelectedRole(userId);
 
             if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
-            var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId, filter);
+            var myTrainingPlans = (await _planService.GetMyTrainingPlans(role.UserId, filter)).ToList();
+
+            myTrainingPlans.Sort((x, y) => x.StartDate.Value.CompareTo(y.StartDate.Value));
 
             string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 
-            var obj = myTrainingPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, Modality = p.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value, PlanId = p.Id.ToString() });
+            var obj = myTrainingPlans.Select(p => new
+            {
+                p.Name,
+                p.Description,
+                Trainer = p.Trainer.FullName,
+                Modality = p.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value,
+                PlanId = p.Id.ToString(),
+                p.StartDate,
+                p.EndDate
+            });
 
             return Json(new { data = obj });
 
@@ -119,9 +132,19 @@ namespace SCManagement.Controllers
 
             if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
-            var myMealPlans = await _planService.GetMyMealPlans(role.UserId, filter);
+            var myMealPlans = (await _planService.GetMyMealPlans(role.UserId, filter)).ToList();
 
-            var obj = myMealPlans.Select(p => new { Name = p.Name, Description = p.Description, Trainer = p.Trainer.FullName, PlanId = p.Id });
+            myMealPlans.Sort((x, y) => x.StartDate.Value.CompareTo(y.StartDate.Value));
+
+            var obj = myMealPlans.Select(p => new
+            {
+                p.Name,
+                p.Description,
+                Trainer = p.Trainer.FullName,
+                PlanId = p.Id,
+                p.StartDate,
+                p.EndDate
+            });
 
             return Json(new { data = obj });
 
@@ -135,9 +158,18 @@ namespace SCManagement.Controllers
 
             if (role == null || !(await _userService.IsAtleteInAnyClub(role.UserId))) return View("CustomError", "Error_Unauthorized");
 
-            var myGoals = await _planService.GetMyGoals(userId, filter);
+            var myGoals = (await _planService.GetMyGoals(userId, filter)).ToList();
 
-            var obj = myGoals.Select(p => new { Name = p.Name, EndDate = p.EndDate, GoalId = p.Id, IsCompleted = p.isCompleted });
+            myGoals.Sort((x, y) => x.StartDate.CompareTo(y.StartDate));
+
+            var obj = myGoals.Select(p => new
+            {
+                p.Name,
+                GoalId = p.Id,
+                IsCompleted = p.isCompleted,
+                p.StartDate,
+                p.EndDate
+            });
 
             return Json(new { data = obj });
         }

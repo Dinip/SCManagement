@@ -1,10 +1,36 @@
 ﻿@model SCManagement.Controllers.MyZoneController.MyZoneModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
+@inject IHtmlLocalizer<SharedResource> HtmlLocalizer
 
 @{
     ViewData["Title"] = @StringLocalizer["MyZone"];
     string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
+
+<style>
+
+    .vis-label{
+        background-color:#00639A;
+    }
+
+    .vis-timeline{
+        border-radius:10px;
+    }
+
+    .vis-inner{
+        color:white;
+    }
+
+    .mdCard {
+        min-height: none !important;
+        height: auto !important;
+    }
+
+    .vis-rolling-mode-btn{
+        visibility:visible !important;
+    }
+
+</style>
 
 <div class="container-fluid">
     <h1 style="margin-top:130px !important; margin-left:3%" class="text-to-dark">@StringLocalizer["MyZone"]</h1>
@@ -25,12 +51,12 @@
         </div>
     </div>
 
-    <div class="w-100 d-md-flex">
+    <div class="d-md-flex">
         <div class="p-5 col-md-6 col-12">
             <h2 class="text-to-dark">@StringLocalizer["Teams"]</h2>
-            <div class="card shadow" style="height:100% !important;  border-radius:20px;">
-                <div class="card-body d-flex flex-column">
-                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+            <div class="card mt-3 shadow" style="border-radius:20px;min-height:290px;">
+                <div class="card-body">
+                    <div class="table-responsive" style="width: 100%; overflow-y: auto;">
                         <table id="table_id1" class="display" style="width:100%!important;">
                             <thead>
                                 <tr class="text-to-dark">
@@ -65,10 +91,24 @@
         </div>
 
         <div class="p-5 col-md-6 col-12">
-            <h2 class="text-to-dark">@StringLocalizer["Goals"]</h2>
-            <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-                <div class="card-body d-flex flex-column text-to-dark">
-                    <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+            <div class="d-md-flex justify-content-between align-items-center">
+                <h2 class="text-to-dark">@StringLocalizer["Goals"]</h2>
+                <div class="d-flex flex-wrap align-items-center">
+                    <input type="radio" id="filterGoalsPlans2" name="filterTrainingPlans" onclick="GetGoalPlans(2)" />
+                    <label for="filterGoalsPlans2" class="text-to-dark">@StringLocalizer["Finished"]</label>
+
+                    <input type="radio" id="filterGoalsPlans0" name="filterTrainingPlans" onclick="GetGoalPlans(3)" class="ms-3" />
+                    <label for="filterGoalsPlans0" class="text-to-dark">@StringLocalizer["All"]</label>
+
+                    <input type="radio" id="filterGoalsPlans1" name="filterTrainingPlans" onclick="GetGoalPlans(1)" class="ms-3" />
+                    <label for="filterGoalsPlans1" class="text-to-dark">@StringLocalizer["Pending"]</label>
+
+                    <button onclick="ClearFilterGoals()" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" class="btn ms-3">@StringLocalizer["Clear"]</button>
+                </div>
+            </div>
+            <div class="card mt-3 shadow" style="border-radius:20px; min-height:280px;">
+                <div class="card-body">
+                    <div class="table-responsive" style="width: 100%; overflow-y: auto;">
                         <table id="table_id5" class="display" style="width:100%!important;">
                             <thead>
                                 <tr class="text-to-dark">
@@ -87,39 +127,28 @@
                     </div>
                 </div>
             </div>
-            <div class="d-flex flex-wrap align-items-center">
-                <input type="radio" id="filterGoalsPlans2" name="filterTrainingPlans" onclick="GetGoalPlans(2)" />
-                <label for="filterGoalsPlans2" class="text-to-dark">@StringLocalizer["Finished"]</label>
-
-                <input type="radio" id="filterGoalsPlans0" name="filterTrainingPlans" onclick="GetGoalPlans(3)" class="ms-3" />
-                <label for="filterGoalsPlans0" class="text-to-dark">@StringLocalizer["All"]</label>
-
-                <input type="radio" id="filterGoalsPlans1" name="filterTrainingPlans" onclick="GetGoalPlans(1)" class="ms-3" />
-                <label for="filterGoalsPlans1" class="text-to-dark">@StringLocalizer["Pending"]</label>
-
-                <button onclick="ClearFilterGoals()" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" class="ms-3">@StringLocalizer["Clear"]</button>
-            </div>
         </div>
     </div>
 
 
     <div class="row col-12 p-5 flex-wrap">
-        <h2 class="text-to-dark">@StringLocalizer["FoodPlan"]</h2>
-        <div>
-            <input type="radio" id="filterMealPlans2" name="filterTrainingPlans" onclick="GetMealPlans(2)" />
-            <label for="filterMealPlans2" class="text-to-dark">@StringLocalizer["Finished"]</label>
+        <div class="d-md-flex justify-content-between align-items-center">
+            <h2 class="text-to-dark">@StringLocalizer["FoodPlan"]</h2>
+            <div>
+                <input type="radio" id="filterMealPlans2" name="filterTrainingPlans" onclick="GetMealPlans(2)" />
+                <label for="filterMealPlans2" class="text-to-dark">@StringLocalizer["Finished"]</label>
 
-            <input type="radio" id="filterMealPlans0" name="filterTrainingPlans" onclick="GetMealPlans(0)" />
-            <label for="filterMealPlans0" class="text-to-dark">@StringLocalizer["InProgress"]</label>
+                <input type="radio" id="filterMealPlans0" name="filterTrainingPlans" onclick="GetMealPlans(0)" />
+                <label for="filterMealPlans0" class="text-to-dark">@StringLocalizer["InProgress"]</label>
 
-            <input type="radio" id="filterMealPlans1" name="filterTrainingPlans" onclick="GetMealPlans(1)" />
-            <label for="filterMealPlans1" class="text-to-dark">@StringLocalizer["Futures"]</label>
+                <input type="radio" id="filterMealPlans1" name="filterTrainingPlans" onclick="GetMealPlans(1)" />
+                <label for="filterMealPlans1" class="text-to-dark">@StringLocalizer["Futures"]</label>
 
+            </div>
         </div>
-        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-
+        <div class="card mt-3 shadow" style="border-radius:20px; min-height:280px;">
             <div class="card-body d-flex flex-column text-to-dark">
-                <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                <div class="table-responsive" style="width: 100%; max-height: 100%; overflow-y: auto;">
                     <table id="table_id3" class="display" style="width:100%!important;">
                         <thead>
                             <tr class="text-to-dark">
@@ -144,18 +173,22 @@
         </div>
     </div>
 
-    <div class="p-5 col-md-12 col-12">
-        <h2 class="text-to-dark">@StringLocalizer["ActiveTrainingPlan"]</h2>
-        <input type="radio" id="filterTrainingPlans2" name="filterTrainingPlans" onclick="GetTrainingPlans(2)" />
-        <label for="filterTrainingPlans2" class="text-to-dark">@StringLocalizer["Finished"]</label>
+    <div class="row col-12 p-5">
+        <div class="d-md-flex justify-content-between align-items-center">
+            <h2 class="text-to-dark">@StringLocalizer["ActiveTrainingPlan"]</h2>
+            <div>
+                <input type="radio" id="filterTrainingPlans2" name="filterTrainingPlans" onclick="GetTrainingPlans(2)" />
+                <label for="filterTrainingPlans2" class="text-to-dark">@StringLocalizer["Finished"]</label>
 
-        <input type="radio" id="filterTrainingPlans0" name="filterTrainingPlans" onclick="GetTrainingPlans(0)" />
-        <label for="filterTrainingPlans0" class="text-to-dark">@StringLocalizer["InProgress"]</label>
+                <input type="radio" id="filterTrainingPlans0" name="filterTrainingPlans" onclick="GetTrainingPlans(0)" />
+                <label for="filterTrainingPlans0" class="text-to-dark">@StringLocalizer["InProgress"]</label>
 
-        <input type="radio" id="filterTrainingPlans1" name="filterTrainingPlans" onclick="GetTrainingPlans(1)" />
-        <label for="filterTrainingPlans1" class="text-to-dark">@StringLocalizer["Futures"]</label>
+                <input type="radio" id="filterTrainingPlans1" name="filterTrainingPlans" onclick="GetTrainingPlans(1)" />
+                <label for="filterTrainingPlans1" class="text-to-dark">@StringLocalizer["Futures"]</label>
+            </div>
+        </div>
 
-        <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
+        <div class="card mt-3 shadow" style="height:100% !important; min-height:280px;  border-radius:20px;">
             <div class="card-body d-flex flex-column text-to-dark">
                 <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
                     <table id="table_id2" class="display" style="width:100%!important;">
@@ -183,104 +216,131 @@
             </div>
         </div>
     </div>
-</div>
-
-
-<h2 class="text-to-dark ms-5 mb-3">@StringLocalizer["Bio"]</h2>
-<a asp-action="CreateBioimpedance" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" class="ms-5">@StringLocalizer["CreateBioimpedance"]</a>
-<div class="row col-12 ps-5 pe-5 pb-5 flex-wrap">
-    <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-        <div class="card-body d-flex flex-column text-to-dark">
-            <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
-                <table id="table_id4" class="display" style="width:100%!important;">
-                    <thead>
-                        <tr class="text-to-dark">
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["Height"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["Weight"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["FatMass"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["LeanMass"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["MuscleMass"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["ViceralFat"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["BasalMetabolism"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["Hydration"]
-                            </th>
-                            <th class="col-lg-4 col-md-4 col-sm-4 col-xs-4 fs-6" style="padding: 0 10px;">
-                                @StringLocalizer["LaspUpdateDate"]
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+    <div class="row col-12 p-5 flex-wrap">
+        <h2 class="text-to-dark">@StringLocalizer["TimeLine"]</h2>
+        <div class="card mt-3 shadow p-0" style="height:100% !important; border-radius:20px;">
+            <div id="cardSize" class="card-body d-flex flex-column text-to-dark" style="height:100% !important;">
+                <div id="timeline" style="width:100% !important; height:100% !important;"></div>
             </div>
-
         </div>
     </div>
-</div>
 
 
-<div class="row col-12 p-5 flex-wrap">
-    <h2 class="text-to-dark">@StringLocalizer["MD"]</h2>
-    <div class="card mt-3 shadow" style="height:100% !important;  border-radius:20px;">
-        <div class="card-body">
-            <div style="width: 100%; max-height: 300px;">
-                <div class="d-md-flex justify-content-between">
-                    <div class="col-xs-12">
-                        <strong class="text-to-dark">@StringLocalizer["ExpiryDate"]:</strong>
-                    </div>
-                    <div>
-                        <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
-                            <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
-                            <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
-                        </form>
+    <div class="row col-12 p-5 flex-wrap">
+        <div class="d-md-flex justify-content-between align-items-center">
+            <h2 class="text-to-dark mb-3">@StringLocalizer["Bio"]</h2>
+            <div>
+                <a asp-action="CreateBioimpedance" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" class="ms-5">@StringLocalizer["CreateBioimpedance"]</a>
+            </div>
+        </div>
+        <div class="card mt-3 shadow" style="height:100% !important;min-height:280px;  border-radius:20px;">
+            <div class="card-body d-flex flex-column text-to-dark">
+                <div class="table-responsive" style="width: 100%; max-height: 300px; overflow-y: auto;">
+                    <table id="table_id4" class="display" style="width:100%!important;">
+                        <thead>
+                            <tr class="text-to-dark">
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["Height"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["Weight"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["FatMass"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["LeanMass"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["MuscleMass"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["ViceralFat"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["BasalMetabolism"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["Hydration"]
+                                </th>
+                                <th class="w-auto" style="padding: 0 10px;">
+                                    @StringLocalizer["LastUpdateDate"]
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
 
-                        <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" onclick="toggleModal()"></i>
+            </div>
+        </div>
+    </div>
 
-                        <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
+    <div class="row col-12 p-5 flex-wrap">
+        <h2 class="text-to-dark">@StringLocalizer["MD"]</h2>
+        <div class="card mdCard mt-3 shadow" style="border-radius:20px;">
+            <div class="card-body">
+                <div style="width: 100%;">
+                    <div class="d-md-flex justify-content-between">
+                        <div class="col-xs-12">
+                            <strong class="text-to-dark">@StringLocalizer["ExpiryDate"]:</strong>
+                        </div>
+                        <div>
+                            <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
+                                <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
+                                <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
+                            </form>
 
-                        <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
-                           style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
-                        <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
+                            <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" onclick="toggleModal()"></i>
+
+                            <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
+
+                            <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
+                               style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
+                            <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <hr style="margin-bottom:20px;" />
-            <div>
-                <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
+                <hr />
+                <div>
+                    <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
+                </div>
             </div>
         </div>
-
     </div>
-</div>
 </div>
 
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
 
 <script type="text/javascript">
     var strings = {
         "details": '@Html.Raw(StringLocalizer["Details"].Value.ToString())',
     }
 
-    $(document).ready(function () {
+    $(document).ready(async function () {
         $.noConflict();
+
+        teamsTable()
+        bioimpedanceTable()
+
+        GetTrainingPlans()
+        GetMealPlans()
+        GetGoalPlans()
+
+        setTheme(localStorage.getItem("theme") || "light")
+
+        buildTimeline()
+
+    });
+
+    function teamsTable() {
         $("#table_id1").DataTable({
             responsive: true,
             "searching": false,
@@ -306,10 +366,9 @@
             },
         });
 
-        GetTrainingPlans();
-        GetMealPlans();
-        GetGoalPlans();
+    }
 
+    function bioimpedanceTable() {
         $("#table_id4").DataTable({
             ajax: {
                 url: "/MyZone/GetBioimpedance",
@@ -362,18 +421,14 @@
                 },
             },
         });
-        setTheme(localStorage.getItem("theme") || "light")
-
-    });
-
+    }
 
     const modal = document.getElementById("modal")
-
 
     function GetTrainingPlans(filter) {
         $("#table_id2").DataTable({
             ajax: {
-                url: "MyZone/GetTrainingPlans",
+                url: "MyZone/GetTrainingPlans?filter=" + filter,
                 type: "GET",
                 dataType: "json",
             },
@@ -415,7 +470,6 @@
             },
         });
     }
-
 
     function GetMealPlans(filter) {
         $("#table_id3").DataTable({
@@ -488,7 +542,7 @@
                     "data": null,
                     "render": function (data, type, row, meta) {
                         if (!data.isCompleted) {
-                            return `<a onclick="CompleteGoal(${data.goalId})" style="cursor: pointer; color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Complete"]</a>`;
+                            return `<a onclick="CompleteGoal(${data.goalId})" style="cursor: pointer; color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none; float:right;">@StringLocalizer["Complete"]</a>`;
                         } else {
                             return "";
                         }
@@ -543,7 +597,6 @@
         GetGoalPlans(0);
     }
 
-
     window.onclick = function (event) {
         if (event.target == modal) {
             $("#modal").hide();
@@ -553,7 +606,6 @@
     function closeToast() {
         $(".toast").hide();
     }
-
 
     function toggleModal() {
         $("#modal").show();
@@ -608,4 +660,150 @@
         document.getElementById(`remove${fileType === 'image' ? 'Image' : 'EMD'}`).value = true
         $('#modal1').hide()
     }
+
+    const buildTimeline = async () => {
+        let training = await loadTrainingPlans("3")
+        let meals = await loadMealsPlans("3")
+        let goals = await loadGoals("3")
+
+        let allData = [
+            ...training.map(f => ({
+                start: new Date(f.startDate),
+                end: new Date(f.endDate),
+                content: f.name,
+                group: "Training",
+                id: `training-${f.planId}`,
+                originalId: f.planId,
+                style: "cursor: pointer; background-color: #00639A; color:white;",
+                className: "trainingItems"
+            })),
+            ...meals.map(f => ({
+                start: new Date(f.startDate),
+                end: new Date(f.endDate),
+                content: f.name,
+                group: "Meal",
+                id: `meal-${f.planId}`,
+                originalId: f.planId,
+                style: "cursor: pointer; background-color: #004870; color:white;"
+            })),
+            ...goals.map(f => ({
+                start: new Date(f.startDate),
+                end: new Date(f.endDate),
+                content: f.name,
+                group: "Goal",
+                id: `goal-${f.goalId}`,
+                originalId: f.planId,
+                style: "cursor: pointer; background-color: #6fb6de; color:white;"
+            }))
+        ]
+
+        let container = document.getElementById('timeline');
+
+        let items = new vis.DataSet(allData);
+
+        let options = {
+          "locale": "@ViewBag.Lang.Substring(0,2)"
+        };
+
+        let groups = [
+            {
+                id: "Training",
+                content: '@HtmlLocalizer["Training Plan"]',
+            },
+            {
+                id: "Meal",
+                content: '@HtmlLocalizer["Meal Plan"]'
+            },
+            {
+                id: "Goal",
+                content: '@HtmlLocalizer["Goals"]'
+            }
+        ]
+
+        let timeline = new vis.Timeline(container, items, groups, options);
+
+        document.getElementById('timeline').onclick = function (event) {
+            const props = timeline.getEventProperties(event)
+            if(props.item == null) return
+            const item = allData.find(f => f.id === props.item)
+            window.open(`/Plans/${item.group}Details/${item.originalId}`, '_blank')
+        }
+
+        timeline.on("changed", () => {
+            let visText = document.getElementsByClassName("vis-text")
+            let theme = localStorage.getItem("theme")
+
+            if (visText) {
+                for (let i = 0; i < visText.length; i++) {
+                    visText[i].classList.add('text-to-dark');
+                    if (theme == "dark") {
+                        visText[i].style.color = 'white';
+                    } else {
+                        visText[i].style.color = 'black';
+                    }
+                }
+            }
+        })
+    }
+
+    function getDateOneMonthAgo() {
+        const date = new Date();
+        date.setMonth(date.getMonth() - 1);
+        return date;
+    }
+
+    function getDateOneMonthFromNow() {
+        const date = new Date();
+        date.setMonth(date.getMonth() + 1);
+        return date;
+    }
+
+    function loadMealsPlans(filter) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/MyZone/GetMealPlans/?filter=${filter}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function loadTrainingPlans(filter) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/MyZone/GetTrainingPlans/?filter=${filter}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
+    function loadGoals(filter) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                type: 'GET',
+                url: `/MyZone/GetGoals/?filter=${filter}`,
+                datatype: "json",
+                success: function (data) {
+                    resolve(data.data)
+                },
+                error: function (error) {
+                    reject(error)
+                },
+            })
+        })
+    }
+
 </script>

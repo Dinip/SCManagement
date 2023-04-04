@@ -66,6 +66,10 @@ namespace SCManagement.Services.PlansService
                     plansQuery = plansQuery.Where(p => p.EndDate < DateTime.Now);
                     break;
 
+                //all
+                case 3:
+                    break;
+
                 //Atives + Futures
                 default:
                     plansQuery = plansQuery.Where(p => p.EndDate >= DateTime.Now);
@@ -113,6 +117,10 @@ namespace SCManagement.Services.PlansService
                 //Return Finished
                 case 2:
                     query = query.Where(p => p.EndDate < now);
+                    break;
+
+                //all
+                case 3:
                     break;
 
                 //Atives + Futures
@@ -250,6 +258,7 @@ namespace SCManagement.Services.PlansService
 
                 case 3:
                     return await _context.Goals.Where(g => g.AthleteId == userId).ToListAsync();
+                
                 default:
                     return await _context.Goals.Where(g => g.AthleteId == userId && g.EndDate > DateTime.Now).ToListAsync();
             }
