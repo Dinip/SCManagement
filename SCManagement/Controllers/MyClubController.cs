@@ -20,6 +20,7 @@ using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
 using FluentEmail.Core;
 using SCManagement.Data.Migrations;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Controllers
 {
@@ -41,6 +42,7 @@ namespace SCManagement.Controllers
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
         private readonly IAzureStorage _azureStorage;
+        
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -62,7 +64,8 @@ namespace SCManagement.Controllers
             ApplicationContextService applicationContextService,
             IStringLocalizer<SharedResource> stringLocalizer,
             IAzureStorage azureStorage,
-            IPlanService planService)
+            IPlanService planService
+            )
         {
             _userManager = userManager;
             _clubService = clubService;

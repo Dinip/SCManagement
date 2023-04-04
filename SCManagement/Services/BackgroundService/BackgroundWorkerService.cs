@@ -1,17 +1,18 @@
 ﻿using System.Collections.Concurrent;
-using SCManagement.Services.CronJobService;
 
 namespace SCManagement.Services.BackgroundService
 {
     public class BackgroundWorkerService : IHostedService
     {
-        private readonly BlockingCollection<Func<Task>> _queue = new();
+        private readonly BlockingCollection<Func<IServiceProvider,Task>> _queue = new();
         private readonly CancellationTokenSource _cancellationTokenSource = new();
         private readonly ILogger<BackgroundWorkerService> _logger;
+        private readonly IServiceProvider _serviceProvider;
 
-        public BackgroundWorkerService(ILogger<BackgroundWorkerService> logger)
+        public BackgroundWorkerService(ILogger<BackgroundWorkerService> logger, IServiceProvider serviceProvider)
         {
             _logger = logger;
+            _serviceProvider = serviceProvider;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -26,7 +27,7 @@ namespace SCManagement.Services.BackgroundService
             return Task.CompletedTask;
         }
 
-        public void Enqueue(Func<Task> job)
+        public void Enqueue(Func<IServiceProvider,Task> job)
         {
             _queue.Add(job);
         }
@@ -39,7 +40,7 @@ namespace SCManagement.Services.BackgroundService
                 {
                     var job = _queue.Take(cancellationToken);
                     _logger.LogCritical($"{DateTime.Now} - Starting background job...");
-                    await job();
+                    await job(_serviceProvider);
                     _logger.LogCritical($"{DateTime.Now} - Background job completed.");
                 }
                 catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)

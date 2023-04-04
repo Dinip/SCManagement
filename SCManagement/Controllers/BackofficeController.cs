@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.StatisticsService;
@@ -24,6 +25,7 @@ namespace SCManagement.Controllers
         private readonly IClubService _clubService;
         private readonly ITranslationService _translationService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
+        private readonly INotificationService _notificationService;
 
         public BackofficeController(
             IUserService userService,
@@ -32,7 +34,8 @@ namespace SCManagement.Controllers
             IPaymentService paymentService,
             IClubService clubService,
             ITranslationService translationService,
-            IStringLocalizer<SharedResource> stringLocalizer)
+            IStringLocalizer<SharedResource> stringLocalizer,
+            INotificationService notificationService)
         {
             _userService = userService;
             _userManager = userManager;
@@ -41,6 +44,7 @@ namespace SCManagement.Controllers
             _clubService = clubService;
             _translationService = translationService;
             _stringLocalizer = stringLocalizer;
+            _notificationService = notificationService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -153,7 +157,13 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NotifyMissingPayment(int subId)
         {
-            //NOTIFICATION CONTROLLER
+            var sub = await _paymentService.GetSubscription(subId);
+            var payments = await _paymentService.GetPayments(sub.UserId);
+            var missing = payments.FirstOrDefault(f => f.SubscriptionId == subId && f.PaymentStatus == PaymentStatus.Pending);
+            if (missing != null)
+            {
+                _notificationService.NotifyPaymentLate(missing.Id);
+            }
 
             return RedirectToAction(nameof(DelayedPayments));
         }
@@ -387,9 +397,15 @@ namespace SCManagement.Controllers
             if (plan.Enabled)
             {
                 TempData["Message"] = _stringLocalizer["PlanUpdateStatusDisabled"].Value.Replace("_NAME_", plan.Name);
-            } else
+            }
+            else
             {
                 TempData["Message"] = _stringLocalizer["PlanUpdateStatusEnabled"].Value.Replace("_NAME_", plan.Name);
+            }
+
+            if (!plan.Enabled)
+            {
+                _notificationService.NotifyPlanDiscontinued(plan.Id);
             }
 
             return RedirectToAction(nameof(ManagePlans));
@@ -443,6 +459,8 @@ namespace SCManagement.Controllers
             var oldPlan = await _paymentService.GetClubSubscriptionPlan(id, true);
             if (oldPlan == null) return View("CustomError", "Error_NotFound");
 
+            var oldEnabled = oldPlan.Enabled;
+
             if (anyUsing)
             {
                 oldPlan.Name = plan.Name;
@@ -459,6 +477,11 @@ namespace SCManagement.Controllers
 
             var updated = await _paymentService.UpdateProduct(oldPlan);
             TempData["Message"] = _stringLocalizer["PlanUpdated"].Value.Replace("_NAME_", updated.Name);
+
+            if (oldEnabled && !updated.Enabled) //old was enabled and now is disabled
+            {
+                _notificationService.NotifyPlanDiscontinued(plan.Id);
+            }
 
             return RedirectToAction(nameof(ManagePlans));
         }
@@ -495,7 +518,7 @@ namespace SCManagement.Controllers
             public bool Enabled { get; set; } = true;
 
             [Display(Name = "Athlete Slots")]
-            [Range(1,int.MaxValue, ErrorMessage = "Error_MaxNumber")]
+            [Range(1, int.MaxValue, ErrorMessage = "Error_MaxNumber")]
             public int AthleteSlots { get; set; }
 
             public Product ConvertToProduct()

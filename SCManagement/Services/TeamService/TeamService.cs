@@ -3,16 +3,19 @@ using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Data.Migrations;
 using SCManagement.Models;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Services.TeamService
 {
     public class TeamService : ITeamService
     {
         private readonly ApplicationDbContext _context;
+        private readonly INotificationService _notificationService;
 
-        public TeamService(ApplicationDbContext context)
+        public TeamService(ApplicationDbContext context,INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -87,14 +90,21 @@ namespace SCManagement.Services.TeamService
                 .Select(r => r.User)
                 .ToListAsync();
 
+            List<string> userIds = new List<string>();
             foreach (var athlete in athletesToAdd)
             {
                 if (!team.Athletes.Contains(athlete))
+                {
                     team.Athletes.Add(athlete);
+                    userIds.Add(athlete.Id);
+                }
+                    
             }
 
             _context.Team.Update(team);
             await _context.SaveChangesAsync();
+            
+            _notificationService.NotifyTeamAdded(team, userIds);
         }
 
         /// <summary>
@@ -108,6 +118,8 @@ namespace SCManagement.Services.TeamService
             team.Athletes.Remove(athlete);
             _context.Team.Update(team);
             await _context.SaveChangesAsync();
+
+            _notificationService.NotifyTeam_Removed(team,athlete.Id);
         }
 
         /// <summary>

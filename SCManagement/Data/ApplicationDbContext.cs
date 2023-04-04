@@ -48,6 +48,7 @@ namespace SCManagement.Data
         public DbSet<Goal> Goals { get; set; }
         public DbSet<SystemPaymentStatistics> SystemPaymentStatistics { get; set; }
         public DbSet<SystemPlansStatistics> SystemPlansStatistics { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

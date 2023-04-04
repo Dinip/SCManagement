@@ -422,6 +422,13 @@ namespace SCManagement.Services.ClubService
             cc.UsedDate = DateTime.Now;
             _context.CodeClub.Update(cc);
             await _context.SaveChangesAsync();
+
+            //check if used slots are almost full (> 80%)
+            if ((slots.UsedSlots * 100 / slots.TotalSlots) >= 80)
+            {
+                _notificationService.NotifyAthletesNumberAlmostFull(cc.ClubId, slots);
+            }
+
             return await Task.FromResult(new KeyValuePair<bool, string>(true, "Success"));
         }
 

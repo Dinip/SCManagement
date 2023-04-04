@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SCManagement.Models;
+using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.UserService;
+using static SCManagement.Models.Notification;
 
 namespace SCManagement.Controllers
 {
@@ -22,12 +24,6 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
-
-        /// <summary>
-        /// Updates the selected role for the user
-        /// </summary>
-        /// <param name="usersClubRoleId"></param>
-        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -45,6 +41,67 @@ namespace SCManagement.Controllers
                 await _userService.UpdateSelectedRole(userId, usersClubRoleId);
             }
             return RedirectToAction("Index", "MyClub");
+        }
+        public class EditNotificationsSettings
+        {
+            public Dictionary<string, ICollection<Notification>> Notifications { get; set; }
+            = new Dictionary<string, ICollection<Notification>>()
+            {
+                { "General", new List<Notification>() },
+                { "Event", new List<Notification>() },
+                { "Team", new List<Notification>() },
+                { "TrainingPlan", new List<Notification>() },
+                { "MealPlan", new List<Notification>() },
+                { "Goal", new List<Notification>() },
+            };
+        }
+
+        public async Task<IActionResult> UpdateNotificationsSettings()
+        {
+            string userId = getUserIdFromAuthedUser();
+            var notifications = (await _userService.GetUserWithNotifications(userId)).Notifications;
+
+            EditNotificationsSettings settings = new EditNotificationsSettings();
+            foreach (Notification notification in notifications)
+            {
+                string type = notification.Type.ToString();
+                string key = settings.Notifications.Keys.FirstOrDefault(k => type.Contains(k));
+                if (key != null)
+                {
+                    settings.Notifications[key].Add(notification);
+                }
+                else if (!type.Contains("Subscription") && !type.Contains("Payment"))
+                {
+                    settings.Notifications["General"].Add(notification);
+                }
+            }
+
+            return View(settings);
+        }
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateNotificationsSettings(Dictionary<int, Notification> notifications)
+        {
+            if (!ModelState.IsValid) return View("CustomError", "Error_Unauthorized");
+
+            string userId = getUserIdFromAuthedUser();
+            List<Notification> oldNotifications = (await _userService.GetUserWithNotifications(userId)).Notifications.ToList();
+            var newNotifications = notifications.Values.ToList();
+
+            oldNotifications.ForEach(notification =>
+            {
+                var v = newNotifications.FirstOrDefault(f => f.Type == notification.Type);
+                if (v != null)
+                {
+                    notification.IsEnabled = v.IsEnabled;
+                }
+            });
+
+            await _userService.UpdateNotifications(oldNotifications);
+            
+            return RedirectToAction("Index", "Home");
         }
     }
 }

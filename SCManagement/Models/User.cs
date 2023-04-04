@@ -75,6 +75,7 @@ namespace SCManagement.Models
         public ICollection<TrainingPlan>? TrainingPlans { get; set; }
         public ICollection<MealPlan>? MealPlans { get; set; }
         public ICollection<Goal>? Goals { get; set; }
+        public ICollection<Notification>? Notifications { get; set; }
 
         [NotMapped]
         public bool IsAdmin { get; set; } = false;
