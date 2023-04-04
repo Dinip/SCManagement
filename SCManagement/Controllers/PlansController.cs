@@ -1031,8 +1031,9 @@ namespace SCManagement.Controllers
 
             if (template == null) return View("CustomError", "Error_NotFound");
 
+            var modalities = await _planService.GetModalitiesIds(id, userId);
 
-            return View(new ChooseTrainingTemplate { TrainingPlans = template, AthleteId = id });
+            return View(new ChooseTrainingTemplate { TrainingPlans = template.Where(m => modalities.Contains(m.ModalityId)), AthleteId = id });
         }
 
         public class ChooseMealTemplate

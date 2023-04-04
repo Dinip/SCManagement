@@ -31,5 +31,6 @@ namespace SCManagement.Services.PlansService
         public Task<IEnumerable<Goal?>> GetMyGoals(string userId, int? filter);
         public Task<IEnumerable<object>> GetModalities(string athleteId, string trainerId);
         public Task<IEnumerable<object>> GetModalities(string trainerId);
+        public Task<IEnumerable<int>> GetModalitiesIds(string athleteId, string trainerId);
     }
 }

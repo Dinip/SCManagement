@@ -1,6 +1,8 @@
 ﻿using System.Globalization;
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
+using SCManagement.Models;
 using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Services.PlansService
@@ -277,15 +279,35 @@ namespace SCManagement.Services.PlansService
             return modalitiesList;
         }
 
-        public async Task<IEnumerable<object>> GetModalities(string trainerId)
+        public async Task<IEnumerable<int>> GetModalitiesIds(string athleteId, string trainerId)
         {
             string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 
             var modalitiesIds = await _context.Team
-                .Where(t => t.TrainerId == trainerId)
+                .Include(t => t.Athletes)
+                .Where(t => t.TrainerId == trainerId && t.Athletes.Any(a => a.Id == athleteId))
                 .Select(t => t.ModalityId)
                 .Distinct()
                 .ToListAsync();
+
+            var modalitiesList = await _context.Modality
+                .Include(m => m.ModalityTranslations)
+                .Where(m => modalitiesIds.Contains(m.Id))
+                .Select(m => m.Id).ToListAsync();
+
+            return modalitiesList;
+        }
+
+        public async Task<IEnumerable<object>> GetModalities(string trainerId)
+        {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+
+            var modalitiesIds = await _context.Club
+            .Where(c => c.UsersRoleClub.Any(u => u.UserId == trainerId))
+            .SelectMany(c => c.Modalities)
+            .Select(m => m.Id)
+            .Distinct()
+            .ToListAsync();
 
             var modalitiesList = await _context.Modality
                 .Include(m => m.ModalityTranslations)

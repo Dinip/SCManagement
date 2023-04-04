@@ -3708,7 +3708,7 @@ Pagamento Atrasado&lt;/h1&gt; &lt;span
 
 &lt;head&gt;
     &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
-    &lt;title&gt;Pagamento Recebido template&lt;/title&gt;
+    &lt;title&gt;Pagamento Concluído template&lt;/title&gt;
     &lt;meta name="description" content="Reset Password Email Template."&gt;
     &lt;style type="text/css"&gt;
         a:hover {
@@ -3747,11 +3747,16 @@ Pagamento Atrasado&lt;/h1&gt; &lt;span
                                     &lt;td style="padding:0 35px;"&gt;
                                         &lt;h1
                                             style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
-Pagamento recebido&lt;/h1&gt; &lt;span
+                                            Pagamento Concluído&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
-                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá _USERNAME_, &lt;br&gt;&lt;br&gt; Recebeste um pagamento do _PAYMENTUSERNAME_ com o valor _VALUE_, Se tiveres alguma dúvida ou precisares de mais informações, entra em contato com _PAYMENTUSERNAME_.
- Muito obrigado!
-                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;O produto _PRODUCT_ de valor _VALUE_ foi pago com sucesso.
+                                            Se tiver alguma questão ou deseja mais informações, por favor contacte o dono do _PRODUCT_.
+                                             Obrigado.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_TEAMURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes do produto&lt;/a&gt;
                                     &lt;/td&gt;
                                 &lt;/tr&gt;
                                 &lt;tr&gt;
@@ -3772,23 +3777,370 @@ Pagamento recebido&lt;/h1&gt; &lt;span
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Email_SubscriptionCanceled" xml:space="preserve">
-    <value />
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Evento editado template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscrição Cancelada&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;A tua subscrição a _PRODUCT_ com o valor de _VALUE_, pago a cada _FREQUENCY_, foi cancelada.
+                                            Se tiver alguma questão ou deseja mais informações, por favor contacte o dono do _PRODUCT_.
+                                             Obrigado.
+                                            &lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Email_SubscriptionExpired" xml:space="preserve">
-    <value />
+  <data name="Email_SubscriptionExpiredClubPlan" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscrição do plano do clube expirada template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscrição do plano do clube expirada&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;A subscrição do plano do clube _PRODUCT_, de valor _VALUE_ e periocidade _FREQUENCY_, expirou.
+                                            Se tiver alguma questão ou deseja mais informações, por favor contacte nos.
+                                             Obrigado.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes da subscrição&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Email_SubscriptionExtended" xml:space="preserve">
-    <value />
+  <data name="Email_SubscriptionExpiredPartner" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscrição do sócio expirada template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscrição Sócio expirada&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;A subscrição do Partner _PRODUCT_, de valor _VALUE_ e periocidade _FREQUENCY_, expirou.
+                                            Se tiver alguma questão ou deseja mais informações, por favor contacte o dono do clube.
+                                             Obrigado.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes da subscrição&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Email_SubscriptionRenewed" xml:space="preserve">
-    <value />
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscrição renovada template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscrição Renovada&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;A subscrição do _PRODUCT_ foi renovada. Esta subscrição tem uma frequência de _FREQUENCY_. Se desejares manter a subscrição terás de pagar _VALUE_ no dia _NEXTDATE_. Poderás verificar o estado da tua subscrição ao pressionar o botão.
+                                            Se tiveres alguma questão ou desejares mais informações, por favor contacta o dono do _PRODUCT_.
+                                             Obrigado.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes da subscrição&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Email_SubscriptionStarted" xml:space="preserve">
-    <value />
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscrição iniciada template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscrição Iniciada&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;Iniciaste uma subscrição do _PRODUCT_. Esta subscrição tem uma frequência de _FREQUENCY_ e custa _VALUE_. Poderás verificar o estado da tua subscrição ao pressionar o botão.
+                                            Se tiveres alguma questão ou desejares mais informações, por favor contacta o dono do_PRODUCT_.
+                                             Obrigado.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes da subscrição&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_AthletesNumberAlmostFull" xml:space="preserve">
@@ -3807,12 +4159,12 @@ Pagamento recebido&lt;/h1&gt; &lt;span
     <value>Subscrição Cancelada</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Subject_SubscriptionExpired" xml:space="preserve">
-    <value>Subscrição Expirada</value>
+  <data name="Subject_SubscriptionExpiredClubPlan" xml:space="preserve">
+    <value>Subscrição do plano do clube Expirada</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Subject_SubscriptionExtended" xml:space="preserve">
-    <value>Subscrição Extendida</value>
+  <data name="Subject_SubscriptionExpiredPartner" xml:space="preserve">
+    <value>Subscrição do Sócio Expirada</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_SubscriptionRenewed" xml:space="preserve">
@@ -3821,6 +4173,542 @@ Pagamento recebido&lt;/h1&gt; &lt;span
   </data>
   <data name="Subject_SubscriptionStarted" xml:space="preserve">
     <value>Subscrição Iniciada</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PlanDiscontinued" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Evento editado template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Plano descontinuado&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;O produto _PRODUCT_ com o valor de _VALUE_ foi descontinuado.
+                                            Se tiveres alguma questão ou desejares mais informações, por favor contacta-nos.
+                                             Obrigado.
+                                            &lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PlanDiscontinued" xml:space="preserve">
+    <value>Plano Descontinuado</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventJoinedConfirm" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Evento Inscrito template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            
+Evento Inscrito&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá _USERNAME_,&lt;br&gt;&lt;br&gt;A tua inscrição no evento chamado _NAME_ fo realizada com sucesso. Se tiveres alguma dúvida ou precisares de mais informações, entra em contato conosco.
+ Muito obrigado!
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes do evento&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventJoinedPayed" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Evento Inscrito Pago template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            
+Evento Inscrito Pago&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá _USERNAME_,&lt;br&gt;&lt;br&gt; Está a tentar entrar em um evento pago chamado _NAME_, tens quatro horas para pagar o valor de _FEE_ para confirmar a tua inscrição. Se tiveres alguma dúvida ou precisares de mais informações, entra em contato conosco.
+ Muito obrigado!
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;ver detalhes do evento&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventLeft" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event Left template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            
+Event Left&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;
+Olá _USERNAME_,&lt;br&gt;&lt;br&gt;Saiste com sucesso do evento chamado _NAME_. Se tiveres alguma dúvida ou precisares de mais informações, entra em contato conosco.
+ Muito obrigado!
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes do evento&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventLeftMissingPay" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Retirado do evento por falta de pagamento template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            
+Retirado do evento por falta de pagamento&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;
+Olá _USERNAME_,&lt;br&gt;&lt;br&gt;Foste removido do evento chamado _NAME_ por não teres pago o valor _FEE_ necessario dentro do tempo limite de quatro horas. Se tiveres alguma dúvida ou precisares de mais informações, entra em contato conosco.
+ Muito obrigado!
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes do evento&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionRenewTime" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Renovação de subscrição&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Renovação de subscrição&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá _USERNAME_, &lt;br&gt; Sabendo que a subscrição do _PRODUCT_ com a frequência de _FREQUENCY_ está a terminar (_LIMITDATE_), atendendo às definições concordadas por si, necessita de pagar _VALUE_ para manter a subscrição ativa. Para renovar automaticamente esta subscrição, clique no botão Ativar. Se tiver alguma dúvida ou precisar de mais informações, não hesite em contactar-nos.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes da subscrição&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionRenewTimeAuto" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="pt"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Renovação automática da subscrição&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Renovação automática da subscrição&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá _USERNAME_, &lt;br&gt; Sabendo que o limite da subscrição _FREQUENCY_ do _PRODUCT_ está terminar(_LIMITDATE_), atendendo às definições concordadas por si, iremos proceder com a subscrição automática no valor de _VALUE_. Se tiver alguma duvida ou necessite de alguma informação, por favor contacte-nos.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Ver detalhes da subscrição&lt;/a&gt;
+                                    &lt;/td&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventJoinedConfirm" xml:space="preserve">
+    <value>Evento Inscrito Confirmado</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventJoinedPayed" xml:space="preserve">
+    <value>Evento Inscrito Pago</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventLeft" xml:space="preserve">
+    <value>Saiu do evento</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventLeftMissingPay" xml:space="preserve">
+    <value>Retirado do evento por falta de pagamento</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionRenewTime" xml:space="preserve">
+    <value>Renovação de Subscrição</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionRenewTimeAuto" xml:space="preserve">
+    <value>Renovação de Subscrição Automático</value>
     <comment>31-03-2023_notifications</comment>
   </data>
 </root>

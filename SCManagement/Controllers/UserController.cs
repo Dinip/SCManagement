@@ -49,13 +49,10 @@ namespace SCManagement.Controllers
             {
                 { "General", new List<Notification>() },
                 { "Event", new List<Notification>() },
-                { "Club", new List<Notification>() },
                 { "Team", new List<Notification>() },
                 { "TrainingPlan", new List<Notification>() },
                 { "MealPlan", new List<Notification>() },
                 { "Goal", new List<Notification>() },
-                { "Payment", new List<Notification>() },
-                { "Subscription", new List<Notification>() }
             };
         }
 
@@ -73,7 +70,7 @@ namespace SCManagement.Controllers
                 {
                     settings.Notifications[key].Add(notification);
                 }
-                else
+                else if (!type.Contains("Subscription") && !type.Contains("Payment"))
                 {
                     settings.Notifications["General"].Add(notification);
                 }
@@ -95,7 +92,7 @@ namespace SCManagement.Controllers
 
             oldNotifications.ForEach(notification =>
             {
-                var v = newNotifications.First(f => f.Type == notification.Type);
+                var v = newNotifications.FirstOrDefault(f => f.Type == notification.Type);
                 if (v != null)
                 {
                     notification.IsEnabled = v.IsEnabled;

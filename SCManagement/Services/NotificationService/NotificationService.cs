@@ -504,6 +504,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
+        //DONE
         public void NotifyPaymentReceived(int payId)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -530,6 +531,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
+        //DONE
         public void NotifySubscriptionCanceled(Subscription subscription)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -552,11 +554,12 @@ namespace SCManagement.Services.NotificationService
                     { "_VALUE_", subscription.Value.ToString() },
                 };
 
-                _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionRenewed", values);
+                _backgroundHelperService.SendEmail(user.Email, user.Language, "SubscriptionCanceled", values);
 
             });
         }
 
+        //DONE
         public void NotifySubscriptionExpired(ICollection<int> subIds)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -610,6 +613,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
+        //DONE
         public void NotifySubscriptionRenewed(int subId)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -639,6 +643,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
+        //DONE
         public void NotifySubscriptionStarted(int subId)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -667,6 +672,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
+        //DONE
         public void NotifyEventJoined(EventEnroll eventEnroll, bool needsPayment)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -741,6 +747,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
+        //DONE
         public void NotifyPlanDiscontinued(int productId)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -767,6 +774,7 @@ namespace SCManagement.Services.NotificationService
             });
         }
 
+        //DONE
         public void NotifySubscriptionRenewTime(ICollection<int> subIds)
         {
             _backgroundWorker.Enqueue(async (_serviceProvider) =>
@@ -788,8 +796,7 @@ namespace SCManagement.Services.NotificationService
                 })
                 .ToListAsync();
 
-                List<string> userIds = new List<string>();
-                userIds = subs.Select(s => s.UserId).Distinct().ToList();
+                List<string> userIds = subs.Select(s => s.UserId).Distinct().ToList();
 
                 var users = await getUsersInfosToNotify(_context, userIds, NotificationType.Subscription_RenewTime);
 
