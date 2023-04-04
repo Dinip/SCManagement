@@ -89,6 +89,8 @@ namespace SCManagement.Controllers
 
             };
 
+            ViewBag.Lang = Thread.CurrentThread.CurrentCulture.Name;
+
             return View(myModel);
         }
 

@@ -9,22 +9,14 @@
 
 <style>
 
-    .line-tooltip {
-        display: none;
-    }
-
-    .segment-tooltip {
-        display: none;
-    }
-
     .reset-zoom-btn {
         margin-left: 20% !important;
     }
 
 
-    .mdCard{
-        min-height:none !important;
-        height:auto !important;
+    .mdCard {
+        min-height: none !important;
+        height: auto !important;
     }
 
 </style>
@@ -312,7 +304,9 @@
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
-<script src="https://unpkg.com/timelines-chart"></script>
+<link href="https://unpkg.com/vis-timeline@latest/styles/vis-timeline-graph2d.min.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/vis-timeline@latest/standalone/umd/vis-timeline-graph2d.min.js"></script>
 
 <script type="text/javascript">
     var strings = {
@@ -655,87 +649,73 @@
         $('#modal1').hide()
     }
 
-    function convertDataToNewFormat(data, label) {
-        const newFormat = [];
-        let currentLabel = `${label} (1)`;
-        let currentData = [{ timeRange: [data[0].startDate, data[0].endDate], val: data[0].name }];
-        let currentEnd = new Date(data[0].endDate);
-        for (let i = 1; i < data.length; i++) {
-            const item = data[i];
-            const startDate = new Date(item.startDate);
-            const endDate = new Date(item.endDate);
-            if (startDate >= currentEnd) {
-                // add to the current label and data array
-                currentData.push({ timeRange: [item.startDate, item.endDate], val: item.name });
-                // update the end date if necessary
-                currentEnd = endDate;
-            } else {
-                // start a new label and data array
-                newFormat.push({ label: currentLabel, data: currentData });
-                currentLabel = `${label} (${newFormat.length + 1})`;
-                currentData = [{ timeRange: [item.startDate, item.endDate], val: item.name }];
-                currentEnd = endDate;
-            }
-        }
-        // push the last label and data array
-        newFormat.push({ label: currentLabel, data: currentData });
-        return newFormat;
-    }
-
     const buildTimeline = async () => {
         let training = await loadTrainingPlans("3")
         let meals = await loadMealsPlans("3")
         let goals = await loadGoals("3")
 
         let allData = [
-            ...training.map(f => ({ ...f, type: "Training" })),
-            ...meals.map(f => ({ ...f, type: "Meal" })),
-            ...goals.map(f => ({ ...f, type: "Goals" }))
+            ...training.map(f => ({
+                start: new Date(f.startDate),
+                end: new Date(f.endDate),
+                content: f.name,
+                group: "Training",
+                id: `training-${f.planId}`,
+                originalId: f.planId,
+                style: "cursor: pointer; background-color: orange;",
+                className: "trainingItems"
+            })),
+            ...meals.map(f => ({
+                start: new Date(f.startDate),
+                end: new Date(f.endDate),
+                content: f.name,
+                group: "Meal",
+                id: `meal-${f.planId}`,
+                originalId: f.planId,
+                style: "cursor: pointer; background-color: red;"
+            })),
+            ...goals.map(f => ({
+                start: new Date(f.startDate),
+                end: new Date(f.endDate),
+                content: f.name,
+                group: "Goal",
+                id: `goal-${f.goalId}`,
+                originalId: f.planId,
+                style: "cursor: pointer; background-color: yellow;"
+            }))
         ]
 
-        const timelineData = []
-        if (training.length) {
-            timelineData.push(
-                {
-                    group: "@HtmlLocalizer["Training"]",
-                    data: convertDataToNewFormat(training, "@HtmlLocalizer["Training"]"),
-                }
-            )
-        }
-        if (meals.length) {
-            timelineData.push(
-                {
-                    group: "@HtmlLocalizer["Meal"]",
-                    data: convertDataToNewFormat(meals, "@HtmlLocalizer["Meal"]"),
-                }
-            )
-        }
-        if (goals.length) {
-            timelineData.push(
-                {
-                    group: "@HtmlLocalizer["Goals"]",
-                    data: convertDataToNewFormat(goals, "@HtmlLocalizer["Goals"]"),
-                }
-            )
-        }
+        let container = document.getElementById('timeline');
 
-        const openDetailsOnClick = (clickData) => {
-            const found = allData.find(f => f.name == clickData.labelVal && f.startDate == clickData.data.timeRange[0] && f.endDate == clickData.data.timeRange[1])
-            if (found?.type != "Goals") {
-                console.log("aqui")
-                window.open(`/Plans/${found.type}Details/${found.planId}`, '_blank')
+        let items = new vis.DataSet(allData);
+
+        let options = {
+          "locale": "@ViewBag.Lang.Substring(0,2)"
+        };
+
+        let groups = [
+            {
+                id: "Training",
+                content: '@HtmlLocalizer["Training Plans"]',
+            },
+            {
+                id: "Meal",
+                content: '@HtmlLocalizer["Meal Plans"]'
+            },
+            {
+                id: "Goal",
+                content: '@HtmlLocalizer["Goals"]'
             }
-        }
+        ]
 
-        const myChart = TimelinesChart();
-        myChart
-            .data(timelineData)
-            .zQualitative(true)
-            .maxLineHeight(48)
-            .width(document.getElementById('cardSize').offsetWidth)
-            .zoomX([getDateOneMonthAgo(), getDateOneMonthFromNow()])
-            .onSegmentClick(openDetailsOnClick)
-            (document.getElementById('timeline'))
+        let timeline = new vis.Timeline(container, items, groups, options);
+
+        document.getElementById('timeline').onclick = function (event) {
+            const props = timeline.getEventProperties(event)
+            if(props.item == null) return
+            const item = allData.find(f => f.id === props.item)
+            window.open(`/Plans/${item.group}Details/${item.originalId}`, '_blank')
+        }
     }
 
     function getDateOneMonthAgo() {
