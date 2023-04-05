@@ -802,7 +802,7 @@ namespace SCManagement.Services.ClubService
         {
             var coordinates = await _context.Club
                .Where(c => c.AddressId != null)
-               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY, Name = c.Name })
+               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY, c.Name, c.Id, Photo = c.Photography.Uri })
                .ToListAsync();
 
             return coordinates;
@@ -956,9 +956,9 @@ namespace SCManagement.Services.ClubService
         public async Task<UsersRoleClub> GetAdminRole(int clubId)
         {
             return await _context.UsersRoleClub
-                .Include(c=>c.User)
+                .Include(c => c.User)
                 .Where(c => c.ClubId == clubId && c.RoleId == 50)
-                .FirstOrDefaultAsync();    
+                .FirstOrDefaultAsync();
         }
     }
 }
