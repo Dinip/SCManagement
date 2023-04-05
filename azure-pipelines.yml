@@ -5,7 +5,7 @@
 
 trigger:
   - master
-  - sprint4
+  - finalFixes
 
 pool:
   vmImage: 'windows-latest'
