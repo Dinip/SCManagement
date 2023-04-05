@@ -20,6 +20,7 @@ using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using static SCManagement.Controllers.MyZoneController;
 using System.Data;
+using SCManagement.Services.PlansService.Models;
 
 namespace SCManagement.Tests.Controller
 {
@@ -55,7 +56,7 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_MyZone_ReturnsIsNotClubAthlete()
+        public async Task MyZoneController_MyZone_ReturnsIsNotClubAthlete()
         {
             // Arrange
             _applicationContextService.UserRole = new UsersRoleClub { RoleId = 30 };
@@ -70,7 +71,7 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_CreateBioimpedance_Post_ReturnsSuccess()
+        public async Task MyZoneController_CreateBioimpedance_Post_ReturnsSuccess()
         {
             //Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
@@ -92,7 +93,7 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_CreateBioimpedance_Post_ReturnsIsNotClubAthlete()
+        public async Task MyZoneController_CreateBioimpedance_Post_ReturnsIsNotClubAthlete()
         {
             //Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
@@ -113,7 +114,7 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_UpdateBioimpedance_ReturnsSuccess()
+        public async Task MyZoneController_UpdateBioimpedance_ReturnsSuccess()
         {
             {
                 // Arrange
@@ -130,7 +131,7 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_UpdateBioimpedance_ReturnsIsNotClubAthlete()
+        public async Task MyZoneController_UpdateBioimpedance_ReturnsIsNotClubAthlete()
         {
             // Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
@@ -145,7 +146,7 @@ namespace SCManagement.Tests.Controller
         }
 
         [Fact]
-        public async Task MyClubController_UpdateBioimpedance_ReturnsDontHaveBioimpedance()
+        public async Task MyZoneController_UpdateBioimpedance_ReturnsDontHaveBioimpedance()
         {
             // Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
@@ -160,5 +161,152 @@ namespace SCManagement.Tests.Controller
             result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_DontHaveBioimpedance");
         }
 
+        [Fact]
+        public async Task MyZoneController_GetTrainingPlans_ReturnDontHavePermission()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(false);
+
+            // Act
+            var result = await _controller.GetTrainingPlans(null);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyZoneController_GetTrainingPlans_ReturnSuccess()
+        {
+            {
+                // Arrange
+                _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+                A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(true);
+                A.CallTo(() => _planService.GetTrainingPlans(A<string>._)).Returns(A.Fake<IEnumerable<TrainingPlan>>());
+
+                // Act
+                var result = await _controller.GetTrainingPlans(null);
+
+                // Assert
+                result.Should().BeOfType<JsonResult>();
+
+            }
+        }
+
+        [Fact]
+        public async Task MyZoneController_GetMealPlans_ReturnDontHavePermission()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(false);
+
+            // Act
+            var result = await _controller.GetMealPlans(null);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyZoneController_GetMealPlans_ReturnSuccess()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(true);
+            A.CallTo(() => _planService.GetMealPlans(A<string>._)).Returns(A.Fake<IEnumerable<MealPlan>>());
+
+            // Act
+            var result = await _controller.GetMealPlans(null);
+
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
+        [Fact]
+        public async Task MyZoneController_GetGoals_ReturnDontHavePermission()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(false);
+
+            // Act
+            var result = await _controller.GetGoals(null);
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+
+        [Fact]
+        public async Task MyZoneController_GetGoals_ReturnSuccess()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(true);
+            A.CallTo(() => _planService.GetGoals(A<string>._)).Returns(A.Fake<IEnumerable<Goal>>());
+
+            // Act
+            var result = await _controller.GetGoals(null);
+
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        }
+
+        [Fact]
+        public async Task MyZoneController_GetBioimpedance_ReturnDontHavePermission()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(false);
+
+            // Act
+            var result = await _controller.GetBioimpedance();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        [Fact]
+        public async Task MyZoneController_GetBioimpedance_ReturnSuccess()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(true);
+            A.CallTo(() => _userService.GetLastBioimpedance(A<string>._)).Returns(Task.FromResult(new Bioimpedance()));
+
+            // Act
+            var result = await _controller.GetBioimpedance();
+
+            // Assert
+            result.Should().BeOfType<JsonResult>();
+        
+        }
+
+        [Fact]
+        public async Task MyZoneController_CreateBioimpedance_ReturnDontHavePermission()
+        {
+            // Arrange
+            _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
+            A.CallTo(() => _userService.IsAtleteInAnyClub(A<string>._)).Returns(false);
+
+            // Act
+            var result = await _controller.CreateBioimpedance();
+
+            // Assert
+            result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
+            result.Should().BeOfType<ViewResult>().Which.Model.Should().Be("Error_Unauthorized");
+        }
+
+        
+
+
     }
+
+
+
 }
+
+
