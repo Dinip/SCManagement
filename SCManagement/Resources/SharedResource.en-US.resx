@@ -4681,11 +4681,11 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventJoinedConfirm" xml:space="preserve">
-    <value>Event Joined Confirm</value>
+    <value>Event enrollment confirmed</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventJoinedPayed" xml:space="preserve">
-    <value>Event Joined Payed</value>
+    <value>Event enrollment waiting payment</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventLeft" xml:space="preserve">
@@ -4711,5 +4711,17 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
   <data name="Event_Left" xml:space="preserve">
     <value>Event Left</value>
     <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="CancelEnroll" xml:space="preserve">
+    <value>Cancel Enroll</value>
+    <comment>05-04-2023-FixEventEnroll</comment>
+  </data>
+  <data name="EnrollState" xml:space="preserve">
+    <value>Enroll State</value>
+    <comment>05-04-2023-FixEventEnroll</comment>
+  </data>
+  <data name="PayEnroll" xml:space="preserve">
+    <value>Pay Enroll</value>
+    <comment>05-04-2023-FixEventEnroll</comment>
   </data>
 </root>
