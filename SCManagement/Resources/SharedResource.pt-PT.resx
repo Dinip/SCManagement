@@ -2611,7 +2611,7 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
   <data name="Manage Plans" xml:space="preserve">
     <value>Gerir planos</value>
   </data>
-  <data name="Added_To_Team" xml:space="preserve">
+  <data name="Team_Added" xml:space="preserve">
     <value>Adicionado a uma Equipa</value>
     <comment>31-03-2023_notifications</comment>
   </data>
@@ -2699,7 +2699,7 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Event_Canceled" xml:space="preserve">
-    <value>Event Cancelado</value>
+    <value>Evento Cancelado</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Event_Created" xml:space="preserve">
@@ -2707,7 +2707,7 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Event_Edited" xml:space="preserve">
-    <value>Evento Editar</value>
+    <value>Evento Editado</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Goal_Assigned" xml:space="preserve">
@@ -2719,11 +2719,11 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Goal_Deleted" xml:space="preserve">
-    <value>Meta Removido</value>
+    <value>Meta Removida</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Goal_Edited" xml:space="preserve">
-    <value>Meta Editado</value>
+    <value>Meta Editada</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="MealPlan_Assigned" xml:space="preserve">
@@ -2750,11 +2750,11 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <value>Pagamento Recebido</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Plan_Descontinued" xml:space="preserve">
+  <data name="Plan_Discontinued" xml:space="preserve">
     <value>Plano descontinuado</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Removed_From_Team" xml:space="preserve">
+  <data name="Team_Removed" xml:space="preserve">
     <value>Removido de uma Equipa</value>
     <comment>31-03-2023_notifications</comment>
   </data>
@@ -3342,7 +3342,7 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
 
 &lt;head&gt;
     &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
-    &lt;title&gt;Evento editado template&lt;/title&gt;
+    &lt;title&gt;Evento Criado template&lt;/title&gt;
     &lt;meta name="description" content="Reset Password Email Template."&gt;
     &lt;style type="text/css"&gt;
         a:hover {
@@ -3381,11 +3381,12 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
                                     &lt;td style="padding:0 35px;"&gt;
                                         &lt;h1
                                             style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
-                                            Evento Editado&lt;/h1&gt; &lt;span
+                                            Evento Criado&lt;/h1&gt; &lt;span
                                             style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
                                         &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Olá
-                                            _USERNAME_!&lt;br&gt;&lt;br&gt;O evento _EVENTNAME_ foi editado pelo clube _CLUBNAME_. Poderás aceder a novas informações clicando no botão abaixo.
-                                            Se tiveres alguma questão ou desejares mais informações, contacta o clube _CLUBNAME_. 
+                                            _USERNAME_,&lt;br&gt;&lt;br&gt;O evento _EVENTNAME_ foi criado pelo clube _CLUBNAME_. Poderás acedar a mais informações ao pressionar o botão.
+                                             Se tiveres alguma questão ou desejares mais informações, por favor contacte o organizador do evento.
+                                             Obrigado.
                                             &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
                                             href="_EVENTURL_"
                                             style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
@@ -4777,5 +4778,29 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
   <data name="Subject_SubscriptionRenewTimeAuto" xml:space="preserve">
     <value>Renovação de Subscrição Automático</value>
     <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Joined" xml:space="preserve">
+    <value>Inscrito em evento</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="Event_Left" xml:space="preserve">
+    <value>Saiu do evento</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="Event" xml:space="preserve">
+    <value>Evento</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="MealPlan" xml:space="preserve">
+    <value>Plano alimentar</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Equipa</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan" xml:space="preserve">
+    <value>Plano de treino</value>
+    <comment>05-04-2023_notifications</comment>
   </data>
 </root>

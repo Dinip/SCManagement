@@ -5,41 +5,55 @@
     ViewData["Title"] = @StringLocalizer["GoalDetails"];
 }
 
-<h1>@StringLocalizer["GoalDetails"]</h1>
+<style>
+    dt {
+        border: 1px solid gainsboro;
+        padding: 3px;
+    }
 
-<div>
-    <h4>@StringLocalizer["Goal"]</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.StartDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.StartDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EndDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EndDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.isCompleted)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.isCompleted)
-        </dd>
-    </dl>
+    dd {
+        border: 1px solid gainsboro;
+        margin-bottom: 0;
+        padding: 3px;
+    }
+</style>
+
+<div class="container d-flex justify-content-center">
+    <div class="card shadow w-75" style="border-radius:10px; margin-top:130px !important;">
+        <div class="card-body p-5" style="margin-top:0 !important">
+            <h2 class="text-to-dark" style="text-align:center;">@Html.DisplayFor(model => model.Name)</h2>
+            <hr />
+            <div class="d-flex justify-content-center">
+                <div class="mt-3 w-75">
+                    <dl class="row">
+                        <dt class="col-sm-4 dlBg text-to-dark">
+                            @Html.DisplayNameFor(model => model.Name)
+                        </dt>
+                        <dd class="col-sm-8 dlBg text-to-dark">
+                            @Html.DisplayFor(model => model.Name)
+                        </dd>
+                        <dt class="col-sm-4 text-to-dark">
+                            @Html.DisplayNameFor(model => model.Description)
+                        </dt>
+                        <dd class="col-sm-8 text-to-dark">
+                            @Html.DisplayFor(model => model.Description)
+                        </dd>
+                        <dt class="col-sm-4 dlBg text-to-dark">
+                            @Html.DisplayNameFor(model => model.StartDate)
+                        </dt>
+                        <dd class="col-sm-8 dlBg text-to-dark">
+                            @Html.DisplayFor(model => model.StartDate)
+                        </dd>
+                        <dt class="col-sm-4 text-to-dark">
+                            @Html.DisplayNameFor(model => model.EndDate)
+                        </dt>
+                        <dd class="col-sm-8 text-to-dark">
+                            @Html.DisplayFor(model => model.EndDate)
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>

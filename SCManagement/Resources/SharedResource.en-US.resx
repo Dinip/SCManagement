@@ -2483,7 +2483,7 @@ As long as the website and the information and services provided therein are fre
     <value>Manage Plans</value>
     <comment>31-03-2023_backoffice</comment>
   </data>
-  <data name="Added_To_Team" xml:space="preserve">
+  <data name="Team_Added" xml:space="preserve">
     <value>Added To Team</value>
     <comment>31-03-2023_notifications</comment>
   </data>
@@ -2551,11 +2551,11 @@ As long as the website and the information and services provided therein are fre
     <value>Payment Received</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Plan_Descontinued" xml:space="preserve">
-    <value>Plan Descontinued</value>
+  <data name="Plan_Discontinued" xml:space="preserve">
+    <value>Plan Discontinued</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Removed_From_Team" xml:space="preserve">
+  <data name="Team_Removed" xml:space="preserve">
     <value>Removed From Team</value>
     <comment>31-03-2023_notifications</comment>
   </data>
@@ -4703,5 +4703,13 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
   <data name="Subject_SubscriptionRenewTimeAuto" xml:space="preserve">
     <value>Subscription Renew Time Auto</value>
     <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Joined" xml:space="preserve">
+    <value>Event Joined</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="Event_Left" xml:space="preserve">
+    <value>Event Left</value>
+    <comment>05-04-2023_notifications</comment>
   </data>
 </root>

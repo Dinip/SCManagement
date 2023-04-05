@@ -64,7 +64,7 @@ function loadMap(userCoordinates, markersCoordinates) {
             new mapboxgl.Marker({ color: "#00639A"})
                 .setLngLat([coords[key].coordinateX, coords[key].coordinateY])
                 .addTo(map)
-                .setPopup(new mapboxgl.Popup().setHTML('<h1 class="popupCard">' + coords[key].name + '</h1>'))
+                .setPopup(new mapboxgl.Popup().setHTML('<h1 class="popupCard">' + `<img class="popupImg" src=${coords[key].photo || 'https://cdn.scmanagement.me/public/user_placeholder.png' } /> <a href=/Clubs/${coords[key].id}>${coords[key].name}</a>` + '</h1>'))
                 .on('click', function () {
                     map.flyTo({
                         center: [coords[key].coordinateX, coords[key].coordinateY],

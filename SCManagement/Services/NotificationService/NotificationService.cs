@@ -768,7 +768,7 @@ namespace SCManagement.Services.NotificationService
                     {
                         { "_USERNAME_", user.FullName },
                         { "_PRODUCT_", plan.Name },
-                        { "_VALUE_", plan.Value.ToString() },
+                        { "_VALUE_", $"{plan.Value}€" },
                         { "_FREQUENCY_", _sharedResource.Get(plan.Frequency.ToString(), user.Language) }
                     };
 

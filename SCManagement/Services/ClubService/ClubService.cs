@@ -754,13 +754,7 @@ namespace SCManagement.Services.ClubService
         /// <summary>
         /// Create a Address to the club
         /// </summary>
-        /// <param name="CoordinateX"></param>
-        /// <param name="CoordinateY"></param>
-        /// <param name="ZipCode"></param>
-        /// <param name="Street"></param>
-        /// <param name="City"></param>
-        /// <param name="District"></param>
-        /// <param name="Country"></param>
+        /// <param name="address"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
         public async Task<Address> CreateAddress(Address address, int clubId)
@@ -787,13 +781,7 @@ namespace SCManagement.Services.ClubService
         /// <summary>
         /// Updates the address of a given club
         /// </summary>
-        /// <param name="CoordinateX"></param>
-        /// <param name="CoordinateY"></param>
-        /// <param name="ZipCode"></param>
-        /// <param name="Street"></param>
-        /// <param name="City"></param>
-        /// <param name="District"></param>
-        /// <param name="Country"></param>
+        /// <param name="address"></param>
         /// <param name="addressId"></param>
         public async Task UpdateClubAddress(Address address, int addressId)
         {
@@ -814,7 +802,7 @@ namespace SCManagement.Services.ClubService
         {
             var coordinates = await _context.Club
                .Where(c => c.AddressId != null)
-               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY, Name = c.Name })
+               .Select(c => new { c.Address.CoordinateX, c.Address.CoordinateY, c.Name, c.Id, Photo = c.Photography.Uri })
                .ToListAsync();
 
             return coordinates;
@@ -968,9 +956,9 @@ namespace SCManagement.Services.ClubService
         public async Task<UsersRoleClub> GetAdminRole(int clubId)
         {
             return await _context.UsersRoleClub
-                .Include(c=>c.User)
+                .Include(c => c.User)
                 .Where(c => c.ClubId == clubId && c.RoleId == 50)
-                .FirstOrDefaultAsync();    
+                .FirstOrDefaultAsync();
         }
     }
 }

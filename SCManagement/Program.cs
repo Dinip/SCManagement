@@ -40,6 +40,11 @@ app.UseWhen(context => context.Request.Path.StartsWithSegments("/Statistics"), a
     appBuilder.UseClubMiddleware();
 });
 
+app.UseWhen(context => context.Request.Path.StartsWithSegments("/Events/Create"), appBuilder =>
+{
+    appBuilder.UseClubMiddleware();
+});
+
 using (var ser = app.Services.CreateScope())
 {
     var services = ser.ServiceProvider;
