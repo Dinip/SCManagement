@@ -2699,7 +2699,7 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Event_Canceled" xml:space="preserve">
-    <value>Event Cancelado</value>
+    <value>Evento Cancelado</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Event_Created" xml:space="preserve">
@@ -2707,7 +2707,7 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Event_Edited" xml:space="preserve">
-    <value>Evento Editar</value>
+    <value>Evento Editado</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Goal_Assigned" xml:space="preserve">
@@ -2719,11 +2719,11 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Goal_Deleted" xml:space="preserve">
-    <value>Meta Removido</value>
+    <value>Meta Removida</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Goal_Edited" xml:space="preserve">
-    <value>Meta Editado</value>
+    <value>Meta Editada</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="MealPlan_Assigned" xml:space="preserve">
@@ -4780,11 +4780,27 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Event_Joined" xml:space="preserve">
-    <value>Inscrito em event</value>
+    <value>Inscrito em evento</value>
     <comment>05-04-2023_notifications</comment>
   </data>
   <data name="Event_Left" xml:space="preserve">
     <value>Saiu do evento</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="Event" xml:space="preserve">
+    <value>Evento</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="MealPlan" xml:space="preserve">
+    <value>Plano alimentar</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="Team" xml:space="preserve">
+    <value>Equipa</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan" xml:space="preserve">
+    <value>Plano de treino</value>
     <comment>05-04-2023_notifications</comment>
   </data>
 </root>
