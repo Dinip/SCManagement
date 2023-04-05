@@ -51,6 +51,7 @@ namespace SCManagement.Services.CronJobService
                 SubscriptionId = s.Id,
                 UserId = s.UserId,
                 ProductId = s.ProductId,
+                PaymentKey = "AUTO-PAYED"
             }).ToList();
 
             _context.Payment.AddRange(payments);
@@ -61,7 +62,7 @@ namespace SCManagement.Services.CronJobService
             //payment has been created and if is manual
             //renew that has X days to pay
             var _notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
-            _notificationService.NotifySubscriptionRenewTime(subs.Select(s=>s.Id).ToList());
+            _notificationService.NotifySubscriptionRenewTime(subs.Select(s => s.Id).ToList());
 
             return;
         }

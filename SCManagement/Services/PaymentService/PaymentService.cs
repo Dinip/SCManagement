@@ -512,7 +512,7 @@ namespace SCManagement.Services.PaymentService
             var sub = new Subscription
             {
                 StartTime = now,
-                NextTime = product.Value > 0 ? DateTime.Now.Add(Subscription.AddTime(product.Frequency)).Date.Add(new TimeSpan(1, 0, 0)) : now,
+                NextTime = product.Value > 0 ? now : DateTime.Now.Add(Subscription.AddTime(product.Frequency)).Date.Add(new TimeSpan(1, 0, 0)),
                 Value = product.Value,
                 Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
@@ -534,7 +534,7 @@ namespace SCManagement.Services.PaymentService
                 PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
                 UserId = userId,
                 SubscriptionId = sub.Id,
-                PaymentKey = Guid.NewGuid().ToString(),
+                PaymentKey = product.Value > 0 ? Guid.NewGuid().ToString() : "AUTO-PAYED",
             };
 
             _context.Payment.Add(pay);
@@ -1023,7 +1023,7 @@ namespace SCManagement.Services.PaymentService
             var sub = new Subscription
             {
                 StartTime = now,
-                NextTime = product.Value > 0 ? DateTime.Now.Add(Subscription.AddTime(product.Frequency)).Date.Add(new TimeSpan(1, 0, 0)) : now,
+                NextTime = product.Value > 0 ? now : DateTime.Now.Add(Subscription.AddTime(product.Frequency)).Date.Add(new TimeSpan(1, 0, 0)),
                 Value = product.Value,
                 Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
@@ -1046,7 +1046,7 @@ namespace SCManagement.Services.PaymentService
                 PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
                 UserId = userId,
                 SubscriptionId = sub.Id,
-                PaymentKey = Guid.NewGuid().ToString(),
+                PaymentKey = product.Value > 0 ? Guid.NewGuid().ToString() : "AUTO-PAYED",
             };
 
             _context.Payment.Add(pay);

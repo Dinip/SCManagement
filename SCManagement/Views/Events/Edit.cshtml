@@ -169,13 +169,13 @@
                 </label>
             </div>
             <div class="form-floating mt-3">
-                <input type="number" step="0.01" min="0" asp-for="Fee" id="txtFee" class="form-control" value="0" readonly="@(ViewBag.ValidKey == false)" />
+                <input type="number" step="0.01" min="0" asp-for="Fee" id="txtFee" class="form-control" readonly="@(ViewBag.ValidKey == false)" />
                 <label asp-for="Fee" class="control-label"></label>
                 <span asp-validation-for="Fee" class="text-danger"></span>
                 <span style="color: orange;">@(ViewBag.ValidKey == false ? StringLocalizer["Warning_InvalidKey"] : "")</span>
             </div>
             <div class="form-floating mt-3">
-                <input type="number" step="1" min="@ViewBag.NumberOfEnrolls" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" />
+                <input type="number" step="1" min="0" asp-for="MaxEventEnrolls" id="txtMaxEventEnrolls" class="form-control" />
                 <label asp-for="MaxEventEnrolls" class="control-label"></label>
                 <span asp-validation-for="MaxEventEnrolls" class="text-danger"></span>
             </div>

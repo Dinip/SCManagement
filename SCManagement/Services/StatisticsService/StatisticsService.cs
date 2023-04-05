@@ -29,7 +29,7 @@ namespace SCManagement.Services.StatisticsService
 
         /// <summary>
         /// Creates statistics about users (partners and athletes) from a specified club.
-        /// Only creates monthly stats and can be run once a day. Updates the existing stats if they exist
+        /// Only creates monthly stats. Updates the existing stats if they exist
         /// with the new values.
         /// </summary>
         /// <param name="clubId"></param>
@@ -81,8 +81,8 @@ namespace SCManagement.Services.StatisticsService
 
         /// <summary>
         /// Creates statistics about payments (events and memberships) from a specified club.
-        /// Only creates monthly stats and MUST be only run once a day. Gets the payments received from
-        /// the previous day and updates (sum) the existing stats if they exist or creates an new one.
+        /// Gets the payments received from the month of previous day and updates 
+        /// the existing stats if they exist or creates an new one.
         /// </summary>
         /// <param name="clubId"></param>
         /// <returns></returns>
@@ -104,7 +104,8 @@ namespace SCManagement.Services.StatisticsService
                 )
                 .Where(
                     f => f.product.ClubId == clubId &&
-                    f.payment.PayedAt.Value.Date == prevDay // get the payed payments from last day
+                    f.payment.PayedAt.Value.Month == prevDay.Month &&
+                    f.payment.PayedAt.Value.Year == prevDay.Year
                     )
                 .GroupBy(f => f.product.Id)
                 .Select(f => new
@@ -120,7 +121,7 @@ namespace SCManagement.Services.StatisticsService
                 var f = result.Find(r => r.ProductId == prod.ProductId);
                 if (f != null)
                 {
-                    f.Value += prod.Total;
+                    f.Value = prod.Total;
                     _context.ClubPaymentStatistics.Update(f);
                 }
                 else if (prod.Total > 0)
@@ -152,7 +153,7 @@ namespace SCManagement.Services.StatisticsService
                 var f = result.Find(r => r.ProductId == null && r.ProductType == prod.ProductType);
                 if (f != null)
                 {
-                    f.Value += prod.Total;
+                    f.Value = prod.Total;
                     _context.ClubPaymentStatistics.Update(f);
                 }
                 else if (prod.Total > 0)
@@ -434,8 +435,8 @@ namespace SCManagement.Services.StatisticsService
 
         /// <summary>
         /// Creates statistics about payments (plan subscriptions).
-        /// Only creates monthly stats and MUST be only run once a day. Gets the payments received from
-        /// the previous day and updates (sum) the existing stats if they exist or creates an new one.
+        /// Gets the payments received from the month of the previous day and 
+        /// updates the existing stats if they exist or creates an new one.
         /// </summary>
         /// <returns></returns>
         public async Task CreateSystemPaymentStatistics()
@@ -456,7 +457,7 @@ namespace SCManagement.Services.StatisticsService
                 )
                 .Where(
                     f => f.product.ProductType == PaymentService.Models.ProductType.ClubSubscription &&
-                    f.payment.PayedAt.Value.Date == prevDay // get the payed payments from last day
+                    f.payment.PayedAt.Value.Month == prevDay.Month && f.payment.PayedAt.Value.Year == prevDay.Year
                     )
                 .GroupBy(f => f.product.Id)
                 .Select(f => new
@@ -472,7 +473,7 @@ namespace SCManagement.Services.StatisticsService
                 var f = result.Find(r => r.ProductId == prod.ProductId);
                 if (f != null)
                 {
-                    f.Value += prod.Total;
+                    f.Value = prod.Total;
                     _context.SystemPaymentStatistics.Update(f);
                 }
                 else if (prod.Total > 0)
@@ -494,8 +495,8 @@ namespace SCManagement.Services.StatisticsService
 
         /// <summary>
         /// Creates statistics about system club plans.
-        /// Only creates monthly stats and MUST be only run once a day. Gets the plans that exist
-        /// the previous day and updates (sum or subtract) the existing stats if they exist or creates an new one.
+        /// Gets the plans that exist in the month of the previous day and
+        /// and updates the existing stats if they exist or creates an new one.
         /// </summary>
         /// <returns></returns>
         public async Task CreateSystemPlansStatistics()
@@ -531,24 +532,24 @@ namespace SCManagement.Services.StatisticsService
 
             await _context.SaveChangesAsync();
 
-            //get all plan subs that expired yesterday
-            var endedSubsYesterday = await _context
+            //get all plan subs that expired on the previous day month
+            var endedSubsPrevDayMonth = await _context
                     .Subscription
-                    .Where(f => plansIds.Contains(f.ProductId) && f.EndTime.Value.Date == prevDay)
+                    .Where(f => plansIds.Contains(f.ProductId) && f.EndTime.Value.Month == prevDay.Month && f.EndTime.Value.Year == prevDay.Year)
                     .GroupBy(f => f.ProductId)
                     .Select(f => new { Id = f.Key, Canceled = f.Count() })
                     .ToListAsync();
 
-            //get all plan subs that started yesterday
-            var startedSubsYesterday = await _context
+            //get all plan subs that started on the previous day month
+            var startedSubsPrevDayMonth = await _context
                 .Subscription
-                .Where(f => plansIds.Contains(f.ProductId) && f.StartTime.Date == prevDay)
+                .Where(f => plansIds.Contains(f.ProductId) && f.StartTime.Month == prevDay.Month && f.StartTime.Month == prevDay.Month)
                 .GroupBy(f => f.ProductId)
                 .Select(f => new { Id = f.Key, Canceled = f.Count() })
                 .ToListAsync();
 
             //if plans were started or canceled yesterday, get the old values and update them
-            if (endedSubsYesterday.Any() || startedSubsYesterday.Any())
+            if (endedSubsPrevDayMonth.Any() || startedSubsPrevDayMonth.Any())
             {
                 var prevDayMonthResultsNew = await _context
                     .SystemPlansStatistics
@@ -558,18 +559,18 @@ namespace SCManagement.Services.StatisticsService
                 prevDayMonthResultsNew.ForEach(plan =>
                 {
                     //add count of new active plans from previous day (is assumes that was created before)
-                    var startedPlans = startedSubsYesterday.Where(e => e.Id == plan.ProductId);
+                    var startedPlans = startedSubsPrevDayMonth.Where(e => e.Id == plan.ProductId);
                     if (startedPlans.Any())
                     {
-                        plan.Active += startedPlans.Count();
+                        plan.Active = startedPlans.Count();
                     }
 
                     //subtract from active and add to canceled (is assumes that was created before)
-                    var endedPlans = endedSubsYesterday.Where(e => e.Id == plan.ProductId);
+                    var endedPlans = endedSubsPrevDayMonth.Where(e => e.Id == plan.ProductId);
                     if (endedPlans.Any())
                     {
                         plan.Active -= endedPlans.Count();
-                        plan.Canceled += endedPlans.Count();
+                        plan.Canceled = endedPlans.Count();
                     }
 
                     _context.SystemPlansStatistics.Update(plan);

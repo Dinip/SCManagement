@@ -331,7 +331,7 @@ namespace SCManagement.Controllers
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
 
-            ViewBag.NumberOfEnrolls = (await _eventService.GetEnrolls(myEvent.Id)).Count();
+            //ViewBag.NumberOfEnrolls = (await _eventService.GetEnrolls(myEvent.Id)).Count();
 
             Event eventCopy = new Event
             {

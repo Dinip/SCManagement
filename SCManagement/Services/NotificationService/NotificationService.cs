@@ -26,7 +26,14 @@ namespace SCManagement.Services.NotificationService
         {
             _backgroundWorker = backgroundWorker;
             _sharedResource = sharedResource;
-            _hostUrl = $"{httpContext.HttpContext.Request.Scheme}://{httpContext.HttpContext.Request.Host}";
+            if (httpContext.HttpContext != null)
+            {
+                _hostUrl = $"{httpContext.HttpContext.Request.Scheme}://{httpContext.HttpContext.Request.Host}";
+            }
+            else
+            {
+                _hostUrl = "";
+            }
         }
 
         //if notification type is null, ignore checking if the user
@@ -797,6 +804,7 @@ namespace SCManagement.Services.NotificationService
                     Value = s.Value,
                     NextTime = s.NextTime,
                     Product = new Product { Name = s.Product.Name },
+                    UserId = s.UserId
                 })
                 .ToListAsync();
 
@@ -814,7 +822,7 @@ namespace SCManagement.Services.NotificationService
                         { "_PRODUCT_", subscription.Product.Name },
                         { "_FREQUENCY_", _sharedResource.Get(subscription.Frequency.ToString(), user.Language) },
                         { "_LIMITDATE_", subscription.NextTime.AddDays(3).ToString() },
-                        { "_VALUE_", subscription.Value.ToString() },
+                        { "_VALUE_", $"{subscription.Value}€" },
                     };
 
                     if (subscription.AutoRenew)
