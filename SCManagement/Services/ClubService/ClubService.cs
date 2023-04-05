@@ -424,7 +424,8 @@ namespace SCManagement.Services.ClubService
             await _context.SaveChangesAsync();
 
             //check if used slots are almost full (> 80%) when an athlete joins
-            if (cc.RoleId == 20 && ((slots.UsedSlots + 1) * 100 / slots.TotalSlots) >= 80)
+            slots.UsedSlots += 1;
+            if (cc.RoleId == 20 && (slots.UsedSlots * 100 / slots.TotalSlots) >= 80)
             {
                 _notificationService.NotifyAthletesNumberAlmostFull(cc.ClubId, slots);
             }
