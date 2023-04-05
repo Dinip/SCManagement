@@ -512,7 +512,7 @@ namespace SCManagement.Services.PaymentService
             var sub = new Subscription
             {
                 StartTime = now,
-                NextTime = now,
+                NextTime = product.Value > 0 ? DateTime.Now.Add(Subscription.AddTime(product.Frequency)).Date.Add(new TimeSpan(1, 0, 0)) : now,
                 Value = product.Value,
                 Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
@@ -530,6 +530,7 @@ namespace SCManagement.Services.PaymentService
                 ProductId = product.Id,
                 Value = product.Value,
                 CreatedAt = now,
+                PayedAt = product.Value > 0 ? null : now,
                 PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
                 UserId = userId,
                 SubscriptionId = sub.Id,
@@ -551,10 +552,17 @@ namespace SCManagement.Services.PaymentService
         /// <returns></returns>
         public async Task<Subscription?> SetSubscriptionToAuto(int subId)
         {
-            //verificar a que clube pertence o produto (no caso de evento/mensalidade) e ir buscar a api key do clube
-
             var subscription = await _context.Subscription.Include(s => s.Product).Include(s => s.User).FirstOrDefaultAsync(s => s.Id == subId);
             if (subscription == null) return null;
+
+            //if value is 0, skip easypay
+            if (subscription.Value == 0)
+            {
+                subscription.AutoRenew = true;
+                _context.Subscription.Update(subscription);
+                await _context.SaveChangesAsync();
+                return subscription;
+            }
 
             var startTime = DateTime.Now.AddMinutes(1);
             if (subscription.NextTime.Date != DateTime.Now.Date)
@@ -591,7 +599,22 @@ namespace SCManagement.Services.PaymentService
         public async Task<Subscription?> CancelAutoSubscription(int subId)
         {
             var subscription = await _context.Subscription.Include(s => s.Product).Include(s => s.User).FirstOrDefaultAsync(s => s.Id == subId);
-            if (subscription == null || string.IsNullOrEmpty(subscription.SubscriptionKey)) return null;
+            if (subscription == null) return null;
+            
+            //if value is 0, skip easypay
+            if (subscription.Value == 0)
+            {
+                subscription.AutoRenew = false;
+                subscription.SubscriptionKey = null;
+                subscription.ConfigUrl = null;
+                subscription.Status = SubscriptionStatus.Active;
+                subscription.CardInfoData = null;
+                _context.Subscription.Update(subscription);
+                await _context.SaveChangesAsync();
+                return subscription;
+            }
+
+            if (string.IsNullOrEmpty(subscription.SubscriptionKey)) return null;
 
             var success = await deleteSubscriptionId(subscription.SubscriptionKey!, subscription.Product.ClubId);
 
@@ -651,6 +674,13 @@ namespace SCManagement.Services.PaymentService
             if (!string.IsNullOrEmpty(subscription.SubscriptionKey))
             {
                 var success = await deleteSubscriptionId(subscription.SubscriptionKey!, subscription.Product.ClubId);
+                subscription.AutoRenew = false;
+                subscription.SubscriptionKey = null;
+                subscription.CardInfoData = null;
+            }
+            
+            if(subscription.Value == 0)
+            {
                 subscription.AutoRenew = false;
                 subscription.SubscriptionKey = null;
                 subscription.CardInfoData = null;
@@ -988,10 +1018,12 @@ namespace SCManagement.Services.PaymentService
 
             DateTime now = DateTime.Now;
 
+            //if price is 0, subscription status is automatically active
+            //and next time is automatically calculated to
             var sub = new Subscription
             {
                 StartTime = now,
-                NextTime = now,
+                NextTime = product.Value > 0 ? DateTime.Now.Add(Subscription.AddTime(product.Frequency)).Date.Add(new TimeSpan(1, 0, 0)) : now,
                 Value = product.Value,
                 Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
@@ -1003,11 +1035,14 @@ namespace SCManagement.Services.PaymentService
             _context.Subscription.Add(sub);
             await _context.SaveChangesAsync();
 
+            //if price is 0, payment status is automatically paid
+            //and payedAt is automatically set to now
             var pay = new Payment
             {
                 ProductId = product.Id,
                 Value = product.Value,
                 CreatedAt = now,
+                PayedAt = product.Value > 0 ? null : now,
                 PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
                 UserId = userId,
                 SubscriptionId = sub.Id,

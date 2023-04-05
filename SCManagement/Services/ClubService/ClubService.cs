@@ -754,13 +754,7 @@ namespace SCManagement.Services.ClubService
         /// <summary>
         /// Create a Address to the club
         /// </summary>
-        /// <param name="CoordinateX"></param>
-        /// <param name="CoordinateY"></param>
-        /// <param name="ZipCode"></param>
-        /// <param name="Street"></param>
-        /// <param name="City"></param>
-        /// <param name="District"></param>
-        /// <param name="Country"></param>
+        /// <param name="address"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
         public async Task<Address> CreateAddress(Address address, int clubId)
@@ -787,13 +781,7 @@ namespace SCManagement.Services.ClubService
         /// <summary>
         /// Updates the address of a given club
         /// </summary>
-        /// <param name="CoordinateX"></param>
-        /// <param name="CoordinateY"></param>
-        /// <param name="ZipCode"></param>
-        /// <param name="Street"></param>
-        /// <param name="City"></param>
-        /// <param name="District"></param>
-        /// <param name="Country"></param>
+        /// <param name="address"></param>
         /// <param name="addressId"></param>
         public async Task UpdateClubAddress(Address address, int addressId)
         {
