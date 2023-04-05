@@ -4756,11 +4756,11 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventJoinedConfirm" xml:space="preserve">
-    <value>Evento Inscrito Confirmado</value>
+    <value>Inscrição em evento confirmada</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventJoinedPayed" xml:space="preserve">
-    <value>Evento Inscrito Pago</value>
+    <value>Inscrição em evento à espera de pagamento</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventLeft" xml:space="preserve">

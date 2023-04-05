@@ -109,7 +109,7 @@ namespace SCManagement.Controllers
             if (_clubService.IsClubStaff(userRole))
             {
                 ViewBag.IsStaff = true;
-                
+
             }
             ViewBag.Enrolls = await _eventService.GetEnrolls(myEvent.Id);
             //check if user is already enrolled
@@ -331,7 +331,7 @@ namespace SCManagement.Controllers
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
 
-            ViewBag.NumberOfEnrolls = (await _eventService.GetEnrolls(myEvent.Id)).Count(); 
+            ViewBag.NumberOfEnrolls = (await _eventService.GetEnrolls(myEvent.Id)).Count();
 
             Event eventCopy = new Event
             {
@@ -406,7 +406,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
-            if (ModelState.IsValid || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate==new DateTime()))
+            if (ModelState.IsValid || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate == new DateTime()))
             {
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
@@ -421,11 +421,11 @@ namespace SCManagement.Controllers
 
                 Event eventCopy = JsonSerializer.Deserialize<Event>(myEvent.EventAux);
                 if (eventCopy == null) return View("CustomError", "Error_NotFound");
-                if (myEvent.StartDate == eventCopy.StartDate && myEvent.EndDate == eventCopy.EndDate && (myEvent.EnrollLimitDate == eventCopy.EnrollLimitDate || myEvent.EnrollLimitDate == new DateTime() ))
+                if (myEvent.StartDate == eventCopy.StartDate && myEvent.EndDate == eventCopy.EndDate && (myEvent.EnrollLimitDate == eventCopy.EnrollLimitDate || myEvent.EnrollLimitDate == new DateTime()))
                 {
-                    
+
                 }
-                else if ((myEvent.StartDate < myEvent.CreationDate ) || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate)
+                else if ((myEvent.StartDate < myEvent.CreationDate) || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate)
                 {
                     return View("CustomError", "Error_InvalidInput");
                 }
