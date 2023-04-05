@@ -2611,7 +2611,7 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
   <data name="Manage Plans" xml:space="preserve">
     <value>Gerir planos</value>
   </data>
-  <data name="Added_To_Team" xml:space="preserve">
+  <data name="Team_Added" xml:space="preserve">
     <value>Adicionado a uma Equipa</value>
     <comment>31-03-2023_notifications</comment>
   </data>
@@ -2750,11 +2750,11 @@ Desde que o site e as informações e serviços nele fornecidos sejam gratuitos,
     <value>Pagamento Recebido</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Plan_Descontinued" xml:space="preserve">
+  <data name="Plan_Discontinued" xml:space="preserve">
     <value>Plano descontinuado</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Removed_From_Team" xml:space="preserve">
+  <data name="Team_Removed" xml:space="preserve">
     <value>Removido de uma Equipa</value>
     <comment>31-03-2023_notifications</comment>
   </data>
@@ -4778,5 +4778,13 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
   <data name="Subject_SubscriptionRenewTimeAuto" xml:space="preserve">
     <value>Renovação de Subscrição Automático</value>
     <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Joined" xml:space="preserve">
+    <value>Inscrito em event</value>
+    <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="Event_Left" xml:space="preserve">
+    <value>Saiu do evento</value>
+    <comment>05-04-2023_notifications</comment>
   </data>
 </root>

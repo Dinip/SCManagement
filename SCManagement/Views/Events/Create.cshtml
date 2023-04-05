@@ -276,7 +276,7 @@
                     <div class="toast-body">
                         <strong id="alertText"></strong>
                     </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="$('.toast').hide()" aria-label="Close"></button>
                 </div>
             </div>
         </form>
@@ -293,9 +293,6 @@
 
 
 <script>
-    function closeToast(){
-        $(".toast").hide();
-    }
 
     function toggleRemoveModal() {
         $("#modal1").show();
