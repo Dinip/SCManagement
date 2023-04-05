@@ -4,47 +4,129 @@
 @{
     ViewData["Title"] = "UpdateNotificationsSettings";
 }
+<style>
 
-<h1>Notification</h1>
-<hr />
-<div class="row">
-    <form asp-action="UpdateNotificationsSettings">
-        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-        @foreach (var notifications in Model.Notifications)
-        {
-            <h5>@StringLocalizer[@notifications.Key]</h5>
-            <input type="button" onclick="toggle('@notifications.Key', true)" value="Check all">
-            <input type="button" onclick="toggle('@notifications.Key', false)" value="Uncheck all">
-            <div class="row">
-                @foreach (var notification in notifications.Value)
+    input:checked + .slider2 {
+        background-color: #00639A;
+    }
+
+    input:focus + .slider2 {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider2:before {
+        -webkit-transform: translateX(30px);
+        -ms-transform: translateX(30px);
+        transform: translateX(30px);
+    }
+
+    .slider2 {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+        .slider2:before {
+            position: absolute;
+            content: "";
+            height: 21px;
+            width: 21px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+        .slider2.round {
+            border-radius: 34px;
+        }
+
+            .slider2.round:before {
+                border-radius: 50%;
+            }
+
+</style>
+
+<div class="container">
+    <h1 class="text-to-dark" style="margin-top:130px !important;">@StringLocalizer["Notifications"]</h1>
+    <hr />
+    <div class="card shadow mt-5" style="border-radius:10px;">
+        <div class="card-body p-5" style="margin-top:0 !important">
+            <form asp-action="UpdateNotificationsSettings">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @foreach (var notifications in Model.Notifications)
                 {
-                    <div class="row @notifications.Key">
-                        @Html.Hidden($"Notifications[{notification.Id}].Id", notification.Id)
-                        @Html.Hidden($"Notifications[{notification.Id}].Type", notification.Type)
-                        @Html.Hidden($"Notifications[{notification.Id}].UserId", notification.UserId)
-                        <div class="col-md-8">
-                            @StringLocalizer[@notification.Type.ToString()]
-                        </div>
-                        <div class="col-md-4">
-                            @Html.CheckBox($"Notifications[{notification.Id}].IsEnabled", notification.IsEnabled)
+                    <div class="d-flex justify-content-between">
+                        <h3 class="col text-to-dark">@StringLocalizer[@notifications.Key]</h3>
+                        <div>
+                            <label class="switch" style="margin-right: 20px; width: 60px; height: 30px;">
+                                <input id="@notifications.Key" class="checkAll" type="checkbox" onchange="toggle('@notifications.Key')">
+                                <span class="slider2 round"></span>
+                            </label>
                         </div>
                     </div>
+                    <hr />
+                    <div class="row" style="margin-bottom:80px;">
+                        @foreach (var notification in notifications.Value)
+                        {
+                            <div class="d-flex justify-content-between @notifications.Key mt-3">
+                                @Html.Hidden($"Notifications[{notification.Id}].Id", notification.Id)
+                                @Html.Hidden($"Notifications[{notification.Id}].Type", notification.Type)
+                                @Html.Hidden($"Notifications[{notification.Id}].UserId", notification.UserId)
+                                <h5 class="text-to-dark">
+                                    @StringLocalizer[@notification.Type.ToString()]
+                                </h5>
+                                <div>
+                                    <label class="switch" style="margin-right: 20px;">
+                                        @Html.CheckBox($"Notifications[{notification.Id}].IsEnabled", notification.IsEnabled)
+                                        <span class="slider round"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                    </div>
                 }
-            </div>
-        }
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
+                <div class="form-group float-end">
+                    <input type="submit" value="Save" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; width:100px;" />
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 </div>
-
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script type="text/javascript">
 
-    function toggle(key, value) {
-        var checkboxes = document.getElementsByClassName(key);
-        for (var i = 0; i < checkboxes.length; i++) {
-            checkboxes[i].querySelector('input[type="checkbox"]').checked = value;
+    window.onload = function () {
+        let checkAll = document.getElementsByClassName("checkAll");
+        for (var i = 0; i < checkAll.length; i++) {
+            let checkboxes = document.getElementsByClassName(checkAll[i].id)
+            let checkedBoxes = 0;
+            for (var j = 0; j < checkboxes.length; j++) {
+                if (checkboxes[j].querySelector('input[type="checkbox"]').checked) {
+                    checkedBoxes++;
+                }
+            }
+            if (checkedBoxes == checkboxes.length) {
+                checkAll[i].checked = true;
+            }
         }
+    }
+
+
+    function toggle(key) {
+        let checkAll = document.getElementById(`${key}`);
+        let checkboxes = document.getElementsByClassName(key);
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].querySelector('input[type="checkbox"]').checked = checkAll.checked;
+        }
+
     }
 
 </script>

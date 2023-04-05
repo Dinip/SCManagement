@@ -57,7 +57,7 @@
                                 <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "invisible")">
                                     <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
                                     <input name="page" value="StaffList" class="form-control" hidden />
-                                    <input type="submit" value=@StringLocalizer["RemoveStaff"] class="btn btn-danger" />
+                                    <input type="submit" value=@StringLocalizer["RemoveStaff"] style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
                                 </form>
                             </td>
                         </tr>
