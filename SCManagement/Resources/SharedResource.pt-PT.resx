@@ -4803,4 +4803,16 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
     <value>Plano de treino</value>
     <comment>05-04-2023_notifications</comment>
   </data>
+  <data name="CancelEnroll" xml:space="preserve">
+    <value>Cancelar Inscrição</value>
+    <comment>05-04-2023_FixEventDetails</comment>
+  </data>
+  <data name="EnrollState" xml:space="preserve">
+    <value>Estado da Inscrição</value>
+    <comment>05-04-2023_FixEventDetails</comment>
+  </data>
+  <data name="PayEnroll" xml:space="preserve">
+    <value>Pagar Inscrição</value>
+    <comment>05-04-2023_FixEventDetails</comment>
+  </data>
 </root>

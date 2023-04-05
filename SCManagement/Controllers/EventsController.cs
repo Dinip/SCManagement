@@ -117,7 +117,8 @@ namespace SCManagement.Controllers
             if (enroll != null)
             {
                 ViewBag.IsEnrolled = true;
-                ViewBag.IsPayed = enroll.EnrollStatus == EnrollPaymentStatus.Valid;
+                ViewBag.IsPayed = (enroll.EnrollStatus == EnrollPaymentStatus.Valid || myEvent.Fee == 0);
+                ViewBag.CanUnEnroll = (myEvent.Fee == 0 || enroll.EnrollStatus == EnrollPaymentStatus.Pending);
             }
             else
             {
@@ -307,6 +308,11 @@ namespace SCManagement.Controllers
             if (myEvent == null)
             {
                 return View("CustomError", "Error_NotFound");
+            }
+
+            if (myEvent.MaxEventEnrolls == int.MaxValue)
+            {
+                myEvent.MaxEventEnrolls = 0;
             }
 
             var userRole = await _clubService.GetUserRoleInClub(getUserIdFromAuthedUser(), myEvent.ClubId);
