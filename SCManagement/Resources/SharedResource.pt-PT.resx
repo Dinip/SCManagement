@@ -3645,7 +3645,7 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
     <value>Removido de uma equipa</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Email_AthletesNumberAlmostFull" xml:space="preserve">
+  <data name="Email_AthleteSlotsAlmostFull" xml:space="preserve">
     <value>&lt;!doctype html&gt;
 &lt;html lang="pt"&gt;
 
@@ -4215,7 +4215,7 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
 &lt;/html&gt;</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Subject_AthletesNumberAlmostFull" xml:space="preserve">
+  <data name="Subject_AthleteSlotsAlmostFull" xml:space="preserve">
     <value>Número de atletas quase cheio</value>
     <comment>31-03-2023_notifications</comment>
   </data>

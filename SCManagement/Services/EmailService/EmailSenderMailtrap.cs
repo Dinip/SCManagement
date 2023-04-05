@@ -40,7 +40,7 @@ namespace SCManagement.Services.EmailService
         {
             string user = key.Split(":")[0];
             string password = key.Split(":")[1];
-            var sender = new MailKitSender(new SmtpClientOptions { Server = "localhost", Port = 1025, User = user, Password = password });
+            var sender = new MailKitSender(new SmtpClientOptions { Server = "smtp.mailtrap.io", Port = 2525, RequiresAuthentication = true, User = user, Password = password });
 
             var email = Email
             .From("noreply@scmanagement.me", "SCManagement")

@@ -222,7 +222,7 @@ namespace SCManagement.Services.ClubService
             if (!cc.Approved)
             {
                 string hostUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}";
-                string url = $"{hostUrl}/Clubs/Codes/{cc.ClubId}?approveCode={cc.Code}";
+                string url = $"{hostUrl}/MyClub/Codes/{cc.ClubId}?approveCode={cc.Code}";
                 string roleName = _context.RoleClub.Where(r => r.Id == cc.RoleId).Select(r => r.RoleName).First();
                 Dictionary<string, string> values = new Dictionary<string, string>
                 {
@@ -423,8 +423,8 @@ namespace SCManagement.Services.ClubService
             _context.CodeClub.Update(cc);
             await _context.SaveChangesAsync();
 
-            //check if used slots are almost full (> 80%)
-            if ((slots.UsedSlots * 100 / slots.TotalSlots) >= 80)
+            //check if used slots are almost full (> 80%) when an athlete joins
+            if (cc.RoleId == 20 && ((slots.UsedSlots + 1) * 100 / slots.TotalSlots) >= 80)
             {
                 _notificationService.NotifyAthletesNumberAlmostFull(cc.ClubId, slots);
             }

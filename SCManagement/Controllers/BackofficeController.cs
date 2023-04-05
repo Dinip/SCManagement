@@ -494,6 +494,9 @@ namespace SCManagement.Controllers
 
             if (plan == null) return View("CustomError", "Error_NotFound");
 
+            bool anyUsing = await _paymentService.AnySubscriptionUsingPlan(plan.Id);
+            if (anyUsing) return View("CustomError", "Error_NotFound");
+
             await _paymentService.DeleteProduct(planId);
             TempData["Message"] = _stringLocalizer["PlanDeleteSuccess"].Value.Replace("_NAME_", plan.Name);
 
