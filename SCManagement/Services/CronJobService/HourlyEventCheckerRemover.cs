@@ -39,7 +39,7 @@ namespace SCManagement.Services.CronJobService
                 .Include(p => p.Product)
                 .Where(p =>
                     p.Product.ProductType == ProductType.Event &&
-                    p.CreatedAt >= DateTime.Now.AddHours(-4) &&
+                    p.CreatedAt <= DateTime.Now.AddHours(-4) &&
                     p.PaymentStatus == PaymentStatus.Pending
                 )
                 .ToListAsync(cancellationToken);
