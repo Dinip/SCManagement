@@ -3645,7 +3645,7 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
     <value>Removido de uma equipa</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Email_AthletesNumberAlmostFull" xml:space="preserve">
+  <data name="Email_AthleteSlotsAlmostFull" xml:space="preserve">
     <value>&lt;!doctype html&gt;
 &lt;html lang="pt"&gt;
 
@@ -4215,7 +4215,7 @@ Se tiveres alguma dúvida ou precisares de mais informações, entra em contato 
 &lt;/html&gt;</value>
     <comment>31-03-2023_notifications</comment>
   </data>
-  <data name="Subject_AthletesNumberAlmostFull" xml:space="preserve">
+  <data name="Subject_AthleteSlotsAlmostFull" xml:space="preserve">
     <value>Número de atletas quase cheio</value>
     <comment>31-03-2023_notifications</comment>
   </data>
@@ -4756,11 +4756,11 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventJoinedConfirm" xml:space="preserve">
-    <value>Evento Inscrito Confirmado</value>
+    <value>Inscrição em evento confirmada</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventJoinedPayed" xml:space="preserve">
-    <value>Evento Inscrito Pago</value>
+    <value>Inscrição em evento à espera de pagamento</value>
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Subject_EventLeft" xml:space="preserve">
@@ -4802,5 +4802,17 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
   <data name="TrainingPlan" xml:space="preserve">
     <value>Plano de treino</value>
     <comment>05-04-2023_notifications</comment>
+  </data>
+  <data name="CancelEnroll" xml:space="preserve">
+    <value>Cancelar Inscrição</value>
+    <comment>05-04-2023_FixEventDetails</comment>
+  </data>
+  <data name="EnrollState" xml:space="preserve">
+    <value>Estado da Inscrição</value>
+    <comment>05-04-2023_FixEventDetails</comment>
+  </data>
+  <data name="PayEnroll" xml:space="preserve">
+    <value>Pagar Inscrição</value>
+    <comment>05-04-2023_FixEventDetails</comment>
   </data>
 </root>

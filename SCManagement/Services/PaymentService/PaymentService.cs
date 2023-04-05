@@ -1069,7 +1069,7 @@ namespace SCManagement.Services.PaymentService
             if (product == null) return;
 
             var payment = await _context.Payment
-                .Where(p => p.ProductId == product.Id && p.UserId == enroll.UserId)
+                .Where(p => p.ProductId == product.Id && p.UserId == enroll.UserId && p.PaymentStatus == PaymentStatus.Pending)
                 .FirstOrDefaultAsync();
             if (payment == null) return;
 
