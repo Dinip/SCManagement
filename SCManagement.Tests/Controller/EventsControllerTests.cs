@@ -5,7 +5,6 @@ using SCManagement.Services.EventService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.UserService;
 using FakeItEasy;
-using FakeItEasy.Creation;
 using FluentAssertions;
 using SCManagement.Controllers;
 using Microsoft.AspNetCore.Mvc;
@@ -13,6 +12,7 @@ using static SCManagement.Controllers.EventsController;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.TranslationService;
 using System.Text.Json;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Tests.Controller {
     public class EventsControllerTests {
@@ -23,6 +23,7 @@ namespace SCManagement.Tests.Controller {
         private readonly IPaymentService _paymentService;
         private readonly ITranslationService _translationService;
         private readonly EventsController _eventsController;
+        private readonly INotificationService _notificationService;
 
         public EventsControllerTests()
         {
@@ -32,9 +33,10 @@ namespace SCManagement.Tests.Controller {
             _clubService = A.Fake<IClubService>();
             _paymentService = A.Fake<IPaymentService>();
             _translationService = A.Fake<ITranslationService>();
+            _notificationService = A.Fake<INotificationService>();
 
             //SUT (system under test)
-            _eventsController = new EventsController(_eventService, _userService, _userManager, _clubService, _paymentService, _translationService);
+            _eventsController = new EventsController(_eventService, _userService, _userManager, _clubService, _paymentService, _translationService, _notificationService);
         }
 
         [Fact]
@@ -789,22 +791,89 @@ namespace SCManagement.Tests.Controller {
         public async Task EventsController_Edit_Post_ReturnsDateError()
         {
             // Arrange
+            var a = new List<EventTranslation>()
+            {
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Name",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "Olá",
+                    Language = "pt-PT",
+                    Atribute = "Details",
+                },
+                new EventTranslation
+                {
+                    EventId = 1,
+                    Value = "",
+                    Language = "en-US",
+                    Atribute = "Details",
+                }
+            };
+
             var even = new EventModel
             {
                 Id = 1,
-                StartDate = DateTime.Now.AddDays(4),
-                EndDate = DateTime.Now.AddDays(10),
-                EnrollLimitDate = DateTime.Now,
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
                 IsPublic = true,
                 Fee = 10,
+                Route = "Lisboa",
                 HaveRoute = true,
+                EventTranslationsName = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Name",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Name",
+                    }
+                },
+                EventTranslationsDetails = new List<EventTranslation>
+                {
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "Olá",
+                        Language = "pt-PT",
+                        Atribute = "Details",
+                    },
+                    new EventTranslation
+                    {
+                        EventId = 1,
+                        Value = "",
+                        Language = "en-US",
+                        Atribute = "Details",
+                    }
+                },
             };
 
             var eventAUX = new Event
             {
-                StartDate = DateTime.Now.AddDays(4),
-                EndDate = DateTime.Now.AddDays(10),
-                EnrollLimitDate = DateTime.Now,
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true
@@ -813,13 +882,14 @@ namespace SCManagement.Tests.Controller {
             even.EventAux = JsonSerializer.Serialize(eventAUX);
 
             var role = new UsersRoleClub { ClubId = 1 };
-            var e = new Event { Id = 1, ClubId = 1, };
+            var e = new Event { Id = 1, ClubId = 1, EventTranslations = a, LocationId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(e);
 
-
             // Act
+            even.EndDate = even.StartDate.AddDays(-1);
+
             var result = await _eventsController.Edit(1, even);
 
             // Assert

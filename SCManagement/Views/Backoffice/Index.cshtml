@@ -1,0 +1,125 @@
+﻿@model SCManagement.Services.StatisticsService.Models.BackofficeStats
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = @StringLocalizer["StatisticsBackoffice"];
+}
+
+<style>
+    .circle {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background-color: white;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+    .cardCircle{
+        opacity: 0;
+        animation: slideUp 1.5s ease forwards .5s;
+    }
+
+    .circle:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+    }
+
+    h1 {
+        opacity: 0;
+        animation: slideUp 1.5s ease forwards .5s;
+    }
+
+    .circle span {
+        word-wrap: break-word;
+        text-align: center;
+    }
+
+    #circle6 .icon {
+        width: 80px;
+        height: 80px;
+        margin-left: 15px;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-center w-100" style="margin-top:130px !important;">
+        <h1 class="text-to-dark">@StringLocalizer["StatisticsBackoffice"]</h1>
+    </div>
+    <hr />
+    <div class="row mt-5 w-100">
+        <div class="cardCircle col-xs-12 col-sm-12 col-md-4 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle1" title="@StringLocalizer["Circle1Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Clubs.Min<br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Clubs.Max</span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["SportsClubs"]</span>
+            </div>
+        </div>
+        <div class=" cardCircle col-xs-12 col-sm-12 col-md-4 mt-lg-0 mt-sm-3 mt-md-0 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle2" title="@StringLocalizer["Circle2Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Income.Min€ <span class="fs-6">@StringLocalizer["Month"]</span> <br> <span class="fs-6">@StringLocalizer["And"]</span> <br> @Model.Income.Max€ <span class="fs-6">@StringLocalizer["Year"]</span></span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["Income"]</span>
+            </div>
+        </div>
+        <div class="cardCircle col-xs-12 col-sm-12 col-md-4 mt-lg-0 mt-sm-3 mt-md-0 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle3" title="@StringLocalizer["Circle3Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Codes.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Codes.Max</span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["CodesCreated"]</span>
+            </div>
+        </div>
+        <div class="cardCircle col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle4" title="@StringLocalizer["Circle4Help"]">
+                <span class="text-black fw-bold fs-5 fs-sm-5" style="text-align: center"> @Model.BestSeller.Name <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.BestSeller.Value€ <span class="fs-6">@StringLocalizer["Month"]</span></span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["GreaterAdherence"]</span>
+            </div>
+        </div>
+        <div class="cardCircle col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle5" title="@StringLocalizer["Circle5Help"]">
+                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Payments.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @(Model.Payments.Min + Model.Payments.Max)</span>
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["DelayedPayments"]</span>
+            </div>
+        </div>
+        <div class="cardCircle col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
+            <div class="circle" id="circle6" title="@StringLocalizer["Circle6Help"]">
+                <img src="~/img/terms.png" alt="termsAndConditions" class="icon">
+            </div>
+            <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
+                <span>@StringLocalizer["Terms&Conditions"]</span>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#circle1").click(function () {
+            window.location.href = "/Backoffice/Clubs";
+        });
+        $("#circle2").click(function () {
+            window.location.href = "/Backoffice/Income";
+        });
+        $("#circle4").click(function () {
+            window.location.href = "/Backoffice/Subscription";
+        });
+        $("#circle5").click(function () {
+            window.location.href = "/Backoffice/DelayedPayments";
+        });
+        $("#circle6").click(function () {
+            window.location.href = "/Home/TermsAndConditions";
+        });
+    });
+</script>

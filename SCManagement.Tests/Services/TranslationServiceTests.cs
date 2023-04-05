@@ -23,6 +23,7 @@ namespace SCManagement.Tests.Services
         public TranslationServiceTests()
         {
             var config = new ConfigurationBuilder()
+            .AddJsonFile("appsettings.json", optional: true)
             .AddUserSecrets(Assembly.GetExecutingAssembly(), true)
             .Build();
 

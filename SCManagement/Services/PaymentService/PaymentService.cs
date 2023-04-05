@@ -2,7 +2,9 @@
 using Newtonsoft.Json;
 using SCManagement.Data;
 using SCManagement.Models;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService.Models;
+using SCManagement.Services.StatisticsService.Models;
 
 namespace SCManagement.Services.PaymentService
 {
@@ -10,10 +12,12 @@ namespace SCManagement.Services.PaymentService
     {
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
-        public PaymentService(ApplicationDbContext context, IConfiguration configuration)
+        private readonly INotificationService _notificationService;
+        public PaymentService(ApplicationDbContext context, IConfiguration configuration, INotificationService notificationService)
         {
             _context = context;
             _configuration = configuration;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -303,6 +307,8 @@ namespace SCManagement.Services.PaymentService
 
             payment.CardInfoData = buildCardInfo(info);
 
+            var clubIdInClubSub = 0;
+
             if (payment.SubscriptionId != null)
             {
                 var subscription = await _context.Subscription.FindAsync(payment.SubscriptionId);
@@ -310,6 +316,7 @@ namespace SCManagement.Services.PaymentService
                 {
                     subscription.Status = SubscriptionStatus.Active;
                     subscription.NextTime = DateTime.Now.Add(Subscription.AddTime(subscription.Frequency)).Date.Add(new TimeSpan(1, 0, 0));
+                    clubIdInClubSub = (int)subscription.ClubId;
                     _context.Subscription.Update(subscription);
                 }
             }
@@ -321,7 +328,7 @@ namespace SCManagement.Services.PaymentService
 
             if (payment.Product.ProductType == ProductType.ClubSubscription && payment.PaymentStatus == PaymentStatus.Paid)
             {
-                await updateClubSubStatus((int)payment.Product.ClubId, ClubStatus.Active);
+                await updateClubSubStatus(clubIdInClubSub, ClubStatus.Active);
             }
 
             if (payment.Product.ProductType == ProductType.ClubMembership && payment.PaymentStatus == PaymentStatus.Paid)
@@ -331,6 +338,7 @@ namespace SCManagement.Services.PaymentService
 
             _context.Payment.Update(payment);
             await _context.SaveChangesAsync();
+            _notificationService.NotifyPaymentReceived(payment.Id);
         }
 
         /// <summary>
@@ -345,6 +353,7 @@ namespace SCManagement.Services.PaymentService
             var enroll = await _context.EventEnroll.FirstAsync(e => e.UserId == userId && e.EventId == eventId);
             enroll.EnrollStatus = status;
             _context.EventEnroll.Update(enroll);
+            _notificationService.NotifyEventJoined(enroll, false);
         }
 
         /// <summary>
@@ -463,18 +472,24 @@ namespace SCManagement.Services.PaymentService
 
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
+            _notificationService.NotifySubscriptionRenewed(subscription.Id);
+            _notificationService.NotifyPaymentReceived(payment.Id);
         }
 
         /// <summary>
         /// Gets all available club subscription plans (enabled)
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<Product>> GetClubSubscriptionPlans()
+        public async Task<IEnumerable<Product>> GetClubSubscriptionPlans(bool? includeDisabled = false)
         {
-            return await _context.Product
-                .Where(p => p.ProductType == ProductType.ClubSubscription && p.Enabled)
-                .OrderBy(p => p.AthleteSlots)
-                .ToListAsync();
+            var query = _context.Product.Where(p => p.ProductType == ProductType.ClubSubscription);
+
+            if (includeDisabled != true)
+            {
+                query = query.Where(p => p.Enabled == true);
+            }
+
+            return await query.OrderBy(p => p.AthleteSlots).ToListAsync();
         }
 
         /// <summary>
@@ -499,7 +514,7 @@ namespace SCManagement.Services.PaymentService
                 StartTime = now,
                 NextTime = now,
                 Value = product.Value,
-                Status = SubscriptionStatus.Waiting,
+                Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
                 UserId = userId,
                 AutoRenew = false,
@@ -515,7 +530,7 @@ namespace SCManagement.Services.PaymentService
                 ProductId = product.Id,
                 Value = product.Value,
                 CreatedAt = now,
-                PaymentStatus = PaymentStatus.Pending,
+                PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
                 UserId = userId,
                 SubscriptionId = sub.Id,
                 PaymentKey = Guid.NewGuid().ToString(),
@@ -523,6 +538,8 @@ namespace SCManagement.Services.PaymentService
 
             _context.Payment.Add(pay);
             await _context.SaveChangesAsync();
+
+            _notificationService.NotifySubscriptionStarted(sub.Id);
 
             return sub;
         }
@@ -605,7 +622,8 @@ namespace SCManagement.Services.PaymentService
                         SubscriptionId = subscription.Id,
                     };
                     _context.Payment.Add(payment);
-                } else
+                }
+                else
                 {
                     oldPayment.PaymentMethod = null;
                     oldPayment.PaymentStatus = PaymentStatus.Pending;
@@ -633,12 +651,9 @@ namespace SCManagement.Services.PaymentService
             if (!string.IsNullOrEmpty(subscription.SubscriptionKey))
             {
                 var success = await deleteSubscriptionId(subscription.SubscriptionKey!, subscription.Product.ClubId);
-                if (success)
-                {
-                    subscription.AutoRenew = false;
-                    subscription.SubscriptionKey = null;
-                    subscription.CardInfoData = null;
-                }
+                subscription.AutoRenew = false;
+                subscription.SubscriptionKey = null;
+                subscription.CardInfoData = null;
             }
 
             //cancel pending payments
@@ -646,7 +661,7 @@ namespace SCManagement.Services.PaymentService
             if (payments.Any())
             {
                 payments.ForEach(p => p.PaymentStatus = PaymentStatus.Canceled);
-                _context.Update(payments);
+                _context.Payment.UpdateRange(payments);
             }
 
             subscription.Status = subscription.NextTime.Date <= DateTime.Now.Date ? SubscriptionStatus.Canceled : SubscriptionStatus.Pending_Cancel;
@@ -665,6 +680,7 @@ namespace SCManagement.Services.PaymentService
 
             _context.Subscription.Update(subscription);
             await _context.SaveChangesAsync();
+            _notificationService.NotifySubscriptionCanceled(subscription);
             return;
         }
 
@@ -959,14 +975,16 @@ namespace SCManagement.Services.PaymentService
             }
         }
 
+
         /// <summary>
         /// Creates a club membership subscription for a given user in a given club
         /// </summary>
-        /// <param name="partner"></param>
+        /// <param name="clubId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<Subscription> CreateMembershipSubscription(UsersRoleClub partner)
+        public async Task<Subscription> CreateMembershipSubscription(string userId, int clubId)
         {
-            var product = await _context.Product.FirstAsync(p => p.ProductType == ProductType.ClubMembership && p.ClubId == partner.ClubId);
+            var product = await _context.Product.FirstAsync(p => p.ProductType == ProductType.ClubMembership && p.ClubId == clubId);
 
             DateTime now = DateTime.Now;
 
@@ -977,10 +995,9 @@ namespace SCManagement.Services.PaymentService
                 Value = product.Value,
                 Status = product.Value > 0 ? SubscriptionStatus.Waiting : SubscriptionStatus.Active,
                 ProductId = product.Id,
-                UserId = partner.UserId,
+                UserId = userId,
                 AutoRenew = false,
                 Frequency = product.Frequency.Value,
-                ClubId = partner.ClubId,
             };
 
             _context.Subscription.Add(sub);
@@ -992,13 +1009,14 @@ namespace SCManagement.Services.PaymentService
                 Value = product.Value,
                 CreatedAt = now,
                 PaymentStatus = product.Value > 0 ? PaymentStatus.Pending : PaymentStatus.Paid,
-                UserId = partner.UserId,
+                UserId = userId,
                 SubscriptionId = sub.Id,
                 PaymentKey = Guid.NewGuid().ToString(),
             };
 
             _context.Payment.Add(pay);
             await _context.SaveChangesAsync();
+            _notificationService.NotifySubscriptionStarted(sub.Id);
 
             return sub;
         }
@@ -1058,10 +1076,45 @@ namespace SCManagement.Services.PaymentService
         /// </summary>
         /// <param name="planId"></param>
         /// <returns></returns>
-        public async Task<Product?> GetClubSubscriptionPlan(int planId)
+        public async Task<Product?> GetClubSubscriptionPlan(int planId, bool? includeDisabled = false)
         {
-            return await _context.Product
-                .FirstOrDefaultAsync(p => p.ProductType == ProductType.ClubSubscription && p.Enabled && p.Id == planId);
+            var query = _context.Product.Where(p => p.ProductType == ProductType.ClubSubscription && p.Id == planId);
+
+            if (includeDisabled != true)
+            {
+                query = query.Where(p => p.Enabled == true);
+            }
+
+            return await query.FirstOrDefaultAsync();
+        }
+
+
+        public async Task<Product> UpdateProduct(Product product)
+        {
+            _context.Product.Update(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<Product> CreateProduct(Product product)
+        {
+            _context.Product.Add(product);
+            await _context.SaveChangesAsync();
+            return product;
+        }
+
+        public async Task<bool> AnySubscriptionUsingPlan(int planId)
+        {
+            return await _context.Subscription.Where(s => s.ProductId == planId).AnyAsync();
+        }
+
+        public async Task DeleteProduct(int productId)
+        {
+            var product = await _context.Product.FindAsync(productId);
+            if (product == null) return;
+
+            _context.Product.Remove(product);
+            await _context.SaveChangesAsync();
         }
     }
 }

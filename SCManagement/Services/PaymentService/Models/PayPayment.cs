@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.Build.Framework;
-using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SCManagement.Services.PaymentService.Models
 {
@@ -10,6 +9,8 @@ namespace SCManagement.Services.PaymentService.Models
         public int Id { get; set; }
         [Required]
         public PaymentMethod PaymentMethod { get; set; }
+
+        [Display(Name = "Phone number")]
         public string? PhoneNumber { get; set; }
     }
 }

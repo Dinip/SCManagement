@@ -1,14 +1,17 @@
 ﻿@model SCManagement.Models.Bioimpedance
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
+@{
+    ViewData["Title"] = @StringLocalizer["UpdateBio"];
+}
 
 <div class="container">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["CreateBio"]</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["UpdateBio"]</h1>
     <hr />
     <div class="card mt-5 shadow">
         <div class="card-body text-to-dark d-flex align-items-center">
             <div class="w-100">
-                <form asp-action="CreateBioimpedance">
+                <form id="myForm" asp-action="UpdateBioimpedance">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-floating">
                         <input asp-for="Height" class="form-control"/>
@@ -21,17 +24,17 @@
                         <span asp-validation-for="Weight" class="text-danger"></span>
                     </div>
                     <div class="form-floating mt-2">
-                        <input asp-for="FatMass" type="number" step="0.01" class="form-control" />
+                        <input id="fatMass" asp-for="FatMass" type="number" step="0.01" class="form-control" />
                         <label asp-for="FatMass"></label>
                         <span asp-validation-for="FatMass" class="text-danger"></span>
                     </div>
                     <div class="form-floating mt-2">
-                        <input asp-for="LeanMass" type="number" step="0.01" class="form-control" />
+                        <input id="leanMass" asp-for="LeanMass" type="number" step="0.01" class="form-control" />
                         <label asp-for="LeanMass"></label>
                         <span asp-validation-for="LeanMass" class="text-danger"></span>
                     </div>
                     <div class="form-floating mt-2">
-                        <input asp-for="MuscleMass" type="number" step="0.01" class="form-control" />
+                        <input id="muscleMass" asp-for="MuscleMass" type="number" step="0.01" class="form-control" />
                         <label asp-for="MuscleMass"></label>
                         <span asp-validation-for="MuscleMass" class="text-danger"></span>
                     </div>
@@ -51,10 +54,8 @@
                         <span asp-validation-for="Hydration" class="text-danger"></span>
                     </div>
 
-                    <input type="hidden" asp-for="BioimpedanceId" />
-
                     <div class="form-floating mt-3 d-flex">
-                        <input type="submit" value="@StringLocalizer["Create"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
+                        <input type="submit" value="@StringLocalizer["Update"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                         <a asp-action="Index" class="btn btn-primary ms-3" style="color:white; border-radius: 10px; background-color: red; border: 1px solid black; text-decoration:none;"><strong>@StringLocalizer["Cancel"]</strong></a>
                     </div>
                 </form>
@@ -65,6 +66,41 @@
     </div>
 </div>
 
+<script>
+    window.onload = function (){
+        document.getElementById("myForm").addEventListener("submit", validateForm)
+    }
+
+    function validateForm(event){
+        //get the values from the form (leanMass, fatMass and muscleMass) and convert to float
+        var leanMass = parseFloat(document.getElementById("leanMass").value);
+        var fatMass = parseFloat(document.getElementById("fatMass").value);
+        var muscleMass = parseFloat(document.getElementById("muscleMass").value);
+        
+        //if any value is NaN set to 0
+        if (isNaN(leanMass)) {
+            leanMass = 0;
+        }
+        if (isNaN(fatMass)) {
+            fatMass = 0;
+        }
+        if (isNaN(muscleMass)) {
+            muscleMass = 0;
+        }
+        
+        //the sum of the values must be <100
+        if (leanMass + fatMass + muscleMass > 100) {
+            event.preventDefault();
+            alert("The sum of the values must be less than 100");
+            return false;
+        }
+
+        return true;
+
+
+    }
+</script>
+
 
 
 @section Scripts {
@@ -73,4 +109,3 @@
     }
 
 }
-

@@ -2,7 +2,7 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = @StringLocalizer["Edit"];
     string ShowRemoveButton() => (Model.PhotoUri != null && Model.PhotoUri.Contains("uploads")) ? "" : "d-none";
 }
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -14,9 +14,12 @@
 
 <style>
     .selected {
-        background-color: white !important;
         color: black !important;
         border: 1px solid black;
+        background: linear-gradient(to bottom, #00639A 50%, white 50%);
+        background-size: 100% 200%;
+        background-position: right bottom;
+        transition: all .5s ease-out;
     }
 
     .lang-btn-about {
@@ -35,11 +38,16 @@
         border: 1px solid black;
     }
 
+
     .translatebtn {
         color: white;
         border-radius: 2px;
         background-color: #00639A;
         border: 1px solid black;
+    }
+
+    .translatebtn:hover {
+        background-color: #013d5e;
     }
 
     #map {
@@ -91,15 +99,15 @@
         bottom: 30px !important;
     }
 
-    #save-button:hover {
-        background-color: dodgerblue;
-        border-color: dodgerblue;
-    }
+        #save-button:hover {
+            background-color: dodgerblue;
+            border-color: dodgerblue;
+        }
 
-    .toast{
-        position:absolute;
-        top:15%;
-        right:2%;
+    .toast {
+        position: absolute;
+        top: 15%;
+        right: 2%;
         border: 2px solid red;
     }
 </style>
@@ -108,6 +116,10 @@
 <div class="container-fluid row justify-content-evenly">
     <div id="card1" class="col-md-3 col-8 card-to-dark card mt-5" style="height:fit-content">
         <div class="card-body pt-5 p-3 d-flex align-content-center justify-content-center">
+            @if (ViewBag.ImageError != null)
+            {
+                <p>@ViewBag.ImageError</p>
+            }
             <div style="text-align:center; height:fit-content;">
                 <img id="profilePicture"
                      src="@Model.PhotoUri"
@@ -118,9 +130,9 @@
                        type="button"
                        style="color:red"
                        class="@ShowRemoveButton() align-self-end fa-solid fa-trash fa-2xl mb-3 col"
-                       onclick="removePhoto()" 
+                       onclick="removePhoto()"
                        title=@StringLocalizer["RemovePhoto"]>
-                        
+
                     </i>
                     <i class="fa-solid fa-2xl fa-pen-to-square ms-4 col text-to-dark" onclick="document.getElementById('selectedFile').click()" style="cursor:pointer;" title=@StringLocalizer["ChangePhoto"]></i>
                 </div>
@@ -142,14 +154,14 @@
                 <hr style="margin-bottom:20px;" />
                 <div class="About">
                     <label class="control-label text-to-dark">@StringLocalizer["About Us"]</label>
-                    <div class="language-select">
+                    <div class="language-select d-flex">
 
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
                             <input type="button" class="lang-btn lang-btn-about" id="btn-about-@lang.Name" onclick="toggleLang('@lang.Name','about')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
 
                         }
-                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('about')" value="translate" />
+                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('about')" value="@StringLocalizer["Translate"]" />
 
                     </div>
                     <div style="margin-left:11px; z-index:0;">
@@ -161,12 +173,12 @@
                 <hr style="margin-bottom:20px;" />
                 <div class="TermsAndConditions">
                     <label class="control-label text-to-dark">@StringLocalizer["Terms and conditions"]</label>
-                    <div class="language-select">
+                    <div class="language-select d-flex">
                         @foreach (CultureInfo lang in ViewBag.Languages)
                         {
                             <input type="button" class="lang-btn lang-btn-termsandconditions" id="btn-termsandconditions-@lang.Name" onclick="toggleLang('@lang.Name','termsandconditions')" data-lang="@lang.Name" value=@lang.TwoLetterISOLanguageName.ToUpper()>
                         }
-                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('termsandconditions')" value="translate" />
+                        <input type="button" class="lang-btn translatebtn" onclick="translateFn('termsandconditions')" value="@StringLocalizer["Translate"]" />
 
                     </div>
                     <div style="margin-left:11px;">
@@ -201,7 +213,7 @@
                 }
                 else
                 {
-                     <span class="text-to-dark">@StringLocalizer["No address saved"]</span>
+                    <span class="text-to-dark">@StringLocalizer["No address saved"]</span>
                 }
                 <i class="fa-solid fa-lg fa-pen-to-square text-to-dark ms-3" onclick="openDetails()" style="cursor:pointer;"></i>
                 <br />
@@ -249,11 +261,11 @@
                                     <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
                                     <label for="streets-v12">@StringLocalizer["ViewStreets"]</label>
                                 </div>
-                                    <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
-                                
+                                <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
+
                             </div>
                         </div>
-                        <input type="hidden" disabled id="tradPlaceholder" value="@StringLocalizer["PlaceholderAddress"].Value.ToString()"/>
+                        <input type="hidden" disabled id="tradPlaceholder" value="@StringLocalizer["PlaceholderAddress"].Value.ToString()" />
                         <script src="~/js/SearchMapBox.js" asp-append-version="true"></script>
                     </div>
                 </div>
@@ -272,7 +284,7 @@
         map.resize();
     }
 
-    function closeToast(){
+    function closeToast() {
         $(".toast").hide();
     }
 

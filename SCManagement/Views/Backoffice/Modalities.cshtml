@@ -1,0 +1,67 @@
+﻿@model IEnumerable<SCManagement.Models.Modality>
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = @StringLocalizer["Modalities"];
+}
+
+<div class="container-fluid ps-5 pe-5">
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Modalities"]</h1>
+    <hr />
+    <div class="card mt-5 shadow" style="min-height:fit-content !important; border-radius:20px;">
+        <div class="card-body">
+            <p>
+                <a asp-action="CreateModality" class="btn" style="color: white;
+                                                background-color: #00639A;
+                                                border-radius: 10px;
+                                                border-color: #00639A;">Create New</a>
+            </p>
+            @if (ViewBag.Success != null)
+            {
+                <div style="color: green">@StringLocalizer[ViewBag.Success]</div>
+            }
+            <table id="table-modalities" class="display" style="width:100%!important;">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        @foreach (var culture in ViewBag.Cultures)
+                        {
+                            <th class="text-to-dark">@culture</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-to-dark">
+                                @item.Id
+                            </td>
+                            @foreach (var translations in item.ModalityTranslations)
+                            {
+                                <td class="text-to-dark">@translations.Value</td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/DataTables-1.13.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
+<script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $.noConflict();
+        $("#table-modalities").DataTable({
+            responsive: true,
+            order: [],
+            columnDefs: [
+                { orderable: false }
+            ]
+        });
+        setTheme(localStorage.getItem("theme") || "light")
+    });
+</script>

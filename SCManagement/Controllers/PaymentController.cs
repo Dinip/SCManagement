@@ -91,6 +91,15 @@ namespace SCManagement.Controllers
             var payment = await _paymentService.GetPayment((int)id);
             if (payment == null || payment.UserId != getUserIdFromAuthedUser()) return PartialView("_CustomErrorPartial", "Error_NotFound");
 
+            ViewBag.AutoRenew = false;
+
+            if (payment.SubscriptionId != null)
+            {
+                var sub = await _paymentService.GetSubscription((int)payment.SubscriptionId);
+                ViewBag.AutoRenew = sub?.AutoRenew ?? false;
+                ViewBag.ClubName = sub?.Club?.Name ?? "";
+            }
+
             ViewBag.PaymentMethods = from PaymentMethod pm in Enum.GetValues(typeof(PaymentMethod)) select new IdNameModel { Id = (int)pm, Name = pm.ToString() };
 
             return PartialView("_DetailsPartial", payment);

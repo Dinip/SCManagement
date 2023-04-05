@@ -22,7 +22,10 @@
                         <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title=@StringLocalizer["Profile"]>@user?.FullName</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
-                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="Settings">@StringLocalizer["Settings"]</a>
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="User" asp-action="UpdateNotificationsSettings">@StringLocalizer["NotificationsSettings"]</a>
+                    </li>
+                    <li class="dropdown-item" style="padding: 5px;">
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="TermsAndConditions">@StringLocalizer["Terms&Conditions"]</a>
                     </li>
                     <li class="dropdown-item" style="padding: 5px;">
                         <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Payment" asp-action="Index">@StringLocalizer["Wallet"]</a>
@@ -35,7 +38,7 @@
                             <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg col text-to-dark"></i>
                         </div>
                         <div class="col-6">
-                            <label class="text-to-dark col" style="font-size: 0.8vw;">@StringLocalizer["Dark mode"]</label>
+                            <label class="text-to-dark col" style="font-size: 100%;">@StringLocalizer["Dark mode"]</label>
                         </div>
                         <div class="col-4" style="text-align:right">
                             <label class="switch">
@@ -44,8 +47,7 @@
                             </label>
                         </div>
                     </li>
-                    <li class="text-to-dark" style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
-                    <li class="dropdown-item" style="padding: 5px;">
+                    <li style="padding: 5px;">
                         @await Component.InvokeAsync("UserClubContext")
                     </li>
                     <li class="row" style="padding: 5px;">
@@ -89,6 +91,9 @@
                             <span >@await Component.InvokeAsync("CulturePicker")</span>
                         </div>
                         
+                    </li>
+                    <li class="dropdown-item" style="padding: 5px;">
+                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="TermsAndConditions">@StringLocalizer["Terms&Conditions"]</a>
                     </li>
                 </ul>
             </div>

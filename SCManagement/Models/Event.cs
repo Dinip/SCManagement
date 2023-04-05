@@ -22,6 +22,7 @@ namespace SCManagement.Models
         public bool IsPublic { get; set; }
 
         [Display(Name = "Fee")]
+        [Range(0, float.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
         public float Fee { get; set; }
 
         public int? LocationId { get; set; }
@@ -48,6 +49,7 @@ namespace SCManagement.Models
         [Display(Name = "Sponsor")]
         public Club? Club { get; set; }
 
+        [Display(Name = "Event Result Type")]
         public ResultType EventResultType { get; set; }
 
         public ICollection<EventResult>? Results { get; set; }
@@ -59,8 +61,11 @@ namespace SCManagement.Models
 
     public enum ResultType : int
     {
+        [Display(Name = "ResultTime")]
         Time = 1,
+        [Display(Name = "ResultPosition")]
         Position = 2,
+        [Display(Name = "ResultScore")]
         Score = 3
     }
 }

@@ -2,6 +2,7 @@
 using SCManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Services.CronJobService
 {
@@ -48,12 +49,18 @@ namespace SCManagement.Services.CronJobService
             {
                 pay.PaymentStatus = PaymentStatus.Canceled;
                 _context.Payment.Update(pay);
-                //TODO
+
                 //notification service notify user that
                 //was removed from event
+
                 var enroll = await _context.EventEnroll
                     .FirstOrDefaultAsync(f => f.UserId == pay.UserId && f.EventId == pay.Product.OriginalId);
-                if (enroll != null) _context.EventEnroll.Remove(enroll);
+                if (enroll != null)
+                {
+                    _context.EventEnroll.Remove(enroll);
+                    var _notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+                    _notificationService.NotifyEventLeft(enroll, true);
+                }
             }
             await _context.SaveChangesAsync(cancellationToken);
 

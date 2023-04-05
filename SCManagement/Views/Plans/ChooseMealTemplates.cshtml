@@ -1,9 +1,14 @@
 ﻿@model SCManagement.Controllers.PlansController.ChooseMealTemplate
 @inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = @StringLocalizer["MealPlanTemplates"];
+}
+
 <div class="container-fluid ps-5 pe-5">
-    <h1 style="margin-top:130px !important;" class="text-to-dark">Meal Plan Templates</h1>
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["MealPlanTemplates"]</h1>
     <hr />
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
             <table id="table_id" class="display">
                 <thead>
@@ -62,7 +67,24 @@
             responsive: true,
             columnDefs: [
                 { orderable: false, targets: [-1] }
-            ]
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
+        setTheme(localStorage.getItem("theme") || "light")
     });
 </script>

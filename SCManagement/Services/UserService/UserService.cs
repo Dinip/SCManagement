@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using MimeKit.Encodings;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
+using static SCManagement.Models.Notification;
 
 namespace SCManagement.Services.UserService
 {
@@ -11,14 +13,17 @@ namespace SCManagement.Services.UserService
         private readonly ApplicationDbContext _context;
         private readonly SignInManager<User> _signInManager;
         private readonly IAzureStorage _azureStorage;
+        private readonly UserManager<User> _userManager;
 
         public UserService(ApplicationDbContext context,
             SignInManager<User> signInManager,
-            IAzureStorage azureStorage)
+            IAzureStorage azureStorage,
+            UserManager<User> userManager)
         {
             _context = context;
             _signInManager = signInManager;
             _azureStorage = azureStorage;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -59,6 +64,13 @@ namespace SCManagement.Services.UserService
                 .FirstOrDefaultAsync(u => u.Id == userId);
         }
 
+        public async Task<User?> GetUserWithNotifications(string userId)
+        {
+            return await _context.Users
+                .Include(u => u.Notifications)
+                .FirstOrDefaultAsync(u => u.Id == userId);
+        }
+
         /// <summary>
         /// Updates the default tuple (club + role) for the given user
         /// </summary>
@@ -74,6 +86,12 @@ namespace SCManagement.Services.UserService
                 item.Selected = item.Id == usersRoleClubId;
                 _context.Update(item);
             }
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateNotifications(ICollection<Notification> notifications)
+        {
+            _context.Notifications.UpdateRange(notifications);
             await _context.SaveChangesAsync();
         }
 
@@ -97,7 +115,7 @@ namespace SCManagement.Services.UserService
         {
             return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 20);
         }
-        
+
         public async Task<Bioimpedance> CreateBioimpedance(Bioimpedance bioimpedance)
         {
             _context.Bioimpedance.Add(bioimpedance);
@@ -105,11 +123,15 @@ namespace SCManagement.Services.UserService
             return bioimpedance;
         }
         
-        public async Task<Bioimpedance> GetBioimpedance(string userId)
+        public async Task<IEnumerable<Bioimpedance>> GetBioimpedances(string userId)
         {
-            return await _context.Bioimpedance.FirstOrDefaultAsync(b => b.BioimpedanceId == userId);
+            return await _context.Bioimpedance.Where(b => b.UserId == userId).OrderByDescending(d => d.LastUpdateDate).Take(10).ToListAsync();
         }
 
+        public async Task<Bioimpedance> GetLastBioimpedance(string userId)
+        {
+            return await _context.Bioimpedance.Where(b => b.UserId == userId).OrderByDescending(d => d.LastUpdateDate).FirstOrDefaultAsync();
+        }
 
         public async Task<Bioimpedance> UpdateBioimpedance(Bioimpedance bioimpedance)
         {
@@ -123,6 +145,7 @@ namespace SCManagement.Services.UserService
         {
             return await _context.Users.Include(u => u.EMD).FirstOrDefaultAsync(u => u.Id == userId);
         }
+        
         public async Task CheckAndDeleteEMD(User user)
         {
             if (user.EMD != null)
@@ -146,5 +169,65 @@ namespace SCManagement.Services.UserService
             return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && u.RoleId == 30);
         }
 
+        /// <summary>
+        /// Checks if the given user is a staff in any club
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        public Task<bool> IsStaffInAnyClub(string userId)
+        {
+            return _context.UsersRoleClub.AnyAsync(u => u.UserId == userId && (u.RoleId == 30 || u.RoleId == 40 || u.RoleId == 50));
+        }
+
+
+        public async Task<ICollection<User>> GetAllUsers()
+        {
+            var admins = (await _userManager.GetUsersInRoleAsync("Administrator"))
+                .Select(u => new User
+                {
+                    Id = u.Id,
+                }).ToList();
+
+            var users = await _context
+                .Users
+                .Select(u => new User
+                {
+                    Id = u.Id,
+                    FirstName = u.FirstName,
+                    LastName = u.LastName,
+                    Email = u.Email,
+                })
+                .OrderBy(u => u.Id)
+                .ToListAsync();
+
+            users.ForEach(user =>
+            {
+                int index = admins.FindIndex(a => a.Id == user.Id);
+                if (index != -1)
+                {
+                    user.IsAdmin = true;
+                }
+            });
+
+            return users;
+        }
+
+        public async Task<bool> UserIsAdmin(string userId)
+        {
+            return (await _userManager.GetUsersInRoleAsync("Administrator")).Any(u => u.Id == userId);
+        }
+
+        public async Task<bool> ChangeSystemUserRole(string userId, string newRole)
+        {
+            string roleToRemove = newRole == "Administrator" ? "Regular" : "Administrator";
+            var user = await _context.Users.FindAsync(userId);
+            if (user == null) return false;
+
+            var rem = await _userManager.RemoveFromRoleAsync(user, roleToRemove);
+            var add = await _userManager.AddToRoleAsync(user, newRole);
+
+            if (rem.Succeeded && add.Succeeded) return true;
+            return false;
+        }
     }
 }

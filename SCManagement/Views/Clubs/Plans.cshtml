@@ -2,36 +2,41 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "Club Plans";
+    ViewData["Title"] = @StringLocalizer["Club Plans"];
 }
 
 <style>
-
-    .card {
-        height: 55vh;
-        width: 15vw;
+    .flip-card {
+        width: 100% !important;
+        height: 100% !important;
+        perspective: 1000px;
+        border-radius: 20px;
+        opacity: 0;
+        animation: slideUp 1.5s ease forwards .5s;
     }
 
-    .card:hover {
-        height:60vh;
-        width: 17vw;
+    #title {
+        opacity: 0;
+        animation: slideUp 1.5s ease forwards .5s;
     }
 
-    @@media only screen and (max-width:786px){
-        .card {
-            height: 55vh;
-            width: 80vw;
+    .flip-card-inner {
+        padding: 30px;
+        width: 100% !important;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        height: 100% !important;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        border-radius: 20px;
+    }
+
+        .flip-card-inner:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
         }
-
-            .card:hover {
-                height: 55vh;
-                width: 80vw;
-            }
-
-            #info{
-                margin-top: 0 !important;
-            }
-    }
 
     .selectbtn {
         border-radius: 10px;
@@ -39,31 +44,51 @@
         border-color: #00639A;
     }
 
+    @@media only screen and (max-width: 600px) {
+        #info{
+            margin-top:0 !important;
+        }
+
+        #info > h2{
+            margin-bottom:10px !important;
+        }
+
+        #info > h2 + p {
+            margin-bottom: 10px !important;
+        }
+
+        #info > h1 {
+            margin-bottom: 10px !important;
+        }
+
+    }
+
 </style>
 
-<div class="container" style="min-height:100vh !important;">
-    <div class="d-md-flex align-items-center justify-content-evenly" style="min-height:80vh !important;">
+<div class="container w-100 h-100">
+    <div id="title" class="text-center" style="margin-top:150px;">
+        <h1 class="text-to-dark">@StringLocalizer["SubscriptionPlans"]</h1>
+    </div>
+    <div class="row d-flex justify-content-center text-center h-100" style="margin-top:3%;">
         @foreach (var product in Model)
         {
-            <div class="card col-2 m-4 mt-5 shadow">
-                <div class="card-body">
-                    <div class="d-flex align-items-center justify-content-center">
-                        <div id="info" style="margin-top:30%;">
-                            <h2 class="mb-5 text-to-dark" style="text-align:center">@product.Name</h2>
-                            <p class="mb-5 text-to-dark" style="text-align:center"> @product.AthleteSlots @Html.DisplayNameFor(p=>p.AthleteSlots)</p>
-                            <h1 class="mb-5 text-to-dark" style="text-align:center">@product.Value€</h1>
-                            <p class="mb-5 text-to-dark" style="text-align:center">/@StringLocalizer[product.Frequency.ToString()]</p>
+            <div class="cardBtn col-6 col-sm-6 col-md-6 col-lg-3 mt-4 d-flex justify-content-center">
+                <div class="flip-card">
+                    <div class="flip-card-inner card-body">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div id="info" style="margin-top:30%;">
+                                <h2 class="mb-5" style="text-align:center">@product.Name</h2>
+                                <p class="mb-5" style="text-align:center"> @product.AthleteSlots @Html.DisplayNameFor(p=>p.AthleteSlots)</p>
+                                <h1 class="mb-5" style="text-align:center">@product.Value€</h1>
+                                <p class="mb-5" style="text-align:center">/@StringLocalizer[product.Frequency.ToString()]</p>
+                            </div>
+                        </div>
+                        <div style="position:absolute; bottom:20px !important; width:90%;">
+                            <a class="btn btn-primary col-12 selectbtn" href="/Clubs/Create?planId=@product.Id">@StringLocalizer["Select and create club"]</a>
                         </div>
                     </div>
-
-                    
-                    <div style="position:absolute; bottom:20px !important; width:90%;">
-                        <a class="btn btn-primary col-12 selectbtn" href="/Clubs/Create?planId=@product.Id">@StringLocalizer["Select and create club"]</a>
-                    </div>
                 </div>
-
             </div>
         }
     </div>
-    
 </div>

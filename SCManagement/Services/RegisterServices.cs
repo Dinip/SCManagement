@@ -16,6 +16,8 @@ using SCManagement.Services.TranslationService;
 using SCManagement.Services.CronJobService;
 using SCManagement.Services.StatisticsService;
 using SCManagement.Services.PlansService;
+using SCManagement.Services.NotificationService;
+using SCManagement.Services.BackgroundService;
 
 namespace SCManagement.Services
 {
@@ -47,6 +49,12 @@ namespace SCManagement.Services
               .AddErrorDescriber<LocalizedIdentityErrorDescriber>()
               .AddEntityFrameworkStores<ApplicationDbContext>()
               .AddDefaultTokenProviders();
+
+            //Validate login every 1 minute (to update roles)
+            services.Configure<SecurityStampValidatorOptions>(options =>
+            {
+                options.ValidationInterval = TimeSpan.FromMinutes(1);
+            });
 
             #region add support for localization
             services.AddLocalization(options => options.ResourcesPath = "Resources");
@@ -138,9 +146,15 @@ namespace SCManagement.Services
             services.AddTransient<IEventService, SCManagement.Services.EventService.EventService>();
             services.AddTransient<ITranslationService, SCManagement.Services.TranslationService.TranslationService>();
             services.AddTransient<IPlanService, SCManagement.Services.PlansService.PlanService>();
-            services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();         
-            services.AddScoped<ApplicationContextService, ApplicationContextService>();
+            services.AddTransient<IStatisticsService, SCManagement.Services.StatisticsService.StatisticsService>();
+            services.AddScoped<ApplicationContextService>();
             services.AddScoped<ClubMiddleware>();
+            services.AddSingleton<BackgroundWorkerService>();
+            services.AddHostedService<BackgroundWorkerService>(provider =>
+                provider.GetService<BackgroundWorkerService>()
+            );
+            services.AddTransient<INotificationService, SCManagement.Services.NotificationService.NotificationService>();
+            services.AddTransient<IBackgroundHelperService, BackgroundHelperService>();
             #endregion
 
             #region cronjobs

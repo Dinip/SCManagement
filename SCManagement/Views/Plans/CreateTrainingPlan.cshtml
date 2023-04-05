@@ -1,9 +1,8 @@
-﻿@model SCManagement.Services.PlansService.Models.TrainingPlan
+﻿@model SCManagement.Controllers.PlansController.CreateTrainingPlanModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "CreateTrainingPlan";
-    var val = ViewBag.Apply;
+    ViewData["Title"] = @StringLocalizer["Create Training Plan"];
 }
 
 <div class="container ps-5 pe-5">
@@ -17,11 +16,6 @@
                     <input type="hidden" asp-for="TrainerId" />
                     <input type="hidden" asp-for="AthleteId" />
                     <input type="hidden" asp-for="IsTemplate" />
-
-                    @if (ViewBag.IsTeam)
-                    {
-                        <input type="hidden" name="teamId" value="@(ViewBag.TeamId)" />
-                    }
 
                     @if (!ViewBag.Apply)
                     {
@@ -42,19 +36,17 @@
                         <input type="hidden" asp-for="Name" />
                     }
             
-                    @if (!ViewBag.IsTemplate || ViewBag.Apply)
-                    {
-                        <div class="form-floating mt-3">
-                            <input required asp-for="StartDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
-                            <label asp-for="StartDate" class="control-label"></label>
-                            <span asp-validation-for="StartDate" class="text-danger"></span>
-                        </div>
-                        <div class="form-floating mt-3">
-                            <input required asp-for="EndDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
-                            <label asp-for="EndDate" class="control-label"></label>
-                            <span asp-validation-for="EndDate" class="text-danger"></span>
-                        </div>
-                    }
+                    <div class="form-floating mt-3">
+                        <input required asp-for="StartDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                        <label asp-for="StartDate" class="control-label"></label>
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+                    <div class="form-floating mt-3">
+                        <input required asp-for="EndDate" min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(100).ToString("yyyy-MM-dd")" class="form-control" />
+                        <label asp-for="EndDate" class="control-label"></label>
+                        <span asp-validation-for="EndDate" class="text-danger"></span>
+                    </div>
+                    
             
                     @if (!ViewBag.Apply)
                     {
@@ -77,7 +69,7 @@
                             <button type="submit" name="action" value="Add sessions" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Add Sessions"]</button>
                         </div>
                         <div class="ms-2">
-                            <a asp-action="Templates" asp-controller="Plans" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Cancel"]</a>
+                            <a asp-action="TrainingZone" asp-controller="MyClub" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">@StringLocalizer["Cancel"]</a>
                         </div>
                         @if (ViewBag.Apply)
                         {

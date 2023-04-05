@@ -18,6 +18,9 @@ using SCManagement.Services;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.PlansService;
 using SCManagement.Services.PlansService.Models;
+using FluentEmail.Core;
+using SCManagement.Data.Migrations;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Controllers
 {
@@ -39,6 +42,7 @@ namespace SCManagement.Controllers
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
         private readonly IAzureStorage _azureStorage;
+        
 
         /// <summary>
         /// This is the constructor of the MyClub Controller
@@ -60,7 +64,8 @@ namespace SCManagement.Controllers
             ApplicationContextService applicationContextService,
             IStringLocalizer<SharedResource> stringLocalizer,
             IAzureStorage azureStorage,
-            IPlanService planService)
+            IPlanService planService
+            )
         {
             _userManager = userManager;
             _clubService = clubService;
@@ -130,7 +135,7 @@ namespace SCManagement.Controllers
             List<int> ClubModalitiesIds = club.Modalities!.Select(m => m.Id).ToList();
 
             //viewbag that have the modalities of the club
-            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", ClubModalitiesIds);
+            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalitiesToSelectList(), "Id", "Name", ClubModalitiesIds);
 
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
@@ -171,7 +176,7 @@ namespace SCManagement.Controllers
         {
             //check model state
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
-            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalities(), "Id", "Name", club.ModalitiesIds);
+            ViewBag.Modalities = new MultiSelectList(await _clubService.GetModalitiesToSelectList(), "Id", "Name", club.ModalitiesIds);
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             if (!ModelState.IsValid) return View(club);
 
@@ -230,9 +235,15 @@ namespace SCManagement.Controllers
             }
 
             //update photo
-            await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
+            var result = await _clubService.UpdateClubPhoto(actualClub, club.RemoveImage, club.File);
+            if (!string.IsNullOrEmpty(result))
+            {
+                ViewBag.ImageError = result;
+                return View(club);
+            }
 
             await _clubService.UpdateClub(actualClub);
+            await _paymentService.UpdateProductClubMembership(actualClub.ClubPaymentSettings);
 
             return RedirectToAction(nameof(Index));
         }
@@ -360,6 +371,35 @@ namespace SCManagement.Controllers
             //prevent users that arent club admin from removing club secretary (or higher)
             if (userRoleToBeRomoved.RoleId >= 40 && role.RoleId < 50) return View("CustomError", "Error_Unauthorized");
 
+            //Check if the user is trainer and if so, transfer all teams to admin
+            if(userRoleToBeRomoved.RoleId == 30 || userRoleToBeRomoved.RoleId == 40)
+            {
+                var adminRole = await _clubService.GetAdminRole(userRoleToBeRomoved.ClubId);
+                await _teamService.TransferOwnerOfAllTeams(userRoleToBeRomoved.UserId, adminRole.UserId);
+                //var teams = await _teamService.GetTeamsByTrainer(userRoleToBeRomoved.UserId);
+
+                //if (teams != null && teams.Any())
+                //{
+                //    
+
+                //    _teamService.TransferOwnerOfAllTeams(userRoleToBeRomoved.UserId, adminRole.UserId));
+                //}
+            }
+
+            //Check if the user is athlete and if so, remove all the athlete data (All teams of this club)
+            if (userRoleToBeRomoved.RoleId == 20)
+            {
+                var teams = await _teamService.GetTeamsByAthlete(userRoleToBeRomoved.UserId, userRoleToBeRomoved.ClubId);
+
+                if (teams != null && teams.Any())
+                {
+                    var user = await _userService.GetUser(userRoleToBeRomoved.UserId);
+
+                    var tasks = teams.Select(team => _teamService.RemoveAthlete(team, user));
+                    await Task.WhenAll(tasks);
+                }
+            }
+            
             //remove a user(role) from a club
             await _clubService.RemoveClubUser(userRoleToBeRomoved.Id);
 
@@ -394,7 +434,10 @@ namespace SCManagement.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCode([Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
         {
-            if (!ModelState.IsValid || codeClub.ExpireDate.Date < DateTime.Now) return RedirectToAction("Codes");
+            if (!ModelState.IsValid || codeClub.ExpireDate.Date < DateTime.Now.Date) return RedirectToAction("Codes");
+            
+            var validRoles = await _clubService.GetRoles(); //excludes partners and club admin
+            if (!validRoles.Any(r => r.Id == codeClub.RoleId)) return RedirectToAction("Codes");
 
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
@@ -531,8 +574,7 @@ namespace SCManagement.Controllers
             {
                 return View("CustomError", "Error_Unauthorized");
             }
-
-            ViewBag.Modalities = new SelectList(_clubService.GetClub(role.ClubId).Result.Modalities, "Id", "Name");
+            ViewBag.Modalities = new SelectList(await _clubService.GetClubModalities(role.ClubId), "Id", "Name");
 
             return View();
         }
@@ -614,7 +656,21 @@ namespace SCManagement.Controllers
             if (team == null) return View("CustomError", "Error_NotFound");
 
             //check role
-            if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubStaff(role) || team.ClubId != role.ClubId || (team.TrainerId != role.UserId && !_clubService.IsClubManager(role))) return View("CustomError", "Error_Unauthorized");
+
+            //check role Trainer
+            //if its trainer will use userId
+            if (_clubService.IsClubTrainer(role))
+            {
+                ViewBag.IsManager = false;
+            }
+
+            //if its admin will send trainers IDs to selectList
+            else if (_clubService.IsClubManager(role))
+            {
+                ViewBag.IsManager = true;
+                ViewBag.ClubTrainers = new SelectList(await _clubService.GetClubStaff(role.ClubId), "UserId", "User.FullName");
+            }
 
             //get the club
             var club = await _clubService.GetClub(role.ClubId);
@@ -655,10 +711,11 @@ namespace SCManagement.Controllers
 
 
             //Check if team have modification
-            if (teamToUpdate.Name == team.Name && teamToUpdate.ModalityId == team.ModalityId) return RedirectToAction(nameof(TeamList));
+            if (teamToUpdate.Name == team.Name && teamToUpdate.ModalityId == team.ModalityId && teamToUpdate.TrainerId == team.TrainerId) return RedirectToAction(nameof(TeamList));
 
             teamToUpdate.Name = team.Name;
             teamToUpdate.ModalityId = team.ModalityId;
+            teamToUpdate.TrainerId = team.TrainerId;
 
             //Update Team On DataBase
             await _teamService.UpdateTeam(teamToUpdate);
@@ -697,6 +754,7 @@ namespace SCManagement.Controllers
 
             return PartialView("_PartialAddTeamAthletes", avaliableAthletes);
         }
+
 
         /// <summary>
         /// Adds an athlete to a team (post)
@@ -820,7 +878,7 @@ namespace SCManagement.Controllers
             //Check if is athlete
             if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
 
-            var teams = await _teamService.GetTeamsByAthlete(_applicationContextService.UserId, role.ClubId);
+            var teams = await _teamService.GetTeamsByAthlete(_applicationContextService.UserId);
 
             return View(teams);
         }
@@ -849,6 +907,26 @@ namespace SCManagement.Controllers
 
             var userRole = await _clubService.GetUserRoleInClub(user.Id, role.ClubId);
             if (userRole.RoleId > role.RoleId) return PartialView("_CustomErrorPartial", "Error_Unauthorized");
+
+            var bio = await _userService.GetLastBioimpedance(user.Id);
+
+            if (bio != null)
+            {
+                ViewBag.HaveBio = true;
+                ViewBag.Weight = bio.Weight == null ? "" : bio.Weight;
+                ViewBag.Height = bio.Height == null ? "" : bio.Height;
+                ViewBag.Hydration = bio.Hydration == null ? "" : bio.Hydration.ToString();
+                ViewBag.FatMass = bio.FatMass == null ? "" : bio.FatMass.ToString();
+                ViewBag.LeanMass = bio.LeanMass == null ? "" : bio.LeanMass.ToString();
+                ViewBag.MuscleMass = bio.MuscleMass == null ? "" : bio.MuscleMass.ToString();
+                ViewBag.BasalMetabolism = bio.BasalMetabolism == null ? "" : bio.BasalMetabolism.ToString();
+                ViewBag.ViceralFat = bio.ViceralFat == null ? "" : bio.ViceralFat.ToString();
+                ViewBag.LastUpdateDate = bio.LastUpdateDate;
+            }
+            else
+                ViewBag.HaveBio = false;
+
+
 
             return PartialView("_PartialUserDetails", user);
         }
@@ -895,7 +973,7 @@ namespace SCManagement.Controllers
             var updated = await _clubService.UpdateClubPaymentSettings(paymentSettings);
             await _paymentService.UpdateProductClubMembership(updated);
 
-            return View(updated);
+            return RedirectToAction(nameof(PaymentSettings));
         }
 
         public async Task<IActionResult> PaymentsRecieved()
@@ -911,155 +989,10 @@ namespace SCManagement.Controllers
             return View(payments);
         }
 
-        public async Task<IActionResult> MyZone()
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-
-            var bio = await _userService.GetBioimpedance(role.UserId);
-
-            var EMDUrl = await PrepareUserEMD(role.UserId);
-
-            var myTeams = await _teamService.GetTeamsByAthlete(role.UserId, role.ClubId);
-
-            var myTrainingPlans = await _planService.GetMyTrainingPlans(role.UserId);
-            var myMealPlans = await _planService.GetMyMealPlans(role.UserId);
-
-            var myModel = new MyZoneModel
-            {
-                UserId = role.UserId,
-                EMDUrl = EMDUrl,
-                Bioimpedance = bio,
-                Teams = myTeams,
-                TrainingPlans = myTrainingPlans,
-                MealPlans = myMealPlans
-            };
-
-            return View(myModel);
-        }
-
-        public async Task<IActionResult> CreateBioimpedance()
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-            var bio = await _userService.GetBioimpedance(role.UserId);
-            if (bio != null) return RedirectToAction(nameof(UpdateBioimpedance));
-
-            return View(new Bioimpedance { BioimpedanceId = role.UserId });
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateBioimpedance([Bind("BioimpedanceId,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] Bioimpedance bioimpedance)
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-
-            if (!ModelState.IsValid) return View(bioimpedance);
-
-            bioimpedance.BioimpedanceId = role.UserId;
-
-            await _userService.CreateBioimpedance(bioimpedance);
-
-            return RedirectToAction(nameof(MyZone));
-        }
-
-        public async Task<IActionResult> UpdateBioimpedance()
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-
-            var bio = await _userService.GetBioimpedance(role.UserId);
-
-            if (bio == null) return View("CustomError", "Error_DontHaveBioimpedance");
-
-            return View(bio);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> UpdateBioimpedance([Bind("BioimpedanceId,Weight,Height,Hydration,FatMass,LeanMass,MuscleMass,ViceralFat,BasalMetabolism")] Bioimpedance bioimpedance)
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-
-            var bio = await _userService.GetBioimpedance(role.UserId);
-
-            bio.BioimpedanceId = role.UserId;
-            bio.Weight = bioimpedance.Weight;
-            bio.Height = bioimpedance.Height;
-            bio.Hydration = bioimpedance.Hydration;
-            bio.FatMass = bioimpedance.FatMass;
-            bio.LeanMass = bioimpedance.LeanMass;
-            bio.MuscleMass = bioimpedance.MuscleMass;
-            bio.ViceralFat = bioimpedance.ViceralFat;
-            bio.BasalMetabolism = bioimpedance.BasalMetabolism;
-
-            await _userService.UpdateBioimpedance(bio);
-
-            return RedirectToAction(nameof(MyZone));
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> MyZoneEMDUpdate(IFormFile FileEMD)
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!_clubService.IsClubAthlete(role)) return View("CustomError", "Error_Unauthorized");
-
-            var user = await _userService.GetUserWithEMD(role.UserId);
-
-            if (FileEMD != null && FileEMD.Length > 0)
-            {
-                BlobResponseDto uploadResult = await _azureStorage.UploadAsync(FileEMD);
-                if (uploadResult.Error)
-                {
-                    return View("CustomError", "Something wrong");
-                }
-                await _userService.CheckAndDeleteEMD(user);
-
-                user.EMD = uploadResult.Blob;
-                var result = await _userManager.UpdateAsync(user);
-                if (!result.Succeeded)
-                {
-                    return View("CustomError", "Something wrong");
-                }
-            }
-            else
-            {
-                await _userService.CheckAndDeleteEMD(user);
-            }
-
-            return RedirectToAction(nameof(MyZone));
-        }
-
-
-        private async Task<string> PrepareUserEMD(string userId)
-        {
-            var userWithEMD = await _userService.GetUserWithEMD(userId);
-            return userWithEMD.EMD == null ? _stringLocalizer["Pending_Add"] : userWithEMD.EMD.Uri;
-        }
-
-        public class MyZoneModel
-        {
-            public string UserId { get; set; }
-            public User? User { get; set; }
-            public Bioimpedance? Bioimpedance { get; set; }
-            public IEnumerable<Team>? Teams { get; set; }
-            public IEnumerable<TrainingPlan?>? TrainingPlans { get; set; }
-            public IEnumerable<MealPlan?>? MealPlans { get; set; }
-
-            public string? EMDUrl { get; set; }
-            public bool RemoveEMD { get; set; } = false;
-            public IFormFile? FileEMD { get; set; }
-        }
-
         public async Task<IActionResult> TrainingZone()
         {
-            //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;
-
-            //Check if is trainer
-            if (!_clubService.IsClubTrainer(role)) return View("CustomError", "Error_Unauthorized");
+            if (!await _userService.IsStaffInAnyClub(role.UserId)) return View("CustomError", "Error_Unauthorized");
 
             ViewBag.HaveMealTemplate = ((await _planService.GetTemplateMealPlans(role.UserId))?.Any() ?? false);
             ViewBag.HaveTrainingTemplate = ((await _planService.GetTemplateTrainingPlans(role.UserId))?.Any() ?? false);

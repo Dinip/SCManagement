@@ -37,6 +37,7 @@ namespace SCManagement.Services.EventService
                 .Include(e => e.Club)
                 .Include(e => e.EventTranslations)
                 .Include(e => e.Location)
+                .Include(e => e.UsersEnrolled)
                 .FirstOrDefaultAsync(e => e.Id == eventId);
         }
 

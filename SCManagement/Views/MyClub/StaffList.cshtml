@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<SCManagement.Models.UsersRoleClub>
 @inject IStringLocalizer<SharedResource> StringLocalizer
 @{
-    ViewData["Title"] = "StaffList";
+    ViewData["Title"] = @StringLocalizer["StaffList"];
 }
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
@@ -15,7 +15,7 @@
         </div>
     </div>
     <h1 style="margin-top:130px !important;" class="text-to-dark">Staff</h1>
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
             <table id="table_id" class="display" style="width:100%!important;">
                 <thead>
@@ -57,7 +57,7 @@
                                 <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "invisible")">
                                     <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
                                     <input name="page" value="StaffList" class="form-control" hidden />
-                                    <input type="submit" value="Remove staff" class="btn btn-danger" />
+                                    <input type="submit" value=@StringLocalizer["RemoveStaff"] class="btn btn-danger" />
                                 </form>
                             </td>
                         </tr>
@@ -80,8 +80,25 @@
             responsive: true,
             columnDefs: [
                 { orderable: false, targets: [-1, -2] }
-            ]
+            ], 
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
+        setTheme(localStorage.getItem("theme") || "light")
     });
     let modal = document.getElementById("modal")
     window.onclick = function (event) {

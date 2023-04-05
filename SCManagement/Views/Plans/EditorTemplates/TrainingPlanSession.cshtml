@@ -21,12 +21,12 @@
             <span asp-validation-for="ExerciseDescription" class="text-danger"></span>
         </div>
         <div class="form-floating">
-            <input asp-for="Repetitions" min="0" class="form-control" />
+            <input asp-for="Repetitions" min="0" max="1000" class="form-control" />
             <label asp-for="Repetitions" class="control-label"></label>
             <span asp-validation-for="Repetitions" class="text-danger"></span>
         </div>
         <div class="form-floating">
-            <input asp-for="Duration" min="0" class="form-control" />
+            <input asp-for="Duration" min="0" max="1000" class="form-control" />
             <label asp-for="Duration" class="control-label"></label>
             <span asp-validation-for="Duration" class="text-danger"></span>
         </div>

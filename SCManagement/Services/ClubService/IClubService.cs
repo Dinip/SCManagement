@@ -32,16 +32,17 @@ namespace SCManagement.Services.ClubService
         public Task SendCodeEmail(int codeId, string email, int clubId);
         public Task<UsersRoleClub> GetUserRoleInClub(string userId, int clubId);
         public Task<IEnumerable<Modality>> GetModalities();
+        public Task<IEnumerable<Modality>> GetModalitiesToSelectList();
         public bool UserHasRoleInClub(string userId, int clubId, int roleId);
         public Task<IEnumerable<UsersRoleClub>> GetClubPartners(int clubId);
-        public Task UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null);
+        public Task<string> UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null);
         public Task UpdateClubModalities(Club club, IEnumerable<int> ModalitiesIds);
         public Task RemoveClubUser(int userRoleClubId);
         public Task<UsersRoleClub?> GetUserRoleClubFromId(int userRoleClubId);
         public Task<UsersRoleClub> AddPartnerToClub(string userId, int clubId, UserRoleStatus status);
         public Task<IEnumerable<UsersRoleClub>> GetClubStaff(int clubId);
         public Task<IEnumerable<UsersRoleClub>> GetClubAthletes(int clubId);
-        public Task<IEnumerable<Modality>> GetClubModalities(int clubId);
+        public Task<IEnumerable<object>> GetClubModalities(int clubId);
         public Task<IEnumerable<User>> GetAthletes(int clubId);
         public Task<IEnumerable<User>> GetClubTrainers(int clubId);
         public Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId);
@@ -53,5 +54,8 @@ namespace SCManagement.Services.ClubService
         public Task<ClubPaymentSettings> GetClubPaymentSettings(int clubId);
         public Task<ClubPaymentSettings> UpdateClubPaymentSettings(ClubPaymentSettings settings);
         public Task<ClubSlots> ClubAthleteSlots(int clubId);
+        public Task<Modality> CreateModality(Modality modality);
+        public Task<UsersRoleClub> GetAdminRole(int clubId);
+
     }
 }

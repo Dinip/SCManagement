@@ -1,5 +1,5 @@
 ﻿@model SCManagement.Models.Event
-
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
     ViewData["Title"] = "Event Location";
@@ -44,13 +44,13 @@
         <div id='map'></div>
         <div id="menu">
             <input id="satellite-streets-v12" type="radio" name="rtoggle" value="satellite">
-            <label for="satellite-streets-v12">satellite streets</label>
+            <label for="satellite-streets-v12">@StringLocalizer["ViewSatellite"]</label>
             <input id="light-v11" type="radio" name="rtoggle" value="light">
-            <label for="light-v11">light</label>
+            <label for="light-v11">@StringLocalizer["ViewLight"]</label>
             <input id="dark-v11" type="radio" name="rtoggle" value="dark">
-            <label for="dark-v11">dark</label>
+            <label for="dark-v11">@StringLocalizer["ViewDark"]</label>
             <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
-            <label for="streets-v12">streets</label>
+            <label for="streets-v12">@StringLocalizer["ViewStreets"]</label>
         </div>
         <input type="hidden" id="lblEventId" value="@Model.Id"/>
         <script src="~/js/SearchMapBoxEvents.js" asp-append-version="true"></script>

@@ -17,7 +17,7 @@ namespace SCManagement.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.13")
+                .HasAnnotation("ProductVersion", "6.0.15")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -195,8 +195,11 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Models.Bioimpedance", b =>
                 {
-                    b.Property<string>("BioimpedanceId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<float?>("BasalMetabolism")
                         .HasColumnType("real");
@@ -219,13 +222,19 @@ namespace SCManagement.Data.Migrations
                     b.Property<float?>("MuscleMass")
                         .HasColumnType("real");
 
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<float?>("ViceralFat")
                         .HasColumnType("real");
 
                     b.Property<string>("Weight")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("BioimpedanceId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Bioimpedance");
                 });
@@ -2981,10 +2990,6 @@ namespace SCManagement.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.ToTable("Modality");
@@ -2992,54 +2997,258 @@ namespace SCManagement.Data.Migrations
                     b.HasData(
                         new
                         {
+                            Id = 1
+                        },
+                        new
+                        {
+                            Id = 2
+                        },
+                        new
+                        {
+                            Id = 3
+                        },
+                        new
+                        {
+                            Id = 4
+                        },
+                        new
+                        {
+                            Id = 5
+                        },
+                        new
+                        {
+                            Id = 6
+                        },
+                        new
+                        {
+                            Id = 7
+                        },
+                        new
+                        {
+                            Id = 8
+                        },
+                        new
+                        {
+                            Id = 9
+                        },
+                        new
+                        {
+                            Id = 10
+                        });
+                });
+
+            modelBuilder.Entity("SCManagement.Models.ModalityTranslation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Atribute")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ModalityId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ModalityId");
+
+                    b.ToTable("ModalityTranslation");
+
+                    b.HasData(
+                        new
+                        {
                             Id = 1,
-                            Name = "Atletismo"
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 1,
+                            Value = "Atletismo"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Basquetebol"
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 1,
+                            Value = "Athletics"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Futebol"
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 2,
+                            Value = "Basquetebol"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Futsal"
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 2,
+                            Value = "Basketball"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Hóquei em Patins"
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 3,
+                            Value = "Futebol"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Natação"
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 3,
+                            Value = "Football"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Voleibol"
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 4,
+                            Value = "Futsal"
                         },
                         new
                         {
                             Id = 8,
-                            Name = "BTT"
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 4,
+                            Value = "Futsal"
                         },
                         new
                         {
                             Id = 9,
-                            Name = "Taekwondo"
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 5,
+                            Value = "Hóquei em Patins"
                         },
                         new
                         {
                             Id = 10,
-                            Name = "Orientação"
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 5,
+                            Value = "Roller Hockey"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 6,
+                            Value = "Natação"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 6,
+                            Value = "Swimming"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 7,
+                            Value = "Voleibol"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 7,
+                            Value = "Volleyball"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 8,
+                            Value = "BTT"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 8,
+                            Value = "BTT"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 9,
+                            Value = "Taekwondo"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 9,
+                            Value = "Taekwondo"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Atribute = "Name",
+                            Language = "pt-PT",
+                            ModalityId = 10,
+                            Value = "Orientação"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Atribute = "Name",
+                            Language = "en-US",
+                            ModalityId = 10,
+                            Value = "Orientation"
                         });
+                });
+
+            modelBuilder.Entity("SCManagement.Models.Notification", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Notifications");
                 });
 
             modelBuilder.Entity("SCManagement.Models.RoleClub", b =>
@@ -3465,14 +3674,16 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -3480,6 +3691,9 @@ namespace SCManagement.Data.Migrations
                     b.Property<string>("TrainerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("isCompleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -3501,7 +3715,8 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -3511,7 +3726,8 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -3537,11 +3753,13 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("MealDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("MealName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int>("MealPlanId")
                         .HasColumnType("int");
@@ -3569,7 +3787,8 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
@@ -3582,7 +3801,8 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
@@ -3613,11 +3833,13 @@ namespace SCManagement.Data.Migrations
 
                     b.Property<string>("ExerciseDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
 
                     b.Property<string>("ExerciseName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<int?>("Repetitions")
                         .HasColumnType("int");
@@ -3731,6 +3953,66 @@ namespace SCManagement.Data.Migrations
                     b.ToTable("ClubUserStatistics");
                 });
 
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.SystemPaymentStatistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductType")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatisticsRange")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("Value")
+                        .HasColumnType("real");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("SystemPaymentStatistics");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.SystemPlansStatistics", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Active")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Canceled")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatisticsRange")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("SystemPlansStatistics");
+                });
+
             modelBuilder.Entity("TeamUser", b =>
                 {
                     b.Property<string>("AthletesId")
@@ -3810,6 +4092,17 @@ namespace SCManagement.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("SCManagement.Models.Bioimpedance", b =>
+                {
+                    b.HasOne("SCManagement.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Club", b =>
@@ -3968,6 +4261,28 @@ namespace SCManagement.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Event");
+                });
+
+            modelBuilder.Entity("SCManagement.Models.ModalityTranslation", b =>
+                {
+                    b.HasOne("SCManagement.Models.Modality", "Modality")
+                        .WithMany("ModalityTranslations")
+                        .HasForeignKey("ModalityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Modality");
+                });
+
+            modelBuilder.Entity("SCManagement.Models.Notification", b =>
+                {
+                    b.HasOne("SCManagement.Models.User", "User")
+                        .WithMany("Notifications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SCManagement.Models.Team", b =>
@@ -4216,6 +4531,24 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("Role");
                 });
 
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.SystemPaymentStatistics", b =>
+                {
+                    b.HasOne("SCManagement.Services.PaymentService.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("SCManagement.Services.StatisticsService.Models.SystemPlansStatistics", b =>
+                {
+                    b.HasOne("SCManagement.Services.PaymentService.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("TeamUser", b =>
                 {
                     b.HasOne("SCManagement.Models.User", null)
@@ -4261,6 +4594,8 @@ namespace SCManagement.Data.Migrations
 
             modelBuilder.Entity("SCManagement.Models.Modality", b =>
                 {
+                    b.Navigation("ModalityTranslations");
+
                     b.Navigation("TrainingPlans");
                 });
 
@@ -4274,6 +4609,8 @@ namespace SCManagement.Data.Migrations
                     b.Navigation("Goals");
 
                     b.Navigation("MealPlans");
+
+                    b.Navigation("Notifications");
 
                     b.Navigation("TrainingPlans");
 

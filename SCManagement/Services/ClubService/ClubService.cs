@@ -1,14 +1,17 @@
-﻿using System.Diagnostics;
+﻿using System.Data;
+using System.Diagnostics;
 using System.Globalization;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
+using SCManagement.Data.Migrations;
 using SCManagement.Models;
 using SCManagement.Services.AzureStorageService;
 using SCManagement.Services.AzureStorageService.Models;
 using SCManagement.Services.ClubService.Models;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services.ClubService
@@ -21,6 +24,7 @@ namespace SCManagement.Services.ClubService
         private readonly SharedResourceService _sharedResource;
         private readonly IAzureStorage _azureStorage;
         private readonly IPaymentService _paymentService;
+        private readonly INotificationService _notificationService;
 
         public ClubService(
             ApplicationDbContext context,
@@ -28,7 +32,8 @@ namespace SCManagement.Services.ClubService
             IHttpContextAccessor httpContext,
             SharedResourceService sharedResource,
             IAzureStorage azureStorage,
-            IPaymentService paymentService
+            IPaymentService paymentService,
+            INotificationService notificationService
             )
         {
             _context = context;
@@ -37,6 +42,7 @@ namespace SCManagement.Services.ClubService
             _sharedResource = sharedResource;
             _azureStorage = azureStorage;
             _paymentService = paymentService;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -106,9 +112,9 @@ namespace SCManagement.Services.ClubService
         /// <returns>Found club or null</returns>
         public async Task<Club?> GetClub(int id)
         {
-            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             var club = await _context.Club
                 .Include(c => c.Modalities)
+                .ThenInclude(c => c.ModalityTranslations)
                 .Include(c => c.Photography)
                 .Include(c => c.Address)
                 .Include(c => c.ClubTranslations)
@@ -126,9 +132,11 @@ namespace SCManagement.Services.ClubService
             string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             return await _context.Club
                .Include(c => c.Modalities)
+               .ThenInclude(c => c.ModalityTranslations)
                .Include(c => c.Photography)
                .Include(c => c.Address)
                .Include(c => c.ClubTranslations)
+               .Where(c => c.Status == ClubStatus.Active)
                .Select(s =>
                new Club
                {
@@ -140,7 +148,11 @@ namespace SCManagement.Services.ClubService
                    Photography = s.Photography,
                    AddressId = s.AddressId,
                    Address = s.Address,
-                   Modalities = s.Modalities,
+                   Modalities = s.Modalities.Select(m => new Modality
+                   {
+                       Id = m.Id,
+                       ModalityTranslations = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).ToList(),
+                   }).ToList(),
                    ClubTranslations = s.ClubTranslations!.Where(cc => cc.Language == cultureInfo).ToList(),
                })
                .ToListAsync();
@@ -249,17 +261,6 @@ namespace SCManagement.Services.ClubService
             return result ?? new UsersRoleClub { Id = 0, UserId = userId, ClubId = 0, RoleId = 0, Selected = false };
         }
 
-
-        /// <summary>
-        /// Gets the admin user of a given club
-        /// </summary>
-        /// <param name="clubId">id of the club to get the admin</param>
-        /// <returns>admin user of the club</returns>
-        private User getClubAdmin(int clubId)
-        {
-            return _context.UsersRoleClub.Where(r => r.ClubId == clubId && r.RoleId == 50).Include(r => r.User).Select(r => r.User).FirstOrDefault()!;
-        }
-
         /// <summary>
         /// Sends an email to the club admin with a given subject and body
         /// and replaces the values in the body with the values in the dictionary
@@ -272,7 +273,7 @@ namespace SCManagement.Services.ClubService
         /// <returns></returns>
         private async Task sendEmailToClubAdmin(int clubId, string keySubject, string keyContent, Dictionary<string, string>? values = null)
         {
-            User admin = getClubAdmin(clubId);
+            User admin = (await GetAdminRole(clubId)).User;
             string emailBody = _sharedResource.Get(keyContent, admin.Language);
 
             if (values != null)
@@ -421,6 +422,13 @@ namespace SCManagement.Services.ClubService
             cc.UsedDate = DateTime.Now;
             _context.CodeClub.Update(cc);
             await _context.SaveChangesAsync();
+
+            //check if used slots are almost full (> 80%)
+            if ((slots.UsedSlots * 100 / slots.TotalSlots) >= 80)
+            {
+                _notificationService.NotifyAthletesNumberAlmostFull(cc.ClubId, slots);
+            }
+
             return await Task.FromResult(new KeyValuePair<bool, string>(true, "Success"));
         }
 
@@ -581,14 +589,27 @@ namespace SCManagement.Services.ClubService
             return _context.Users.Where(u => u.NormalizedEmail == email.ToUpper()).FirstOrDefault();
         }
 
-
         /// <summary>
         /// Allows to get all the modalities
         /// </summary>
         /// <returns>All modalities</returns>
         public async Task<IEnumerable<Modality>> GetModalities()
         {
-            return await _context.Modality.ToListAsync();
+            return await _context.Modality.Include(m => m.ModalityTranslations).ToListAsync();
+        }
+
+        /// <summary>
+        /// Allows to get the modalities in the current languague
+        /// </summary>
+        /// <returns>All modalities in the current languague</returns>
+        public async Task<IEnumerable<Modality>> GetModalitiesToSelectList()
+        {
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            return await _context.Modality.Select(m => new Modality
+            {
+                Id = m.Id,
+                Name = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).FirstOrDefault().Value
+            }).ToListAsync();
         }
 
         /// <summary>
@@ -635,22 +656,28 @@ namespace SCManagement.Services.ClubService
         /// <param name="remove"></param>
         /// <param name="file"></param>
         /// <returns></returns>
-        public async Task UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null)
+        public async Task<string> UpdateClubPhoto(Club club, bool remove = false, IFormFile? file = null)
         {
             //new profile picture provided, delete old from storage and update club to new one
             if (file != null)
             {
                 BlobResponseDto uploadResult = await _azureStorage.UploadAsync(file);
+                if (uploadResult.Error)
+                {
+                    return uploadResult.Status ?? "";
+                }
                 await deletePhoto(club);
                 club.Photography = uploadResult.Blob;
-                return;
+                return "";
             }
 
             if (remove)
             {
                 await deletePhoto(club);
-                return;
+                return "";
             }
+
+            return "";
         }
 
         /// <summary>
@@ -806,7 +833,7 @@ namespace SCManagement.Services.ClubService
                .Include(c => c.Photography)
                .Include(c => c.Address)
                .Include(c => c.ClubTranslations)
-               .Where(c => string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower().Trim()))
+               .Where(c => c.Status == ClubStatus.Active && (string.IsNullOrEmpty(name) || c.Name.ToLower().Contains(name.ToLower().Trim())))
                .Select(s =>
                new Club
                {
@@ -854,9 +881,15 @@ namespace SCManagement.Services.ClubService
         /// </summary>
         /// <param name="clubId"></param>
         /// <returns></returns>
-        public async Task<IEnumerable<Modality>> GetClubModalities(int clubId)
+        public async Task<IEnumerable<object>> GetClubModalities(int clubId)
         {
-            return await _context.Club.Where(c => c.Id == clubId).SelectMany(c => c.Modalities).ToListAsync();
+            string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            var club = await _context.Club.Where(c => c.Id == clubId).Include(c => c.Modalities).ThenInclude(m => m.ModalityTranslations).FirstAsync();
+            return club.Modalities.Select(m => new
+            {
+                Id = m.Id,
+                Name = m.ModalityTranslations.Where(mt => mt.Language == cultureInfo).FirstOrDefault().Value,
+            }).ToList();
         }
 
         /// <summary>
@@ -902,58 +935,12 @@ namespace SCManagement.Services.ClubService
             {
                 currentSettings.QuotaFrequency = settings.QuotaFrequency;
                 currentSettings.QuotaFee = settings.QuotaFee;
-                await notifyPartnersQuotaChange(currentSettings.ClubPaymentSettingsId, settings);
+                _notificationService.NotifyQuotaUpdate(currentSettings.ClubPaymentSettingsId, settings);
             }
 
             _context.ClubPaymentSettings.Update(currentSettings);
             await _context.SaveChangesAsync();
             return currentSettings;
-        }
-
-        private async Task notifyPartnersQuotaChange(int clubId, ClubPaymentSettings settings)
-        {
-            var partners = await GetClubPartners(clubId);
-            var club = await GetClub(clubId);
-
-            string hostUrl = $"{_httpContext.HttpContext.Request.Scheme}://{_httpContext.HttpContext.Request.Host}";
-
-            foreach (var partner in partners)
-            {
-                var sub = await _context.Subscription
-                    .Include(p => p.Product)
-                    .FirstOrDefaultAsync(f =>
-                    f.UserId == partner.UserId &&
-                    f.Product.ClubId == clubId &&
-                    f.Product.ProductType == PaymentService.Models.ProductType.ClubMembership
-                );
-                if (sub != null && sub.AutoRenew)
-                {
-                    await _paymentService.CancelAutoSubscription(sub.Id);
-                }
-
-                if (!partner.User.Email.ToLower().Contains("scmanagement"))
-                {
-                    string lang = partner.User.Language;
-
-                    string emailBody = _sharedResource.Get("Email_ClubFees", lang);
-
-                    Dictionary<string, string> values = new Dictionary<string, string>
-                    {
-                    { "_FREQUENCY_", _sharedResource.Get(settings.QuotaFrequency.ToString(), lang) },
-                    { "_PRICE_", $"{settings.QuotaFee.ToString()}€"},
-                    { "_CLUB_", club.Name },
-                    { "_SUBSCRIPTION_", sub != null ? $"{hostUrl}/Subscription?subId={sub.Id}" : $"{hostUrl}/Subscription"},
-                    };
-
-                    foreach (KeyValuePair<string, string> entry in values)
-                    {
-                        emailBody = emailBody.Replace(entry.Key, entry.Value);
-                    }
-
-                    await _emailSender.SendEmailAsync(partner.User.Email, _sharedResource.Get("Subject_ClubFees", lang), emailBody);
-                }
-            }
-            return;
         }
 
         public async Task<ClubSlots> ClubAthleteSlots(int clubId)
@@ -969,6 +956,21 @@ namespace SCManagement.Services.ClubService
                 .CountAsync();
 
             return new ClubSlots { TotalSlots = total, UsedSlots = athletes, AvailableSlots = total - athletes };
+        }
+
+        public async Task<Modality> CreateModality(Modality modality)
+        {
+            _context.Modality.Add(modality);
+            await _context.SaveChangesAsync();
+            return modality;
+        }
+
+        public async Task<UsersRoleClub> GetAdminRole(int clubId)
+        {
+            return await _context.UsersRoleClub
+                .Include(c=>c.User)
+                .Where(c => c.ClubId == clubId && c.RoleId == 50)
+                .FirstOrDefaultAsync();    
         }
     }
 }

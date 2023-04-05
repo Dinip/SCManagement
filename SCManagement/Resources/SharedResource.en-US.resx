@@ -684,7 +684,7 @@ We apologize for the inconvenience.</value>
                             and kindness.</value>
   </data>
   <data name="DinisAbout" xml:space="preserve">
-    <value>Hello, I'm 21 years old, I'm a university student of Computer Engineering at the Polytechnic Institute of Setubal.
+    <value>Hello, I'm 22 years old, I'm a university student of Computer Engineering at the Polytechnic Institute of Setubal.
 I have experience in the area and I am very focused on my goals.</value>
   </data>
   <data name="FrontEndDeveloper" xml:space="preserve">
@@ -1086,7 +1086,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>27-02-2023_payments</comment>
   </data>
   <data name="Waiting_Payment" xml:space="preserve">
-    <value>waiting payment</value>
+    <value>Waiting payment</value>
     <comment>27-02-2023_payments</comment>
   </data>
   <data name="ClubUnavailableDescriptionPrivate" xml:space="preserve">
@@ -1447,9 +1447,6 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Roller hockey</value>
     <comment>09-03-2023_Modalities</comment>
   </data>
-  <data name="s" xml:space="preserve">
-    <value />
-  </data>
   <data name="Sat" xml:space="preserve">
     <value>Sat</value>
     <comment>10-03-2023_InfoPartial</comment>
@@ -1527,7 +1524,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="CreateBioimpedance" xml:space="preserve">
-    <value>Create Bioimpedance</value>
+    <value>Insert Bioimpedance</value>
     <comment>09-03-2023_bioimpedance</comment>
   </data>
   <data name="FatMass" xml:space="preserve">
@@ -1657,7 +1654,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>18-03-2023_StatisticsView</comment>
   </data>
   <data name="Error_DateGreaterThan" xml:space="preserve">
-    <value>The end date selected is before the start date</value>
+    <value>The end date selected is before or the same as the start date</value>
     <comment>11-03-2023_Plans</comment>
   </data>
   <data name="Error_IsDateBeforeToday" xml:space="preserve">
@@ -1817,8 +1814,8 @@ I have experience in the area and I am very focused on my goals.</value>
     <comment>22-03-2023 plans</comment>
   </data>
   <data name="Apply" xml:space="preserve">
-    <value>Apply</value>
-    <comment>22-03-2023 plans</comment>
+    <value>Apply Template</value>
+    <comment>24-03-2023 plans</comment>
   </data>
   <data name="Create Meal Plan" xml:space="preserve">
     <value>Create Meal Plan</value>
@@ -1851,5 +1848,2860 @@ I have experience in the area and I am very focused on my goals.</value>
   <data name="Training Zone" xml:space="preserve">
     <value>Training zone</value>
     <comment>22-03-2023 plans</comment>
+  </data>
+  <data name="CirclePart" xml:space="preserve">
+    <value>Number of active Partners over total Partners</value>
+    <comment>23-02-2023_Statitics</comment>
+  </data>
+  <data name="Complete" xml:space="preserve">
+    <value>Complete</value>
+    <comment>23-03-2023_plansFix</comment>
+  </data>
+  <data name="AddAdmin" xml:space="preserve">
+    <value>Add as admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="AddAdminConfirm" xml:space="preserve">
+    <value>Are you sure that you want to add _USER_ as admin?</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_InvalidRole" xml:space="preserve">
+    <value>That role is invalid</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UpdatingToAdministrator" xml:space="preserve">
+    <value>An error occurred updating _USER_ to admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UpdatingToNotAdministrator" xml:space="preserve">
+    <value>An error occurred updating _USER_ to regular user</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UserAlreadyAdmin" xml:space="preserve">
+    <value>User _USER_ is already an admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Error_UserAlreadyNotAdmin" xml:space="preserve">
+    <value>User _USER_ is already a regular user</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="RemoveAdmin" xml:space="preserve">
+    <value>Remove from admin</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="RemoveAdminConfirm" xml:space="preserve">
+    <value>Are you sure that you want to remove _USER_ from admin?</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Success_IsAdministrator" xml:space="preserve">
+    <value>User _USER_ is now an administrator</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Success_IsNotAdministrator" xml:space="preserve">
+    <value>User _USER_ is now a regular user</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="UserAccess" xml:space="preserve">
+    <value>User Access</value>
+    <comment>25-03-2023_backoffice</comment>
+  </data>
+  <data name="Clear" xml:space="preserve">
+    <value>Clear</value>
+    <comment>24-03-2023</comment>
+  </data>
+  <data name="RemoveStaff" xml:space="preserve">
+    <value>Remove Staff</value>
+    <comment>24-04-2023_TradFix</comment>
+  </data>
+  <data name="EmptyMessage" xml:space="preserve">
+    <value>No data available in the table</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="EntriesDatatable" xml:space="preserve">
+    <value>entries</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="OfDatatable" xml:space="preserve">
+    <value>of</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="Previous" xml:space="preserve">
+    <value>Previous</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="RemoveAthlete" xml:space="preserve">
+    <value>Remove Athlete</value>
+    <comment>24-04-2023_TradFix</comment>
+  </data>
+  <data name="Show" xml:space="preserve">
+    <value>Show</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="Showing" xml:space="preserve">
+    <value>Showing</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="To" xml:space="preserve">
+    <value>to</value>
+    <comment>24-04-2023_Datatables</comment>
+  </data>
+  <data name="AddAthlete" xml:space="preserve">
+    <value>Add Athlete</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="CreatedBy" xml:space="preserve">
+    <value>Created By</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="CreateTeam" xml:space="preserve">
+    <value>Create Team</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Filtered" xml:space="preserve">
+    <value>Filtered</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="From" xml:space="preserve">
+    <value>from</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="NoMatching" xml:space="preserve">
+    <value>No matching records found</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Processing" xml:space="preserve">
+    <value>Processing...</value>
+    <comment>25-03-2023_dataTablesFix</comment>
+  </data>
+  <data name="Error_MaxNumber" xml:space="preserve">
+    <value>Please enter a number between {1} and {2}.</value>
+    <comment>24-03-2023_templates</comment>
+  </data>
+  <data name="TutAddress" xml:space="preserve">
+    <value>Mark the desired address on the map</value>
+    <comment>26-03-2023_helps</comment>
+  </data>
+  <data name="AddPeople" xml:space="preserve">
+    <value>Add People To Your Club</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ByUsing" xml:space="preserve">
+    <value>By using our platform you will be able to easily create, customize and manage your events, in addition to managing payments</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FeelReady" xml:space="preserve">
+    <value>I want to start</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncOne" xml:space="preserve">
+    <value>You can mark a path in the event you are creating, so participants can visualize the path they will take</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncsTutorial" xml:space="preserve">
+    <value>A Little of What You Can Do</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncThree" xml:space="preserve">
+    <value>You can always manage your athletes, add training plans, food and or goals to your athletes. With this feature you can almost always be next to your athlete</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="FuncTwo" xml:space="preserve">
+    <value>A club is always better with life and in that regard we mean people. Invite athletes, coaches and staff to your club, let them participate in what is best: sport</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Hi" xml:space="preserve">
+    <value>Hi</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagAtl" xml:space="preserve">
+    <value>Manage Your Athletes</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagClub" xml:space="preserve">
+    <value>Manage Club</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagEvents" xml:space="preserve">
+    <value>Manage Events</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ManagYourClub" xml:space="preserve">
+    <value>Manage your club simply and efficiently! You can easily manage members, payments, activities and more. Ensuring that everything is always organized and up to date. Take advantage of the ease of management that our platform offers you and focus on what really matters: Enjoying your club!</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="NeverWas" xml:space="preserve">
+    <value>Never before has it been so quick to create a club, invite people and enjoy various features that will make your life easier</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="OurProject" xml:space="preserve">
+    <value>Our Project</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Process" xml:space="preserve">
+    <value>Fast Process</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="PutPath" xml:space="preserve">
+    <value>Mark a Path at Your Event</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Do you feel ready to start?</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="SomeFunc" xml:space="preserve">
+    <value>These are just three features that we are going to show you, so you can enjoy many more</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="ThisIs" xml:space="preserve">
+    <value>This is a web application that will be able to offer you different features for managing your club. We love sport as much as you do and together we build a better future</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="WeAre" xml:space="preserve">
+    <value>We are SCManagement</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="WePretend" xml:space="preserve">
+    <value>We intend to provide you with better management of your club, from your members, quotas, coaches, athletes, events, among others. Our objective is to unify all this management in a single platform.</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="YourClubStatistics" xml:space="preserve">
+    <value>You can also always stay up to date with what is happening at your club with just one click, we provide statistics and information about your club</value>
+    <comment>26-03-2023_tutorial</comment>
+  </data>
+  <data name="Error_FileMaxSize" xml:space="preserve">
+    <value>File _NAME_ exceeds the max file size of 10MB</value>
+    <comment>27-03-2023_backoffice</comment>
+  </data>
+  <data name="CreateModality" xml:space="preserve">
+    <value>Create Modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="Error_RequiredModalName" xml:space="preserve">
+    <value>You need at least one name to create the modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="ModalityName" xml:space="preserve">
+    <value>Modality Name in</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SeeAllModality" xml:space="preserve">
+    <value>See All Modality</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SuccessModality" xml:space="preserve">
+    <value>A modality was created successfully</value>
+    <comment>27-03-2023_modalidades</comment>
+  </data>
+  <data name="SubscriptionPlans" xml:space="preserve">
+    <value>Subscription Plans</value>
+    <comment>26-03-2023</comment>
+  </data>
+  <data name="Translate" xml:space="preserve">
+    <value>Translate</value>
+    <comment>27-03-2023_editClub</comment>
+  </data>
+  <data name="And" xml:space="preserve">
+    <value>and</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="CodesCreated" xml:space="preserve">
+    <value>Codes Created</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="DelayedPayments" xml:space="preserve">
+    <value>Delayed Payments</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="GreaterAdherence" xml:space="preserve">
+    <value>Greater Adherence</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="SportsClubs" xml:space="preserve">
+    <value>Sports Clubs</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="StatisticsBackoffice" xml:space="preserve">
+    <value>Statistics Backoffice</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Terms&amp;Conditions" xml:space="preserve">
+    <value>Terms &amp; Conditions</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Year" xml:space="preserve">
+    <value>Year</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Average" xml:space="preserve">
+    <value>Average</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="BestMonth" xml:space="preserve">
+    <value>Best Month</value>
+    <comment>28-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle1Help" xml:space="preserve">
+    <value>Number of active clubs out of total clubs created</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle2Help" xml:space="preserve">
+    <value>Total amount received per month and per year</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle3Help" xml:space="preserve">
+    <value>Number of codes used out of the total number created</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle4Help" xml:space="preserve">
+    <value>Plan that was most purchased and its monthly amount</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle5Help" xml:space="preserve">
+    <value>Number of late payments out of total existing payments</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Circle6Help" xml:space="preserve">
+    <value>Terms and conditions</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>No</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="NotConfirm" xml:space="preserve">
+    <value>Do you really want to notify?</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Notify" xml:space="preserve">
+    <value>Notify</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Yes</value>
+    <comment>27-03-2023_StatisticsBackoffice</comment>
+  </data>
+  <data name="SubscriptionAutoCancelConfirm" xml:space="preserve">
+    <value>Are you sure that you want to cancel the auto renewal for that subscription?</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubscriptionAutoEnabledConfirm" xml:space="preserve">
+    <value>Are you sure that you want to enable the auto renewal for that subscription?</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubscriptionCancelConfirm" xml:space="preserve">
+    <value>Are you sure that you want to cancel the subscription? It will be canceled at the end of the payment cycle</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubCancelAutoSuccess" xml:space="preserve">
+    <value>Subscription auto renew disabled</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubCancelSuccess" xml:space="preserve">
+    <value>Subscription canceled</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="SubEnableAutoSuccess" xml:space="preserve">
+    <value>Subscription auto renew enabled</value>
+    <comment>28-03-2023_backoffice</comment>
+  </data>
+  <data name="Cookies" xml:space="preserve">
+    <value>Cookies:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="License" xml:space="preserve">
+    <value>License:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="ShouldNot" xml:space="preserve">
+    <value>Should Not:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsConditionsSCManagement" xml:space="preserve">
+    <value>Terms and Conditions for SCManagement</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsCookies" xml:space="preserve">
+    <value>The website uses cookies to help personalize your online experience. By accessing SCMANAGEMENT, you agreed to use the necessary cookies.
+A cookie is a text file placed on your hard drive by a web page server. Cookies cannot be used to run programs or deliver viruses to your computer. Cookies are uniquely assigned to you and can only be read by a web server in the domain that issued the cookie.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsIntro" xml:space="preserve">
+    <value>These terms and conditions describe the rules and regulations for using the SCMANAGEMENT website, located at</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsIntro2" xml:space="preserve">
+    <value>By accessing this site, we assume that you accept these terms and conditions. Do not continue to use SCMANAGEMENT if you do not agree with all the terms and conditions stated on this page.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsLicense" xml:space="preserve">
+    <value>Unless otherwise stated, SCMANAGEMENT and/or its licensors own the intellectual property rights in all material on SCMANAGEMENT. All intellectual property rights are reserved. You may access SCMANAGEMENT for your personal use subject to the restrictions defined in these terms and conditions.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot1" xml:space="preserve">
+    <value>Copy or republish material from SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot2" xml:space="preserve">
+    <value>Sell, rent or sublicense material from SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot3" xml:space="preserve">
+    <value>Reproduce, duplicate or copy SCMANAGEMENT material</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot4" xml:space="preserve">
+    <value>Redistribute content from SCMANAGEMENT</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsShouldNot5" xml:space="preserve">
+    <value>This agreement shall commence on the date hereof.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Disclaimer" xml:space="preserve">
+    <value>Disclaimer:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="RemoveLinks" xml:space="preserve">
+    <value>Removing links from our website:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Reserved" xml:space="preserve">
+    <value>Reservation of rights:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="Responsibility" xml:space="preserve">
+    <value>Responsibility for the content:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="String5" xml:space="preserve">
+    <value />
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer" xml:space="preserve">
+    <value>To the fullest extent permitted by applicable law, we exclude all representations, warranties and conditions relating to our website and your use of this website. Nothing in this disclaimer:</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer1" xml:space="preserve">
+    <value>limit or exclude our liability for death or personal injury;</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer2" xml:space="preserve">
+    <value>limit or exclude our liability or your liability for fraud or fraudulent misrepresentation;</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer3" xml:space="preserve">
+    <value>limit any of our liabilities in any way not permitted by applicable law; or exclude any of our or your liabilities that cannot be excluded under applicable law.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsDisclaimer4" xml:space="preserve">
+    <value>The limitations and prohibitions of liability set out in this section and elsewhere in this disclaimer: (a) are subject to the preceding paragraph; and (b) govern all liabilities arising from the disclaimer, including liabilities arising in contracts, torts and for breach of statutory duty.
+As long as the website and the information and services provided therein are free of charge, we will not be liable for loss or damage of any kind.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsRemoveLinks1" xml:space="preserve">
+    <value>If you find any links on our site that are offensive for any reason, you can contact us and let us know at any time. We will consider requests to remove links, but we are not obligated to do so or respond directly.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsRemoveLinks2" xml:space="preserve">
+    <value>We do not guarantee that the information on this website is correct. We do not guarantee its completeness or accuracy, nor do we promise to ensure that the website remains available or that the material contained therein is kept up to date.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsReserved" xml:space="preserve">
+    <value>We reserve the right to ask you to remove all or any specific links to our website. Approves the immediate removal of all links to our website upon request. We also reserve the right to change these terms and conditions and your binding policy at any time. By continually connecting to our website, you agree to comply with and abide by these terms and conditions of linking.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="TermsResponsibility" xml:space="preserve">
+    <value>We will not be responsible for any content that appears on your site. You agree to protect and defend us against all claims raised on your site. No links shall appear on any website that could be construed as libelous, obscene or criminal, or that infringes, otherwise violates or advocates the infringement or other violation of any third party rights.</value>
+    <comment>28-03-2023_TermsAndConditions</comment>
+  </data>
+  <data name="AthletesList" xml:space="preserve">
+    <value>Athletes List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="AthleteTrainingPlans" xml:space="preserve">
+    <value>Athlete Training Plans</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="CodesList" xml:space="preserve">
+    <value>Codes List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="Confirm password" xml:space="preserve">
+    <value>Confirm password</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="CreateGoal" xml:space="preserve">
+    <value>Create Goal</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="EditGoal" xml:space="preserve">
+    <value>Edit Goal</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="EditTeam" xml:space="preserve">
+    <value>Edit Team</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="GoalsList" xml:space="preserve">
+    <value>Goals List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="HomePage" xml:space="preserve">
+    <value>Home Page</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="MealDetails" xml:space="preserve">
+    <value>Meal Details</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="MealPlanTemplates" xml:space="preserve">
+    <value>Meal Plan Templates</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="MyClub" xml:space="preserve">
+    <value>My Club</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="ResendEmailConfirmation" xml:space="preserve">
+    <value>Resend email confirmation</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="StaffList" xml:space="preserve">
+    <value>Staff List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="TeamList" xml:space="preserve">
+    <value>Team List</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="TrainingDetails" xml:space="preserve">
+    <value>Training Details</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="TrainingPlanTemplates" xml:space="preserve">
+    <value>Training Plan Templates</value>
+    <comment>29-03-2023_FixTitles</comment>
+  </data>
+  <data name="PaymentProcessing" xml:space="preserve">
+    <value>Your payment is still processing, please wait a bit!</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="PaymentProcessingCard" xml:space="preserve">
+    <value>Your payment is either still processing or waiting for you to click on the url above to pay.</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="SelectPaymentMethod" xml:space="preserve">
+    <value>Select the payment method you want:</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="SelectPaymentMethodAlert" xml:space="preserve">
+    <value>Note: This is using a testing payment system. You can pay with credit card or mbway and have your payment processed automatically. The data used in those cases is fake, for mbway, please use the number 911234567 and for credit card, it will have fake cards on the paying page.</value>
+    <comment>01-04-2023_payments</comment>
+  </data>
+  <data name="Members" xml:space="preserve">
+    <value>Members</value>
+    <comment>29-03-2023_clubsStats</comment>
+  </data>
+  <data name="Enrolls" xml:space="preserve">
+    <value>Enrolls</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Event Location" xml:space="preserve">
+    <value>Event Location</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Event Result Type" xml:space="preserve">
+    <value>Event Result Type</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultPosition" xml:space="preserve">
+    <value>Position</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultScore" xml:space="preserve">
+    <value>Score</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="ResultTime" xml:space="preserve">
+    <value>Time</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="Sponsor" xml:space="preserve">
+    <value>Sponsor</value>
+    <comment>01-04-2023</comment>
+  </data>
+  <data name="PlanCreated" xml:space="preserve">
+    <value>Plan _NAME_ was created</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanDeleteSuccess" xml:space="preserve">
+    <value>Plan _NAME_ was eliminated</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanToggleStatus" xml:space="preserve">
+    <value>Are you sure that you want to change the plan status?</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdated" xml:space="preserve">
+    <value>Plan _NAME_ was updated</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdateStatusDisabled" xml:space="preserve">
+    <value>Plan _NAME_ was disabled</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="PlanUpdateStatusEnabled" xml:space="preserve">
+    <value>Plan _NAME_ was activated</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Disable" xml:space="preserve">
+    <value>Disable</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Enabled" xml:space="preserve">
+    <value>Enabled</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Back to List" xml:space="preserve">
+    <value>Back to List</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Create Plan" xml:space="preserve">
+    <value>Create Plan</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Edit Plan" xml:space="preserve">
+    <value>Edit Plan</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Manage Plans" xml:space="preserve">
+    <value>Manage Plans</value>
+    <comment>31-03-2023_backoffice</comment>
+  </data>
+  <data name="Added_To_Team" xml:space="preserve">
+    <value>Added To Team</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Athletes_Number_Almost_Full" xml:space="preserve">
+    <value>Athletes Number Almost Full</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Club_Edited" xml:space="preserve">
+    <value>Club Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Club_Quota_Update" xml:space="preserve">
+    <value>Club Quota Update</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Canceled" xml:space="preserve">
+    <value>Event Canceled</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Created" xml:space="preserve">
+    <value>Event Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Event_Edited" xml:space="preserve">
+    <value>Event Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Assigned" xml:space="preserve">
+    <value>Goal Assigned</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Completed" xml:space="preserve">
+    <value>Goal Completed</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Deleted" xml:space="preserve">
+    <value>Goal Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal_Edited" xml:space="preserve">
+    <value>Goal Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="MealPlan_Assigned" xml:space="preserve">
+    <value>Meal Plan Assigned</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="MealPlan_Deleted" xml:space="preserve">
+    <value>Meal Plan Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="MealPlan_Edited" xml:space="preserve">
+    <value>Meal Plan Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="NotificationsSettings" xml:space="preserve">
+    <value>Notification Settings</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Payment_Late" xml:space="preserve">
+    <value>Payment Late</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Payment_Received" xml:space="preserve">
+    <value>Payment Received</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Plan_Descontinued" xml:space="preserve">
+    <value>Plan Descontinued</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Removed_From_Team" xml:space="preserve">
+    <value>Removed From Team</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Canceled" xml:space="preserve">
+    <value>Subscription Canceled</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Expired" xml:space="preserve">
+    <value>Subscription Expired</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Extended" xml:space="preserve">
+    <value>Subscription Extended</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Renewed" xml:space="preserve">
+    <value>Subscription Renewed</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subscription_Started" xml:space="preserve">
+    <value>Subscription Started</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Team_Created" xml:space="preserve">
+    <value>Team Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Team_Deleted" xml:space="preserve">
+    <value>Team Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Team_Edited" xml:space="preserve">
+    <value>Team Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan_Assigned" xml:space="preserve">
+    <value>Training Plan Assigned</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan_Deleted" xml:space="preserve">
+    <value>Training Plan Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="TrainingPlan_Edited" xml:space="preserve">
+    <value>Training Plan Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PlanCreated" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;New plan created template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            New _PLANTYPE_ Created&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;A new _PLANTYPE_ has been created for you by _TRAINER_. You can check the _PLANTYPE_ by clicking the button.
+                                            If you have any questions or need more information, please contact the trainer _TRAINER_.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt; &lt;a
+                                            href="_PLANURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See _PLANTYPE_&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PlanCreated" xml:space="preserve">
+    <value>Plan Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PlanDeleted" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Deleted plan template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            _PLANTYPE_ Deleted&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                            &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;
+                                                 Hello _USERNAME_!&lt;br&gt;&lt;br&gt;We would like to inform you that your _PLANTYPE_ with the name _PLANNAME_ has been deleted by _TRAINER_.
+                                                If you have any questions or need more information, please contact the trainer _TRAINER_.&lt;br&gt;&lt;br&gt;&lt;/p&gt; 
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PlanEdited" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Edited plan template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            _PLANTYPE_ Edited&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                            &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;
+                                                Hello _USERNAME_!
+                                                We would like to inform you that your _PLANTYPE_ has been edited by _TRAINER_. You can check the changes below by clicking the button.
+                                                If you have any questions or need more information, please contact the trainer _TRAINER_.&lt;br&gt;&lt;br&gt;&lt;/p&gt; &lt;a
+                                            href="_PLANURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See _PLANTYPE_&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PlanDeleted" xml:space="preserve">
+    <value>Plan Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PlanEdited" xml:space="preserve">
+    <value>Plan Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_GoalCreated" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;New goal created template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            New Goal Created&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;A new Goal has been created for you by _TRAINER_. You can check the Goal details by clicking the button.
+                                            If you have any questions or need more information, please contact the trainer _TRAINER_.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt; &lt;a
+                                            href="_GOALURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See Goal details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_GoalDeleted" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Goal deleted template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Goal Deleted&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The _GOALNAME_ was deleted by the trainer _TRAINER_.
+                                            If you have any questions or need more information, please contact the trainer _TRAINER_.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_GoalEdited" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Goal edited template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Goal Edited&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The _GOALNAME_ has been edited by _TRAINER_. You can check the new Goal details by clicking the button.
+                                            If you have any questions or need more information, please contact the trainer _TRAINER_.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt; &lt;a
+                                            href="_GOALURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See Goal details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Goal" xml:space="preserve">
+    <value>Goal</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="GoalDetails" xml:space="preserve">
+    <value>Goal Details</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_GoalCompleted" xml:space="preserve">
+    <value>Goal Completed</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_GoalCreated" xml:space="preserve">
+    <value>Goal Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_GoalEdited" xml:space="preserve">
+    <value>Goal Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_GoalDeleted" xml:space="preserve">
+    <value>Goal Deleted</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_GoalCompleted" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Goal completed template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Goal Completed&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The _GOALNAME_ was completed by the _ATHLETE_. You can check the Goal details by clicking the button.
+                                            If you have any questions or need more information, please contact the athlete _ATHLETE_.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_GOALURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See Goal details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventCanceled" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event Canceled template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Event Canceled&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The event _EVENTNAME_ that was created by the club _CLUBNAME_ has been canceled. If you have any questions or need more information, please contact _CLUBNAME_.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventCreated" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event created template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Event Created&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The event _EVENTNAME_ has been created by the club _CLUBNAME_. You can check the Event details by clicking the button.
+                                            If you have any questions or need more information, please contact the event creator.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_EVENTURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See event details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventEdited" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event Edited template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Event Edited&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The event _EVENTNAME_ has been edited by _CLUBNAME_. You can check the new Event details by clicking the button.
+                                            If you have any questions or need more information, please contact the club _CLUBNAME_. 
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_EVENTURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See event details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_TeamAdded" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Added to Team template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Added to a Team&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;You have been added to the _TEAMNAME_ by the trainer _TRAINER_. You can check the Team details by clicking the button.
+                                            If you have any questions or need more information, please contact the trainer _TRAINER_.&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_TEAMURL_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See team details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_TeamRemoved" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Removed from a Team template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Removed from a team&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;You have been removed from the team _TEAMNAME_ by the trainer _TRAINER_. If you have any questions or need more information, please contact the Trainer _TRAINER_.                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventCanceled" xml:space="preserve">
+    <value>Event Canceled</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventCreated" xml:space="preserve">
+    <value>Event Created</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventEdited" xml:space="preserve">
+    <value>Event Edited</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_TeamAdded" xml:space="preserve">
+    <value>Added to a Team </value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_TeamRemoved" xml:space="preserve">
+    <value>Removed from a Team </value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_AthletesNumberAlmostFull" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Athletes Number Almost Full template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Athletes Number Almost Full&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_! &lt;br&gt;&lt;br&gt;Your _CLUBNAME_ club's plan capacity is close to the maximum athlete limit (_SLOTS_USED_ of _SLOTS_TOTAL_, equivalent to _PERCENT_USED_). You should consider upgrading your plan. If you have any questions or need more information, please contact us.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PaymentLate" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Athletes Number Almost Full template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Athletes Number Almost Full&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_! &lt;br&gt;&lt;br&gt;Your _CLUBNAME_ club's plan capacity is close to the maximum athlete limit (_SLOTS_USED_ of _SLOTS_TOTAL_, equivalent to _PERCENT_USED_). You should consider upgrading your plan. If you have any questions or need more information, please contact us.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Payment Late template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;Payment Late&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_! &lt;br&gt;We remind you that your _PRODUCT_ payment is overdue.&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                        href="_ID_"
+                                        style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                         font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;Payment Details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PaymentReceived" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Payment Received template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Payment Received&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The product _PRODUCT_ with the value _VALUE_ was successfully paid.&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionCanceled" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscription Canceled Template.&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscription Canceled&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;Your subscription to _PRODUCT_ with the value of _VALUE_/_FREQUENCY_, has been canceled.
+                                            If you have any questions or need more information, please contact us.
+                                            &lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionExpiredClubPlan" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscription Expedired Club Plan template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscription Expedired Club Plan&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The subscription of the _PRODUCT_ for club _CLUBNAME_, with the value _VALUE_/_FREQUENCY_, has expired, causing your club to be suspended.
+                                             If you have any questions or need more information, please contact us.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See subscription details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionExpiredPartner" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscription Expedired Partner template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscription Expedired Partner&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The subscription of _PRODUCT_ , with the value _VALUE_/_FREQUENCY_, has expired. Therefore, you have been removed as a partner of this club.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See subscription details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionRenewed" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscription renewed template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscription Renewed&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;Your _PRODUCT_ subscription has been renewed with a _FREQUENCY_ frequency. If you wish to keep the subscription you will need to pay _VALUE_ on _NEXTDATE_. You can check your subscription status by clicking the button.                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See subscription details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionStarted" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscription started template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscription Started&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;You have started a _PRODUCT_ subscription. This subscription has a _FREQUENCY_ frequency and has a cost of _VALUE_. You can check your subscription status by clicking the button.
+                                            If you have any questions or need more information, please contact us.&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See subscription details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_AthletesNumberAlmostFull" xml:space="preserve">
+    <value>Athletes Number Almost Full</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PaymentLate" xml:space="preserve">
+    <value>Payment Late</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PaymentReceived" xml:space="preserve">
+    <value>Payment Received</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionCanceled" xml:space="preserve">
+    <value>Subscription Canceled</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionExpiredClubPlan" xml:space="preserve">
+    <value>Subscription ClubPlan Expired </value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionExtended" xml:space="preserve">
+    <value>Subscription Extended</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionRenewed" xml:space="preserve">
+    <value>Subscription Renewed</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionStarted" xml:space="preserve">
+    <value>Subscription Started</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_PlanDiscontinued" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Plan Discontinued template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Plan Discontinued&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello
+                                            _USERNAME_!&lt;br&gt;&lt;br&gt;The product _PRODUCT_, with the value of _VALUE_, has ben discontinued.
+                                            If you have any questions or need more information, please contact us.
+                                            &lt;br&gt;&lt;/p&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_PlanDiscontinued" xml:space="preserve">
+    <value>Plan Discontinued</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventJoinedConfirm" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event Joined Confirm template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            
+Event Joined Confirm&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;
+Hello _USERNAME_!&lt;br&gt;&lt;br&gt;Your enrollment for the _NAME_ event was successful. If you have any questions or need more information, please contact the organizing club.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See event details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventJoinedPayed" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event Joined Payed template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Event Joined Payed&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_!&lt;br&gt;&lt;br&gt;To guarantee your place in the _NAME_ event, you will have to settle the payment of the fee in the amount of _FEE_, within the next 4 hours, otherwise your registration will be cancelled.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See event details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventLeft" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event Left template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            
+Event Left&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;
+Hello _USERNAME_!&lt;br&gt;&lt;br&gt;You have successfuly left the _NAME_ event.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See event details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_EventLeftMissingPay" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Event Left Missing Pay template&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;          
+Event Left Missing Pay&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_!&lt;br&gt;&lt;br&gt;You have been removed from the _NAME_ event for not having paid the required _FEE_ amount within the four hour time limit. If you have any questions or need more information, please contact us.&lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See event details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionRenewTime" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscription Renew Time&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscription Renew Time&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_! &lt;br&gt; Knowing that the subscription of _PRODUCT_ with the frequency of _FREQUENCY_ is ending (_LIMITDATE_), given the settings agreed by you, you need to pay _VALUE_ to keep the subscription active. To automatically renew this subscription, click on the enable button. If you have any questions or need more information, please contact us.
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See Subscription details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Email_SubscriptionRenewTimeAuto" xml:space="preserve">
+    <value>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+
+&lt;head&gt;
+    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
+    &lt;title&gt;Subscription Renew Time Auto&lt;/title&gt;
+    &lt;meta name="description" content="Reset Password Email Template."&gt;
+    &lt;style type="text/css"&gt;
+        a:hover {
+            text-decoration: underline !important;
+        }
+    &lt;/style&gt;
+&lt;/head&gt;
+
+&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
+    &lt;!--100% body table--&gt;
+    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
+        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
+        &lt;tr&gt;
+            &lt;td&gt;
+                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
+                    align="center" cellpadding="0" cellspacing="0"&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
+                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
+                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                    &lt;tr&gt;
+                        &lt;td&gt;
+                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
+                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="padding:0 35px;"&gt;
+                                        &lt;h1
+                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
+                                            Subscription Renew Time Auto&lt;/h1&gt; &lt;span
+                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
+                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_! &lt;br&gt;&lt;br&gt; Knowing that the subscription of _PRODUCT_ with the frequency of _FREQUENCY_ is ending (_LIMITDATE_), given the settings agreed by you, we will proceed with the automatic subscription in the amount of _VALUE_. If you have any questions or need more information, please contact us."
+                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;&lt;a
+                                            href="_ID_"
+                                            style="background:#20e277;text-decoration:none !important; font-weight:500; margin-top:35px; color:#fff;text-transform:uppercase;
+                                             font-size:14px;padding:10px 24px;display:inline-block;border-radius:50px;"&gt;See Subscription details&lt;/a&gt;
+                                    &lt;/td&gt;
+                                &lt;/tr&gt;
+                                &lt;tr&gt;
+                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
+                                &lt;/tr&gt;
+                            &lt;/table&gt;
+                        &lt;/td&gt;
+                    &lt;tr&gt;
+                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
+                    &lt;/tr&gt;
+                &lt;/table&gt;
+            &lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/table&gt; &lt;!--/100% body table--&gt;
+&lt;/body&gt;
+
+&lt;/html&gt;</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventJoinedConfirm" xml:space="preserve">
+    <value>Event Joined Confirm</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventJoinedPayed" xml:space="preserve">
+    <value>Event Joined Payed</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventLeft" xml:space="preserve">
+    <value>Event Left</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_EventLeftMissingPay" xml:space="preserve">
+    <value>Event Left Missing Pay</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionRenewTime" xml:space="preserve">
+    <value>Subscription Renew Time</value>
+    <comment>31-03-2023_notifications</comment>
+  </data>
+  <data name="Subject_SubscriptionRenewTimeAuto" xml:space="preserve">
+    <value>Subscription Renew Time Auto</value>
+    <comment>31-03-2023_notifications</comment>
   </data>
 </root>

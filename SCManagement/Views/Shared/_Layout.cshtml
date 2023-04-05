@@ -5,6 +5,17 @@
 @inject SCManagement.Services.UserService.IUserService UserService
 <!DOCTYPE html>
 <html lang="en">
+<style>
+    #confirmedToast {
+        position: fixed;
+        top: 10%;
+        left: 0;
+        border: 1px solid #00639A;
+        border-right: 8px solid #00639A;
+        transform: translateY(-100px);
+        animation: slideRight 1s ease forwards .5s;
+    }
+</style>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -38,7 +49,10 @@
                         @{
                             var isSignedIn = SignInManager.IsSignedIn(User);
                             var userId = isSignedIn ? UserManager.GetUserId(User) : null;
-                            var isTrainer = string.IsNullOrEmpty(userId) ? false : UserService.IsTrainerInAnyClub(userId).Result;
+                            var isStaff = string.IsNullOrEmpty(userId) ? false : UserService.IsStaffInAnyClub(userId).Result;
+                            var isSystemAdmin = string.IsNullOrEmpty(userId) ? false : UserService.UserIsAdmin(userId).Result;
+                            var isAthlete = string.IsNullOrEmpty(userId) ? false : UserService.IsAtleteInAnyClub(userId).Result;
+                            var user = isSignedIn ? UserManager.GetUserAsync(User).Result : null;
                         }
 
                         @if (isSignedIn)
@@ -76,7 +90,7 @@
 
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Events" asp-action="Index">@StringLocalizer["Events"]</a>
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["Club Plans"]</a>
-                            @if (isTrainer)
+                            @if (isStaff)
                             {
                                 <div class="dropdown nav-item d-none d-md-block" id="dropdown3">
                                     <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">@StringLocalizer["Trainer Zone"]</a>
@@ -90,15 +104,49 @@
                                     </ul>
                                 </div>
                             }
-                            <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="About">@StringLocalizer["About Us"]</a>
+
+                            @if (isAthlete)
+                            {
+                                <a class="btn nav-item nav-link text-to-dark" asp-controller="MyZone" asp-action="Index">@StringLocalizer["MyZone"]</a>
+                            }
+
+                            @if (isSystemAdmin)
+                            {
+                                <div class="dropdown nav-item d-none d-md-block" id="dropdown4">
+                                    <a class="btn nav-item nav-link text-to-dark" style="color:black;" data-bs-toggle="dropdown" aria-expanded="false">@StringLocalizer["Backoffice"]</a>
+                                    <ul class="dropdown-menu dropdown-menu2 nav-item shadow" id="dropdownMenu3" style="margin-top: 16px; border:none; border-radius:0;">
+                                        <li style="padding: 5px;">
+                                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Backoffice" asp-action="Index">@StringLocalizer["Stats"]</a>
+                                        </li>
+                                        <li style="padding: 5px;">
+                                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Backoffice" asp-action="Operations">@StringLocalizer["Operations"]</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            }
 
                             <hr />
                             <div class="dropdown d-block d-md-none nav-item">
                                 <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false">
                                     More
                                 </a>
-                                <ul class="dropdown-menu dropdown-menu-full" role="menu" id="Dropdown">
-                                    <li style="padding: 5px;">
+                                <ul class="dropdown-menu dropdown-menu-full" style="border-bottom:none !important; margin-top:0;" role="menu" id="Dropdown">
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title=@StringLocalizer["Profile"]>@user?.FullName</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="Settings">@StringLocalizer["Settings"]</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="TermsAndConditions">@StringLocalizer["Terms&Conditions"]</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Payment" asp-action="Index">@StringLocalizer["Wallet"]</a>
+                                    </li>
+                                    <li class="dropdown-item" style="padding: 5px;">
+                                        <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-controller="Subscription" asp-action="Index">@StringLocalizer["Subscriptions"]</a>
+                                    </li>
+                                    <li class="mt-2" style="padding: 5px;">
                                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg text-to-dark"></i>
                                         <label class="text-to-dark">DarkMode</label>
                                         <label class="switch" style="margin-left: 10px;">
@@ -106,18 +154,16 @@
                                             <span class="slider round"></span>
                                         </label>
                                     </li>
-                                    <li class="dropdown-item" style="padding: 5px;">
+                                    <li class="mt-2" style="padding: 5px;">
                                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-earth-americas text-to-dark"></i>
                                         <label class="col-auto">
                                             @await Component.InvokeAsync("CulturePicker")
                                         </label>
                                     </li>
-                                    <li class="text-to-dark" style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
-                                    <li class="dropdown-item d-flex justify-content-center" style="padding: 5px;">
-                                        <div class="w-25">
+                                    <li class="mt-2 d-flex justify-content-center align-items-center w-100" style="padding: 5px;">
+                                        <div class="w-auto">
                                             @await Component.InvokeAsync("UserClubContext")
                                         </div>
-
                                     </li>
                                 </ul>
                             </div>
@@ -134,7 +180,7 @@
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Events" asp-action="Index">@StringLocalizer["Events"]</a>
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Clubs" asp-action="Plans">@StringLocalizer["Club Plans"]</a>
                             <a class="btn nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="About">@StringLocalizer["About Us"]</a>
-
+                            <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="TermsAndConditions">@StringLocalizer["Terms&Conditions"]</a>
                             <hr />
                             <div class="dropdown d-block d-md-none nav-item">
                                 <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false">
@@ -175,6 +221,14 @@
 
     </header>
     <div class="container-fluid p-0">
+        <div id="confirmedToast" class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <strong id="confirmedText">Confirmed</strong>
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+            </div>
+        </div>
         <main role="main" class="pb-3" style="margin-top:70px !important; ">
             @RenderBody()
         </main>
@@ -207,6 +261,14 @@
 
         if (document.getElementById("dropdown3") != null)
             document.getElementById("dropdown3").classList.add("dropdown");
+
+        if (document.getElementById("dropdown4") != null)
+            document.getElementById("dropdown4").classList.add("dropdown");
+
+        function closeToast() {
+            $("#confirmedToast").hide();
+        }
+        
     </script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

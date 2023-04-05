@@ -1,0 +1,96 @@
+﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "Operations";
+}
+
+<style>
+    .flip-card {
+        min-width:170px;
+        min-height: 200px;
+        width: 100% !important;
+        height: 100% !important;
+        perspective: 1000px;
+        border-radius: 20px;
+        opacity: 0;
+        animation: slideUp 1.5s ease forwards .5s;
+    }
+
+    .flip-card-inner:hover {
+        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+    }
+
+    .flip-card-inner {
+        padding: 30px;
+        width: 100% !important;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        height: 100% !important;
+        text-align: center;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        border-radius: 20px;
+    }
+    h1 {
+        opacity: 0;
+        animation: slideUp 1.5s ease forwards .5s;
+    }
+        .flip-card-inner:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+        }
+</style>
+<div class="container w-100">
+    <div class="d-flex justify-content-center w-100" style="margin-top:150px !important; text-align: center;">
+        <h1 class="text-to-dark">@StringLocalizer["Operations"]</h1>
+    </div>
+    <hr />
+    <div class="d-flex row justify-content-evenly text-center">
+        <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
+            <a asp-controller="Backoffice" asp-action="UserAccess" style="text-decoration:none;">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="circle" id="circle1" title="@StringLocalizer["UserAccess"]">
+                                <div style="text-align: center; width:90%;">
+                                    <span class="text-black fw-bold text-wrap fs-5" style="text-align: center"> @StringLocalizer["UserAccess"]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
+            <a asp-controller="Backoffice" asp-action="Modalities" style="text-decoration:none;">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class=" d-flex justify-content-center align-items-center">
+                            <div class="circle" id="circle1" title="@StringLocalizer["Modalities"]">
+                                <div style="text-align: center; width:90%;">
+                                    <span class="text-black fw-bold text-wrap fs-5" style="text-align: center">@StringLocalizer["Modalities"]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
+            <a asp-controller="Backoffice" asp-action="ManagePlans" style="text-decoration:none;">
+                <div class="flip-card">
+                    <div class="flip-card-inner">
+                        <div class="d-flex justify-content-center align-items-center">
+                            <div class="circle" id="circle1" title="@StringLocalizer["ManagePlans"]">
+                                <div style="text-align: center; width:90%;">
+                                    <span class="text-black fw-bold fs-5" style="text-align: center;">@StringLocalizer["ManagePlans"]</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

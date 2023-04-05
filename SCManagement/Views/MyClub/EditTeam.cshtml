@@ -1,26 +1,26 @@
 ﻿@model SCManagement.Controllers.MyClubController.TeamModel
 @inject IStringLocalizer<SharedResource> StringLocalizer
 @{
-    ViewData["Title"] = "EditTeam";
+    ViewData["Title"] = @StringLocalizer["EditTeam"];
 }
 
 <div class="container-fluid ps-5 pe-5">
     <div id="modal" class="modal">
         <div class="modal-content">
             <span onclick="$('#modal').hide()" class="close">&times;</span>
-            <div id="modal-inner-content">
+            <div id="modal-inner-content" class="text-to-dark">
             </div>
         </div>
     </div>
     <h1 style="margin-top:130px !important;" class="text-to-dark">@Html.DisplayFor(model => model.Name)</h1>
-    <a asp-action="TeamList">Voltar</a>
+    <a asp-action="TeamList" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary">@StringLocalizer["Back"]</a>
     <hr />
     <div class="row">
         <div class="col-md-4">
             <form asp-action="EditTeam">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Id" />
-                <input type="hidden" asp-for="TrainerId" />
+                
                 <div class="form-floating" style="margin-bottom:20px;">
                     <input asp-for="Name" class="form-control" />
                     <label asp-for="Name" class="control-label"></label>
@@ -32,26 +32,33 @@
                     <span asp-validation-for="ModalityId" class="text-danger"></span>
                 </div>
                 <div class="form-floating" style="margin-bottom:20px;">
-                    <a disabled class="form-control">@Model.Trainer.FullName</a>
+                    @if(ViewBag.IsManager != null && ViewBag.IsManager == true){
+                        <select asp-for="TrainerId" data-placeholder=@StringLocalizer["Choose trainer"] class="form-control" asp-items="ViewBag.ClubTrainers"></select>
+                        <span asp-validation-for="TrainerId" class="text-danger"></span>
+                    }else
+                    {
+                        <a disabled class="form-control">@Model.Trainer.FullName</a>
+                        <input type="hidden" asp-for="TrainerId" />
+                    }
                     <label asp-for="Trainer" class="control-label"></label>
                 </div>
                 <div class="form-floating">
-                    <input type="submit" value="Save" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary" />
+                    <input type="submit" value=@StringLocalizer["Save"] style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary" />
                 </div>
             </form>
         </div>
     </div>
     <div class="card mt-3 shadow" style="height:650px !important;  border-radius:20px;">
         <div class="card-body">
-            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">Add Athlete </a>
+            <a onclick="openCreate()" style="border-radius: 10px; background-color: #00639A; border-color: #00639A;" class="btn btn-primary mb-3">@StringLocalizer["AddAthlete"] </a>
             <table id="table_id" class="display">
                 <thead>
                     <tr>
                         <th class="text-to-dark">
-                            Name
+                            @StringLocalizer["Name"]
                         </th>
                         <th class="text-to-dark">
-                            Age
+                            @StringLocalizer["Age"]
                         </th>
                         <th></th>
                     </tr>
@@ -61,11 +68,11 @@
                     {
                         @foreach (var item in Model.Athletes)
                         {
-                            <tr onclick="openDetails('@item.Id')" style="cursor:pointer">
-                                <td class="text-to-dark">
+                            <tr style="cursor:pointer">
+                                <td onclick="openDetails('@item.Id')" class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.FullName)
                                 </td>
-                                <td class="text-to-dark">
+                                <td onclick="openDetails('@item.Id')" class="text-to-dark">
                                     @Html.DisplayFor(modelItem => item.Age)
                                 </td>
                                 <td class="d-flex justify-content-end">
@@ -73,7 +80,7 @@
                                         <input name="athleteId" value="@item.Id" class="form-control" hidden />
                                         <input name="teamId" value="@Model.Id" class="form-control" hidden />
                                         <input name="page" value="EditTeam" class="form-control" hidden />
-                                        <input type="submit" value="Remove" style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
+                                        <input type="submit" value=@StringLocalizer["Remove"] style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
                                     </form>
                                 </td>
                             </tr>
@@ -92,6 +99,7 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
     <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
     <script type="text/javascript">
         let modal = document.getElementById("modal")
         window.onclick = function (event) {
@@ -104,8 +112,25 @@
             $("#table_id").DataTable({
                 columnDefs: [
                     { orderable: false, targets: [-1] }
-                ]
+                ],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
             });
+        setTheme(localStorage.getItem("theme") || "light")
         });
         function openCreate() {
             $.ajax({

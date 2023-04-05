@@ -35,7 +35,9 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> Index(string? subId)
         {
             ViewBag.SubId = subId;
+            ViewBag.InnerError = TempData["InnerError"];
             ViewBag.Error = TempData["Error"];
+            ViewBag.Message = TempData["Message"];
             return View(await _paymentService.GetSubscriptions(getUserIdFromAuthedUser()));
         }
 
@@ -52,34 +54,53 @@ namespace SCManagement.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateAutoRenew(int? id)
         {
-            if (id == null) return PartialView("_CustomErrorPartial", "Error_NotFound"); ;
+            if (id == null)
+            {
+                TempData["Error"] = "Error_NotFound_Title";
+                return RedirectToAction(nameof(Index));
+            }
 
             var sub = await _paymentService.GetSubscription((int)id);
-            if (sub == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
+            if (sub == null)
+            {
+                TempData["Error"] = "Error_NotFound_Title";
+                return RedirectToAction(nameof(Index));
+            }
 
             if (sub.AutoRenew)
             {
                 await _paymentService.CancelAutoSubscription(sub.Id);
+                TempData["Message"] = "SubCancelAutoSuccess";
             }
             else
             {
                 await _paymentService.SetSubscriptionToAuto(sub.Id);
+                TempData["Message"] = "SubEnableAutoSuccess";
             }
 
-            return Json(new { status = "ok" });
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
         public async Task<IActionResult> Cancel(int? id)
         {
-            if (id == null) return Json(new { status = "not ok" });
+            if (id == null)
+            {
+                TempData["Error"] = "Error_NotFound_Title";
+                return RedirectToAction(nameof(Index));
+            }
 
             var sub = await _paymentService.GetSubscription((int)id);
-            if (sub == null || sub.UserId != getUserIdFromAuthedUser()) return Json(new { status = "not ok" });
+            if (sub == null || sub.UserId != getUserIdFromAuthedUser())
+            {
+                TempData["Error"] = "Error_NotFound_Title";
+                return RedirectToAction(nameof(Index));
+            }
 
             await _paymentService.CancelSubscription(sub.Id);
+            TempData["Message"] = "SubCancelSuccess";
 
-            return Json(new { status = "ok" });
+            return RedirectToAction(nameof(Index));
         }
 
         [HttpPost]
@@ -87,15 +108,15 @@ namespace SCManagement.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["Error"] = "Null SubId or PlanId";
-                return RedirectToAction("Index", new { subId = plan.SubscriptionId });
+                TempData["InnerError"] = "Null SubId or PlanId";
+                return RedirectToAction(nameof(Index), new { subId = plan.SubscriptionId });
             };
 
             var sub = await _paymentService.GetSubscription(plan.SubscriptionId);
             if (sub == null || sub.UserId != getUserIdFromAuthedUser())
             {
-                TempData["Error"] = "Invalid subscription";
-                return RedirectToAction("Index", new { subId = plan.SubscriptionId });
+                TempData["InnerError"] = "Invalid subscription";
+                return RedirectToAction(nameof(Index), new { subId = plan.SubscriptionId });
             };
 
             try
@@ -104,11 +125,11 @@ namespace SCManagement.Controllers
             }
             catch (Exception ex)
             {
-                TempData["Error"] = ex.Message;
-                return RedirectToAction("Index", new { subId = plan.SubscriptionId });
+                TempData["InnerError"] = ex.Message;
+                return RedirectToAction(nameof(Index), new { subId = plan.SubscriptionId });
             }
 
-            return RedirectToAction("Index", new { subId = plan.SubscriptionId });
+            return RedirectToAction(nameof(Index), new { subId = plan.SubscriptionId });
         }
 
         public async Task<IActionResult> PlansPartial(int id)

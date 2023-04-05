@@ -1,6 +1,11 @@
 ﻿@inject IStringLocalizer<SharedResource> StringLocalizer
 @model IEnumerable<SCManagement.Models.Team>
 
+@{
+    ViewData["Title"] = @StringLocalizer["MyZone"];
+    string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+}
+
 <style>
     .buttons, .btn-outline-primary {
         color: white;
@@ -19,6 +24,7 @@
         }
         
 </style>
+
 
 <div class="container-fluid ps-5 pe-5">
     <div class="d-flex justify-content-between align-items-center" style="margin-top:130px !important;">
@@ -52,27 +58,27 @@
                 <tbody id ="teamsBody">
                     @foreach (var teams in Model)
                     {
-                        <div id="modal" class="modal">
-                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
+                        <div id="team-@teams.Id-Training" class="modal">
+                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
                                 <div id="modal-inner-content">
-                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
-                                    <span onclick="$('#modal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
+                                    <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                    <span onclick="$('#team-@teams.Id-Training').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-teamId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseTrainingTeamTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTeamTrainingPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseTrainingTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         @*Meal modal*@
-                        <div id="modal1" class="modal">
-                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
+                        <div id="team-@teams.Id-Meal" class="modal">
+                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
                                 <div id="modal-inner-content">
-                                    <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
-                                    <span onclick="$('#modal1').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
+                                    <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                    <span onclick="$('#team-@teams.Id-Meal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-teamId="@teams.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseMealTeamTemplates" asp-route-id="@teams.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTeamMealPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseMealTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -82,20 +88,20 @@
                                 @Html.DisplayFor(model => teams.Name)
                             </td>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(model => teams.Modality.Name)
+                                @Html.DisplayFor(model => teams.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="toggleModal()">@StringLocalizer["Add"]</a>
+                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Training').show();">@StringLocalizer["Add"]</a>
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="toggleModal1()">@StringLocalizer["Add"]</a>
+                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Meal').show();">@StringLocalizer["Add"]</a>
                             </td>
                         </tr>
 
                         @foreach (var athlete in teams.Athletes)
                         {
-                            <tr class="athletes">
-                                <td>
+                            <tr>
+                                <td class="athletes" onclick="openDetails('@athlete.Id')" style="cursor:pointer">
                                     <span class="text-to-dark" style="float:right">@Html.DisplayFor(model => athlete.FullName)</span>
                                 </td>
                                 <td class="text-to-dark">
@@ -121,59 +127,57 @@
                     </tr>
                 </thead>
                 <tbody id="athletesBody" class="d-none">
-                    @foreach (var teams in Model)
+                    @foreach (var athlete in Model.SelectMany(t => t.Athletes).DistinctBy(a => a.Id))
                     {
-                        @foreach (var athlete in teams.Athletes)
-                        {
-                            @*Training modal*@
-                            <div id="modal" class="modal">
-                                <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
-                                    <div id="modal-inner-content">
-                                        <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
-                                        <span onclick="$('#modal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
-                                        <div class="d-flex justify-content-evenly mt-3">
-                                            <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                            <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
-                                        </div>
+                        @*Training modal*@
+                        <div id="AthletesTraining-@athlete.Id" class="modal">
+                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
+                                <div id="modal-inner-content">
+                                    <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                    <span onclick="$('#AthletesTraining-@athlete.Id').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
+                                    <div class="d-flex justify-content-evenly mt-3">
+                                        <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
-                            @*Meal modal*@
-                            <div id="modal1" class="modal">
-                                <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:18%; padding:0;">
-                                    <div id="modal-inner-content">
-                                        <div class="text-to-dark ms-3 mt-1" style="width:100% !important; font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
-                                        <span onclick="$('#modal1').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
-                                        <div class="d-flex justify-content-evenly mt-3">
-                                            <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                            <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
-                                        </div>
+                        </div>
+                        @*Meal modal*@
+                        <div id="AthletesMeal-@athlete.Id" class="modal">
+                            <div class="modal-content p-2" style="margin-top:10%; margin-bottom:0; max-height:20%; max-width:fit-content; padding:0;">
+                                <div id="modal-inner-content">
+                                    <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
+                                    <span onclick="$('#AthletesMeal-@athlete.Id').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
+                                    <div class="d-flex justify-content-evenly mt-3">
+                                        <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <tr class="athletes">
-                                <td>
-                                    <span class="text-to-dark">@Html.DisplayFor(model => athlete.FullName)</span>
-                                </td>
-                                <td class="text-to-dark">
-                                    @Html.DisplayFor(model => athlete.DateOfBirth)
-                                </td>
-                                <td style="text-align:center">
-                                    <a asp-controller="Plans" asp-action="CreateGoal" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["Add"]</a>
-                                    <a asp-controller="Plans" asp-action="GoalsList" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
-                                </td>
-                                <td style="text-align:center">
-                                    <a class="buttons me-2" onclick="toggleModal()">@StringLocalizer["Add"]</a>
-                                    <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
-                                </td>
-                                <td style="text-align:center">
-                                    <a class="buttons me-2" onclick="toggleModal1()">@StringLocalizer["Add"]</a>
-                                    <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
-                                </td>
-                            </tr>
-                        }
+                        <tr class="athletes">
+                            <td class="athletes" onclick="openDetails('@athlete.Id')" style="cursor:pointer">
+                                <span class="text-to-dark">@Html.DisplayFor(model => athlete.FullName)</span>
+                            </td>
+                            <td class="text-to-dark">
+                                @Html.DisplayFor(model => athlete.DateOfBirth)
+                            </td>
+                            <td style="text-align:center">
+                                <a asp-controller="Plans" asp-action="CreateGoal" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["Add"]</a>
+                                <a asp-controller="Plans" asp-action="GoalsList" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
+                            </td>
+                            <td style="text-align:center">
+                                <a class="buttons me-2" onclick="$('#AthletesTraining-@athlete.Id').show();">@StringLocalizer["Add"]</a>
+                                <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
+                            </td>
+                            <td style="text-align:center">
+                                <a class="buttons me-2" onclick="$('#AthletesMeal-@athlete.Id').show();">@StringLocalizer["Add"]</a>
+                                <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
+                            </td>
+                        </tr>
                     }
+                    
                 </tbody>
             </table>
         </div>
@@ -193,7 +197,24 @@
             responsive: true,
             "ordering": false,
             "searching": false,
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
+        setTheme(localStorage.getItem("theme") || "light")
         let atheletes = document.getElementsByClassName('athletes');
         for (let i = 0; i < atheletes.length; i++) {
             atheletes[i].classList.remove("odd");
@@ -206,29 +227,31 @@
     let teamsBody = document.getElementById("teamsBody");
     let athletesHead = document.getElementById("athletesHead");
     let athletesBody = document.getElementById("athletesBody");
-    window.onclick = function (event) {
-        if (event.target == modal) {
-            $("#modal").hide();
-        }
-    }
 
     function openTeams(){
         teamsHead.classList.remove("d-none");
         athletesHead.classList.add("d-none");
         teamsBody.classList.remove("d-none");
         athletesBody.classList.add("d-none");
+        $('.modal').hide();
     }
     function openAthletes() {
         athletesHead.classList.remove("d-none");
         teamsHead.classList.add("d-none");
         athletesBody.classList.remove("d-none");
         teamsBody.classList.add("d-none");
+        $('.modal').hide();
     }
 
-    function toggleModal() {
-        $("#modal").show();
-    }
-    function toggleModal1() {
-        $("#modal1").show();
+    function openDetails(id) {
+        $.ajax({
+            url: `/MyClub/UserDetails/${id}`,
+            type: 'GET',
+            async: false,
+            success: function (result) {
+                $("#modal2-inner-content").html(result);
+                $("#modal2").show();
+            }
+        });
     }
 </script>

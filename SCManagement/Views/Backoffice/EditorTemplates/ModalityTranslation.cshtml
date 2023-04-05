@@ -1,0 +1,15 @@
+﻿@model SCManagement.Models.ModalityTranslation
+@inject IStringLocalizer<SharedResource> StringLocalizer
+
+@{
+    ViewData["Title"] = "ModalityTranslation";
+}
+
+<strong>@StringLocalizer["ModalityName"] @Model.Language</strong>
+
+<div id="@Model.Atribute.ToLower()-@Model.Language" class="form-outline mt-2 @Model.Atribute.ToLower()-lang" style="margin-bottom:20px;">
+    <textarea asp-for="Value" data-lang="@Model.Language" class="w-100" style="border:0; border-radius:5px;"></textarea>
+    @Html.HiddenFor(x => x.Id)
+    @Html.HiddenFor(x => x.Language)
+    @Html.HiddenFor(x => x.Atribute)
+</div>

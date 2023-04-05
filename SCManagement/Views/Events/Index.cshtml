@@ -2,14 +2,16 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = @StringLocalizer["Events"];
 }
 
+<link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
+<link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
 
 <div class="container-fluid ps-5 pe-5">
     <h1 style="margin-top:130px !important;" class="text-to-dark">@StringLocalizer["Events"]</h1>
     <hr />
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important; border-radius:20px;">
         <div class="card-body">
             @if (ViewBag.IsStaff != null && ViewBag.IsStaff == true)
             {
@@ -31,7 +33,7 @@
                 <label for="FilterEvent3" class="text-to-dark">@StringLocalizer["Futures"]</label>
             </div>
 
-            <table id="table_id" class="display" style="width:100%!important;">
+            <table id="table_id" class="display text-to-dark" style="width:100%!important;">
                 <thead>
                     <tr>
                         <th class="text-to-dark">
@@ -44,12 +46,12 @@
                             @Html.DisplayNameFor(model => model.EndDate)
                         </th>
                         <th class="text-to-dark">
-                            @Html.DisplayNameFor(model => model.Club)
+                            @StringLocalizer["CreatedBy"]
                         </th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="text-to-dark">
                     @foreach (var item in Model)
                     {
                         <tr>
@@ -82,42 +84,65 @@
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/Responsive-2.4.0/js/dataTables.responsive.js"></script>
 <script type="text/javascript" charset="utf8" src="/lib/DataTables/datatables.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function () {
-        $.noConflict();
-        $("#table_id").DataTable({
-            responsive: true,
-            columnDefs: [
-                { orderable: false, targets: [-1] }
-            ]
+    $(window).on('load', function () {
+        $(document).ready(function () {
+            $.noConflict();
+            $("#table_id").DataTable({
+                responsive: true,
+                columnDefs: [
+                    { orderable: false, targets: [-1] }
+                ],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
+                initComplete: function (settings, json) {
+                    $('#table_id_wrapper').addClass("text-to-dark");
+                    $("input[aria-controls='table_id']").addClass("text-to-dark");
+                },
+            });
+            setTheme(localStorage.getItem("theme") || "light")
+
+            // Adiciona um evento onchange aos botões de opção
+            let radioButtons = document.querySelectorAll('input[type="radio"][name="FilterEvent"]');
+            for (let i = 0; i < radioButtons.length; i++) {
+                radioButtons[i].addEventListener('change', filterEvents);
+            }
+
+            // Mantém o botão de opção verificado de acordo com o parâmetro "filterEvent" na URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const filterValue = urlParams.get('filterEvent');
+            if (filterValue !== null) {
+                document.getElementById(`FilterEvent${filterValue}`).checked = true;
+            } else {
+                document.getElementById(`FilterEvent0`).checked = true;
+            }
+
         });
 
-        // Adiciona um evento onchange aos botões de opção
-        let radioButtons = document.querySelectorAll('input[type="radio"][name="FilterEvent"]');
-        for (let i = 0; i < radioButtons.length; i++) {
-            radioButtons[i].addEventListener('change', filterEvents);
-        }
+        // Filtra a lista de eventos com base no botão de opção selecionado
+        function filterEvents() {
+            var filterValue = this.value;
+            window.location.href = `/Events/?filterEvent=${filterValue}`;
 
-        // Mantém o botão de opção verificado de acordo com o parâmetro "filterEvent" na URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const filterValue = urlParams.get('filterEvent');
-        if (filterValue !== null) {
-            document.getElementById(`FilterEvent${filterValue}`).checked = true;
-        }else{
-            document.getElementById(`FilterEvent0`).checked = true;
         }
-
-        let table_id_info = document.getElementById("table_id_info");
-        table_id_info.classList.add("text-to-dark");
+    
     });
+    
 
-    // Filtra a lista de eventos com base no botão de opção selecionado
-    function filterEvents() {
-        var filterValue = this.value;
-        window.location.href = `/Events/?filterEvent=${ filterValue }`;
-           
-    }
-    
-    
+
 </script>
 
 
@@ -128,4 +153,4 @@
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-}
+    }

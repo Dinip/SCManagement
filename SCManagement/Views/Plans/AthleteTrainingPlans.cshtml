@@ -2,26 +2,14 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "TrainingPlans";
+    ViewData["Title"] = @StringLocalizer["AthleteTrainingPlans"];
+    string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
 <div class="container-fluid ps-5 pe-5">
-    @if (ViewBag.IsTemplate)
-    {
-        <h1 style="margin-top:130px !important;" class="text-to-dark">Training Plans</h1>
-    }
-    else
-    {
-        <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Training Plans</h1>
-    }
+    <h1 style="margin-top:130px !important;" class="text-to-dark">@ViewBag.AthleteName Training Plans</h1>
     <hr />
-    <div class="card mt-5 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-5 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
-            @if (ViewBag.IsTemplate)
-            {
-                <div class="mb-4 mt-2">
-                    <a asp-route-isTemplate="true" asp-action="CreateTrainingPlan" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Create New Template</a>
-                </div>
-            }
             <table id="table_id" class="display">
                 <thead>
                     <tr>
@@ -45,7 +33,7 @@
                     {
                         <tr>
                             <td class="text-to-dark">
-                                @Html.DisplayFor(modelItem => item.Modality.Name)
+                                @Html.DisplayFor(modelItem => item.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
                             </td>
                             <td class="text-to-dark">
                                 @Html.DisplayFor(modelItem => item.Name)
@@ -86,7 +74,24 @@
             responsive: true,
             columnDefs: [
                 { orderable: false, targets: [-1] }
-            ]
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
+        setTheme(localStorage.getItem("theme") || "light")
     });
 </script>

@@ -2,7 +2,8 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = Model.Name + "Details";
+    ViewData["Title"] = Model.Name + @StringLocalizer["Details"];
+    string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
 }
 
 <div id="modal" class="modal">
@@ -32,7 +33,7 @@
                 @Html.DisplayNameFor(model => model.Modality)
             </dt>
             <dd class="col-sm-10 text-to-dark">
-                @Html.DisplayFor(model => model.Modality.Name)
+                @Html.DisplayFor(model => model.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
             </dd>
             <dt class="col-sm-2 text-to-dark">
                 @Html.DisplayNameFor(model => model.Trainer)
@@ -97,9 +98,26 @@
         $("#table_id").DataTable({
             columnDefs: [
                 { orderable: false, targets: [-1] }
-            ]
+            ],
+                language: {
+                    "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                    "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                    "search": "@StringLocalizer["Search"]",
+                    "zeroRecords": "@StringLocalizer["NoMatching"]",
+                    "processing": "@StringLocalizer["Processing"]",
+                    "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                    "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                    "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                    "paginate": {
+                        first: "@StringLocalizer["First"]",
+                        last: "@StringLocalizer["Last"]",
+                        next: "@StringLocalizer["Next"]",
+                        previous: "@StringLocalizer["Previous"]",
+                    },
+                },
         });
         document.getElementById("btn-back").setAttribute("href", `${document.referrer.toString().toLowerCase().includes('teamlist') ? '/MyClub/TeamList' : '/MyClub/MyTeams'}`)
+        setTheme(localStorage.getItem("theme") || "light")
     });
 
     function openDetails(id) {

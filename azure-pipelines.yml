@@ -8,23 +8,46 @@ trigger:
   - sprint4
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'windows-latest'
 
 variables:
   buildConfiguration: 'Release'
 
 steps:
+- task: UseDotNet@2
+  displayName: 'Install DotNet 6.0.x'
+  inputs:
+    version: '6.0.x'
+    includePreviewVersions: true
+
+- task: NuGetToolInstaller@1
+  displayName: 'Install NuGetTool'
+
 - script: dotnet restore
   displayName: 'dotnet restore'
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
+- task: AzureKeyVault@2
+  inputs:
+    azureSubscription: 'Azure for Students (f23e2eb0-6c83-45fa-bdef-24179a185f43)'
+    KeyVaultName: 'scmanagement-dev'
+    SecretsFilter: '*'
+    RunAsPreJob: false
+
+- task: FileTransform@1
+  displayName: 'Set Unit Tests Settings'
+  inputs:
+    folderPath: '$(System.DefaultWorkingDirectory)'
+    fileType: 'json'
+    targetFiles: '**/appsettings.json'
+
 - task: DotNetCoreCLI@2
   displayName: 'dotnet test $(buildConfiguration)'
   inputs:
     command: test
-    projects: '*.Tests/*.csproj'
+    projects: 'SCManagement.Tests/*.csproj'
     arguments: '--configuration $(buildConfiguration) --collect "Code coverage"'
 
 - task: DotNetCoreCLI@2

@@ -11,13 +11,15 @@ namespace SCManagement.Services.AzureStorageService
         private readonly string _storageContainerName;
         private readonly string _cdnUrl;
         private readonly ILogger<AzureStorage> _logger;
+        private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
-        public AzureStorage(IConfiguration configuration, ILogger<AzureStorage> logger)
+        public AzureStorage(IConfiguration configuration, ILogger<AzureStorage> logger, IStringLocalizer<SharedResource> stringLocalizer)
         {
             _storageConnectionString = configuration.GetValue<string>("BlobConnectionString");
             _storageContainerName = configuration.GetValue<string>("BlobContainerName");
             _cdnUrl = configuration.GetValue<string>("CdnUrl");
             _logger = logger;
+            _stringLocalizer = stringLocalizer;
         }
 
         /// <summary>
@@ -30,9 +32,23 @@ namespace SCManagement.Services.AzureStorageService
             // Create new upload response object that we can return to the requesting method
             BlobResponseDto response = new();
 
+            //check file size (10MB)
+            if (blob.Length >= 10 * 1024 * 1024)
+            {
+                _logger.LogError($"File with name {blob.FileName} exceeds the max file size of 10MB");
+                response.Status = _stringLocalizer["Error_FileMaxSize"].Value.Replace("_NAME_", blob.FileName);
+                response.Error = true;
+                return response;
+            }
+
             // Get a reference to a container named in appsettings.json and then create it
-            BlobContainerClient container = new BlobContainerClient(_storageConnectionString, _storageContainerName);
+            BlobContainerClient container = new BlobContainerClient(
+                _storageConnectionString,
+                _storageContainerName,
+                new BlobClientOptions { Retry = { MaxRetries = 2, Delay = TimeSpan.FromSeconds(30) } }
+                );
             //await container.CreateAsync();
+
             string uuid = Guid.NewGuid().ToString();
             try
             {
@@ -47,7 +63,7 @@ namespace SCManagement.Services.AzureStorageService
                 {
                     var blobHttpHeader = new BlobHttpHeaders { ContentType = blob.ContentType };
                     // Upload the file async
-                    await client.UploadAsync(data, new BlobUploadOptions { HttpHeaders = blobHttpHeader });
+                    await client.UploadAsync(data, new BlobUploadOptions { HttpHeaders = blobHttpHeader, });
                 }
 
                 // Everything is OK and file got uploaded
@@ -89,7 +105,11 @@ namespace SCManagement.Services.AzureStorageService
         /// <returns>An object with the deleted information</returns>
         public async Task<BlobResponseDto> DeleteAsync(string FileUUID)
         {
-            BlobContainerClient client = new BlobContainerClient(_storageConnectionString, _storageContainerName);
+            BlobContainerClient client = new BlobContainerClient(
+                _storageConnectionString,
+                _storageContainerName,
+                new BlobClientOptions { Retry = { MaxRetries = 2, Delay = TimeSpan.FromSeconds(30) } }
+                );
 
             BlobClient file = client.GetBlobClient(FileUUID.ToString());
 

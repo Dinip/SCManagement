@@ -2,6 +2,7 @@
 using SCManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.CodeAnalysis;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Services.CronJobService
 {
@@ -81,6 +82,12 @@ namespace SCManagement.Services.CronJobService
                 }
             }
             await _context.SaveChangesAsync(cancellationToken);
+
+            //notification service notify each user that a
+            //payment has been created and if is manual
+            //renew that has X days to pay
+            var _notificationService = scope.ServiceProvider.GetRequiredService<INotificationService>();
+            _notificationService.NotifySubscriptionExpired(subs.Select(s => s.Id).ToList());
 
             return;
         }

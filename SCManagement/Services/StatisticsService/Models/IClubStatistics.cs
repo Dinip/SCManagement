@@ -16,12 +16,4 @@ namespace SCManagement.Services.StatisticsService.Models
         [DataType(DataType.Date)]
         public DateTime Timestamp { get; set; }
     }
-
-    public enum StatisticsRange : int
-    {
-        Year = 1,
-        Month = 2,
-        Week = 3,
-        Day = 4,
-    }
 }

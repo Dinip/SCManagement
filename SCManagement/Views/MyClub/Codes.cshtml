@@ -2,7 +2,7 @@
 @inject IStringLocalizer<SharedResource> StringLocalizer
 
 @{
-    ViewData["Title"] = "CodesList";
+    ViewData["Title"] = @StringLocalizer["CodesList"];
 }
 <link rel="stylesheet" href="~/lib/DataTables/DataTables-1.13.3/css/dataTables.bootstrap.css">
 <link rel="stylesheet" href="~/lib/DataTables/Responsive-2.4.0/css/responsive.bootstrap.css">
@@ -36,7 +36,7 @@
         <button style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="openCreate()">@StringLocalizer["Create New"]</button>
     </p>
     <div class="mt-5" style="font-size: 1.5rem;">@ViewBag.Slots @StringLocalizer["SlotsStats"]</div>
-    <div class="card mt-1 shadow" style="height:650px !important;  border-radius:20px;">
+    <div class="card mt-1 shadow" style="min-height:650px !important; height:fit-content !important;  border-radius:20px;">
         <div class="card-body">
             <table id="table_id" class="display" style="width:100%!important;">
                 <thead>
@@ -131,8 +131,25 @@
             order: [[1, 'desc']],
             columnDefs: [
                 { orderable: false, targets: [-1] }
-            ]
+            ],
+            language: {
+                "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",
+                "emptyTable": "@StringLocalizer["EmptyMessage"]",
+                "search": "@StringLocalizer["Search"]",
+                "zeroRecords": "@StringLocalizer["NoMatching"]",
+                "processing": "@StringLocalizer["Processing"]",
+                "infoFiltered": "(@StringLocalizer["Filtered"] @StringLocalizer["From"] _MAX_ total @StringLocalizer["EntriesDatatable"])",
+                "info": "@StringLocalizer["Showing"] _START_ @StringLocalizer["To"] _END_ @StringLocalizer["OfDatatable"] _TOTAL_ @StringLocalizer["EntriesDatatable"]",
+                "infoEmpty": "@StringLocalizer["Showing"] 0 @StringLocalizer["OfDatatable"] 0 @StringLocalizer["EntriesDatatable"]",
+                "paginate": {
+                    first: "@StringLocalizer["First"]",
+                    last: "@StringLocalizer["Last"]",
+                    next: "@StringLocalizer["Next"]",
+                    previous: "@StringLocalizer["Previous"]",
+                },
+            },
         });
+        setTheme(localStorage.getItem("theme") || "light")
     });
 
     function openCreate() {

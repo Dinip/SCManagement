@@ -1,16 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Globalization;
+using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
+using SCManagement.Data.Migrations;
 using SCManagement.Models;
+using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Services.TeamService
 {
     public class TeamService : ITeamService
     {
         private readonly ApplicationDbContext _context;
+        private readonly INotificationService _notificationService;
 
-        public TeamService(ApplicationDbContext context)
+        public TeamService(ApplicationDbContext context,INotificationService notificationService)
         {
             _context = context;
+            _notificationService = notificationService;
         }
 
         /// <summary>
@@ -20,8 +25,12 @@ namespace SCManagement.Services.TeamService
         /// <returns>Found team or null</returns>
         public async Task<Team?> GetTeam(int teamId)
         {
-            return await _context.Team.Include(t => t.Modality).Include(u => u.Trainer).Include(u => u.Athletes)
-                .FirstOrDefaultAsync(t => t.Id == teamId);
+            return await _context.Team
+                .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
+                .Include(u => u.Trainer)
+                .Include(u => u.Athletes)
+                .FirstOrDefaultAsync(t => t.Id == teamId); ;
         }
 
         /// <summary>
@@ -31,7 +40,12 @@ namespace SCManagement.Services.TeamService
         /// <returns>List of teams</returns>
         public async Task<IEnumerable<Team>> GetTeams(int clubId)
         {
-            return await _context.Team.Where(t => t.ClubId == clubId).Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
+            return await _context.Team
+                .Where(t => t.ClubId == clubId)
+                .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
+                .Include(t => t.Trainer)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -76,14 +90,21 @@ namespace SCManagement.Services.TeamService
                 .Select(r => r.User)
                 .ToListAsync();
 
+            List<string> userIds = new List<string>();
             foreach (var athlete in athletesToAdd)
             {
                 if (!team.Athletes.Contains(athlete))
+                {
                     team.Athletes.Add(athlete);
+                    userIds.Add(athlete.Id);
+                }
+                    
             }
 
             _context.Team.Update(team);
             await _context.SaveChangesAsync();
+            
+            _notificationService.NotifyTeamAdded(team, userIds);
         }
 
         /// <summary>
@@ -97,6 +118,8 @@ namespace SCManagement.Services.TeamService
             team.Athletes.Remove(athlete);
             _context.Team.Update(team);
             await _context.SaveChangesAsync();
+
+            _notificationService.NotifyTeam_Removed(team,athlete.Id);
         }
 
         /// <summary>
@@ -114,12 +137,35 @@ namespace SCManagement.Services.TeamService
         /// Get all the teams that a user belongs to
         /// </summary>
         /// <param name="userId"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId)
+        {
+            return await _context.Team
+                .Where(t => t.Athletes.Any(a => a.Id == userId))
+                .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
+                .Include(t => t.Trainer)
+                .Include(c => c.Club)
+                .Include(a => a.Athletes)
+                .ToListAsync();
+        }
+
+        /// <summary>
+        /// Get all the teams that a user belongs to in a club
+        /// </summary>
+        /// <param name="userId"></param>
         /// <param name="clubId"></param>
         /// <returns></returns>
         public async Task<IEnumerable<Team>> GetTeamsByAthlete(string userId, int clubId)
         {
-            return await _context.Team.Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
-                .Include(t => t.Modality).Include(t => t.Trainer).ToListAsync();
+            return await _context.Team
+                .Where(t => t.ClubId == clubId && t.Athletes.Any(a => a.Id == userId))
+                .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
+                .Include(t => t.Trainer)
+                .Include(c => c.Club)
+                .Include(a => a.Athletes)
+                .ToListAsync();
         }
 
         /// <summary>
@@ -132,12 +178,30 @@ namespace SCManagement.Services.TeamService
         {
             return await _context.Team.Where(t => t.TrainerId == userId)
                 .Include(t => t.Modality)
+                .ThenInclude(m => m.ModalityTranslations)
                 .Include(t => t.Trainer)
                 .Include(t => t.Athletes)
                 .ThenInclude(a => a.TrainingPlans)
                 .Include(t => t.Athletes)
                 .ThenInclude(a => a.MealPlans)
                 .ToListAsync();
+        }
+
+        public async Task TransferOwnerOfAllTeams(string trainerId, string AdminId)
+        {
+            var teams = await GetTeamsByTrainer(trainerId);
+
+            if(teams != null && teams.Count()> 0)
+            {
+                foreach(Team team in teams)
+                {
+                    team.TrainerId = AdminId;
+                    _context.Team.Update(team);
+                    await _context.SaveChangesAsync();
+                }
+            }
+
+            
         }
     }
 }

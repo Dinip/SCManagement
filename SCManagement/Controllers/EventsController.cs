@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.EventService;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.TranslationService;
 using SCManagement.Services.UserService;
@@ -23,6 +24,7 @@ namespace SCManagement.Controllers
         private readonly IClubService _clubService;
         private readonly IPaymentService _paymentService;
         private readonly ITranslationService _translationService;
+        private readonly INotificationService _notificationService;
 
         public EventsController(
             IEventService eventService,
@@ -30,7 +32,8 @@ namespace SCManagement.Controllers
             UserManager<User> userManager,
             IClubService clubService,
             IPaymentService paymentService,
-            ITranslationService translationService
+            ITranslationService translationService,
+            INotificationService notificationService
             )
         {
             _eventService = eventService;
@@ -39,6 +42,7 @@ namespace SCManagement.Controllers
             _clubService = clubService;
             _paymentService = paymentService;
             _translationService = translationService;
+            _notificationService = notificationService;
         }
 
         private string getUserIdFromAuthedUser()
@@ -241,7 +245,7 @@ namespace SCManagement.Controllers
                     await _paymentService.CreateProductEvent(createdEvent);
                 }
 
-
+                _notificationService.NotifyEventCreate(createdEvent);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -270,11 +274,13 @@ namespace SCManagement.Controllers
             [Display(Name = "Public Event")]
             public bool IsPublic { get; set; }
             [Display(Name = "Fee")]
+            [Range(0, float.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
             public float Fee { get; set; }
             [Display(Name = "Event Have Route")]
             public bool HaveRoute { get; set; }
             public string? Route { get; set; }
 
+            [Display(Name = "Event Result Type")]
             public ResultType EventResultType { get; set; }
             [Display(Name = "Max Enrolls")]
             [Range(0, int.MaxValue, ErrorMessage = "Please enter a value between 0 and 2147483647")]
@@ -287,9 +293,6 @@ namespace SCManagement.Controllers
 
             public string? EventAux { get; set; }
             public DateTime? CreationDate { get; set; }
-
-
-
         }
 
         [Authorize]
@@ -416,7 +419,7 @@ namespace SCManagement.Controllers
                 {
                     
                 }
-                else if (myEvent.StartDate < DateTime.Now || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate || myEvent.EnrollLimitDate < DateTime.Now)
+                else if ((myEvent.StartDate < myEvent.CreationDate ) || myEvent.EndDate < myEvent.StartDate || myEvent.EnrollLimitDate > myEvent.StartDate)
                 {
                     return View("CustomError", "Error_InvalidInput");
                 }
@@ -475,9 +478,11 @@ namespace SCManagement.Controllers
                 translations.AddRange(myEvent.EventTranslationsDetails);
                 eventToUpdate.EventTranslations = translations;
 
-                await _eventService.UpdateEvent(eventToUpdate);
+                var eveUpdated = await _eventService.UpdateEvent(eventToUpdate);
 
                 await _paymentService.UpdateProductEvent(eventToUpdate);
+
+                _notificationService.NotifyEventEdit(eveUpdated);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -516,6 +521,8 @@ namespace SCManagement.Controllers
             await _paymentService.UpdateProductEvent(myEvent, true);
             await _eventService.RemoveEventAddress(myEvent);
             await _eventService.DeleteEvent(myEvent);
+
+            _notificationService.NotifyEventDeleted(myEvent);
 
             return RedirectToAction(nameof(Index));
         }
@@ -569,6 +576,8 @@ namespace SCManagement.Controllers
             });
 
             var pay = await _paymentService.CreateEventPayment(enroll);
+            var needsPayment = pay != null;
+            _notificationService.NotifyEventJoined(enroll, needsPayment);
 
             if (pay != null) return RedirectToAction("Index", "Payment", new { payId = pay.Id });
 
@@ -604,6 +613,8 @@ namespace SCManagement.Controllers
 
             await _eventService.CancelEventEnroll(enrollRoRemove);
             await _paymentService.CancelEventPayment(enrollRoRemove);
+
+            _notificationService.NotifyEventLeft(enrollRoRemove, false);
 
             return RedirectToAction(nameof(Details), new { id = id });
         }

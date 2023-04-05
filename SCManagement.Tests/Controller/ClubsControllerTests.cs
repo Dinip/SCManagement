@@ -1,4 +1,5 @@
 ﻿using FakeItEasy;
+using FakeItEasy.Creation;
 using FluentAssertions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +13,18 @@ using static SCManagement.Controllers.ClubsController;
 
 namespace SCManagement.Tests.Controller
 {
+    public class ProductFakeOptionsBuilder : FakeOptionsBuilder<Product> {
+        protected override void BuildOptions(IFakeOptions<Product> options)
+        {
+            options.ConfigureFake(fake =>
+            {
+                fake.Id = 1;
+                fake.ProductType = ProductType.ClubSubscription;
+                fake.Value = 0;
+            });
+        }
+    }
+
     public class ClubsControllerTests
     {
         private readonly ClubsController _controller;
@@ -132,12 +145,12 @@ namespace SCManagement.Tests.Controller
             {
                 Id = 123,
                 UsersRoleClub = new List<UsersRoleClub>() { new UsersRoleClub { Id = 1} },
-                
             };
+
             var clubToCreate = new CreateClubModel { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 }, PlanId = 1 };
             var clubSubProducts = new List<Product>() { new Product { Id = 1 } };
             A.CallTo(() => _clubService.CreateClub(A<Club>._, A<string>._)).Returns(createdClub);
-            A.CallTo(() => _paymentService.GetClubSubscriptionPlans()).Returns(clubSubProducts);
+            A.CallTo(() => _paymentService.GetClubSubscriptionPlans(false)).Returns(clubSubProducts);
 
             // Act
             var result = await _controller.Create(clubToCreate);
@@ -159,7 +172,7 @@ namespace SCManagement.Tests.Controller
             var clubToCreate = new CreateClubModel { Name = "Test Club", ModalitiesIds = new List<int> { 1, 2, 3 }, PlanId = 1 };
             var clubSubProducts = new List<Product>() { new Product { Id = 3 } };
             A.CallTo(() => _clubService.CreateClub(A<Club>._, A<string>._)).Returns(createdClub);
-            A.CallTo(() => _paymentService.GetClubSubscriptionPlans()).Returns(clubSubProducts);
+            A.CallTo(() => _paymentService.GetClubSubscriptionPlans(false)).Returns(clubSubProducts);
 
             // Act
             var result = await _controller.Create(clubToCreate);

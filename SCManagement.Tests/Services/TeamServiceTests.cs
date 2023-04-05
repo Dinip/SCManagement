@@ -1,8 +1,10 @@
-﻿using FluentAssertions;
+﻿using FakeItEasy;
+using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using SCManagement.Data;
 using SCManagement.Models;
 using SCManagement.Services.ClubService;
+using SCManagement.Services.NotificationService;
 using SCManagement.Services.TeamService;
 using System;
 using System.Collections.Generic;
@@ -16,13 +18,15 @@ namespace SCManagement.Tests.Services
     {
         private readonly TeamService _teamService;
         private readonly ApplicationDbContext _context;
+        private readonly INotificationService _notificationService;
 
         public TeamServiceTests()
         {
             _context = GetDbContext().Result;
+            _notificationService = A.Fake<INotificationService>();
 
             //SUT (system under test)
-            _teamService = new TeamService(_context);
+            _teamService = new TeamService(_context, _notificationService);
         }
 
         private async Task<ApplicationDbContext> GetDbContext()
@@ -84,6 +88,40 @@ namespace SCManagement.Tests.Services
                         }
                 });
 
+                context.Club.Add(new Club
+                {
+                    Id = 2,
+                    Name = $"Test Club 2",
+                    CreationDate = DateTime.Now,
+                    Modalities = new List<Modality>
+                        {
+                            context.Modality.FirstOrDefault(m => m.Id == 1)
+                        },
+                    UsersRoleClub = new List<UsersRoleClub>
+                        {
+                            new UsersRoleClub { UserId = "Test 1" , RoleId = 20 },
+                            new UsersRoleClub { UserId = "Test 2" , RoleId = 20 },
+                            new UsersRoleClub { UserId = "Test 3" , RoleId = 30 },
+                        },
+                    ClubTranslations = new List<ClubTranslations>
+                        {
+                            new ClubTranslations
+                            {
+                                ClubId = 2,
+                                Value = "",
+                                Language = "en-US",
+                                Atribute = "TermsAndConditions",
+                            },
+                            new ClubTranslations
+                            {
+                                ClubId = 2,
+                                Value = "",
+                                Language = "en-US",
+                                Atribute = "About",
+                            }
+                        }
+                });
+
                 await context.SaveChangesAsync();
             }
             
@@ -127,9 +165,35 @@ namespace SCManagement.Tests.Services
                     {
                         context.Users.FirstOrDefault(u => u.Id == "Test 5"),
                     }
+                },
+                new Team
+                {
+                    Id = 4,
+                    Name = "Team 4",
+                    ClubId = 2,
+                    ModalityId = 2,
+                    CreationDate = DateTime.Now,
+                    TrainerId = "Test 3",
+                    Athletes = new List<User>
+                    {
+                        context.Users.FirstOrDefault(u => u.Id == "Test 1"),
+                        context.Users.FirstOrDefault(u => u.Id == "Test 2")
+                    }
+                },
+                new Team
+                {
+                    Id = 5,
+                    Name = "Team 5",
+                    ClubId = 2,
+                    ModalityId = 2,
+                    CreationDate = DateTime.Now,
+                    TrainerId = "Test 3",
+                    Athletes = new List<User>
+                    {
+                        context.Users.FirstOrDefault(u => u.Id == "Test 2"),
+                    }
                 });
                 
-
                 await context.SaveChangesAsync();
             }
 
@@ -216,7 +280,7 @@ namespace SCManagement.Tests.Services
             // Arrange
             var team = new Team
             {
-                Name = "Team 4",
+                Name = "Team X",
                 ClubId = 1,
                 ModalityId = 2,
                 CreationDate = DateTime.Now,
@@ -234,7 +298,7 @@ namespace SCManagement.Tests.Services
 
             // Assert
             result.Should().BeOfType<Team>();
-            _context.Team.FirstOrDefault(t => t.Name == "Team 4").Should().BeNull();
+            _context.Team.FirstOrDefault(t => t.Name == "Team X").Should().BeNull();
             await _teamService.DeleteTeam(team);
         }
 
@@ -295,6 +359,18 @@ namespace SCManagement.Tests.Services
 
         [Fact]
         public async Task TeamService_GetTeamsByAthlete_ReturnsSuccess()
+        {
+            // Arrange
+
+            // Act
+            var result = await _teamService.GetTeamsByAthlete("Test 2");
+
+            // Assert
+            result.Should().BeOfType<List<Team>>().Which.Count.Should().Be(3);
+        }
+
+        [Fact]
+        public async Task TeamService_GetTeamsByAthleteWithClub_ReturnsSuccess()
         {
             // Arrange
 
