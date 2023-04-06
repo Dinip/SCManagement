@@ -594,7 +594,7 @@ namespace SCManagement.Controllers
             UsersRoleClub role = _applicationContextService.UserRole;
 
             //check role Trainer
-            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
 
             await _teamService.CreateTeam(new Team { Name = team.Name, ModalityId = team.ModalityId, TrainerId = team.TrainerId, ClubId = role.ClubId });
 

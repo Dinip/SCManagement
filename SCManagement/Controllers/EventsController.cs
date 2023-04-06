@@ -548,7 +548,7 @@ namespace SCManagement.Controllers
             var role = await _userService.GetSelectedRole(userId);
 
             //check if event is public
-            if (!eventToEnroll.IsPublic && role.ClubId != eventToEnroll.ClubId)
+            if (!eventToEnroll.IsPublic && (role.ClubId != eventToEnroll.ClubId || _clubService.IsClubPartner(role.UserId, eventToEnroll.ClubId)))
             {
                 return View("CustomError", "Error_Unauthorized");
             }
