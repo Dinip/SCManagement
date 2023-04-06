@@ -18,14 +18,12 @@
         cursor: pointer;
     }
 
-    .cardCircle{
+    .cardCircle {
         opacity: 0;
         animation: slideUp 1.5s ease forwards .5s;
     }
 
-    .circle:hover {
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
-    }
+
 
     h1 {
         opacity: 0;
@@ -42,6 +40,37 @@
         height: 80px;
         margin-left: 15px;
     }
+
+    .circular-progress {
+        position: relative;
+        height: 150px;
+        width: 150px;
+        border-radius: 50%;
+        display: grid;
+        place-items: center;
+        box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+        .circular-progress:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.4);
+        }
+
+        .circular-progress:before {
+            content: "";
+            position: absolute;
+            height: 84%;
+            width: 84%;
+            background-color: #ffffff;
+            border-radius: 50%;
+        }
+
+    .value-container {
+        position: relative;
+        color: #231c3d;
+        width: 100%;
+    }
+
 </style>
 
 <div class="container-fluid">
@@ -51,40 +80,50 @@
     <hr />
     <div class="row mt-5 w-100">
         <div class="cardCircle col-xs-12 col-sm-12 col-md-4 d-flex flex-column justify-content-center align-items-center">
-            <div class="circle" id="circle1" title="@StringLocalizer["Circle1Help"]">
-                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Clubs.Min<br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Clubs.Max</span>
+            <div id="circle1" class="circular-progress">
+                <div id="value-container1" class="value-container" style="text-align: center" title="@StringLocalizer["Circle1Help"]">
+                    <span class="text-black fw-bold fs-4 fs-sm-5 w-100" style="text-align: center"> @Model.Clubs.Min<br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Clubs.Max</span>
+                </div>
             </div>
             <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
                 <span>@StringLocalizer["SportsClubs"]</span>
             </div>
         </div>
         <div class=" cardCircle col-xs-12 col-sm-12 col-md-4 mt-lg-0 mt-sm-3 mt-md-0 mt-3 d-flex flex-column justify-content-center align-items-center">
-            <div class="circle" id="circle2" title="@StringLocalizer["Circle2Help"]">
-                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Income.Min€ <span class="fs-6">@StringLocalizer["Month"]</span> <br> <span class="fs-6">@StringLocalizer["And"]</span> <br> @Model.Income.Max€ <span class="fs-6">@StringLocalizer["Year"]</span></span>
+            <div id="circle2" class="circular-progress">
+                <div id="value-container2" class="value-container" style="text-align: center" title="@StringLocalizer["Circle2Help"]">
+                    <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Income.Min€ <span class="fs-6">@StringLocalizer["Month"]</span> <br> <span class="fs-6">@StringLocalizer["And"]</span> <br> @Model.Income.Max€ <span class="fs-6">@StringLocalizer["Year"]</span></span>
+                </div>
             </div>
             <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
                 <span>@StringLocalizer["Income"]</span>
             </div>
         </div>
         <div class="cardCircle col-xs-12 col-sm-12 col-md-4 mt-lg-0 mt-sm-3 mt-md-0 mt-3 d-flex flex-column justify-content-center align-items-center">
-            <div class="circle" id="circle3" title="@StringLocalizer["Circle3Help"]">
-                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Codes.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Codes.Max</span>
+            <div id="circle3" class="circular-progress">
+                <div id="value-container3" class="value-container" style="text-align: center" title="@StringLocalizer["Circle3Help"]">
+                    <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Codes.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.Codes.Max</span>
+                </div>
             </div>
             <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
                 <span>@StringLocalizer["CodesCreated"]</span>
             </div>
         </div>
         <div class="cardCircle col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
-            <div class="circle" id="circle4" title="@StringLocalizer["Circle4Help"]">
-                <span class="text-black fw-bold fs-5 fs-sm-5" style="text-align: center"> @Model.BestSeller.Name <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.BestSeller.Value€ <span class="fs-6">@StringLocalizer["Month"]</span></span>
+            <div id="circle4" class="circular-progress">
+                <div id="value-containr4" class="value-container" style="text-align: center" title="@StringLocalizer["Circle4Help"]">
+                    <span class="text-black fw-bold fs-5 fs-sm-5" style="text-align: center"> @Model.BestSeller.Name <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @Model.BestSeller.Value€ <span class="fs-6">@StringLocalizer["Month"]</span></span>
+                </div>
             </div>
             <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
                 <span>@StringLocalizer["GreaterAdherence"]</span>
             </div>
         </div>
         <div class="cardCircle col-xs-12 col-sm-12 col-md-4 mt-sm-3 mt-lg-3 mt-md-3 mt-3 d-flex flex-column justify-content-center align-items-center">
-            <div class="circle" id="circle5" title="@StringLocalizer["Circle5Help"]">
-                <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Payments.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @(Model.Payments.Min + Model.Payments.Max)</span>
+            <div id="circle5" class="circular-progress">
+                <div id="value-container5" class="value-container" style="text-align: center" title="@StringLocalizer["Circle5Help"]">
+                    <span class="text-black fw-bold fs-4 fs-sm-5" style="text-align: center"> @Model.Payments.Min <br> <span class="fs-6">@StringLocalizer["Of"]</span> <br> @(Model.Payments.Min + Model.Payments.Max)</span>
+                </div>
             </div>
             <div class="text-to-dark fw-bold text-center mt-3 fs-3 fs-sm-4" style="width: 100%;">
                 <span>@StringLocalizer["DelayedPayments"]</span>
@@ -106,6 +145,12 @@
 <script type="text/javascript" charset="utf8" src="/lib/jquery/dist/jquery.js"></script>
 <script>
     $(document).ready(function () {
+
+        loadProgressiveBar(document.querySelector("#circle1"), document.querySelector("#value-container1"), @Model.Clubs.Min, @Model.Clubs.Max);
+        loadProgressiveBar(document.querySelector("#circle3"), document.querySelector("#value-container3"), @Model.Codes.Min, @Model.Codes.Max);
+        loadProgressiveBar(document.querySelector("#circle5"), document.querySelector("#value-container5"), @Model.Payments.Min, @(Model.Payments.Min + Model.Payments.Max));
+
+
         $("#circle1").click(function () {
             window.location.href = "/Backoffice/Clubs";
         });
@@ -122,4 +167,19 @@
             window.location.href = "/Home/TermsAndConditions";
         });
     });
+
+    function loadProgressiveBar(progressBar, valueContainer, min, max) {
+        let progressValue = 0;
+        let progressEndValue = parseInt((min / max) * 100);
+        let speed = 50;
+
+        let progress = setInterval(() => {
+            progressValue++;
+            progressBar.style.background = `conic-gradient(#00639A ${progressValue * 3.6}deg, #cadcff ${progressValue * 3.6}deg)`;
+            if (progressValue == progressEndValue) {
+                clearInterval(progress);
+            }
+        }, speed);
+    }
+
 </script>

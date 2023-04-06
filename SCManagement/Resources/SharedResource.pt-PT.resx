@@ -4814,4 +4814,16 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
     <value>Pagar Inscrição</value>
     <comment>05-04-2023_FixEventDetails</comment>
   </data>
+  <data name="PlanPerMonth" xml:space="preserve">
+    <value>Aderencia do plano por mês</value>
+    <comment>06-04-2023_subscription</comment>
+  </data>
+  <data name="ClickMe" xml:space="preserve">
+    <value>Clica para viajar</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
+  <data name="DontHaveLocation" xml:space="preserve">
+    <value>Este clube não tem morada</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
 </root>

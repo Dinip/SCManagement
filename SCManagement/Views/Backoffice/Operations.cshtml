@@ -7,7 +7,7 @@
 <style>
     .flip-card {
         min-width:170px;
-        min-height: 200px;
+        min-height: 250px;
         width: 100% !important;
         height: 100% !important;
         perspective: 1000px;
@@ -48,13 +48,16 @@
     <hr />
     <div class="d-flex row justify-content-evenly text-center">
         <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
-            <a asp-controller="Backoffice" asp-action="UserAccess" style="text-decoration:none;">
+            <a asp-controller="Backoffice" asp-action="UserAccess" style="color:black; text-decoration:none;">
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="d-flex justify-content-center align-items-center">
                             <div class="circle" id="circle1" title="@StringLocalizer["UserAccess"]">
-                                <div style="text-align: center; width:90%;">
-                                    <span class="text-black fw-bold text-wrap fs-5" style="text-align: center"> @StringLocalizer["UserAccess"]</span>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <img src="~/img/img_381236.png" style="width:100%; aspect-ratio:1; margin-bottom:15px;">
+                                    <div style="position:absolute; bottom:15px;">
+                                        <strong style="font-size:100%!important;">@StringLocalizer["UserAccess"]</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -63,13 +66,16 @@
             </a>
         </div>
         <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
-            <a asp-controller="Backoffice" asp-action="Modalities" style="text-decoration:none;">
+            <a asp-controller="Backoffice" asp-action="Modalities" style="color:black; text-decoration:none;">
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class=" d-flex justify-content-center align-items-center">
                             <div class="circle" id="circle1" title="@StringLocalizer["Modalities"]">
-                                <div style="text-align: center; width:90%;">
-                                    <span class="text-black fw-bold text-wrap fs-5" style="text-align: center">@StringLocalizer["Modalities"]</span>
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <img src="~/img/Screenshot 2023-04-06 130437.png" style="width:100%; aspect-ratio:1; margin-bottom:15px;">
+                                    <div style="position:absolute; bottom:15px;">
+                                        <strong style="font-size:100%!important;">@StringLocalizer["Modalities"]</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -78,13 +84,16 @@
             </a>
         </div>
         <div class="cardBtn col-6 col-sm-6 col-md-4 col-lg-2 mt-4 d-flex justify-content-center">
-            <a asp-controller="Backoffice" asp-action="ManagePlans" style="text-decoration:none;">
+            <a asp-controller="Backoffice" asp-action="ManagePlans" style="color:black; text-decoration:none;">
                 <div class="flip-card">
                     <div class="flip-card-inner">
                         <div class="d-flex justify-content-center align-items-center">
-                            <div class="circle" id="circle1" title="@StringLocalizer["ManagePlans"]">
-                                <div style="text-align: center; width:90%;">
-                                    <span class="text-black fw-bold fs-5" style="text-align: center;">@StringLocalizer["ManagePlans"]</span>
+                            <div class="circle" id="circle1" title="@StringLocalizer["Manage Plans"]">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <img src="~/img/917417-200.png" style="width:100%; aspect-ratio:1; margin-bottom:15px;">
+                                    <div style="position:absolute; bottom:15px;">
+                                        <strong style="font-size:100%!important;">@StringLocalizer["Manage Plans"]</strong>
+                                    </div>
                                 </div>
                             </div>
                         </div>

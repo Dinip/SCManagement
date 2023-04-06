@@ -4724,4 +4724,16 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
     <value>Pay Enroll</value>
     <comment>05-04-2023-FixEventEnroll</comment>
   </data>
+  <data name="PlanPerMonth" xml:space="preserve">
+    <value>Plan adherence per month</value>
+    <comment>06-04-2023_subscription</comment>
+  </data>
+  <data name="ClickMe" xml:space="preserve">
+    <value>Click to travel</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
+  <data name="DontHaveLocation" xml:space="preserve">
+    <value>This club has no address</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
 </root>

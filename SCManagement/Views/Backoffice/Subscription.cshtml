@@ -89,8 +89,9 @@
                                 }, []);
         for (let i = 0; i < productNames.length; i++) {
             plansFilter.insertAdjacentHTML("afterend", `<label for="Plan-${productNames[i]}" class="text-to-dark ms-1">${productNames[i]}</ label>`)
-            plansFilter.insertAdjacentHTML("afterend", `<input id="Plan-${productNames[i]}" onclick="filterData('${productNames[i]}')" type="radio" class="ms-3" checked name="FilterPlan" style="accent - color: #00639A">`)
+            plansFilter.insertAdjacentHTML("afterend", `<input id="Plan-${productNames[i]}" onclick="filterData('${productNames[i]}')" type="radio" class="ms-3" name="FilterPlan" style="accent - color: #00639A">`)
         }
+        document.getElementById("Plan-Club Plan XS").checked = true;
 
         $("#table-adherence").DataTable({
             data: d1,
@@ -262,6 +263,7 @@
             type: 'bar',
             data: {
                 datasets: [{
+                    label: "@StringLocalizer["PlanPerMonth"]",
                     data: customData,
                     fill: false,
                     tension: 0.1
