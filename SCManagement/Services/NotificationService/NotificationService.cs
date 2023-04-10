@@ -8,7 +8,6 @@ using SCManagement.Services.ClubService.Models;
 using SCManagement.Services.PaymentService;
 using SCManagement.Services.PaymentService.Models;
 using SCManagement.Services.PlansService.Models;
-using static SCManagement.Models.Notification;
 
 namespace SCManagement.Services.NotificationService
 {
@@ -32,7 +31,7 @@ namespace SCManagement.Services.NotificationService
             }
             else
             {
-                _hostUrl = "";
+                _hostUrl = "https://scmanagement.me";
             }
         }
 
