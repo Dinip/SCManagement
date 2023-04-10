@@ -1053,7 +1053,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Inserted credentials are invalid. Fix it first to save this settings.</value>
     <comment>23-02-2023_payments</comment>
   </data>
-  <data name="Disclaimer_ClubePayments" xml:space="preserve">
+  <data name="ClubPayments_Disclaimer" xml:space="preserve">
     <value>If you update the Quota value or frequency, all the current partners will be notified of the change. It will only take effect at the end of their billing cycle.</value>
     <comment>23-02-2023_payments</comment>
   </data>
@@ -4723,5 +4723,8 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
   <data name="PayEnroll" xml:space="preserve">
     <value>Pay Enroll</value>
     <comment>05-04-2023-FixEventEnroll</comment>
+  </data>
+  <data name="ClubPayments_KeyInfo" xml:space="preserve">
+    <value>During the testing phase, you can use the following data in the fields above:</value>
   </data>
 </root>

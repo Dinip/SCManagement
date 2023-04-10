@@ -8,20 +8,19 @@
 
 <style>
 
-    .form-floating{
+    .form-floating {
         margin-top: 10px;
     }
 
-    .inputgroup{
-        margin-left:0;
+    .inputgroup {
+        margin-left: 0;
     }
 
     @@media only screen and (max-width: 768px) {
         .form-control {
-            width:100% !important;
+            width: 100% !important;
         }
     }
-    
 </style>
 
 <div class="container">
@@ -57,11 +56,21 @@
                         <span asp-validation-for="QuotaFee" class="text-danger"></span>
                     </div>
                 </div>
-               
-                
+
+                <div class="text-to-dark mt-3 d-flex flex-column">
+                    <span>
+                        *@HtmlLocalizer["ClubPayments_KeyInfo"]
+                    </span>
+                    <span>
+                        Id: cd5c6f08-7bc7-43d0-89e8-c918d243ee1d
+                    </span>
+                    <span>
+                        Key: 52fa8aed-991a-40a1-9faf-42337c1f46bd
+                    </span>
+                </div>
 
                 <div class="text-to-dark mt-3">
-                    *@HtmlLocalizer["Disclaimer_ClubePayments"]
+                    *@HtmlLocalizer["ClubPayments_Disclaimer"]
                 </div>
 
                 <div class="form-group mt-3">

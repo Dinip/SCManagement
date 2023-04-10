@@ -1189,7 +1189,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Chave da conta</value>
     <comment>23-02-2023_payments</comment>
   </data>
-  <data name="Disclaimer_ClubePayments" xml:space="preserve">
+  <data name="ClubPayments_Disclaimer" xml:space="preserve">
     <value>Se atualizares a frequência de pagamento da quota ou o valor da mesma, todos os teus sócios atuais serão notificados da alteração. Apenas terá feito quando o ciclo de pagamento atual acabar.</value>
     <comment>23-02-2023_payments</comment>
   </data>
@@ -4813,5 +4813,8 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
   <data name="PayEnroll" xml:space="preserve">
     <value>Pagar Inscrição</value>
     <comment>05-04-2023_FixEventDetails</comment>
+  </data>
+  <data name="ClubPayments_KeyInfo" xml:space="preserve">
+    <value>Durante a fase de testes, poderás utilizar os seguintes dados nos campos acima:</value>
   </data>
 </root>

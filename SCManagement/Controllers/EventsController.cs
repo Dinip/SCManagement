@@ -197,7 +197,6 @@ namespace SCManagement.Controllers
 
                 var validKey = await _paymentService.ClubHasValidKey(role.ClubId);
 
-
                 Address newLocation = null;
                 //Create Location Address
                 if (myEvent.LocationString != null)
@@ -545,10 +544,10 @@ namespace SCManagement.Controllers
 
             var userId = getUserIdFromAuthedUser();
 
-            var role = await _userService.GetSelectedRole(userId);
+            var userRole = await _clubService.GetUserRoleInClub(userId, eventToEnroll.ClubId);
 
             //check if event is public
-            if (!eventToEnroll.IsPublic && role.ClubId != eventToEnroll.ClubId)
+            if (!eventToEnroll.IsPublic && userRole.RoleId == 0)
             {
                 return View("CustomError", "Error_Unauthorized");
             }
