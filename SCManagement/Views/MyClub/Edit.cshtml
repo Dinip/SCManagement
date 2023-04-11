@@ -86,24 +86,6 @@
         }
     }
 
-
-    #save-button {
-        border-radius: 100px;
-        width: 60px !important;
-        aspect-ratio: 1;
-        background-color: #00639A;
-        border-color: #00639A;
-        position: absolute !important;
-        right: 30px !important;
-        z-index: 2;
-        bottom: 30px !important;
-    }
-
-        #save-button:hover {
-            background-color: dodgerblue;
-            border-color: dodgerblue;
-        }
-
     .toast {
         position: absolute;
         top: 15%;
@@ -261,8 +243,6 @@
                                     <input id="streets-v12" type="radio" name="rtoggle" value="streets" checked="checked">
                                     <label for="streets-v12">@StringLocalizer["ViewStreets"]</label>
                                 </div>
-                                <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
-
                             </div>
                         </div>
                         <input type="hidden" disabled id="tradPlaceholder" value="@StringLocalizer["PlaceholderAddress"].Value.ToString()" />
