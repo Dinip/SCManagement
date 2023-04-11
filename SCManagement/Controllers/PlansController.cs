@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SCManagement.Models;
 using SCManagement.Models.Validations;
+using SCManagement.Services;
 using SCManagement.Services.ClubService;
 using SCManagement.Services.NotificationService;
 using SCManagement.Services.PlansService;
@@ -46,6 +47,17 @@ namespace SCManagement.Controllers
         {
             //reminder: this does not query the db, it just gets the id from the token (claims)
             return _userManager.GetUserId(User);
+        }
+
+        public async Task<IActionResult> TrainingZone()
+        {
+            string userId = getUserIdFromAuthedUser();
+            if (!await _userService.IsStaffInAnyClub(userId)) return View("CustomError", "Error_Unauthorized");
+
+            ViewBag.HaveMealTemplate = ((await _planService.GetTemplateMealPlans(userId))?.Any() ?? false);
+            ViewBag.HaveTrainingTemplate = ((await _planService.GetTemplateTrainingPlans(userId))?.Any() ?? false);
+
+            return View(await _teamService.GetTeamsByTrainer(userId));
         }
 
         public class TemplatesLists

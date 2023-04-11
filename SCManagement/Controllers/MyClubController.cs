@@ -988,16 +988,5 @@ namespace SCManagement.Controllers
 
             return View(payments);
         }
-
-        public async Task<IActionResult> TrainingZone()
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!await _userService.IsStaffInAnyClub(role.UserId)) return View("CustomError", "Error_Unauthorized");
-
-            ViewBag.HaveMealTemplate = ((await _planService.GetTemplateMealPlans(role.UserId))?.Any() ?? false);
-            ViewBag.HaveTrainingTemplate = ((await _planService.GetTemplateTrainingPlans(role.UserId))?.Any() ?? false);
-
-            return View(await _teamService.GetTeamsByTrainer(role.UserId));
-        }
     }
 }
