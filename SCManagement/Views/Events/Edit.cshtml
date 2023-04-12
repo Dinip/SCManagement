@@ -378,12 +378,14 @@
         let btnAddLocation = document.getElementById("btnAddLocation");
         let tutorialBtn = document.getElementById("tutorialBtn");
 
+        document.getElementById("Location").value = null;
 
         if (ckbHaveRoute.checked == true) {
             mapBox.style.display = "block";
             addressContainer.style.display = "block";
             locationContainer.style.display = "none";
             tutorialBtn.classList.remove("d-none");
+            document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
             //Load MapBox
             PathMapBoxConfig();
