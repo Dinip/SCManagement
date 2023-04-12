@@ -86,6 +86,30 @@
         }
     }
 
+    @@media only screen and (max-width: 640px) {
+
+        .mapboxgl-ctrl-top-left {
+            width: 80% !important;
+        }
+
+        .mapboxgl-ctrl-geocoder {
+            width: 100% !important;
+            min-width: 0 !important;
+        }
+
+        .mapboxgl-ctrl-geocoder--input {
+            font-size: 70%;
+            padding-right: 0;
+        }
+
+        #menu {
+            top:70px;
+            border-bottom-left-radius: 20px;
+            border-top-left-radius: 20px;
+            border-bottom-right-radius: 0px;
+        }
+    }
+
     .toast {
         position: absolute;
         top: 15%;

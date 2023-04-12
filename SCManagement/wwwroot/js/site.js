@@ -200,6 +200,10 @@ function setTheme(theme) {
             }
         }
 
+        for (let i = 0; i < textareas.length; i++) {
+            textareas[i].classList.remove("bg-dark");
+            textareas[i].style.color = 'black';
+        }
 
         for (let i = 0; i < clabels.length; i++) {
             clabels[i].style.color = 'black';

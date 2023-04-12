@@ -73,6 +73,43 @@
         transform: translateY(-100px);
         animation: slideRight 1s ease forwards .5s;
     }
+
+    #errorModel {
+        margin-top: 20%;
+        margin-bottom: 0;
+        max-height: 20%;
+        max-width: 20%;
+    }
+
+    @@media only screen and (max-width: 1000px) {
+        #errorModel {
+            max-height: 20%;
+            max-width: 60%;
+        }
+    }
+
+    @@media only screen and (max-width: 640px) {
+
+        .mapboxgl-ctrl-top-left {
+            width: 80% !important;
+        }
+
+        .mapboxgl-ctrl-geocoder {
+            width: 100% !important;
+            min-width:0 !important;
+        }
+
+        .mapboxgl-ctrl-geocoder--input {
+            font-size: 70%;
+            padding-right:0;
+        }
+
+
+        .mapboxgl-ctrl-geocoder--icon-search{
+            height:15px;
+            width:15px;
+        }
+    }
 </style>
 
 @{
@@ -183,9 +220,9 @@
 
             <div id="modal" class="modal" style="overflow:hidden;">
                 <div class="modal-content" style="width:90%; height:90%; padding:0; margin-top:20px; border-radius:15px !important; overflow:scroll;">
-                    <span onclick="$('#modal').hide()" class="close" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
+                    <span onclick="$('#modal').hide()" class="close text-to-dark" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
                     <div class="container mt-5">
-                        <h2>Tutorial</h2>
+                        <h2 class="text-to-dark">Tutorial</h2>
                         <hr />
                         <span class="col-12 col-md-8 text-to-dark" style="text-align:center;">@StringLocalizer["IntroTutorial"]</span>
 
@@ -224,7 +261,7 @@
             <div class="form-group mt-3 d-flex">
                 <input type="submit" onclick="showConfirmedToast()" value="@StringLocalizer["Create"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                 <div id="modal1" class="modal">
-                    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+                    <div id="errorModel" class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
                         <span class="text-to-dark">@StringLocalizer["Are you sure you want to cancel? All progress will be lost!"]</span>
                         <div class="d-flex justify-content-end mt-3">
                             <a onclick="$('#modal1').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Back"]</a>

@@ -79,6 +79,20 @@
         animation: slideRight 1s ease forwards .5s;
     }
 
+    #errorModel {
+        margin-top: 20%;
+        margin-bottom: 0;
+        max-height: 20%;
+        max-width: 20%;
+    }
+
+    @@media only screen and (max-width: 1000px) {
+        #errorModel {
+            max-height: 20%;
+            max-width: 60%;
+        }
+    }
+
 </style>
 
 <div class="container ps-5 pe-5">
@@ -162,14 +176,21 @@
                 <span asp-validation-for="EventResultType" class="text-danger"></span>
             </div>
 
-            <div id="LocationContainer" class="form-group mt-3">
-                <a id="btnAddLocation" onclick="AddLocation()" class="form-check-input" style="cursor:pointer">Inserir Localização</a>
+            <div id="LocationContainer" class="form-group mt-3 d-block d-md-flex">
+                <div class="col-12 col-md-auto">
+                    <a id="btnAddLocation" onclick="AddLocation()" class="form-check-input me-2" style="color:white; border-radius: 10px;padding: 6px 12px; background-color: #00639A; border-color: #00639A; cursor:pointer; text-decoration:none;"></a>
+                </div>
+
                 <input asp-for="LocationString" type="hidden" id="Location" />
 
-                @if (@Model.LocationId != null && Model.Location != null)
-                {
-                    <span id="spanStreet" class="text-to-dark">@Model.Location.AddressString</span>
-                }
+                <div class="col-12 col-md-auto mt-2 mt-md-0">
+                    @if (@Model.LocationId != null && Model.Location != null)
+                    {
+                        <span id="spanStreet" class="text-to-dark">@Model.Location.AddressString</span>
+
+                    }
+                </div>
+
             </div>
 
             <input asp-for="Route" type="hidden" class="form-control" id="ev" />
@@ -185,14 +206,6 @@
                 <label asp-for="AddressByPath" class="control-label"></label>
             </div>
 
-            <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
-                <div class="d-flex">
-                    <div class="toast-body">
-                        <strong id="alertText"></strong>
-                    </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
-                </div>
-            </div>
             <input type="hidden" class="form-control" id="path" value="@((Model.Route != null) ? Model.Route : "null")" />
             <span id="locationText" class="text-to-dark"></span> <br /> <br />
             <a id="tutorialBtn" onclick="showTutorial()" class="mt-4 d-none" style="color:white; margin-top:4% !important; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
@@ -206,9 +219,9 @@
 
             <div id="modal" class="modal" style="overflow:hidden;">
                 <div class="modal-content" style="width:90%; height:90%; padding:0; margin-top:20px; border-radius:15px !important; overflow:scroll;">
-                    <span onclick="$('#modal').hide()" class="close" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
+                    <span onclick="$('#modal').hide()" class="close text-to-dark" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
                     <div class="container mt-5">
-                        <h2>Tutorial</h2>
+                        <h2 class="text-to-dark">Tutorial</h2>
                         <hr />
                         <span class="col-8 text-to-dark" style="text-align:center;">@StringLocalizer["IntroTutorial"]</span>
 
@@ -248,7 +261,7 @@
             <div class="form-group mt-3 d-flex">
                 <input type="submit" value="Save" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                 <div id="modal1" class="modal">
-                    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+                    <div id="errorModel" class="modal-content">
                         <span class="text-to-dark">@StringLocalizer["Are you sure you want to cancel? All progress will be lost!"]</span>
                         <div class="d-flex justify-content-end mt-3">
                             <a onclick="$('#modal1').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Back"]</a>
@@ -266,7 +279,7 @@
                     <div class="toast-body">
                         <strong id="alertText"></strong>
                     </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick="closeToast()" aria-label="Close"></button>
+                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" onclick=" $('.toast').hide();" aria-label="Close"></button>
                 </div>
             </div>
         </form>
@@ -285,10 +298,6 @@
 
     function showTutorial() {
         $('#modal').show();
-    }
-
-    function closeToast(){
-        $(".toast").hide();
     }
 
     function changedStart(event) {
