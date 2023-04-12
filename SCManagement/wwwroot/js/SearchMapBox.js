@@ -101,24 +101,17 @@ function addAddress(epoint) {
                     if (coordX != "" && coordY != "") {
                         markers.remove();
                     }
-                    try {
-                        if (address != null) {
-                            console.log(address)
-                            addressElement.value = JSON.stringify({
-                                CoordinateX: coord[0],
-                                CoordinateY: coord[1],
-                                AddressString: address,
+                    if (address != null) {
+                        console.log(address)
+                        addressElement.value = JSON.stringify({
+                            CoordinateX: coord[0],
+                            CoordinateY: coord[1],
+                            AddressString: address,
 
-                            })
-                            $("#modal").hide();
-                            newAd.innerHTML = strings.newAddress + ": " + address;
-                        }
-
-                    } catch (error) {
-                        $(".toast").show();
-                        document.getElementById('alertText').innerHTML = strings.resultError;
+                        })
+                        $("#modal").hide();
+                        newAd.innerHTML = strings.newAddress + ": " + address;
                     }
-
                 } else {
                     features = map.queryRenderedFeatures(epoint.point, { layers: ['water'] });
                     if (features.length > 0) {
