@@ -390,7 +390,7 @@ function SearchMapBoxConfig() {
     map.addControl(geocoder, 'top-left');
 
     map.on('load', () => {
-         MarkerWithAddress(map);
+        MarkerWithAddress(map);
     });
 }
 
@@ -432,23 +432,15 @@ function MarkerWithAddress(map) {
                     if (data.features && data.features.length > 0) {
                         result.address = data.features[0].place_name;
                     }
-                    try {
-                        if (result.address != null) {
-                            console.log(result.address)
-                            let location = document.getElementById("Location");
-                            location.value = JSON.stringify({
-                                CoordinateX: result.coord[0],
-                                CoordinateY: result.coord[1],
-                                AddressString: result.address,
+                    if (result.address != null) {
+                        let location = document.getElementById("Location");
+                        location.value = JSON.stringify({
+                            CoordinateX: result.coord[0],
+                            CoordinateY: result.coord[1],
+                            AddressString: result.address,
 
-                            })
-                            addressByPath.value = result.address;
-                            console.log(addressByPath.value)
-                        }
-                    } catch (error) {
-                        $(".toast").show();
-                        document.getElementById('alertText').innerHTML = strings.resultError;
-                        addressByPath.value = "";
+                        })
+                        addressByPath.value = result.address;
                     }
                 }
             });

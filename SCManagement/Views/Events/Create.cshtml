@@ -334,7 +334,6 @@
                     toLang: toLang
                 },
             }).done(function (response) {
-                console.log("Sucess")
                 ta.value = response[0].translations[0].text
 
             }).fail(function (jqXHR, textStatus, errorThrown) {
@@ -367,8 +366,6 @@
             // Verificar se pelo menos um dos campos está preenchido
             const addressByPath = document.getElementById("AddressByPath").value;
             const locationString = document.getElementById("Location").value;
-            console.log(locationString)
-            console.log(addressByPath)
             if (addressByPath.trim() === "" && locationString.trim() === "") {
                 event.preventDefault();
                 $(".toast").show();
