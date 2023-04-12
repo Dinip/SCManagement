@@ -393,6 +393,7 @@
         else {
             mapBox.style.display = "none";
             locationContainer.style.display = "block";
+            addressContainer.style.display = "none";
             tutorialBtn.classList.add("d-none");
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
@@ -414,6 +415,7 @@
         let locationContainer = document.getElementById("LocationContainer");
         let tutorialBtn = document.getElementById("tutorialBtn");
         mapBox.style.display = "block";
+        addressContainer.style.display = "block";
         locationContainer.style.display = "none";
         tutorialBtn.classList.remove("d-none");
         SearchMapBoxConfig();
