@@ -63,31 +63,6 @@
         border: 1px solid black;
     }
 
-    @@media only screen and (max-width: 768px) {
-        #save-button {
-            bottom: 20px;
-            right: 20px;
-        }
-    }
-
-    #save-button {
-        border-radius: 100px;
-        width: 60px !important;
-        aspect-ratio: 1;
-        background-color: #00639A;
-        border-color: #00639A;
-        position: absolute !important;
-        right: 30px !important;
-        z-index: 2;
-        bottom: 30px !important;
-    }
-
-        #save-button:hover {
-            background-color: dodgerblue;
-            border-color: dodgerblue;
-        }
-
-
     .translatebtn {
         color: white;
         border-radius: 2px;
@@ -194,7 +169,6 @@
                 @if (@Model.LocationId != null && Model.Location != null)
                 {
                     <span id="spanStreet" class="text-to-dark">@Model.Location.AddressString</span>
-
                 }
             </div>
 
@@ -226,10 +200,7 @@
                 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px;  width:100% !important;">
                     <div class="card-body">
                         <div id='map'></div>
-                        <div id="menu">
-                        </div>
-                        <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
-                    </div>
+                   </div>
                 </div>
             </div>
 
@@ -393,11 +364,6 @@
         checkLimitEnrollDateIsValid();
 
         ToggleMapBox();
-        let ckbHaveRoute = document.getElementById("ckbHaveRoute");
-        if (ckbHaveRoute.checked) {
-            PathMapBoxConfig();
-        }
-
         
     }
 
@@ -424,7 +390,6 @@
         }
         else {
             mapBox.style.display = "none";
-            addressContainer.style.display = "none";
             locationContainer.style.display = "block";
             tutorialBtn.classList.add("d-none");
             document.getElementById("ev").value = null;
@@ -432,10 +397,11 @@
             document.getElementById("map").innerHTML = "";
 
             if (spanStreet.innerHTML != null) {
-                btnAddLocation.innerHTML = "Atualizar Localização"
+                btnAddLocation.innerHTML = strings.updateLocation;
             } else {
-                btnAddLocation.innerHTML = "Inserir Localização"
+                btnAddLocation.innerHTML = strings.insertLocation;
             }
+
         }
         CheckLimitEnrollDate();
     }
@@ -446,7 +412,6 @@
         let locationContainer = document.getElementById("LocationContainer");
         let tutorialBtn = document.getElementById("tutorialBtn");
         mapBox.style.display = "block";
-        //addressContainer.style.display = "block";
         locationContainer.style.display = "none";
         tutorialBtn.classList.remove("d-none");
         SearchMapBoxConfig();
@@ -479,42 +444,42 @@
         }
     }
 
-    function validateForm(event) {
-        // Verificar se pelo menos um dos campos está preenchido
-        const addressByPath = document.getElementById("AddressByPath").value;
-        const locationString = document.getElementById("Location").value;
-        const spanLocation = document.getElementById("spanStreet").innerHTML
 
-        if (addressByPath.trim() === "" && locationString.trim() === "" && spanLocation.trim() === "") {
+    function validateForm(event) {
+            // Verificar se pelo menos um dos campos está preenchido
+            const addressByPath = document.getElementById("AddressByPath").value;
+            const locationString = document.getElementById("Location").value;
+            console.log(locationString)
+            console.log(addressByPath)
+            if (addressByPath.trim() === "" && locationString.trim() === "") {
+                event.preventDefault();
+                $(".toast").show();
+                document.getElementById('alertText').innerHTML = strings.locationEvent;
+                return false;
+            }
+
+            // Verificar se algum dos campos de tradução está preenchido
+            const translations = document.querySelectorAll('textarea[name^="EventTranslationsName"]');
+
+            let isTranslationFilled = false;
+            for (let i = 0; i < translations.length; i++) {
+                if (translations[i].value.trim() !== '') {
+                    isTranslationFilled = true;
+                    break;
+                }
+            }
+
+            // Se algum dos campos de tradução está preenchido, permite o envio do formulário
+            if (isTranslationFilled) {
+                return true;
+            }
+
+            // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
             event.preventDefault();
             $(".toast").show();
-            document.getElementById('alertText').innerHTML = "Por favor, coloque uma localização no evento.";
+            document.getElementById('alertText').innerHTML = strings.nameEvent;
             return false;
         }
-
-
-        // Verificar se algum dos campos de tradução está preenchido
-        const translations = document.querySelectorAll('textarea[name^="EventTranslationsName"]');
-
-        let isTranslationFilled = false;
-        for (let i = 0; i < translations.length; i++) {
-            if (translations[i].value.trim() !== '') {
-                isTranslationFilled = true;
-                break;
-            }
-        }
-
-        // Se algum dos campos de tradução está preenchido, permite o envio do formulário
-        if (isTranslationFilled) {
-            return true;
-        }
-
-        // Caso contrário, impede o envio do formulário e exibe uma mensagem de erro
-        event.preventDefault();
-        $(".toast").show();
-        document.getElementById('alertText').innerHTML = "Preencha pelo menos um campo de tradução.";
-        return false;
-    }
 
     var strings = {
         "noMatch": '@Html.Raw(StringLocalizer["NoMatch"].Value.ToString())',
@@ -532,6 +497,9 @@
         "searchError": '@Html.Raw(StringLocalizer["SearchError"].Value.ToString())',
         "newAddress": '@Html.Raw(StringLocalizer["NewAddress"].Value.ToString())',
         "resultError": '@Html.Raw(StringLocalizer["ResultError"].Value.ToString())',
+        "locationEvent": '@Html.Raw(StringLocalizer["LocationEvent"].Value.ToString())',
+        "updateLocation": '@Html.Raw(StringLocalizer["UpdateLocation"].Value.ToString())',
+        "insertLocation": '@Html.Raw(StringLocalizer["InsertLocation"].Value.ToString())',
     }
 </script>
 

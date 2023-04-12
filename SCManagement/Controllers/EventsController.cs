@@ -470,7 +470,7 @@ namespace SCManagement.Controllers
                 eventToUpdate.EndDate = myEvent.EndDate;
                 eventToUpdate.IsPublic = myEvent.IsPublic;
                 eventToUpdate.Fee = validKey ? myEvent.Fee : 0;
-                eventToUpdate.HaveRoute = myEvent.AddressByPath != null;
+                eventToUpdate.HaveRoute = myEvent.Route != null;
                 eventToUpdate.Route = myEvent.Route;
                 eventToUpdate.EventResultType = myEvent.EventResultType;
                 eventToUpdate.EnrollLimitDate = myEvent.EnrollLimitDate == new DateTime() ? eventCopy.EnrollLimitDate : myEvent.EnrollLimitDate;

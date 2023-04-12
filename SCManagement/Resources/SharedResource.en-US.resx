@@ -4736,4 +4736,20 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
     <value>This club has no address</value>
     <comment>26-03-2023_searchClub</comment>
   </data>
+  <data name="Event Have Route" xml:space="preserve">
+    <value>Event Have Route</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="InsertLocation" xml:space="preserve">
+    <value>InsertLocation</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="Max Enrolls" xml:space="preserve">
+    <value>Max Enrolls</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="UpdateLocation" xml:space="preserve">
+    <value>UpdateLocation</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
 </root>

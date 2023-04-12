@@ -4826,4 +4826,20 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
     <value>Este clube não tem morada</value>
     <comment>26-03-2023_searchClub</comment>
   </data>
+  <data name="Event Have Route" xml:space="preserve">
+    <value>Evento tem caminho</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="InsertLocation" xml:space="preserve">
+    <value>Inserir Localização</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="Max Enrolls" xml:space="preserve">
+    <value>Número Máximo de Inscrições</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="UpdateLocation" xml:space="preserve">
+    <value>Atualizar Localização</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
 </root>
