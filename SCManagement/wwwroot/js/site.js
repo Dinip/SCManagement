@@ -1,4 +1,6 @@
 ﻿setTheme(localStorage.getItem("theme") || "light")
+
+
 document.getElementById("Dropdown").addEventListener('click', function (event) {
     event.stopPropagation();
 });
@@ -49,6 +51,14 @@ function setTheme(theme) {
     let datatablesPaginateBtn = document.getElementsByClassName('paginate_button');
     let tableWrapper = document.getElementsByClassName('dataTables_wrapper');
 
+    let dtrdata = document.getElementsByClassName('dtr-data');
+    for (let i = 0; i < dtrdata.length; i++) {
+        dtrdata[i].classList.add("text-to-dark");
+    }
+    let dtrtitle = document.getElementsByClassName('dtr-title');
+    for (let i = 0; i < dtrtitle.length; i++) {
+        dtrtitle[i].classList.add("text-to-dark");
+    }
     if (theme === "dark") {
         darkToggle.checked = true
         darkToggle1.checked = true

@@ -4842,4 +4842,25 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
     <value>Atualizar Localização</value>
     <comment>12-04-2023_FixEvents</comment>
   </data>
+  <data name="PaymentsPageText" xml:space="preserve">
+    <value>página de pagamentos</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="PaymentsSubscriptionText" xml:space="preserve">
+    <value>O pagamento da tua subscrição está em modo manual! Podes ativar o pagamento automático e indicar um cartão de credito/debito, ou ir à tua </value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="ToPayManuallyText" xml:space="preserve">
+    <value>para pagar manualmente.</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="Disable AutoRenew" xml:space="preserve">
+    <value>Desativar Renovação Automatica</value>
+  </data>
+  <data name="Enable AutoRenew" xml:space="preserve">
+    <value>Ativar Renovação Automatica</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>Mais</value>
+  </data>
 </root>

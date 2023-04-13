@@ -128,14 +128,14 @@
                             <hr />
                             <div class="dropdown d-block d-md-none nav-item">
                                 <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false">
-                                    More
+                                    @StringLocalizer["More"]
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-full" style="border-bottom:none !important; margin-top:0;" role="menu" id="Dropdown">
                                     <li class="dropdown-item" style="padding: 5px;">
                                         <a class="nav-link text-to-dark dropdown-text" style="color:black;" asp-area="Identity" asp-page="/Account/Manage/Index" title=@StringLocalizer["Profile"]>@user?.FullName</a>
                                     </li>
                                     <li class="dropdown-item" style="padding: 5px;">
-                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="Settings">@StringLocalizer["Settings"]</a>
+                                        <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="User" asp-action="UpdateNotificationsSettings">@StringLocalizer["NotificationsSettings"]</a>
                                     </li>
                                     <li class="dropdown-item" style="padding: 5px;">
                                         <a class="nav-item nav-link text-to-dark" style="color:black;" asp-controller="Home" asp-action="TermsAndConditions">@StringLocalizer["Terms&Conditions"]</a>
@@ -148,7 +148,7 @@
                                     </li>
                                     <li class="mt-2" style="padding: 5px;">
                                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg text-to-dark"></i>
-                                        <label class="text-to-dark">DarkMode</label>
+                                        <label class="text-to-dark">@StringLocalizer["Dark Mode"]</label>
                                         <label class="switch" style="margin-left: 10px;">
                                             <input type="checkbox" onchange="darkThemeToggle(this)" id="darkToggle1">
                                             <span class="slider round"></span>
@@ -184,12 +184,12 @@
                             <hr />
                             <div class="dropdown d-block d-md-none nav-item">
                                 <a class="nav-link text-to-dark" data-bs-toggle="dropdown" aria-expanded="false">
-                                    More
+                                    @StringLocalizer["More"]
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-full" role="menu" id="Dropdown">
                                     <li style="padding: 5px;">
                                         <i style="margin-left:15px; margin-right:5px;" class="fa-solid fa-moon fa-lg text-to-dark"></i>
-                                        <label class="text-to-dark">DarkMode</label>
+                                        <label class="text-to-dark">@StringLocalizer["Dark Mode"]</label>
                                         <label class="switch" style="margin-left: 10px;">
                                             <input type="checkbox" onchange="darkThemeToggle(this)" id="darkToggle1">
                                             <span class="slider round"></span>

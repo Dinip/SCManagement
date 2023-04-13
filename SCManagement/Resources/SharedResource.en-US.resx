@@ -4752,4 +4752,26 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
     <value>UpdateLocation</value>
     <comment>12-04-2023_FixEvents</comment>
   </data>
+  <data name="PaymentsPageText" xml:space="preserve">
+    <value>payments page</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="PaymentsSubscriptionText" xml:space="preserve">
+    <value>Your subscription is set to manual renew! You can enable auto renew and set a credit/debit card
+to enable it, or go to your</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="ToPayManuallyText" xml:space="preserve">
+    <value>to pay manually.</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="Disable AutoRenew" xml:space="preserve">
+    <value>Disable AutoRenew</value>
+  </data>
+  <data name="Enable AutoRenew" xml:space="preserve">
+    <value>Enable AutoRenew</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>More</value>
+  </data>
 </root>
