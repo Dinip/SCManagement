@@ -900,6 +900,16 @@ namespace SCManagement.Tests.Controller {
         [Fact]
         public async Task EventsController_Edit_Post_ReturnsIsNotClubStaff()
         {
+            var eventAUX = new Event
+            {
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true
+            };
+
             // Arrange
             var even = new EventModel
             {
@@ -909,7 +919,10 @@ namespace SCManagement.Tests.Controller {
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
+                Route = "-8.898746,38.525216;-8.898611,38.525169;-8.898556,38.525053;-8.898349,38.523619;-8.898253,38.523312;-8.898173,38.523244;-8.898062,38.523157;-8.897485,38.523247;-8.894789,38.523485;-8.8948,38.523557"
             };
+            even.EventAux = JsonSerializer.Serialize(eventAUX);
+
             var role = new UsersRoleClub { ClubId = 1 };
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
@@ -934,8 +947,21 @@ namespace SCManagement.Tests.Controller {
                 IsPublic = true,
                 Fee = 10,
                 HaveRoute = true,
+                Route = "-8.898746,38.525216;-8.898611,38.525169;-8.898556,38.525053;-8.898349,38.523619;-8.898253,38.523312;-8.898173,38.523244;-8.898062,38.523157;-8.897485,38.523247;-8.894789,38.523485;-8.8948,38.523557"
             };
             var role = new UsersRoleClub { ClubId = 1 };
+
+            var eventAUX = new Event
+            {
+                StartDate = DateTime.Now.AddDays(2),
+                EndDate = DateTime.Now.AddDays(5),
+                EnrollLimitDate = DateTime.Now.AddDays(1),
+                IsPublic = true,
+                Fee = 10,
+                HaveRoute = true
+            };
+            even.EventAux = JsonSerializer.Serialize(eventAUX);
+
             A.CallTo(() => _userService.GetSelectedRole(A<string>._)).Returns(role);
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(true);
             A.CallTo(() => _eventService.GetEvent(A<int>._)).Returns(Task.FromResult<Event>(null));
