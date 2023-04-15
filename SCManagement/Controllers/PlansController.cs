@@ -394,7 +394,7 @@ namespace SCManagement.Controllers
 
                 _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
-                return RedirectToAction("TrainingZone", "MyClub");
+                return RedirectToAction("TrainingZone");
             }
 
             return View("CustomError", "Error_NotFound");
@@ -507,7 +507,7 @@ namespace SCManagement.Controllers
 
                 _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
-                return RedirectToAction("TrainingZone", "MyClub");
+                return RedirectToAction("TrainingZone");
             }
 
             return View("CustomError", "Error_NotFound");
@@ -719,7 +719,7 @@ namespace SCManagement.Controllers
 
                 _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
-                return RedirectToAction("TrainingZone", "MyClub");
+                return RedirectToAction("TrainingZone");
             }
 
             return View("CustomError", "Error_NotFound");
@@ -823,7 +823,7 @@ namespace SCManagement.Controllers
 
                 _notificationService.NotifyPlansCreate(listOfPlans.Cast<Plan>());
 
-                return RedirectToAction("TrainingZone", "MyClub");
+                return RedirectToAction("TrainingZone");
             }
 
             return View("CustomError", "Error_NotFound");
@@ -1156,7 +1156,7 @@ namespace SCManagement.Controllers
 
             _notificationService.NotifyGoalCreate(goalSaved);
 
-            return RedirectToAction("TrainingZone", "MyClub");
+            return RedirectToAction("TrainingZone");
         }
 
         public async Task<IActionResult> EditGoal(int id)
