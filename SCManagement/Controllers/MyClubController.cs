@@ -594,7 +594,7 @@ namespace SCManagement.Controllers
             UsersRoleClub role = _applicationContextService.UserRole;
 
             //check role Trainer
-            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubAdmin(role)) return View("CustomError", "Error_Unauthorized");
+            if (!_clubService.IsClubTrainer(role) && !_clubService.IsClubManager(role)) return View("CustomError", "Error_Unauthorized");
 
             await _teamService.CreateTeam(new Team { Name = team.Name, ModalityId = team.ModalityId, TrainerId = team.TrainerId, ClubId = role.ClubId });
 
@@ -987,17 +987,6 @@ namespace SCManagement.Controllers
             var payments = await _paymentService.GetClubPayments(role.ClubId);
 
             return View(payments);
-        }
-
-        public async Task<IActionResult> TrainingZone()
-        {
-            UsersRoleClub role = _applicationContextService.UserRole;
-            if (!await _userService.IsStaffInAnyClub(role.UserId)) return View("CustomError", "Error_Unauthorized");
-
-            ViewBag.HaveMealTemplate = ((await _planService.GetTemplateMealPlans(role.UserId))?.Any() ?? false);
-            ViewBag.HaveTrainingTemplate = ((await _planService.GetTemplateTrainingPlans(role.UserId))?.Any() ?? false);
-
-            return View(await _teamService.GetTeamsByTrainer(role.UserId));
         }
     }
 }

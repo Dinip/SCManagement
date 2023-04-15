@@ -220,7 +220,11 @@ namespace SCManagement.Controllers
         /// </summary>
         /// <param name="id">id of the club</param>
         /// <returns>Deatils View</returns>
-        [Authorize]
+        /// Be careful with this method, since it does not have the
+        /// [Authorize] flag, but should only be called when authed.
+        /// Instead, it checks if the user has id (which is only possible
+        /// if he is authed), and if the value is null, it redirects to the
+        /// login page with the Clubs/Id as the return url.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Associate(int? Id)
@@ -228,6 +232,14 @@ namespace SCManagement.Controllers
             if (Id == null) return View("CustomError", "Error_NotFound");
 
             string userId = getUserIdFromAuthedUser();
+            // check user auth and if not authed, redirect to
+            // login page with custom return url
+            if (userId == null) return RedirectToPage("/Account/Login", new
+            {
+                area = "Identity",
+                ReturnUrl = $"/Clubs/{Id}"
+            });
+
             Club? club = await _clubService.GetClub((int)Id);
             if (club == null) return View("CustomError", "Error_NotFound");
 

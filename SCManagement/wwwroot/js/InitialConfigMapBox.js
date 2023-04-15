@@ -4,7 +4,6 @@ function PathMapBoxConfig() {
 
     const path = document.getElementById("path");
     let map;
-    let locationText = document.getElementById("locationText");
     let tradPlaceholder = document.getElementById('tradPlaceholder');
 
     if (path.value !== 'null') {
@@ -70,8 +69,6 @@ function PathMapBoxConfig() {
 
     }
 
-
-    const btnSave = document.getElementById('save-button');
     const ev = document.getElementById("ev");
     let addressByPath = document.getElementById("AddressByPath");
     const btnDraw = document.getElementsByClassName("mapbox-gl-draw_ctrl-draw-btn");
@@ -91,13 +88,6 @@ function PathMapBoxConfig() {
 
     map.addControl(geocoder, 'top-left');
 
-    btnSave.onclick = function () {
-        if (coordsPath != null) {
-            ev.value = coordsPath;
-            btnSave.classList.add("d-none");
-            locationText.innerHTML = strings.newAddress + " " + addressByPath.value;
-        }
-    }
 
     let draw = new MapboxDraw({
         // Instead of showing all the draw tools, show only the line string and delete tools
@@ -181,7 +171,6 @@ function PathMapBoxConfig() {
             endMarker.remove();
         }
 
-        btnSave.classList.remove("d-none");
 
         const profile = 'walking'; // Set the profile
 
@@ -326,8 +315,6 @@ function PathMapBoxConfig() {
             endMarker.remove();
         }
 
-        btnSave.classList.remove("d-none");
-        locationText.innerHTML = "";
         newCoords = null;
         ev.value = newCoords;
         addressByPath.value = null;
@@ -337,12 +324,12 @@ function PathMapBoxConfig() {
     function addMarkers(initialCoord, endCoord) {
         initialMarker = new mapboxgl.Marker({ color: 'green' })
             .setLngLat([initialCoord[0], initialCoord[1]])
-            .setPopup(new mapboxgl.Popup().setHTML('Inicio'))
+            .setPopup(new mapboxgl.Popup().setHTML(strings.start))
             .addTo(map);
 
         endMarker = new mapboxgl.Marker({ color: 'red' })
             .setLngLat([endCoord[0], endCoord[1]])
-            .setPopup(new mapboxgl.Popup().setHTML('Fim'))
+            .setPopup(new mapboxgl.Popup().setHTML(strings.end))
             .addTo(map);
     }
 
@@ -370,11 +357,14 @@ function PathMapBoxConfig() {
             const address = data.features[0].place_name;
             addressByPath.value = address;
 
+            if (coordsPath != null) {
+                ev.value = coordsPath;
+            }
+
         } catch (error) {
             errorMessage("Other")
             removeRoute();
             draw.deleteAll();
-            locationText.innerHTML = "";
             return;
         }
     }
@@ -390,16 +380,6 @@ function SearchMapBoxConfig() {
         zoom: 13
     });
 
-    const layerList = document.getElementById('menu');
-    const inputs = layerList.getElementsByTagName('input');
-
-    for (const input of inputs) {
-        input.onclick = (layer) => {
-            const layerId = layer.target.id;
-            map.setStyle('mapbox://styles/mapbox/' + layerId);
-        };
-    }
-
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
         mapboxgl: mapboxgl,
@@ -409,42 +389,18 @@ function SearchMapBoxConfig() {
 
     map.addControl(geocoder, 'top-left');
 
-
-    let result = null;
-
-    let btn = document.getElementById("save-button")
     map.on('load', () => {
-        result = MarkerWithAddress(map);
+        MarkerWithAddress(map);
     });
-
-    let locationText = document.getElementById("locationText");
-    btn.onclick = function () {
-        try {
-            if (result.address != null) {
-                let location = document.getElementById("Location");
-                location.value = JSON.stringify({
-                    CoordinateX: result.coord[0],
-                    CoordinateY: result.coord[1],
-                    AddressString: result.address,
-
-                })
-                locationText.innerHTML = strings.newAddress + ": " + result.address;
-                btn.classList.add("d-none");
-            }
-        } catch (error) {
-            $(".toast").show();
-            document.getElementById('alertText').innerHTML = strings.resultError;
-        }
-    }
 }
 
 
 
+//pin the location of the event to the map
 function MarkerWithAddress(map) {
-    let btn = document.getElementById("save-button");
+    let addressByPath = document.getElementById("AddressByPath");
     let marker = null;
     let result = { coord: null, address: null };
-
     map.on('click', function (e) {
         // Capture the coordinates of the clicked point
         if (marker !== null) {
@@ -456,9 +412,6 @@ function MarkerWithAddress(map) {
         marker = new mapboxgl.Marker({ color: "#00639A" })
             .setLngLat([result.coord[0], result.coord[1]])
             .addTo(map);
-
-        btn.classList.remove("d-none");
-
 
         // Send an HTTP request to the Geocoding API
         let geocodeUrl = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + result.coord[0] + ',' + result.coord[1] + '.json?ypes=poi,address,region,district,place,country&access_token=' + mapboxgl.accessToken;
@@ -472,14 +425,24 @@ function MarkerWithAddress(map) {
                     document.getElementById('alertText').innerHTML = strings.searchError;
                     marker.remove();
                     result.address = null;
-                    locationText.innerHTML = "";
+                    addressByPath.value = "";
+                    document.getElementById("Location").value = null;
                 } else {
                     // Extract the address information from the JSON response
                     if (data.features && data.features.length > 0) {
                         result.address = data.features[0].place_name;
                     }
+                    if (result.address != null) {
+                        let location = document.getElementById("Location");
+                        location.value = JSON.stringify({
+                            CoordinateX: result.coord[0],
+                            CoordinateY: result.coord[1],
+                            AddressString: result.address,
+
+                        })
+                        addressByPath.value = result.address;
+                    }
                 }
             });
     });
-    return result;
 }

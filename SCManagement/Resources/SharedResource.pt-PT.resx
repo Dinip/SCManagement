@@ -4817,4 +4817,53 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
   <data name="ClubPayments_KeyInfo" xml:space="preserve">
     <value>Durante a fase de testes, poderás utilizar os seguintes dados nos campos acima:</value>
   </data>
+  <data name="PlanPerMonth" xml:space="preserve">
+    <value>Aderencia do plano por mês</value>
+    <comment>06-04-2023_subscription</comment>
+  </data>
+  <data name="ClickMe" xml:space="preserve">
+    <value>Clica para viajar</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
+  <data name="DontHaveLocation" xml:space="preserve">
+    <value>Este clube não tem morada</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
+  <data name="Event Have Route" xml:space="preserve">
+    <value>Evento tem caminho</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="InsertLocation" xml:space="preserve">
+    <value>Inserir Localização</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="Max Enrolls" xml:space="preserve">
+    <value>Número Máximo de Inscrições</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="UpdateLocation" xml:space="preserve">
+    <value>Atualizar Localização</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="PaymentsPageText" xml:space="preserve">
+    <value>página de pagamentos</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="PaymentsSubscriptionText" xml:space="preserve">
+    <value>O pagamento da tua subscrição está em modo manual! Podes ativar o pagamento automático e indicar um cartão de credito/debito, ou ir à tua </value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="ToPayManuallyText" xml:space="preserve">
+    <value>para pagar manualmente.</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="Disable AutoRenew" xml:space="preserve">
+    <value>Desativar Renovação Automatica</value>
+  </data>
+  <data name="Enable AutoRenew" xml:space="preserve">
+    <value>Ativar Renovação Automatica</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>Mais</value>
+  </data>
 </root>

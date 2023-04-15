@@ -70,6 +70,10 @@
     <None Include="Views\Shared\_Layout.cshtml" />
     <None Include="Views\Shared\_LoginPartial.cshtml" />
     <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="wwwroot\lib\jQuery-plugin-progressbar-master\jquery-1.11.3.js" />
+    <None Include="wwwroot\lib\jQuery-plugin-progressbar-master\jQuery-plugin-progressbar.js" />
+    <None Include="wwwroot\lib\jQuery-plugin-progressbar-master\jQuery-plugin-progressbar.scss" />
+    <None Include="wwwroot\lib\jQuery-plugin-progressbar-master\README.md" />
   </ItemGroup>
 
 </Project>

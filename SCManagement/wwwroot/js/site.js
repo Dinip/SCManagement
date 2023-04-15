@@ -1,4 +1,6 @@
 ﻿setTheme(localStorage.getItem("theme") || "light")
+
+
 document.getElementById("Dropdown").addEventListener('click', function (event) {
     event.stopPropagation();
 });
@@ -48,7 +50,16 @@ function setTheme(theme) {
     let datatablesPagination = document.getElementsByClassName('dataTables_paginate');
     let datatablesPaginateBtn = document.getElementsByClassName('paginate_button');
     let tableWrapper = document.getElementsByClassName('dataTables_wrapper');
+    let arrow = document.getElementById('arrowa');
 
+    let dtrdata = document.getElementsByClassName('dtr-data');
+    for (let i = 0; i < dtrdata.length; i++) {
+        dtrdata[i].classList.add("text-to-dark");
+    }
+    let dtrtitle = document.getElementsByClassName('dtr-title');
+    for (let i = 0; i < dtrtitle.length; i++) {
+        dtrtitle[i].classList.add("text-to-dark");
+    }
     if (theme === "dark") {
         darkToggle.checked = true
         darkToggle1.checked = true
@@ -138,6 +149,10 @@ function setTheme(theme) {
             logoText1.style.fill = 'white';
         }
 
+        if (arrow) {
+            arrow.style.color = 'white';
+        }
+
         for (let i = 0; i < dlBg.length; i++) {
             dlBg[i].style.background = '#1a1a1a';
         }
@@ -165,6 +180,11 @@ function setTheme(theme) {
         if (noClubImg) {
             noClubImg.src = "../img/NoClubBlack.png";
         }
+
+        if (arrow) {
+            arrow.style.color = 'black';
+        }
+
         element.classList.add("bg-white");
 
         for (let i = 0; i < texts.length; i++) {
@@ -200,6 +220,10 @@ function setTheme(theme) {
             }
         }
 
+        for (let i = 0; i < textareas.length; i++) {
+            textareas[i].classList.remove("bg-dark");
+            textareas[i].style.color = 'black';
+        }
 
         for (let i = 0; i < clabels.length; i++) {
             clabels[i].style.color = 'black';

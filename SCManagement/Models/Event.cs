@@ -32,7 +32,7 @@ namespace SCManagement.Models
 
         [Display(Name = "Event Have Route")]
         public bool HaveRoute { get; set; } = false;
-
+        
         public string? Route { get; set; }
 
         [Display(Name = "Max Enrolls")]

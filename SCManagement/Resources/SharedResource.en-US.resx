@@ -3587,72 +3587,7 @@ As long as the website and the information and services provided therein are fre
     <comment>31-03-2023_notifications</comment>
   </data>
   <data name="Email_PaymentLate" xml:space="preserve">
-    <value>&lt;!doctype html&gt;
-&lt;html lang="en"&gt;
-
-&lt;head&gt;
-    &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
-    &lt;title&gt;Athletes Number Almost Full template&lt;/title&gt;
-    &lt;meta name="description" content="Reset Password Email Template."&gt;
-    &lt;style type="text/css"&gt;
-        a:hover {
-            text-decoration: underline !important;
-        }
-    &lt;/style&gt;
-&lt;/head&gt;
-
-&lt;body marginheight="0" topmargin="0" marginwidth="0" style="margin: 0px; background-color: #f2f3f8;" leftmargin="0"&gt;
-    &lt;!--100% body table--&gt;
-    &lt;table cellspacing="0" border="0" cellpadding="0" width="100%" bgcolor="#f2f3f8"
-        style="@import url(https://fonts.googleapis.com/css?family=Rubik:300,400,500,700|Open+Sans:300,400,600,700); font-family: 'Open Sans', sans-serif;"&gt;
-        &lt;tr&gt;
-            &lt;td&gt;
-                &lt;table style="background-color: #f2f3f8; max-width:670px;  margin:0 auto;" width="100%" border="0"
-                    align="center" cellpadding="0" cellspacing="0"&gt;
-                    &lt;tr&gt;
-                        &lt;td style="height:80px;"&gt;&amp;nbsp;&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td style="text-align:center;"&gt; &lt;a href="https://scmanagement.me" title="logo" target="_blank"&gt;
-                                &lt;img width="200" src="https://cdn.scmanagement.me/public/logo.png" title="logo"
-                                    alt="logo"&gt; &lt;/a&gt; &lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
-                    &lt;/tr&gt;
-                    &lt;tr&gt;
-                        &lt;td&gt;
-                            &lt;table width="95%" border="0" align="center" cellpadding="0" cellspacing="0"
-                                style="max-width:670px;background:#fff; border-radius:3px; text-align:center;-webkit-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);-moz-box-shadow:0 6px 18px 0 rgba(0,0,0,.06);box-shadow:0 6px 18px 0 rgba(0,0,0,.06);"&gt;
-                                &lt;tr&gt;
-                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
-                                &lt;/tr&gt;
-                                &lt;tr&gt;
-                                    &lt;td style="padding:0 35px;"&gt;
-                                        &lt;h1
-                                            style="color:#1e1e2d; font-weight:500; margin:0;font-size:32px;font-family:'Rubik',sans-serif;"&gt;
-                                            Athletes Number Almost Full&lt;/h1&gt; &lt;span
-                                            style="display:inline-block; vertical-align:middle; margin:29px 0 26px; border-bottom:1px solid #cecece; width:100px;"&gt;&lt;/span&gt;
-                                        &lt;p style="color:#455056; font-size:15px;line-height:24px; margin:0;"&gt;Hello _USERNAME_! &lt;br&gt;&lt;br&gt;Your _CLUBNAME_ club's plan capacity is close to the maximum athlete limit (_SLOTS_USED_ of _SLOTS_TOTAL_, equivalent to _PERCENT_USED_). You should consider upgrading your plan. If you have any questions or need more information, please contact us.
-                                            &lt;br&gt;&lt;br&gt;&lt;/p&gt;
-                                    &lt;/td&gt;
-                                &lt;/tr&gt;
-                                &lt;tr&gt;
-                                    &lt;td style="height:40px;"&gt;&amp;nbsp;&lt;/td&gt;
-                                &lt;/tr&gt;
-                            &lt;/table&gt;
-                        &lt;/td&gt;
-                    &lt;tr&gt;
-                        &lt;td style="height:20px;"&gt;&amp;nbsp;&lt;/td&gt;
-                    &lt;/tr&gt;
-                &lt;/table&gt;
-            &lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/table&gt; &lt;!--/100% body table--&gt;
-&lt;/body&gt;
-
-&lt;/html&gt;&lt;!doctype html&gt;
-&lt;html lang="en"&gt;
+    <value>&lt;html lang="en"&gt;
 
 &lt;head&gt;
     &lt;meta content="text/html; charset=utf-8" http-equiv="Content-Type" /&gt;
@@ -4726,5 +4661,55 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
   </data>
   <data name="ClubPayments_KeyInfo" xml:space="preserve">
     <value>During the testing phase, you can use the following data in the fields above:</value>
+  </data>
+  <data name="PlanPerMonth" xml:space="preserve">
+    <value>Plan adherence per month</value>
+    <comment>06-04-2023_subscription</comment>
+  </data>
+  <data name="ClickMe" xml:space="preserve">
+    <value>Click to travel</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
+  <data name="DontHaveLocation" xml:space="preserve">
+    <value>This club has no address</value>
+    <comment>26-03-2023_searchClub</comment>
+  </data>
+  <data name="Event Have Route" xml:space="preserve">
+    <value>Event Have Route</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="InsertLocation" xml:space="preserve">
+    <value>InsertLocation</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="Max Enrolls" xml:space="preserve">
+    <value>Max Enrolls</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="UpdateLocation" xml:space="preserve">
+    <value>UpdateLocation</value>
+    <comment>12-04-2023_FixEvents</comment>
+  </data>
+  <data name="PaymentsPageText" xml:space="preserve">
+    <value>payments page</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="PaymentsSubscriptionText" xml:space="preserve">
+    <value>Your subscription is set to manual renew! You can enable auto renew and set a credit/debit card
+to enable it, or go to your</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="ToPayManuallyText" xml:space="preserve">
+    <value>to pay manually.</value>
+    <comment>13-04-2023_subscriptionDetails</comment>
+  </data>
+  <data name="Disable AutoRenew" xml:space="preserve">
+    <value>Disable AutoRenew</value>
+  </data>
+  <data name="Enable AutoRenew" xml:space="preserve">
+    <value>Enable AutoRenew</value>
+  </data>
+  <data name="More" xml:space="preserve">
+    <value>More</value>
   </data>
 </root>

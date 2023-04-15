@@ -57,28 +57,7 @@ map.on('load', () => {
     MarkerWithAddress();
 });
 
-const btnSave = document.getElementById('save-button');
 let address = null;
-
-btnSave.onclick = function () {
-    try {
-        if (address != null) {
-            addressElement.value = JSON.stringify({
-                CoordinateX: coord[0],
-                CoordinateY: coord[1],
-                AddressString: address,
-
-            })
-            $("#modal").hide();
-            newAd.innerHTML = strings.newAddress + ": " + address;
-        }
-
-    } catch (error) {
-        $(".toast").show();
-        document.getElementById('alertText').innerHTML = strings.resultError;
-    }
-}
-
 
 function addMarkers(coordX, coordY) {
     markers = new mapboxgl.Marker({ color: '#00639A' })
@@ -122,7 +101,17 @@ function addAddress(epoint) {
                     if (coordX != "" && coordY != "") {
                         markers.remove();
                     }
+                    if (address != null) {
+                        console.log(address)
+                        addressElement.value = JSON.stringify({
+                            CoordinateX: coord[0],
+                            CoordinateY: coord[1],
+                            AddressString: address,
 
+                        })
+                        $("#modal").hide();
+                        newAd.innerHTML = strings.newAddress + ": " + address;
+                    }
                 } else {
                     features = map.queryRenderedFeatures(epoint.point, { layers: ['water'] });
                     if (features.length > 0) {
@@ -133,6 +122,23 @@ function addAddress(epoint) {
                             address = data.features[0].place_name;
                             if (coordX != "" && coordY != "") {
                                 markers.remove();
+                            }
+                            try {
+                                if (address != null) {
+                                    console.log(address)
+                                    addressElement.value = JSON.stringify({
+                                        CoordinateX: coord[0],
+                                        CoordinateY: coord[1],
+                                        AddressString: address,
+
+                                    })
+                                    $("#modal").hide();
+                                    newAd.innerHTML = strings.newAddress + ": " + address;
+                                }
+
+                            } catch (error) {
+                                $(".toast").show();
+                                document.getElementById('alertText').innerHTML = strings.resultError;
                             }
                         }
                     }

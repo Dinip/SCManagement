@@ -9,16 +9,16 @@
 
 <style>
 
-    .vis-label{
-        background-color:#00639A;
+    .vis-label {
+        background-color: #00639A;
     }
 
-    .vis-timeline{
-        border-radius:10px;
+    .vis-timeline {
+        border-radius: 10px;
     }
 
-    .vis-inner{
-        color:white;
+    .vis-inner {
+        color: white;
     }
 
     .mdCard {
@@ -27,7 +27,7 @@
     }
 
     .vis-rolling-mode-btn {
-        visibility:visible !important;
+        visibility: visible !important;
     }
 
     .vis-group-level-0 {
@@ -286,35 +286,29 @@
     </div>
 
     <div class="row col-12 p-5 flex-wrap">
-        <h2 class="text-to-dark">@StringLocalizer["MD"]</h2>
-        <div class="card mdCard mt-3 shadow" style="border-radius:20px;">
-            <div class="card-body">
-                <div style="width: 100%;">
-                    <div class="d-md-flex justify-content-between">
-                        <div class="col-xs-12">
-                            <strong class="text-to-dark">@StringLocalizer["ExpiryDate"]:</strong>
-                        </div>
-                        <div>
-                            <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
-                                <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
-                                <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
-                            </form>
-
-                            <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" onclick="toggleModal()"></i>
-
-                            <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
-
-                            <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
-                               style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
-                            <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
-                        </div>
-                    </div>
-                </div>
-                <hr />
+        <div style="width: 100%;">
+            
+            <div class="d-md-flex justify-content-between">
+                <h2 class="text-to-dark">@StringLocalizer["MD"]</h2>
                 <div>
-                    <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
+                    <form asp-action="MyZoneEMDUpdate" method="post" enctype="multipart/form-data">
+                        <input id="selectedFileForEMD" asp-for="FileEMD" type="file" hidden class="form-control" accept="application/pdf" onchange="handleUpload(this, 'pdf')" />
+                        <button id="saveInsertEmd" type="submit" style="display:none">@StringLocalizer["Save"]</button>
+                    </form>
+
+                    <i id="emd" class="fa-solid fa-file fa-xl text-to-dark @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")" onclick="toggleModal()"></i>
+
+                    <span id="emdText" style="margin-right:20px;" class="text-to-dark">@(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : $"{@StringLocalizer["Empty"]}")</span>
+
+                    <i id="btnRemoveEMD" title=@StringLocalizer["Remove EMD"] class="fa-solid fa-xl fa-trash @(!Model.EMDUrl.Equals($"{@StringLocalizer["Pending_Add"]}") ? "" : "invisible")"
+                       style="color:red; cursor:pointer; margin-right:20px;" onclick="removeFile('pdf')"></i>
+                    <i class="fa-solid fa-xl fa-pen-to-square text-to-dark" onclick="document.getElementById('selectedFileForEMD').click()" style="cursor:pointer;" title=@StringLocalizer["Change EMD"]></i>
                 </div>
             </div>
+        </div>
+        <hr />
+        <div>
+            <input id="removeEMD" asp-for="RemoveEMD" type="hidden" />
         </div>
     </div>
 </div>
@@ -710,7 +704,7 @@
         let items = new vis.DataSet(allData);
 
         let options = {
-          "locale": "@ViewBag.Lang.Substring(0,2)"
+            "locale": "@ViewBag.Lang.Substring(0,2)"
         };
 
         let groups = [
@@ -732,7 +726,7 @@
 
         document.getElementById('timeline').onclick = function (event) {
             const props = timeline.getEventProperties(event)
-            if(props.item == null) return
+            if (props.item == null) return
             const item = allData.find(f => f.id === props.item)
             window.open(`/Plans/${item.group}Details/${item.originalId}`, '_blank')
         }

@@ -36,15 +36,6 @@
         height: 100vh;
     }
 
-    #save {
-        position: absolute;
-        background: #efefef;
-        padding: 10px;
-        font-family: 'Open Sans', sans-serif;
-        right: 10%;
-        top: 10%;
-    }
-
     .selected {
         background-color: white !important;
         color: black !important;
@@ -67,31 +58,6 @@
         border: 1px solid black;
     }
 
-    @@media only screen and (max-width: 768px) {
-        #save-button {
-            bottom: 20px;
-            right: 20px;
-        }
-    }
-
-    #save-button {
-        border-radius: 100px;
-        width: 60px !important;
-        aspect-ratio: 1;
-        background-color: #00639A;
-        border-color: #00639A;
-        position: absolute !important;
-        right: 30px !important;
-        z-index: 2;
-        bottom: 30px !important;
-    }
-
-        #save-button:hover {
-            background-color: dodgerblue;
-            border-color: dodgerblue;
-        }
-
-
     .translatebtn {
         color: white;
         border-radius: 2px;
@@ -106,6 +72,38 @@
         border: 2px solid red;
         transform: translateY(-100px);
         animation: slideRight 1s ease forwards .5s;
+    }
+
+    #errorModel {
+        margin-top: 20%;
+        margin-bottom: 0;
+        max-height: 20%;
+        max-width: 20%;
+    }
+
+    @@media only screen and (max-width: 1000px) {
+        #errorModel {
+            max-height: 20%;
+            max-width: 60%;
+        }
+    }
+
+    @@media only screen and (max-width: 640px) {
+
+        .mapboxgl-ctrl-top-left {
+            width: 80% !important;
+        }
+
+        .mapboxgl-ctrl-geocoder {
+            width: 100% !important;
+            min-width:0 !important;
+        }
+
+        .mapboxgl-ctrl-geocoder--input {
+            font-size: 70%;
+            padding-right:0;
+        }
+
     }
 </style>
 
@@ -198,30 +196,28 @@
 
 
             <input asp-for="Route" type="hidden" class="form-control" id="ev" />
-            <input asp-for="AddressByPath" type="hidden" class="form-control" id="AddressByPath" />
+            <div id="AddressContainer" class="form-floating mt-3">
+                <input asp-for="AddressByPath" readonly class="form-control" id="AddressByPath" />
+                <label asp-for="AddressByPath" class="control-label"></label>
+            </div>
             <input asp-for="LocationString" type="hidden" id="Location" />
             <input type="hidden" class="form-control" id="path" value="null" />
-
             <input asp-for="LocationString" type="hidden" id="Location" />
-            <span id="locationText" class="text-to-dark"></span>
             <br />
             <a onclick="showTutorial()" class="mt-3" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">Tutorial</a>
             <div id="cardMapBox" class="mt-3">
                 <div class="card card-to-dark col-xs-12 col-sm-12 col-md-7 mt-sm-5 mt-5 mt-lg-0 mt-md-0" style="min-height:400px; width:100% !important;">
                     <div class="card-body">
                         <div id='map'></div>
-                        <div id="menu">
-                        </div>
-                        <button type="button" id="save-button" class="btn btn-primary mt-2"><i class="fa-solid fa-xl fa-floppy-disk"></i></button>
                     </div>
                 </div>
             </div>
 
             <div id="modal" class="modal" style="overflow:hidden;">
                 <div class="modal-content" style="width:90%; height:90%; padding:0; margin-top:20px; border-radius:15px !important; overflow:scroll;">
-                    <span onclick="$('#modal').hide()" class="close" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
+                    <span onclick="$('#modal').hide()" class="close text-to-dark" style="z-index: 1; right:50px !important; position:absolute; margin-top:15px; color:black;"><i class="fa-solid fa-xmark"></i></span>
                     <div class="container mt-5">
-                        <h2>Tutorial</h2>
+                        <h2 class="text-to-dark">Tutorial</h2>
                         <hr />
                         <span class="col-12 col-md-8 text-to-dark" style="text-align:center;">@StringLocalizer["IntroTutorial"]</span>
 
@@ -260,7 +256,7 @@
             <div class="form-group mt-3 d-flex">
                 <input type="submit" onclick="showConfirmedToast()" value="@StringLocalizer["Create"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />
                 <div id="modal1" class="modal">
-                    <div class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
+                    <div id="errorModel" class="modal-content" style="margin-top:20%; margin-bottom:0; max-height:20%; max-width:20%">
                         <span class="text-to-dark">@StringLocalizer["Are you sure you want to cancel? All progress will be lost!"]</span>
                         <div class="d-flex justify-content-end mt-3">
                             <a onclick="$('#modal1').hide()" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: #00639A; border-color: #00639A; margin-right:3%;">@StringLocalizer["Back"]</a>
@@ -269,7 +265,7 @@
                     </div>
                 </div>
                 <a onclick="toggleRemoveModal()" class="ms-3" style="color:white; padding: 6px 12px; border-radius: 10px; background-color: red; border-color: red; text-decoration:none;">@StringLocalizer["Cancel"]</a>
-                
+
             </div>
             <div class="toast align-items-center" aria-live="assertive" aria-atomic="true" style="z-index:2;">
                 <div class="d-flex">
@@ -292,42 +288,30 @@
     <script src="~/js/InitialConfigMapBox.js" asp-append-version="true"></script>
 
 
-<script>
+    <script>
 
-    function toggleRemoveModal() {
-        $("#modal1").show();
-    }
-
-    window.onload = function () {
-        document.getElementById("myForm").addEventListener("submit", validateForm);
-        const culture = "@ViewBag.CultureInfo"
-        toggleLang(culture, "details")
-        toggleLang(culture, "name")
-        SearchMapBoxConfig();
-    }
-
-    function validateForm(event) {
-        // Verificar se pelo menos um dos campos está preenchido
-        const addressByPath = document.getElementById("AddressByPath").value;
-        const locationString = document.getElementById("Location").value;
-        if (addressByPath.trim() === "" && locationString.trim() === "") {
-            event.preventDefault();
-            $(".toast").show();
-            document.getElementById('alertText').innerHTML = "Por favor, coloque uma localização no evento.";
-            return false;
+        function toggleRemoveModal() {
+            $("#modal1").show();
         }
-    }
 
-    function changedStart(event) {
+        window.onload = function () {
+            document.getElementById("myForm").addEventListener("submit", validateForm);
+            const culture = "@ViewBag.CultureInfo"
+            toggleLang(culture, "details")
+            toggleLang(culture, "name")
+            SearchMapBoxConfig();
+        }
+
+        function changedStart(event) {
             document.getElementById("endDateTime").setAttribute("min", event.value)
             document.getElementById("EnrollLimitDate").setAttribute("max", event.value)
-    }
+        }
 
-    function showTutorial() {
-        $('#modal').show();
-    }
+        function showTutorial() {
+            $('#modal').show();
+        }
 
-    var strings = {
+        var strings = {
             "noMatch": '@Html.Raw(StringLocalizer["NoMatch"].Value.ToString())',
             "noSegment": '@Html.Raw(StringLocalizer["NoSegment"].Value.ToString())',
             "tooManyCoordinates": '@Html.Raw(StringLocalizer["TooManyCoordinates"].Value.ToString())',
@@ -342,9 +326,9 @@
             "resultError": '@Html.Raw(StringLocalizer["ResultError"].Value.ToString())',
             "nameEvent": '@Html.Raw(StringLocalizer["NameEvent"].Value.ToString())',
             "locationEvent": '@Html.Raw(StringLocalizer["LocationEvent"].Value.ToString())',
-    }
+        }
 
-    function toggleLang(lang, elemento) {
+        function toggleLang(lang, elemento) {
 
             const btns = document.querySelectorAll(`input.lang-btn-${elemento}`)
             for (let bt of btns) {
@@ -355,9 +339,9 @@
             for (let ta of textareas) {
                 ta.getAttribute("id") == `${elemento}-${lang}` ? ta.classList.remove("d-none") : ta.classList.add("d-none")
             }
-    }
+        }
 
-    function translateFn(elemento) {
+        function translateFn(elemento) {
             const textareas = document.querySelectorAll(`div.${elemento}-lang > textarea`)
             const selectedLang = document.querySelectorAll(`input.selected.lang-btn-${elemento}`)[0].getAttribute("data-lang")
             const selectedContent = document.querySelectorAll(`div#${elemento}-${selectedLang} > textarea`)[0]
@@ -367,9 +351,9 @@
                     getTranslation(ta, selectedContent.value, selectedLang, ta.getAttribute("data-lang"))
                 }
             }
-    }
+        }
 
-    function getTranslation(ta, content, fromLang, toLang) {
+        function getTranslation(ta, content, fromLang, toLang) {
             //ajax
             //return do texto traduzido do pedido
             $.ajax({
@@ -382,22 +366,22 @@
                     toLang: toLang
                 },
             }).done(function (response) {
-                console.log("Sucess")
                 ta.value = response[0].translations[0].text
 
             }).fail(function (jqXHR, textStatus, errorThrown) {
                 console.log("Erro: " + textStatus + ", " + errorThrown)
                 console.log("Resposta do servidor: " + jqXHR.responseText)
             })
-    }
+        }
 
-    function ToggleMapBox() {
+        function ToggleMapBox() {
             let ckbHaveRoute = document.getElementById("ckbHaveRoute");
             let addressContainer = document.getElementById("AddressContainer");
-            document.getElementById("save-button").classList.remove("d-none");
+            
             if (ckbHaveRoute.checked) {
                 document.getElementById("ev").value = null;
                 document.getElementById("AddressByPath").value = null;
+                document.getElementById("Location").value = null;
                 document.getElementById("map").innerHTML = "";
                 PathMapBoxConfig();
             }
@@ -405,11 +389,12 @@
                 document.getElementById("ev").value = null;
                 document.getElementById("AddressByPath").value = null;
                 document.getElementById("map").innerHTML = "";
+                document.getElementById("Location").value = null;
                 SearchMapBoxConfig();
             }
-    }
+        }
 
-    function validateForm(event) {
+        function validateForm(event) {
             // Verificar se pelo menos um dos campos está preenchido
             const addressByPath = document.getElementById("AddressByPath").value;
             const locationString = document.getElementById("Location").value;
@@ -441,5 +426,5 @@
             $(".toast").show();
             document.getElementById('alertText').innerHTML = strings.nameEvent;
             return false;
-    }
-</script>
+        }
+    </script>

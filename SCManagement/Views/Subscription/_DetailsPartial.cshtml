@@ -1,5 +1,6 @@
 ﻿@model SCManagement.Services.PaymentService.Models.Subscription
 @inject IHtmlLocalizer<SharedResource> HtmlLocalizer
+@inject IStringLocalizer<SharedResource> StringLocalizer
 
 <style>
     dt {
@@ -15,7 +16,7 @@
 
 </style>
 <div>
-    <h4 class="text-to-dark">Subscription</h4>
+    <h4 class="text-to-dark">@StringLocalizer["Subscription"]</h4>
     <hr />
 
     <div style="color:red;" id="inner-error"></div>
@@ -125,27 +126,28 @@
     )
     {
         <div class="mb-3 text-to-dark">
-            Your subscription is set to manual renew! You can enable auto renew and set a credit/debit card
-            to enable it, or go to your <a asp-action="Index" asp-controller="Payment">payments page</a>
-            to pay manually.
+            @StringLocalizer["PaymentsSubscriptionText"] <a asp-action="Index" asp-controller="Payment"> @StringLocalizer["PaymentsPageText"]</a>
+            @StringLocalizer["ToPayManuallyText"]
         </div>
     }
 
 </div>
-<div style="display:flex;">
+<div class="d-block d-md-flex">
     @if (Model.Status != SCManagement.Services.PaymentService.Models.SubscriptionStatus.Pending_Cancel &&
     Model.Status != SCManagement.Services.PaymentService.Models.SubscriptionStatus.Canceled)
     {
         @if (Model.Product.ProductType == SCManagement.Services.PaymentService.Models.ProductType.ClubSubscription)
         {
-            <button style=" margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;" onclick="updatePlanPick(@Model.Id)">Update Plan</button>
+            <button style=" margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;" 
+                    onclick="updatePlanPick(@Model.Id)"
+                    class="col-12 col-md-auto">@StringLocalizer["UpdatePlan"]</button>
         }
 
         <form asp-action="UpdateAutoRenew">
             <input name="Id" value="@Model.Id" class="form-control" hidden />
             <input type="submit"
-                   value='@(Model.AutoRenew ? HtmlLocalizer["Disable AutoRenew"] : HtmlLocalizer["Enable AutoRenew"])'
-                   class="btn"
+                   value='@(Model.AutoRenew ? StringLocalizer["Disable AutoRenew"] : StringLocalizer["Enable AutoRenew"])'
+                   class="btn col-12 col-md-auto mt-2 mt-md-0"
                    style="margin-right: 10px; color:white; padding:5px 15px 5px 15px; border-radius: 10px; background-color: #00639A; border-color: #00639A;"
                    onclick="return confirm('@HtmlLocalizer[Model.AutoRenew ? "SubscriptionAutoCancelConfirm" : "SubscriptionAutoEnabledConfirm"]')" />
         </form>
@@ -153,8 +155,8 @@
         <form asp-action="Cancel">
             <input name="Id" value="@Model.Id" class="form-control" hidden />
             <input type="submit"
-                   value='Cancel'
-                   class="btn"
+                   value='@StringLocalizer["Cancel"]'
+                   class="btn col-12 col-md-auto mt-2 mt-md-0"
                    style="margin-right: 10px; color:white; border-radius: 10px; padding: 5px 15px 5px 15px; background-color: red; border-color: black;"
                    onclick="return confirm('@HtmlLocalizer["SubscriptionCancelConfirm"]')" />
         </form>

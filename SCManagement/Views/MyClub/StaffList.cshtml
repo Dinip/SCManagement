@@ -30,7 +30,6 @@
                             @Html.DisplayNameFor(model => model.JoinDate)
                         </th>
                         <th></th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,16 +48,17 @@
 
                             </td>
                             <td>
-                                <strong onclick="openDetails('@item.UserId')" style="cursor:pointer; color: #00639A;text-decoration: underline; float:left;">
-                                    @StringLocalizer["Details"]
-                                </strong>
-                            </td>
-                            <td>
-                                <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "invisible")">
-                                    <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
-                                    <input name="page" value="StaffList" class="form-control" hidden />
-                                    <input type="submit" value=@StringLocalizer["RemoveStaff"] style="border-radius: 10px; background-color: red; border-color: black;" class="btn btn-primary" />
-                                </form>
+                                <div class="d-flex justify-content-end">
+                                    <span onclick="openDetails('@item.UserId')" class="btn me-2" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;">
+                                        @StringLocalizer["Details"]
+                                    </span>
+                                    <form asp-action="RemoveUser" class="@(ViewBag.UserRoleId > item.RoleId ? "": "invisible")">
+                                        <input name="usersRoleClubId" value="@item.Id" class="form-control" hidden />
+                                        <input name="page" value="StaffList" class="form-control" hidden />
+                                        <input type="submit" value=@StringLocalizer["RemoveStaff"] style="border-radius: 10px; background-color: red; border-color: red;" class="btn btn-primary" />
+                                    </form>
+                                </div>
+                                
                             </td>
                         </tr>
                     }
@@ -79,7 +79,7 @@
         $("#table_id").DataTable({
             responsive: true,
             columnDefs: [
-                { orderable: false, targets: [-1, -2] }
+                { orderable: false, targets: [-1] }
             ], 
             language: {
                 "lengthMenu": "@StringLocalizer["Show"] _MENU_ @StringLocalizer["EntriesDatatable"]",

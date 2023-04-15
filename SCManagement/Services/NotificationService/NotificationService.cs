@@ -45,7 +45,7 @@ namespace SCManagement.Services.NotificationService
 
             if (notificationType != null)
             {
-                users.Where(u => u.Notifications.Any(n => n.Type == notificationType && n.IsEnabled == true));
+                users = users.Where(u => u.Notifications.Any(n => n.Type == notificationType && n.IsEnabled == true));
             }
 
             return await users.Select(u => new User
