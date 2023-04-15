@@ -83,9 +83,6 @@
         $.noConflict();
         $("#table_payments").DataTable({
             responsive: true,
-            rowReorder: {
-                selector: 'td:nth-child(2)'
-            },
             order: [[1, 'desc']],
             columnDefs: [
                 { orderable: false, targets: [-1] }

@@ -50,6 +50,7 @@ function setTheme(theme) {
     let datatablesPagination = document.getElementsByClassName('dataTables_paginate');
     let datatablesPaginateBtn = document.getElementsByClassName('paginate_button');
     let tableWrapper = document.getElementsByClassName('dataTables_wrapper');
+    let arrow = document.getElementById('arrowa');
 
     let dtrdata = document.getElementsByClassName('dtr-data');
     for (let i = 0; i < dtrdata.length; i++) {
@@ -148,6 +149,10 @@ function setTheme(theme) {
             logoText1.style.fill = 'white';
         }
 
+        if (arrow) {
+            arrow.style.color = 'white';
+        }
+
         for (let i = 0; i < dlBg.length; i++) {
             dlBg[i].style.background = '#1a1a1a';
         }
@@ -175,6 +180,11 @@ function setTheme(theme) {
         if (noClubImg) {
             noClubImg.src = "../img/NoClubBlack.png";
         }
+
+        if (arrow) {
+            arrow.style.color = 'black';
+        }
+
         element.classList.add("bg-white");
 
         for (let i = 0; i < texts.length; i++) {
