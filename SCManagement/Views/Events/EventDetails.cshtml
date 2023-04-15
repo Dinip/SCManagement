@@ -103,7 +103,7 @@
             @Html.DisplayNameFor(model => model.Club)
         </dt>
         <dd class="col-12 col-md-10 dlBg text-to-dark">
-            @Html.DisplayFor(model => model.Club.Name)
+            <a asp-controller="Clubs" asp-action="Details" asp-route-id="@Model.ClubId">@Model.Club.Name</a>
         </dd>
         <dt class="col-12 col-md-2  text-to-dark">
             @Html.DisplayNameFor(model => model.EventResultType)
@@ -159,21 +159,21 @@
             </div>
 
         }
-        
-            @if (ViewBag.IsEnrolled)
+
+        @if (ViewBag.IsEnrolled)
+        {
+            @if (ViewBag.CanUnEnroll != null && ViewBag.CanUnEnroll == true)
             {
-                @if (ViewBag.CanUnEnroll != null && ViewBag.CanUnEnroll == true)
-                {
                 <div class="col-auto col-md-auto d-flex justify-content-md-center justify-content-start">
                     <form asp-action="CancelEventEnroll" asp-route-id="@Model.Id">
                         <button type="submit" class="btn btn-primary mt-2 mt-md-0" style="color:white; border-radius: 10px; background-color: red; border-color: red;">@StringLocalizer["CancelEnroll"]</button>
                     </form>
                 </div>
-                }
             }
-            else
-            {
-                <div class="col-auto col-md-auto d-flex justify-content-md-center justify-content-start">
+        }
+        else
+        {
+            <div class="col-auto col-md-auto d-flex justify-content-md-center justify-content-start">
                 <form asp-action="EventEnrollment" asp-route-id="@Model.Id">
                     @if (Model.EnrollLimitDate > DateTime.Now)
                     {
@@ -184,9 +184,9 @@
                         <button type="submit" class="btn btn-primary mt-2 mt-md-0" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" disabled>@StringLocalizer["Enroll"]</button>
                     }
                 </form>
-                </div>
-            }
-        
+            </div>
+        }
+
         <div class="col-auto col-md-auto d-flex justify-content-md-center justify-content-start">
             <form asp-action="Details" asp-controller="Clubs" asp-route-id="@Model.ClubId">
                 <button type="submit" class="btn btn-primary mt-2 mt-md-0" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; width:fit-content !important;">@StringLocalizer["ClubPage"]</button>
@@ -196,7 +196,7 @@
         @if (Model.Route != null)
         {
             <div class="col-auto col-md-auto d-flex justify-content-md-center justify-content-start">
-            <a class="btn btn-primary mt-2 mt-md-0" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
+                <a class="btn btn-primary mt-2 mt-md-0" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;" asp-controller="Events" asp-action="PathInfoMapBox" asp-route-id=@Model.Id>@StringLocalizer["SeePath"]</a>
             </div>
         }
         <div class="col-auto col-md-auto d-flex justify-content-md-center justify-content-start">
@@ -205,7 +205,7 @@
             </form>
         </div>
         <div class="col-auto col-md-auto d-flex justify-content-md-center justify-content-start">
-        <a asp-action="Index" class="btn btn-primary mt-2 mt-md-0" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;">@StringLocalizer["Back"]</a>
+            <a asp-action="Index" class="btn btn-primary mt-2 mt-md-0" style="color:white !important; border-radius: 10px; padding: 6px 12px; background-color: #00639A; border-color: #00639A; text-decoration:none; cursor:pointer;">@StringLocalizer["Back"]</a>
         </div>
     </div>
 
