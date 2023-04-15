@@ -144,7 +144,7 @@
                 <p>@StringLocalizer["PaymentProcessing"]</p>
             }
         }
-        else if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid)
+        else if (Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Paid && Model.PaymentStatus != SCManagement.Services.PaymentService.Models.PaymentStatus.Canceled)
         {
             @await Html.PartialAsync("_PaymentPartial", new SCManagement.Services.PaymentService.Models.PayPayment {Id = Model.Id})
         }
