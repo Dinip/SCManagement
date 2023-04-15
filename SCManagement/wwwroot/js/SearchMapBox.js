@@ -102,7 +102,6 @@ function addAddress(epoint) {
                         markers.remove();
                     }
                     if (address != null) {
-                        console.log(address)
                         addressElement.value = JSON.stringify({
                             CoordinateX: coord[0],
                             CoordinateY: coord[1],
@@ -123,22 +122,16 @@ function addAddress(epoint) {
                             if (coordX != "" && coordY != "") {
                                 markers.remove();
                             }
-                            try {
-                                if (address != null) {
-                                    console.log(address)
-                                    addressElement.value = JSON.stringify({
-                                        CoordinateX: coord[0],
-                                        CoordinateY: coord[1],
-                                        AddressString: address,
 
-                                    })
-                                    $("#modal").hide();
-                                    newAd.innerHTML = strings.newAddress + ": " + address;
-                                }
+                            if (address != null) {
+                                addressElement.value = JSON.stringify({
+                                    CoordinateX: coord[0],
+                                    CoordinateY: coord[1],
+                                    AddressString: address,
 
-                            } catch (error) {
-                                $(".toast").show();
-                                document.getElementById('alertText').innerHTML = strings.resultError;
+                                })
+                                $("#modal").hide();
+                                newAd.innerHTML = strings.newAddress + ": " + address;
                             }
                         }
                     }
