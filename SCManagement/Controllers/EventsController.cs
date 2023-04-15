@@ -533,17 +533,29 @@ namespace SCManagement.Controllers
         }
 
 
+        /// Be careful with this method, since it does not have the
+        /// [Authorize] flag, but should only be called when authed.
+        /// Instead, it checks if the user has id (which is only possible
+        /// if he is authed), and if the value is null, it redirects to the
+        /// login page with the Events/Details/Id as the return url.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
         public async Task<IActionResult> EventEnrollment(int id)
         {
+            var userId = getUserIdFromAuthedUser();
+
+            // check user auth and if not authed, redirect to
+            // login page with custom return url
+            if (userId == null) return RedirectToPage("/Account/Login", new
+            {
+                area = "Identity",
+                ReturnUrl = $"/Events/Details/{id}"
+            });
+
             var eventToEnroll = await _eventService.GetEvent(id);
 
             if (eventToEnroll == null) return View("CustomError", "Error_NotFound");
-
-            var userId = getUserIdFromAuthedUser();
-
+            
             var userRole = await _clubService.GetUserRoleInClub(userId, eventToEnroll.ClubId);
 
             //check if event is public
