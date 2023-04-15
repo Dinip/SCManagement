@@ -483,17 +483,13 @@
             // Verificar se pelo menos um dos campos está preenchido
             const addressByPath = document.getElementById("AddressByPath").value;
             const locationString = document.getElementById("Location").value;
-            let spanStreet = document.getElementById("spanStreet").value;
-            console.log(locationString)
-            console.log(addressByPath)
-        if (addressByPath.trim() === "" && locationString.trim() === "" &&  spanStreet.trim()=== "" ) {
-                console.log("dale")
+            let spanStreet = document.getElementById("spanStreet");
+        if (addressByPath.trim() === "" && locationString.trim() === "" && (!spanStreet || spanStreet.value.trim()=== "") ) {
                 event.preventDefault();
                 $(".toast").show();
                 document.getElementById('alertText').innerHTML = strings.locationEvent;
                 return false;
-            }
-
+        }
             // Verificar se algum dos campos de tradução está preenchido
             const translations = document.querySelectorAll('textarea[name^="EventTranslationsName"]');
 

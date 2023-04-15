@@ -394,6 +394,12 @@ namespace SCManagement.Controllers
             //then return true else return false
             return (myEvent.StartDate != null && myEvent.EndDate != null && myEvent.EventTranslationsName != null && myEvent.EventTranslationsDetails != null && myEvent.IsPublic != null && myEvent.Fee != null && myEvent.HaveRoute != null && myEvent.EventResultType != null && myEvent.MaxEventEnrolls != null && myEvent.EventAux != null);
         }
+        private bool ValidateLocation(EventModel myEvent)
+        {
+            Event eventCopy = JsonSerializer.Deserialize<Event>(myEvent.EventAux);
+
+            return myEvent.Route != null || myEvent.LocationString != null || eventCopy.Location != null ;
+        }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -405,7 +411,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
-            if (ModelState.IsValid || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate == new DateTime()))
+            if (ModelState.IsValid && ValidateLocation(myEvent)|| (CheckEnroll(myEvent) && myEvent.EnrollLimitDate == new DateTime()) )
             {
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
@@ -495,6 +501,7 @@ namespace SCManagement.Controllers
 
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
+
 
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
             return View(myEvent);
