@@ -4679,7 +4679,7 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
     <comment>12-04-2023_FixEvents</comment>
   </data>
   <data name="InsertLocation" xml:space="preserve">
-    <value>InsertLocation</value>
+    <value>Insert Location</value>
     <comment>12-04-2023_FixEvents</comment>
   </data>
   <data name="Max Enrolls" xml:space="preserve">
@@ -4687,7 +4687,7 @@ Event Left Missing Pay&lt;/h1&gt; &lt;span
     <comment>12-04-2023_FixEvents</comment>
   </data>
   <data name="UpdateLocation" xml:space="preserve">
-    <value>UpdateLocation</value>
+    <value>Update Location</value>
     <comment>12-04-2023_FixEvents</comment>
   </data>
   <data name="PaymentsPageText" xml:space="preserve">

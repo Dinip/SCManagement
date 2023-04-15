@@ -252,6 +252,8 @@
                     </div>
                 </div>
             </div>
+                            <input id="coordX" type="hidden" disabled value="@(Model.Location != null ? Model.Location.CoordinateX : "")" />
+                <input id="coordY" type="hidden" disabled value="@(Model.Location != null ? Model.Location.CoordinateY : "")" />
             <input type="hidden" disabled id="tradPlaceholder" value="@StringLocalizer["PlaceholderAddress"].Value.ToString()" />
             <div class="form-group mt-3 d-flex">
                 <input type="submit" onclick="showConfirmedToast()" value="@StringLocalizer["Create"]" class="btn btn-primary" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A;" />

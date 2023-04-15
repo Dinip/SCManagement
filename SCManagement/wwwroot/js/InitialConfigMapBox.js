@@ -370,15 +370,34 @@ function PathMapBoxConfig() {
     }
 }
 
-function SearchMapBoxConfig() {
-    let tradPlaceholder = document.getElementById('tradPlaceholder');
 
-    const map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [-8.896442, 38.533278],
-        zoom: 13
-    });
+function SearchMapBoxConfig(isEdit) {
+    let tradPlaceholder = document.getElementById('tradPlaceholder');
+    let coordX = document.getElementById('coordX').value;
+    let coordY = document.getElementById('coordY').value;
+
+    let map;
+    let marker = null;
+    if (coordX != "" && coordY != "") {
+        coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
+        coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
+
+        map = new mapboxgl.Map({
+            container: 'map', // Specify the container ID
+            style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
+            center: [coordX, coordY], // Specify the starting position
+            zoom: 12, // Specify the starting zoom
+        });
+        addMarkers(coordX, coordY);
+    } else {
+        map = new mapboxgl.Map({
+            container: 'map',
+            style: 'mapbox://styles/mapbox/streets-v12',
+            center: [-8.896442, 38.533278],
+            zoom: 13,
+        });
+    }
+
 
     const geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
@@ -390,22 +409,67 @@ function SearchMapBoxConfig() {
     map.addControl(geocoder, 'top-left');
 
     map.on('load', () => {
-        MarkerWithAddress(map);
+        MarkerWithAddress(map, marker);
     });
+
+
+    function addMarkers(coordX, coordY) {
+        marker = new mapboxgl.Marker({ color: '#00639A' })
+            .setLngLat([coordX, coordY])
+            .addTo(map);
+    }
 }
 
+function LocationMapWithPin() {
+    let coordX = document.getElementById('coordX').value;
+    let coordY = document.getElementById('coordY').value;
+    let tradPlaceholder = document.getElementById('tradPlaceholder');
 
+    let map;
+
+    if (coordX != "" && coordY != "") {
+        coordX = parseFloat(document.getElementById('coordX').value.replace(',', '.'));
+        coordY = parseFloat(document.getElementById('coordY').value.replace(',', '.'));
+
+        map = new mapboxgl.Map({
+            container: 'map', // Specify the container ID
+            style: 'mapbox://styles/mapbox/outdoors-v12', // Specify which map style to use
+            center: [coordX, coordY], // Specify the starting position
+            zoom: 12, // Specify the starting zoom
+        });
+        addMarkers(coordX, coordY);
+    }
+
+
+    const geocoder = new MapboxGeocoder({
+        accessToken: mapboxgl.accessToken,
+        mapboxgl: mapboxgl,
+        marker: false,
+        placeholder: tradPlaceholder.value,
+    });
+
+    map.addControl(geocoder, 'top-left');
+
+
+    function addMarkers(coordX, coordY) {
+        markers = new mapboxgl.Marker({ color: '#00639A' })
+            .setLngLat([coordX, coordY])
+            .addTo(map);
+    }
+
+}
 
 //pin the location of the event to the map
-function MarkerWithAddress(map) {
+function MarkerWithAddress(map, marker) {
     let addressByPath = document.getElementById("AddressByPath");
-    let marker = null;
     let result = { coord: null, address: null };
     map.on('click', function (e) {
         // Capture the coordinates of the clicked point
         if (marker !== null) {
             marker.remove();
         }
+
+
         result.coord = e.lngLat.toArray();
 
         // Add the marker to the map
@@ -445,4 +509,6 @@ function MarkerWithAddress(map) {
                 }
             });
     });
+
 }
+

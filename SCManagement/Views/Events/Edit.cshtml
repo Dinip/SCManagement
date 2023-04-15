@@ -190,7 +190,8 @@
 
                     }
                 </div>
-
+                <input id="coordX" type="hidden" disabled value="@(Model.Location != null ? Model.Location.CoordinateX : "")" />
+                <input id="coordY" type="hidden" disabled value="@(Model.Location != null ? Model.Location.CoordinateY : "")" />
             </div>
 
             <input asp-for="Route" type="hidden" class="form-control" id="ev" />
@@ -392,28 +393,40 @@
         if (ckbHaveRoute.checked == true) {
             mapBox.style.display = "block";
             addressContainer.style.display = "block";
+            
+            btnAddLocation.style.display ="none";
+            
+            if(spanStreet)
+                spanStreet.style.display = "none";
             locationContainer.style.display = "none";
             tutorialBtn.classList.remove("d-none");
+            
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
             //Load MapBox
             PathMapBoxConfig();
         }
         else {
-            mapBox.style.display = "none";
+            
             locationContainer.style.display = "block";
+            btnAddLocation.style.display = null;
             addressContainer.style.display = "none";
             tutorialBtn.classList.add("d-none");
             document.getElementById("ev").value = null;
             document.getElementById("AddressByPath").value = null;
             document.getElementById("map").innerHTML = "";
 
-            if (spanStreet.innerHTML != null) {
+            if (spanStreet && spanStreet.innerHTML != null) {
+                 spanStreet.style.display = "block";
                 btnAddLocation.innerHTML = strings.updateLocation;
+                mapBox.style.display = "block";
+                LocationMapWithPin();
+                
             } else {
                 btnAddLocation.innerHTML = strings.insertLocation;
+                mapBox.style.display = "none";
             }
-
+            
         }
         CheckLimitEnrollDate();
     }
@@ -423,10 +436,18 @@
         let addressContainer = document.getElementById("AddressContainer");
         let locationContainer = document.getElementById("LocationContainer");
         let tutorialBtn = document.getElementById("tutorialBtn");
+        let spanStreet = document.getElementById("spanStreet");
+        document.getElementById("map").innerHTML = "";
         mapBox.style.display = "block";
         addressContainer.style.display = "block";
         locationContainer.style.display = "none";
+        document.getElementById("btnAddLocation").style.display = "none"
+        
         tutorialBtn.classList.remove("d-none");
+        if(spanStreet){
+            spanStreet.style.display = "none";
+            document.getElementById("AddressByPath").value = spanStreet.innerHTML
+            }
         SearchMapBoxConfig();
     }
 
@@ -462,9 +483,11 @@
             // Verificar se pelo menos um dos campos está preenchido
             const addressByPath = document.getElementById("AddressByPath").value;
             const locationString = document.getElementById("Location").value;
+            let spanStreet = document.getElementById("spanStreet").value;
             console.log(locationString)
             console.log(addressByPath)
-            if (addressByPath.trim() === "" && locationString.trim() === "") {
+        if (addressByPath.trim() === "" && locationString.trim() === "" &&  spanStreet.trim()=== "" ) {
+                console.log("dale")
                 event.preventDefault();
                 $(".toast").show();
                 document.getElementById('alertText').innerHTML = strings.locationEvent;
