@@ -65,9 +65,12 @@
                                 @Html.DisplayFor(modelItem => item.PayedAt)
                             </td>
                             <td>
-                                <strong onclick="openDetails(@item.Id)" style="cursor:pointer; color: #00639A;text-decoration: underline; float:left;">
-                                    @StringLocalizer["Details"]
-                                </strong>
+                                <div class="d-flex justify-content-end">
+                                    <span onclick="openDetails(@item.Id)" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none; cursor:pointer;">
+                                        @StringLocalizer["Details"]
+                                    </span>
+                                </div>
+                                
                             </td>
                         </tr>
                     }

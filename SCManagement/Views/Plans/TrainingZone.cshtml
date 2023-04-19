@@ -64,8 +64,8 @@
                                     <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#team-@teams.Id-Training').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateTeamTrainingPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseTrainingTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTeamTrainingPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseTrainingTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -77,8 +77,8 @@
                                     <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#team-@teams.Id-Meal').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateTeamMealPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseMealTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTeamMealPlan" asp-route-teamId="@teams.Id" class="buttons w-auto ms-2 me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseMealTeamTemplates" asp-route-id="@teams.Id" class="buttons w-auto me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -136,8 +136,8 @@
                                     <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#AthletesTraining-@athlete.Id').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateTrainingPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseTrainingTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -149,8 +149,8 @@
                                     <div class="text-to-dark ms-3 me-5 mt-1" style="font-size:16px;"><strong>@StringLocalizer["HowAddPlan"]</strong></div>
                                     <span onclick="$('#AthletesMeal-@athlete.Id').hide()" style="position:absolute; right:15px; top: 0;" class="close">&times;</span>
                                     <div class="d-flex justify-content-evenly mt-3">
-                                        <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center"><strong>@StringLocalizer["New Plan"]</strong></a>
-                                        <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center"><strong>@StringLocalizer["Apply"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="CreateMealPlan" asp-route-athleteId="@athlete.Id" class="buttons w-50 ms-2 me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["New Plan"]</strong></a>
+                                        <a asp-controller="Plans" asp-action="ChooseMealTemplates" asp-route-id="@athlete.Id" class="buttons w-50 me-2" style="text-align:center; cursor:pointer;"><strong>@StringLocalizer["Apply"]</strong></a>
                                     </div>
                                 </div>
                             </div>
@@ -164,16 +164,16 @@
                                 @Html.DisplayFor(model => athlete.DateOfBirth)
                             </td>
                             <td style="text-align:center">
-                                <a asp-controller="Plans" asp-action="CreateGoal" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["Add"]</a>
-                                <a asp-controller="Plans" asp-action="GoalsList" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
+                                <a asp-controller="Plans" asp-action="CreateGoal" asp-route-id="@athlete.Id" class="buttons me-2" style=" cursor:pointer;">@StringLocalizer["Add"]</a>
+                                <a asp-controller="Plans" asp-action="GoalsList" asp-route-id="@athlete.Id" class="buttons me-2" style=" cursor:pointer;">@StringLocalizer["See"]</a>
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="$('#AthletesTraining-@athlete.Id').show();">@StringLocalizer["Add"]</a>
-                                <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
+                                <a class="buttons me-2" onclick="$('#AthletesTraining-@athlete.Id').show();" style=" cursor:pointer;">@StringLocalizer["Add"]</a>
+                                <a asp-controller="Plans" asp-action="AthleteTrainingPlans" asp-route-id="@athlete.Id" class="buttons me-2" style=" cursor:pointer;">@StringLocalizer["See"]</a>
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="$('#AthletesMeal-@athlete.Id').show();">@StringLocalizer["Add"]</a>
-                                <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2">@StringLocalizer["See"]</a>
+                                <a class="buttons me-2" onclick="$('#AthletesMeal-@athlete.Id').show();" style=" cursor:pointer;">@StringLocalizer["Add"]</a>
+                                <a asp-controller="Plans" asp-action="AthleteMealPlans" asp-route-id="@athlete.Id" class="buttons me-2" style=" cursor:pointer;">@StringLocalizer["See"]</a>
                             </td>
                         </tr>
                     }

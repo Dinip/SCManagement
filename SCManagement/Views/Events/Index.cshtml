@@ -68,7 +68,10 @@
                                 @Html.DisplayFor(modelItem => item.Club.Name)
                             </td>
                             <td>
-                                <a asp-action="Details" asp-route-id="@item.Id">@StringLocalizer["Details"]</a>
+                                <div class="d-flex justify-content-end">
+                                    <a asp-action="Details" asp-route-id="@item.Id" style="color:white; border-radius: 10px; background-color: #00639A; border-color: #00639A; padding: 6px 12px; text-decoration:none;">@StringLocalizer["Details"]</a>
+                                </div>
+                                
                             </td>
                         </tr>
                     }
