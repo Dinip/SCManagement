@@ -15,6 +15,30 @@
         transform: translateY(-100px);
         animation: slideRight 1s ease forwards .5s;
     }
+
+    @@media only screen and (max-width:768px) {
+        #clubContext {
+            width: 35% !important;
+        }
+    }
+
+    .selectClub {
+        background-image: linear-gradient(45deg, transparent 50%, gray 50%), linear-gradient(135deg, gray 50%, transparent 50%), linear-gradient(to right, #ccc, #ccc);
+        background-position: calc(100% - 20px) calc(1em + 2px), calc(100% - 15px) calc(1em + 2px), calc(100% - 2.5em) 0.5em;
+        background-size: 5px 5px, 5px 5px, 1px 1.5em;
+        background-repeat: no-repeat;
+    }
+
+    .selectClub:focus {
+        background-image: linear-gradient(45deg, #00639A 50%, transparent 50%), linear-gradient(135deg, transparent 50%, #00639A 50%), linear-gradient(to right, #ccc, #ccc);
+        background-position: calc(100% - 15px) 1em, calc(100% - 20px) 1em, calc(100% - 2.5em) 0.5em;
+        background-size: 5px 5px, 5px 5px, 1px 1.5em;
+        background-repeat: no-repeat;
+        border-color: #00639A;
+        outline: 0;
+    }
+
+
 </style>
 <head>
     <meta charset="utf-8" />
@@ -161,7 +185,7 @@
                                         </label>
                                     </li>
                                     <li class="mt-2 d-flex justify-content-center align-items-center w-100" style="padding: 5px;">
-                                        <div class="w-auto">
+                                        <div id="clubContext" class="w-auto">
                                             @await Component.InvokeAsync("UserClubContext")
                                         </div>
                                     </li>
@@ -200,13 +224,6 @@
                                         <label class="col-auto">
                                             @await Component.InvokeAsync("CulturePicker")
                                         </label>
-                                    </li>
-                                    <li class="text-to-dark" style="padding-top:8px; margin-left:15px;">@StringLocalizer["Club Selected"]:</li>
-                                    <li class="dropdown-item d-flex justify-content-center" style="padding: 5px;">
-                                        <div class="w-25">
-                                            @await Component.InvokeAsync("UserClubContext")
-                                        </div>
-
                                     </li>
                                 </ul>
                             </div>

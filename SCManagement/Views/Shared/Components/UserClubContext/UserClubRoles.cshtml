@@ -1,10 +1,13 @@
 ﻿@inject IStringLocalizer<SharedResource> StringLocalizer
+
+
+
 @if (ViewBag.Roles != null)
 {
     <form asp-action="UpdateSelectedRole" asp-controller="User">
         <span class="text-to-dark ms-2 me-2">@StringLocalizer["Club Selected"]:</span>
         <div class="form-group">
-            <select name="usersClubRoleId" class="form-control" style="font-size:14px; border-color:black;" asp-items="ViewBag.Roles" onchange="this.parentElement.parentElement.submit();"></select>
+            <select name="usersClubRoleId" class="form-control selectClub" style="font-size:14px; border-color:black;" asp-items="ViewBag.Roles" onchange="this.parentElement.parentElement.submit();"></select>
         </div>
     </form>
 }

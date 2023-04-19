@@ -1,5 +1,11 @@
 ﻿setTheme(localStorage.getItem("theme") || "light")
 
+setInterval(() => {
+    const dtrDataElements = document.getElementsByClassName('dtr-data');
+    if (dtrDataElements.length > 0) {
+        setTheme(localStorage.getItem("theme") || "light");
+    }
+}, 500);
 
 document.getElementById("Dropdown").addEventListener('click', function (event) {
     event.stopPropagation();
@@ -12,6 +18,29 @@ document.getElementById("Dropdown1").addEventListener('click', function (event) 
 function showConfirmedToast() {
     $("#confirmedToast").show();
 }
+
+function handleResize() {
+    const dtrdata = document.getElementsByClassName('dtr-data');
+    const dtrtitle = document.getElementsByClassName('dtr-title');
+
+    // Check if any elements with the dtr-data class are visible
+    for (let i = 0; i < dtrdata.length; i++) {
+        const element = dtrdata[i];
+        element.classList.add("text-to-dark");
+    }
+
+    // Check if any elements with the dtr-title class are visible
+    for (let i = 0; i < dtrtitle.length; i++) {
+        const element = dtrtitle[i];
+        element.classList.add("text-to-dark");
+    }
+
+    // Remove the event listener for the resize event
+    window.removeEventListener('resize', handleResize);
+}
+
+// Add an event listener for the resize event
+window.addEventListener('resize', handleResize);
 
 
 function darkThemeToggle(event) {
@@ -52,14 +81,18 @@ function setTheme(theme) {
     let tableWrapper = document.getElementsByClassName('dataTables_wrapper');
     let arrow = document.getElementById('arrowa');
 
-    let dtrdata = document.getElementsByClassName('dtr-data');
-    for (let i = 0; i < dtrdata.length; i++) {
-        dtrdata[i].classList.add("text-to-dark");
+    const dtrDataElements = document.getElementsByClassName('dtr-data');
+    for (let i = 0; i < dtrDataElements.length; i++) {
+        dtrDataElements[i].classList.add("text-to-dark");
     }
-    let dtrtitle = document.getElementsByClassName('dtr-title');
-    for (let i = 0; i < dtrtitle.length; i++) {
-        dtrtitle[i].classList.add("text-to-dark");
+
+    // add the text-to-dark class to the dtr-title elements
+    const dtrTitleElements = document.getElementsByClassName('dtr-title');
+    for (let i = 0; i < dtrTitleElements.length; i++) {
+        dtrTitleElements[i].classList.add("text-to-dark");
     }
+
+
     if (theme === "dark") {
         darkToggle.checked = true
         darkToggle1.checked = true

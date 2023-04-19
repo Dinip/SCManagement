@@ -9,7 +9,7 @@
                 style="margin-top:3px; height:35.98px; border-radius:5px; font-size:13px;">
             @foreach (var culture in Model.SupportedCultures)
             {
-                <option value="@culture.Name" selected="@(Model.CurrentUICulture.Name == culture.Name)">
+                <option class="selectClub" value="@culture.Name" selected="@(Model.CurrentUICulture.Name == culture.Name)">
                     <span>@Model.ToFlagEmoji(culture.Name)</span> @culture.NativeName
                 </option>
             }
