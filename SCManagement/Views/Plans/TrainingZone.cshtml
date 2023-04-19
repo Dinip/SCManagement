@@ -91,10 +91,10 @@
                                 @Html.DisplayFor(model => teams.Modality.ModalityTranslations.Where(m => m.Language == cultureInfo).First().Value)
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Training').show();">@StringLocalizer["Add"]</a>
+                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Training').show();" style="cursor:pointer;">@StringLocalizer["Add"]</a>
                             </td>
                             <td style="text-align:center">
-                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Meal').show();">@StringLocalizer["Add"]</a>
+                                <a class="buttons me-2" onclick="$('#team-@teams.Id-Meal').show();" style="cursor:pointer;">@StringLocalizer["Add"]</a>
                             </td>
                         </tr>
 
