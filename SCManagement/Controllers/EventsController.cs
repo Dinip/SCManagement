@@ -411,7 +411,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
-            if (false)
+            if (ModelState.IsValid && ValidateLocation(myEvent) || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate == new DateTime()) )
             {
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
