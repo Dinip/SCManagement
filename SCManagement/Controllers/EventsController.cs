@@ -411,7 +411,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
-            if (ModelState.IsValid && ValidateLocation(myEvent) || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate == new DateTime()) )
+            if (false)
             {
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
@@ -502,7 +502,8 @@ namespace SCManagement.Controllers
             var EventResultTypes = from ResultType e in Enum.GetValues(typeof(ResultType))
                                    select new { Id = (int)e, Name = e.ToString() };
 
-
+            ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
+            ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
             return View(myEvent);
         }
