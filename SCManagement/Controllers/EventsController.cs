@@ -411,7 +411,7 @@ namespace SCManagement.Controllers
                 return View("CustomError", "Error_NotFound");
             }
 
-            if (ModelState.IsValid && ValidateLocation(myEvent) || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate == new DateTime()) )
+            if (ModelState.IsValid && ValidateLocation(myEvent) || (CheckEnroll(myEvent) && myEvent.EnrollLimitDate == new DateTime()))
             {
                 var eventToUpdate = await _eventService.GetEvent(id);
                 if (eventToUpdate == null) return View("CustomError", "Error_NotFound");
@@ -505,7 +505,26 @@ namespace SCManagement.Controllers
             ViewBag.CultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             ViewBag.Languages = new List<CultureInfo> { new("en-US"), new("pt-PT") };
             ViewBag.EventResultType = new SelectList(EventResultTypes, "Id", "Name");
-            return View(myEvent);
+            var auxEvent = await _eventService.GetEvent(id);
+            EventModel prevEvent = new EventModel
+            {
+                StartDate = auxEvent.StartDate,
+                EndDate = auxEvent.EndDate,
+                EnrollLimitDate = auxEvent.EnrollLimitDate,
+                IsPublic = auxEvent.IsPublic,
+                Fee = auxEvent.Fee,
+                HaveRoute = auxEvent.HaveRoute,
+                Route = auxEvent.Route,
+                EventResultType = auxEvent.EventResultType,
+                MaxEventEnrolls = auxEvent.MaxEventEnrolls,
+                AddressByPath = auxEvent.AddressByPath,
+                EventTranslationsName = auxEvent.EventTranslations.Where(e => e.Atribute == "Name").ToList(),
+                EventTranslationsDetails = auxEvent.EventTranslations.Where(e => e.Atribute == "Details").ToList(),
+                Location = auxEvent.Location,
+                LocationId = auxEvent.LocationId,
+                CreationDate = auxEvent.CreationDate,
+            };
+            return View(prevEvent);
         }
 
         [HttpPost]
