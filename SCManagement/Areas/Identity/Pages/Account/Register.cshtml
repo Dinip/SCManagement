@@ -71,10 +71,14 @@
                                 </div>
 
                                 <!-- Password input -->
-                                <div class="mb-4 form-outline">
-                                    <input asp-for="Input.Password" type="password" id="form3Example4" class="form-control" placeholder=@StringLocalizer["Password"] />
-                                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                <div class="d-flex align-items-center mb-4">
+                                    <i class="fa-regular fa-lg me-2 fa-circle-question" style="color: #949494;" title="@StringLocalizer["PasswordRequirements"]"></i>
+                                    <div class="w-100 form-outline">
+                                        <input asp-for="Input.Password" type="password" id="form3Example4" class="form-control" placeholder=@StringLocalizer["Password"] />
+                                        <span asp-validation-for="Input.Password" class="text-danger"></span>
+                                    </div>
                                 </div>
+                                
 
                                 <!-- Confirm Password input -->
                                 <div class="mb-4 form-outline">

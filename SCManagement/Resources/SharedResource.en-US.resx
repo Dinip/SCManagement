@@ -815,7 +815,7 @@ I have experience in the area and I am very focused on my goals.</value>
     <value>Only</value>
   </data>
   <data name="PasswordMismatch" xml:space="preserve">
-    <value>The provided password dosen't match your saved password</value>
+    <value>The provided password doesn't match your saved password</value>
   </data>
   <data name="PasswordRequiresDigit" xml:space="preserve">
     <value>The password must contain digits (0 - 9)</value>
@@ -4711,5 +4711,9 @@ to enable it, or go to your</value>
   </data>
   <data name="More" xml:space="preserve">
     <value>More</value>
+  </data>
+  <data name="PasswordRequirements" xml:space="preserve">
+    <value>The password must contain upper case letters (A - Z), lower case letters (a - z), non-alphanumeric characters (! + . - ? ...) and digits (0 - 9).</value>
+    <comment>22-04-2022_register</comment>
   </data>
 </root>

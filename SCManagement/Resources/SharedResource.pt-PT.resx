@@ -4866,4 +4866,8 @@ Olá _USERNAME_!&lt;br&gt;&lt;br&gt;Foste removido do evento _NAME_ por não ter
   <data name="More" xml:space="preserve">
     <value>Mais</value>
   </data>
+  <data name="PasswordRequirements" xml:space="preserve">
+    <value>A senha deve conter letras maiúsculas (A - Z), letras minúsculas (a - z), caracteres especiais (! + . - ? ...) e dígitos (0 - 9).</value>
+    <comment>22-04-2022_register</comment>
+  </data>
 </root>
