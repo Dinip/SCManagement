@@ -27,6 +27,17 @@ namespace SCManagement.Controllers
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
         private readonly INotificationService _notificationService;
 
+        /// <summary>
+        /// Backoffice controller constructor, injects all the services needed
+        /// </summary>
+        /// <param name="userService"></param>
+        /// <param name="userManager"></param>
+        /// <param name="statisticsService"></param>
+        /// <param name="paymentService"></param>
+        /// <param name="clubService"></param>
+        /// <param name="translationService"></param>
+        /// <param name="stringLocalizer"></param>
+        /// <param name="notificationService"></param>
         public BackofficeController(
             IUserService userService,
             UserManager<User> userManager,
@@ -53,6 +64,14 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
+        /// <summary>
+        /// Helper method to compute the text to display for a given timestamp 
+        /// If month is specified, it will display the day as well (dd MMMM yyyy)
+        /// else it will display the month and year (MMMM yyyy)
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
         private string computeTimestampText(DateTime input, int? month = null)
         {
             if (month != null && month > 0 && month < 13)
@@ -62,6 +81,12 @@ namespace SCManagement.Controllers
             return new DateTime(input.Year, input.Month, 1).ToString("MMMM yyyy", CultureInfo.CurrentCulture);
         }
 
+        /// <summary>
+        /// Helper method to compute the last day of the month for all
+        /// months of given year
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         private List<DateTime> computeAllMonths(int? year = null)
         {
             year ??= DateTime.Now.Year;
@@ -76,6 +101,11 @@ namespace SCManagement.Controllers
             return months;
         }
 
+        /// <summary>
+        /// Gets short statistics for the backoffice dashboard
+        /// and returns the view (with the circles)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             var stats = new BackofficeStats
@@ -90,6 +120,10 @@ namespace SCManagement.Controllers
             return View(stats);
         }
 
+        /// <summary>
+        /// User access management view (to add or remove admin rights)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> UserAccess()
         {
             var allUsers = await _userService.GetAllUsers();
@@ -110,6 +144,15 @@ namespace SCManagement.Controllers
             return View(orderedUsers);
         }
 
+        /// <summary>
+        /// User access management post method (to add or remove admin rights)
+        /// It receives the userId and newRole and checks if the change
+        /// can be made (trying to admin an already admin user results in error
+        /// and vice versa)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="newRole"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UserAccess(string userId, string newRole)
@@ -148,11 +191,22 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(UserAccess));
         }
 
+        /// <summary>
+        /// Gets the lists of delayed payments to system products (club plans)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> DelayedPayments()
         {
             return View(await _statisticsService.GetDelayedClubSubscriptions());
         }
 
+
+        /// <summary>
+        /// Manual payment (re)notification for delayed payments
+        /// Sent do club admins
+        /// </summary>
+        /// <param name="subId"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> NotifyMissingPayment(int subId)
@@ -168,6 +222,13 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(DelayedPayments));
         }
 
+        /// <summary>
+        /// Gets the income (revenue) data for system payments for a given year
+        /// or by default, to the current year
+        /// Used in charts and tables
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> IncomeData(int? year)
         {
             var stats = await _statisticsService.GetSystemPaymentStatistics(year);
@@ -198,6 +259,7 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+
         public IActionResult Income()
         {
             return View();
@@ -218,6 +280,12 @@ namespace SCManagement.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Gets statistics about the amount of active and canceled club plans subscriptions
+        /// Used in charts and tables
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> PlansData(int? year)
         {
             var stats = await _statisticsService.GetSystemPlansStatistics(year);
@@ -251,12 +319,24 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+        /// <summary>
+        /// Gets statistics about the adherence of club plans
+        /// Used in charts and tables
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> PlansAdherenceData()
         {
             var stats = await _statisticsService.GetSystemPlansShortStatistics();
             return Json(new { data = stats });
         }
 
+        /// <summary>
+        /// Gets statistics about the number of atheletes in a give club over a given year
+        /// Used in charts and tables
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> AthletesData(int clubId, int? year)
         {
             var stats = await _statisticsService.GetClubUserStatistics(clubId, 20, year);
@@ -287,6 +367,13 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+        /// <summary>
+        /// Gets statistics about the number of partners in a give club over a given year
+        /// Used in charts and tables
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> PartnersData(int clubId, int? year)
         {
             var stats = await _statisticsService.GetClubUserStatistics(clubId, 10, year);
@@ -317,11 +404,21 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+        /// <summary>
+        /// Gets a list of all clubs in the system and their respetive
+        /// state and number of users in the club
+        /// Used in charts and tables
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Clubs()
         {
             return View(await _statisticsService.GetClubsGeneralStats());
         }
 
+        /// <summary>
+        /// Gets the list of all existing modalities
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Modalities()
         {
             ViewBag.Success = TempData["Success"];
@@ -329,7 +426,11 @@ namespace SCManagement.Controllers
             return View(await _clubService.GetModalities());
         }
 
-        public async Task<IActionResult> CreateModality()
+        /// <summary>
+        /// View to create a new modality
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CreateModality()
         {
             List<CultureInfo> cultures = new List<CultureInfo> { new("pt-PT"), new("en-US") };
 
@@ -348,6 +449,11 @@ namespace SCManagement.Controllers
             return View(modality);
         }
 
+        /// <summary>
+        /// Create a new modality in the system
+        /// </summary>
+        /// <param name="modality"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> CreateModality([Bind("Id", "ModalityTranslations")] Modality modality)
         {
@@ -377,6 +483,10 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(Modalities));
         }
 
+        /// <summary>
+        /// Gets the list of all existing club plans, including disabled
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> ManagePlans()
         {
             ViewBag.Message = TempData["Message"];
@@ -384,6 +494,15 @@ namespace SCManagement.Controllers
             return View(await _paymentService.GetClubSubscriptionPlans(true));
         }
 
+        /// <summary>
+        /// Toggles the status of a plan (enabled/disabled)
+        /// Which removes or adds them to the public list of available plans
+        /// Also notifies the subscriber users (which are using the plan
+        /// in their club) if the plan was disabled (the current users can
+        /// still pay them, until they change or cancel their subscription)
+        /// </summary>
+        /// <param name="planId"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> TogglePlan(int planId)
@@ -411,13 +530,22 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(ManagePlans));
         }
 
-        public async Task<IActionResult> CreatePlan()
+        /// <summary>
+        /// View to create a new plan
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult CreatePlan()
         {
             ViewBag.Frequency = new SelectList(from SubscriptionFrequency sf in Enum.GetValues(typeof(SubscriptionFrequency)) select new { Id = (int)sf, Name = _stringLocalizer[sf.ToString()] }, "Id", "Name");
 
             return View();
         }
 
+        /// <summary>
+        /// Create a new plan in the system
+        /// </summary>
+        /// <param name="plan"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreatePlan([Bind("Name,Value,Frequency,Enabled,AthleteSlots")] CustomPlanModel plan)
@@ -432,6 +560,11 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(ManagePlans));
         }
 
+        /// <summary>
+        /// View to edit an existing plan (limited edition when already in use)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> EditPlan(int id)
         {
             var plan = await _paymentService.GetClubSubscriptionPlan(id, true);
@@ -445,6 +578,15 @@ namespace SCManagement.Controllers
             return View(new CustomPlanModel().ConvertFromProduct(plan));
         }
 
+        /// <summary>
+        /// Edit an existing plan (limited edition when already in use)
+        /// Also notifies the subscriber users (which are using the plan
+        /// in their club) if the plan was disabled (the current users can
+        /// still pay them, until they change or cancel their subscription)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="plan"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPlan(int id, [Bind("Id,Name,Value,Frequency,Enabled,AthleteSlots")] CustomPlanModel plan)
@@ -460,6 +602,10 @@ namespace SCManagement.Controllers
             if (oldPlan == null) return View("CustomError", "Error_NotFound");
 
             var oldEnabled = oldPlan.Enabled;
+
+            //Limits the changes that can be made to a plan that is already in use
+            //If is being "used" (any club with subscription) then only the name
+            //and enabled status can be changed
 
             if (anyUsing)
             {
@@ -486,6 +632,11 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(ManagePlans));
         }
 
+        /// <summary>
+        /// Delete an existing plan (only if not in use by any club)
+        /// </summary>
+        /// <param name="planId"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeletePlan(int planId)

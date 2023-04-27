@@ -26,6 +26,16 @@ namespace SCManagement.Controllers
         private readonly ITranslationService _translationService;
         private readonly INotificationService _notificationService;
 
+        /// <summary>
+        /// Events controller constructor, injects all the services needed
+        /// </summary>
+        /// <param name="eventService"></param>
+        /// <param name="userService"></param>
+        /// <param name="userManager"></param>
+        /// <param name="clubService"></param>
+        /// <param name="paymentService"></param>
+        /// <param name="translationService"></param>
+        /// <param name="notificationService"></param>
         public EventsController(
             IEventService eventService,
             IUserService userService,

@@ -13,17 +13,32 @@ namespace SCManagement.Controllers
         private readonly IUserService _userService;
         private readonly UserManager<User> _userManager;
 
+        /// <summary>
+        /// User controller constructor, injects all the services needed
+        /// </summary>
+        /// <param name="userService"></param>
+        /// <param name="userManager"></param>
         public UserController(IUserService userService, UserManager<User> userManager)
         {
             _userService = userService;
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Get id of the user that makes the request
+        /// </summary>
+        /// <returns></returns>
         private string getUserIdFromAuthedUser()
         {
             return _userManager.GetUserId(User);
         }
 
+        /// <summary>
+        /// Updates the user selected role (club function)
+        /// Used in the navbar dropdown
+        /// </summary>
+        /// <param name="usersClubRoleId"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -42,6 +57,8 @@ namespace SCManagement.Controllers
             }
             return RedirectToAction("Index", "MyClub");
         }
+
+
         public class EditNotificationsSettings
         {
             public Dictionary<string, ICollection<Notification>> Notifications { get; set; }
@@ -56,6 +73,11 @@ namespace SCManagement.Controllers
             };
         }
 
+        /// <summary>
+        /// Gets the current user notifications settings (on or off) grouped
+        /// by their category
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> UpdateNotificationsSettings()
         {
             string userId = getUserIdFromAuthedUser();
@@ -79,6 +101,11 @@ namespace SCManagement.Controllers
             return View(settings);
         }
 
+        /// <summary>
+        /// Updates the user notifications settings (on or off)
+        /// </summary>
+        /// <param name="notifications"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]

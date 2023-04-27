@@ -24,11 +24,6 @@ using SCManagement.Services.NotificationService;
 
 namespace SCManagement.Controllers
 {
-
-    /// <summary>
-    /// This class represents the MyClub Controller
-    /// </summary>
-    /// 
     [Authorize]
     public class MyClubController : Controller
     {
@@ -42,10 +37,10 @@ namespace SCManagement.Controllers
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
         private readonly IAzureStorage _azureStorage;
-        
+
 
         /// <summary>
-        /// This is the constructor of the MyClub Controller
+        /// MyClub controller constructor, injects all the services needed
         /// </summary>
         /// <param name="userManager"></param>
         /// <param name="clubService"></param>
@@ -54,6 +49,9 @@ namespace SCManagement.Controllers
         /// <param name="translationService"></param>
         /// <param name="paymentService"></param>
         /// <param name="applicationContextService"></param>
+        /// <param name="stringLocalizer"></param>
+        /// <param name="azureStorage"></param>
+        /// <param name="planService"></param>
         public MyClubController(
             UserManager<User> userManager,
             IClubService clubService,
@@ -79,6 +77,14 @@ namespace SCManagement.Controllers
             _planService = planService;
         }
 
+        /// <summary>
+        /// A fallback route to use when a user from a club tries
+        /// to access a resource (page) from that club and the club
+        /// isn't active yet or is suspended due to lack of payment
+        /// by the club admin. Shows a different error if the user
+        /// is just a member or a manager.
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Unavailable()
         {
             //get id of the user
@@ -167,7 +173,6 @@ namespace SCManagement.Controllers
         /// <summary>
         /// This method returns the Edit View
         /// </summary>
-        /// <param name="id">id the clube to be edited</param>
         /// <param name="club">club to be edited</param>
         /// <returns>View Index</returns>
         [HttpPost]
@@ -372,7 +377,7 @@ namespace SCManagement.Controllers
             if (userRoleToBeRomoved.RoleId >= 40 && role.RoleId < 50) return View("CustomError", "Error_Unauthorized");
 
             //Check if the user is trainer and if so, transfer all teams to admin
-            if(userRoleToBeRomoved.RoleId == 30 || userRoleToBeRomoved.RoleId == 40)
+            if (userRoleToBeRomoved.RoleId == 30 || userRoleToBeRomoved.RoleId == 40)
             {
                 var adminRole = await _clubService.GetAdminRole(userRoleToBeRomoved.ClubId);
                 await _teamService.TransferOwnerOfAllTeams(userRoleToBeRomoved.UserId, adminRole.UserId);
@@ -399,7 +404,7 @@ namespace SCManagement.Controllers
                     await Task.WhenAll(tasks);
                 }
             }
-            
+
             //remove a user(role) from a club
             await _clubService.RemoveClubUser(userRoleToBeRomoved.Id);
 
@@ -435,7 +440,7 @@ namespace SCManagement.Controllers
         public async Task<IActionResult> CreateCode([Bind("RoleId,ExpireDate")] CreateCodeModel codeClub)
         {
             if (!ModelState.IsValid || codeClub.ExpireDate.Date < DateTime.Now.Date) return RedirectToAction("Codes");
-            
+
             var validRoles = await _clubService.GetRoles(); //excludes partners and club admin
             if (!validRoles.Any(r => r.Id == codeClub.RoleId)) return RedirectToAction("Codes");
 
@@ -924,13 +929,18 @@ namespace SCManagement.Controllers
                 ViewBag.LastUpdateDate = bio.LastUpdateDate;
             }
             else
+            {
                 ViewBag.HaveBio = false;
-
-
+            }
 
             return PartialView("_PartialUserDetails", user);
         }
 
+
+        /// <summary>
+        /// View the current payment settings
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> PaymentSettings()
         {
             //get the user selected role
@@ -946,6 +956,15 @@ namespace SCManagement.Controllers
             return View(settings);
         }
 
+
+        /// <summary>
+        /// Update the club payment settings
+        /// To allow changes, the key provided for easypay must be valid
+        /// and all the current ative members are notified if changes
+        /// are made to the value or frequency of the membership subscription
+        /// </summary>
+        /// <param name="paymentSettings"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> PaymentSettings(ClubPaymentSettings paymentSettings)
         {
@@ -976,7 +995,13 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(PaymentSettings));
         }
 
-        public async Task<IActionResult> PaymentsRecieved()
+
+        /// <summary>
+        /// List of payments received by the club, includes
+        /// events and memberships
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IActionResult> PaymentsReceived()
         {
             //get the user selected role
             UsersRoleClub role = _applicationContextService.UserRole;

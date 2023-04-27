@@ -28,7 +28,7 @@ namespace SCManagement.Controllers
         private readonly IAzureStorage _azureStorage;
 
         /// <summary>
-        /// This is the constructor of the MyClub Controller
+        /// MyZone controller constructor, injects all the services needed
         /// </summary>
         /// <param name="userManager"></param>
         /// <param name="clubService"></param>
@@ -37,6 +37,9 @@ namespace SCManagement.Controllers
         /// <param name="translationService"></param>
         /// <param name="paymentService"></param>
         /// <param name="applicationContextService"></param>
+        /// <param name="stringLocalizer"></param>
+        /// <param name="azureStorage"></param>
+        /// <param name="planService"></param>
         public MyZoneController(
             UserManager<User> userManager,
             IClubService clubService,

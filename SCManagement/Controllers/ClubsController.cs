@@ -12,11 +12,6 @@ using SCManagement.Services.UserService;
 
 namespace SCManagement.Controllers
 {
-
-    /// <summary>
-    /// This class represents the Clubs Controller
-    /// </summary>
-    /// 
     public class ClubsController : Controller
     {
         private readonly UserManager<User> _userManager;
@@ -217,14 +212,14 @@ namespace SCManagement.Controllers
 
         /// <summary>
         /// This method allows adding a partner to the club if he has no role in the club, or allows removing a partner from the club if he is.
-        /// </summary>
-        /// <param name="id">id of the club</param>
-        /// <returns>Deatils View</returns>
         /// Be careful with this method, since it does not have the
         /// [Authorize] flag, but should only be called when authed.
         /// Instead, it checks if the user has id (which is only possible
         /// if he is authed), and if the value is null, it redirects to the
         /// login page with the Clubs/Id as the return url.
+        /// </summary>
+        /// <param name="Id">id of the club</param>
+        /// <returns>Deatils View</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Associate(int? Id)
@@ -255,12 +250,23 @@ namespace SCManagement.Controllers
             return RedirectToAction("Index", new { Id });
         }
 
+        /// <summary>
+        /// View to use the code to join a club
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         [Authorize]
         public IActionResult Join(string? code)
         {
             return View(new CodeClub { Code = code });
         }
 
+        /// <summary>
+        /// Join a club with a code (gives error if the code is invalid,
+        /// already used, user already part of club or expired)
+        /// </summary>
+        /// <param name="cc"></param>
+        /// <returns></returns>
         [Authorize]
         [HttpPost]
         [AutoValidateAntiforgeryToken]
@@ -275,6 +281,10 @@ namespace SCManagement.Controllers
             return RedirectToAction("Index", "MyClub");
         }
 
+        /// <summary>
+        /// Gets all available plans to subscribe to create a club
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Plans()
         {
             return View(await _paymentService.GetClubSubscriptionPlans());

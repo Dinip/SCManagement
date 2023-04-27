@@ -13,6 +13,12 @@ namespace SCManagement.Controllers
         private readonly ApplicationContextService _applicationContextService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
+        /// <summary>
+        /// Statistics controller constructor, injects all the services needed
+        /// </summary>
+        /// <param name="statisticsService"></param>
+        /// <param name="applicationContextService"></param>
+        /// <param name="stringLocalizer"></param>
         public StatisticsController(IStatisticsService statisticsService,
             ApplicationContextService applicationContextService,
             IStringLocalizer<SharedResource> stringLocalizer)
@@ -22,6 +28,11 @@ namespace SCManagement.Controllers
             _stringLocalizer = stringLocalizer;
         }
 
+
+        /// <summary>
+        /// Index page for club statistics (with circles, charts and tables)
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> Index()
         {
             if (_applicationContextService.UserRole.RoleId < 40) return NotFound();
@@ -29,6 +40,15 @@ namespace SCManagement.Controllers
             return View(await _statisticsService.GetCurrentClubUsersStatistics(_applicationContextService.UserRole.ClubId));
         }
 
+
+        /// <summary>
+        /// Helper method to compute the text to display for a given timestamp 
+        /// If month is specified, it will display the day as well (dd MMMM yyyy)
+        /// else it will display the month and year (MMMM yyyy)
+        /// </summary>
+        /// <param name="input"></param>
+        /// <param name="month"></param>
+        /// <returns></returns>
         private string computeTimestampText(DateTime input, int? month = null)
         {
             if (month != null && month > 0 && month < 13)
@@ -38,6 +58,13 @@ namespace SCManagement.Controllers
             return new DateTime(input.Year, input.Month, 1).ToString("MMMM yyyy", CultureInfo.CurrentCulture);
         }
 
+
+        /// <summary>
+        /// Helper method to compute the last day of the month for all
+        /// months of given year
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         private List<DateTime> computeAllMonths(int? year = null)
         {
             year ??= DateTime.Now.Year;
@@ -52,6 +79,16 @@ namespace SCManagement.Controllers
             return months;
         }
 
+
+        /// <summary>
+        /// Gets statistics about club received payments (revenue)
+        /// for a given year
+        /// Returns all months (12) even if there are no payments or
+        /// not already passed that month, so that the chart and table
+        /// can show all year's months.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Payments(int? year)
         {
             if (_applicationContextService.UserRole.RoleId < 40) return NotFound();
@@ -85,6 +122,13 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+
+        /// <summary>
+        /// Gets detailed statistics about club received payments (revenue)
+        /// Agregates by product and month for a given year
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> PaymentsDetailed(int? year)
         {
             if (_applicationContextService.UserRole.RoleId < 40) return NotFound();
@@ -118,6 +162,15 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+        /// <summary>
+        /// Gets statistics about the number of athletes in the club
+        /// by each month of a given year
+        /// Returns all months (12) even if there are no payments or
+        /// not already passed that month, so that the chart and table
+        /// can show all year's months.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Athletes(int? year)
         {
             if (_applicationContextService.UserRole.RoleId < 40) return NotFound();
@@ -149,6 +202,16 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+
+        /// <summary>
+        /// Gets statistics about the number of partners in the club
+        /// by each month of a given year
+        /// Returns all months (12) even if there are no payments or
+        /// not already passed that month, so that the chart and table
+        /// can show all year's months.
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Partners(int? year)
         {
             if (_applicationContextService.UserRole.RoleId < 40) return NotFound();
@@ -180,6 +243,13 @@ namespace SCManagement.Controllers
             return Json(new { data = stats2 });
         }
 
+
+        /// <summary>
+        /// Gets statistics about the number of athletes associated
+        /// to each modality (that a club has) by each month of a given year
+        /// </summary>
+        /// <param name="year"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Modalities(int? year)
         {
             if (_applicationContextService.UserRole.RoleId < 40) return NotFound();

@@ -14,6 +14,11 @@ namespace SCManagement.Controllers
         private readonly IPaymentService _paymentService;
         private readonly UserManager<User> _userManager;
 
+        /// <summary>
+        /// Payments controller constructor, injects all the services needed
+        /// </summary>
+        /// <param name="paymentService"></param>
+        /// <param name="userManager"></param>
         public PaymentController(IPaymentService paymentService, UserManager<User> userManager)
         {
             _paymentService = paymentService;
@@ -30,6 +35,11 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
+        /// <summary>
+        /// Method to receive the webhook from easypay with the payment/subcription information
+        /// </summary>
+        /// <param name="notification"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         [Route("api/Payment/WebhookGeneric")]
@@ -55,6 +65,12 @@ namespace SCManagement.Controllers
             return Ok();
         }
 
+
+        /// <summary>
+        /// Current payments associated with the user
+        /// </summary>
+        /// <param name="payId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Index(string? payId)
         {
             ViewBag.Error = TempData["Error"];
@@ -63,6 +79,11 @@ namespace SCManagement.Controllers
         }
 
 
+        /// <summary>
+        /// Pay a created payment with the selected payment method
+        /// </summary>
+        /// <param name="inputPayment"></param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> PaySinglePayment([Bind("Id,PaymentMethod,PhoneNumber")] PayPayment inputPayment)
@@ -84,6 +105,12 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        /// <summary>
+        /// Shows all detailed information about a payment (partial view)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return PartialView("_CustomErrorPartial", "Error_NotFound");

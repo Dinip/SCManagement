@@ -21,7 +21,7 @@ namespace SCManagement.Controllers {
             return View();
         }
 
-        public async Task<IActionResult> TermsAndConditions()
+        public IActionResult TermsAndConditions()
         {
             return View();
         }

@@ -1285,7 +1285,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <value>Selecionar e criar clube</value>
     <comment>28-02-2023_payments</comment>
   </data>
-  <data name="PaymentsRecieved" xml:space="preserve">
+  <data name="PaymentsReceived" xml:space="preserve">
     <value>Pagamentos Recebidos</value>
     <comment>01-03-2023_payments</comment>
   </data>

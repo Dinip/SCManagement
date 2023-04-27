@@ -15,6 +15,12 @@ namespace SCManagement.Controllers
         private readonly IClubService _clubService;
         private readonly UserManager<User> _userManager;
 
+        /// <summary>
+        /// Subscription controller constructor, injects all the services needed
+        /// </summary>
+        /// <param name="paymentService"></param>
+        /// <param name="userManager"></param>
+        /// <param name="clubService"></param>
         public SubscriptionController(IPaymentService paymentService, UserManager<User> userManager, IClubService clubService)
         {
             _paymentService = paymentService;
@@ -32,6 +38,12 @@ namespace SCManagement.Controllers
             return _userManager.GetUserId(User);
         }
 
+
+        /// <summary>
+        /// Current subscriptions associated with the user (includes expired and canceled)
+        /// </summary>
+        /// <param name="subId"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Index(string? subId)
         {
             ViewBag.SubId = subId;
@@ -41,6 +53,12 @@ namespace SCManagement.Controllers
             return View(await _paymentService.GetSubscriptions(getUserIdFromAuthedUser()));
         }
 
+
+        /// <summary>
+        /// Shows all detailed information about a subscription (partial view)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return PartialView("_CustomErrorPartial", "Error_NotFound");
@@ -51,6 +69,13 @@ namespace SCManagement.Controllers
             return PartialView("_DetailsPartial", sub);
         }
 
+
+        /// <summary>
+        /// A toggle method to enable or disable auto renew for a subscription
+        /// Uses last state as base and inverts it
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpdateAutoRenew(int? id)
         {
@@ -81,6 +106,12 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        /// <summary>
+        /// Cancels the subscription (at the end of the cicle)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Cancel(int? id)
         {
@@ -103,6 +134,13 @@ namespace SCManagement.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Upgrade the plan of a club plan subscription
+        /// Validates that the plan can't be downgraded to
+        /// another with less slots than the total athletes now
+        /// </summary>
+        /// <param name="plan"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> UpgradeClubPlan(UpgradePlan plan)
         {
@@ -130,28 +168,6 @@ namespace SCManagement.Controllers
             }
 
             return RedirectToAction(nameof(Index), new { subId = plan.SubscriptionId });
-        }
-
-        public async Task<IActionResult> PlansPartial(int id)
-        {
-            var sub = await _paymentService.GetSubscription(id);
-            if (sub == null || sub.UserId != getUserIdFromAuthedUser()) PartialView("_CustomErrorPartial", "Error_NotFound");
-
-            var athletes = (await _clubService.GetAthletes((int)sub.ClubId)).Count();
-            var plans = await _paymentService.GetClubSubscriptionPlans();
-
-            foreach (var plan in plans)
-            {
-                plan.Enabled = (plan.AthleteSlots < athletes || plan.Id == sub.ProductId);
-            }
-
-            return PartialView("_PlansPartial", new UpgradePlan
-            {
-                SubscriptionId = sub.Id,
-                PlanId = sub.ProductId,
-                Athletes = athletes,
-                Plans = plans.ToList()
-            }); ;
         }
     }
 }

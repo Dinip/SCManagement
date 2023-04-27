@@ -27,6 +27,15 @@ namespace SCManagement.Controllers
         private readonly ITeamService _teamService;
         private readonly INotificationService _notificationService;
 
+        /// <summary>
+        /// Plans controller constructor, injects all the services needed
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="clubService"></param>
+        /// <param name="userService"></param>
+        /// <param name="planService"></param>
+        /// <param name="teamService"></param>
+        /// <param name="notificationService"></param>
         public PlansController(
             UserManager<User> userManager,
             IClubService clubService,
