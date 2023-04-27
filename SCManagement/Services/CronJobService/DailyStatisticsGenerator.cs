@@ -8,6 +8,12 @@ namespace SCManagement.Services.CronJobService
         private readonly ILogger<DailyStatisticsGenerator> _logger;
         private readonly IServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// Daily statistics generator constructor
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="logger"></param>
+        /// <param name="serviceProvider"></param>
         public DailyStatisticsGenerator(
             IScheduleConfig<DailyStatisticsGenerator> config,
             ILogger<DailyStatisticsGenerator> logger,
@@ -18,12 +24,27 @@ namespace SCManagement.Services.CronJobService
             _serviceProvider = serviceProvider;
         }
 
+
+        /// <summary>
+        /// Starts the job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Daily statistics generator checker starting...");
             return base.StartAsync(cancellationToken);
         }
 
+
+        /// <summary>
+        /// Actual job to be executed
+        /// Gets all clubs that are not suspended or deleted already
+        /// and creates statistics for them
+        /// Also generates system statistics (club plans and payments)
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override async Task DoWork(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{DateTime.Now:hh:mm:ss} statistics generator checker working...");
@@ -48,6 +69,12 @@ namespace SCManagement.Services.CronJobService
             return;
         }
 
+
+        /// <summary>
+        /// Stops the job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Daily statistics generator checker is stopping...");

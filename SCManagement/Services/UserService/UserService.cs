@@ -15,6 +15,13 @@ namespace SCManagement.Services.UserService
         private readonly IAzureStorage _azureStorage;
         private readonly UserManager<User> _userManager;
 
+        /// <summary>
+        /// User service constructor
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="signInManager"></param>
+        /// <param name="azureStorage"></param>
+        /// <param name="userManager"></param>
         public UserService(ApplicationDbContext context,
             SignInManager<User> signInManager,
             IAzureStorage azureStorage,
@@ -89,6 +96,11 @@ namespace SCManagement.Services.UserService
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Updates group of notifications settings
+        /// </summary>
+        /// <param name="notifications"></param>
+        /// <returns></returns>
         public async Task UpdateNotifications(ICollection<Notification> notifications)
         {
             _context.Notifications.UpdateRange(notifications);
@@ -180,6 +192,11 @@ namespace SCManagement.Services.UserService
         }
 
 
+        /// <summary>
+        /// Gets all the users in the system with their global roles
+        /// and some identifying info (name, email)
+        /// </summary>
+        /// <returns></returns>
         public async Task<ICollection<User>> GetAllUsers()
         {
             var admins = (await _userManager.GetUsersInRoleAsync("Administrator"))
@@ -212,11 +229,24 @@ namespace SCManagement.Services.UserService
             return users;
         }
 
+
+        /// <summary>
+        /// Checks if the given user is a global admin (system admin)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
         public async Task<bool> UserIsAdmin(string userId)
         {
             return (await _userManager.GetUsersInRoleAsync("Administrator")).Any(u => u.Id == userId);
         }
+        
 
+        /// <summary>
+        /// Updates the user system role (from admin to regular or regular to admin)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="newRole"></param>
+        /// <returns></returns>
         public async Task<bool> ChangeSystemUserRole(string userId, string newRole)
         {
             string roleToRemove = newRole == "Administrator" ? "Regular" : "Administrator";

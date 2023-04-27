@@ -11,6 +11,12 @@ namespace SCManagement.Services.CronJobService
         private readonly ILogger<DailySubscriptionChecker> _logger;
         private readonly IServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// Daily subscription checker constructor
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="logger"></param>
+        /// <param name="serviceProvider"></param>
         public DailySubscriptionChecker(
             IScheduleConfig<DailySubscriptionChecker> config,
             ILogger<DailySubscriptionChecker> logger,
@@ -21,12 +27,28 @@ namespace SCManagement.Services.CronJobService
             _serviceProvider = serviceProvider;
         }
 
+        /// <summary>
+        /// Starts the job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Daily subscription checker starting...");
             return base.StartAsync(cancellationToken);
         }
 
+
+        /// <summary>
+        /// Actual job to be executed
+        /// Gets all that have the next payment date today and
+        /// sets their subscription status to pending. Also creates
+        /// the payment entry (not important for those with auto renew,
+        /// but creates anyway). Also notifies the user that the subscription
+        /// is due today. If subscription value is 0, auto pays the payment.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override async Task DoWork(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{DateTime.Now:hh:mm:ss} daily subscription checker working...");
@@ -67,6 +89,12 @@ namespace SCManagement.Services.CronJobService
             return;
         }
 
+
+        /// <summary>
+        /// Stops the job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Daily subscription checker is stopping...");

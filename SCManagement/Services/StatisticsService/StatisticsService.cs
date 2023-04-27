@@ -16,6 +16,12 @@ namespace SCManagement.Services.StatisticsService
         private readonly IClubService _clubService;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
+        /// <summary>
+        /// Statistics service constructor
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="clubService"></param>
+        /// <param name="stringLocalizer"></param>
         public StatisticsService(
             ApplicationDbContext context,
             IClubService clubService,
@@ -847,6 +853,11 @@ namespace SCManagement.Services.StatisticsService
             };
         }
 
+        /// <summary>
+        /// Gets information about all clubs with respective
+        /// subscription status
+        /// </summary>
+        /// <returns></returns>
         public async Task<ICollection<ClubGeneralInfo>> GetClubsGeneralStats()
         {
             return await _context.Club

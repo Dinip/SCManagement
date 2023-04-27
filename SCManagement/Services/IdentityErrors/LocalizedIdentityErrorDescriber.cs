@@ -6,6 +6,10 @@ namespace SCManagement.Services
     {
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
+        /// <summary>
+        /// Localized Identity Error Describer
+        /// </summary>
+        /// <param name="stringLocalizer"></param>
         public LocalizedIdentityErrorDescriber(IStringLocalizer<SharedResource> stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;

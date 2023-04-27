@@ -26,6 +26,17 @@ namespace SCManagement.Services.ClubService
         private readonly IPaymentService _paymentService;
         private readonly INotificationService _notificationService;
 
+
+        /// <summary>
+        /// Club service constructor
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="emailSender"></param>
+        /// <param name="httpContext"></param>
+        /// <param name="sharedResource"></param>
+        /// <param name="azureStorage"></param>
+        /// <param name="paymentService"></param>
+        /// <param name="notificationService"></param>
         public ClubService(
             ApplicationDbContext context,
             IEmailSender emailSender,
@@ -100,10 +111,6 @@ namespace SCManagement.Services.ClubService
             return club;
         }
 
-        public Task<Club> DeleteClub(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// Gets a club by its id
@@ -891,27 +898,53 @@ namespace SCManagement.Services.ClubService
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 20).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
 
+        /// <summary>
+        /// Gets all trainers of a given club (users object)
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<User>> GetClubTrainers(int clubId)
         {
             return await _context.UsersRoleClub.Where(u => u.ClubId == clubId && u.RoleId == 30).Include(u => u.User).Select(u => u.User).ToListAsync();
         }
 
+        /// <summary>
+        /// Gets the translations of text (description and ToS) a given club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<IEnumerable<ClubTranslations>> GetClubTranslations(int clubId)
         {
             string cultureInfo = Thread.CurrentThread.CurrentCulture.Name;
             return await _context.ClubTranslations.Where(c => c.ClubId == clubId && c.Language == cultureInfo).ToListAsync();
         }
 
+        /// <summary>
+        /// Gets the status (ative, suspended, deleted) of a given club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<ClubStatus> GetClubStatus(int clubId)
         {
             return await _context.Club.Where(c => c.Id == clubId).Select(c => c.Status).FirstAsync();
         }
 
+        /// <summary>
+        /// Gets the current club payment settings for a given club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<ClubPaymentSettings> GetClubPaymentSettings(int clubId)
         {
             return await _context.ClubPaymentSettings.FirstAsync(c => c.ClubPaymentSettingsId == clubId);
         }
 
+        /// <summary>
+        /// Updates the club payment settings for a given club
+        /// Notifies users if quota settings where changed (value or frequency)
+        /// </summary>
+        /// <param name="settings"></param>
+        /// <returns></returns>
         public async Task<ClubPaymentSettings> UpdateClubPaymentSettings(ClubPaymentSettings settings)
         {
             var currentSettings = await GetClubPaymentSettings(settings.ClubPaymentSettingsId);
@@ -932,6 +965,12 @@ namespace SCManagement.Services.ClubService
             return currentSettings;
         }
 
+        /// <summary>
+        /// Computes the values of a club slots
+        /// (total slots, used slots, available slots)
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<ClubSlots> ClubAthleteSlots(int clubId)
         {
             var total = await _context.Subscription
@@ -947,6 +986,11 @@ namespace SCManagement.Services.ClubService
             return new ClubSlots { TotalSlots = total, UsedSlots = athletes, AvailableSlots = total - athletes };
         }
 
+        /// <summary>
+        /// Creates and saves a new modality to the system
+        /// </summary>
+        /// <param name="modality"></param>
+        /// <returns></returns>
         public async Task<Modality> CreateModality(Modality modality)
         {
             _context.Modality.Add(modality);
@@ -954,6 +998,11 @@ namespace SCManagement.Services.ClubService
             return modality;
         }
 
+        /// <summary>
+        /// Gets the admin of a given club
+        /// </summary>
+        /// <param name="clubId"></param>
+        /// <returns></returns>
         public async Task<UsersRoleClub> GetAdminRole(int clubId)
         {
             return await _context.UsersRoleClub

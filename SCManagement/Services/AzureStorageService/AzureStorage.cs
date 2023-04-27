@@ -13,6 +13,12 @@ namespace SCManagement.Services.AzureStorageService
         private readonly ILogger<AzureStorage> _logger;
         private readonly IStringLocalizer<SharedResource> _stringLocalizer;
 
+        /// <summary>
+        /// Azure storage constructor
+        /// </summary>
+        /// <param name="configuration"></param>
+        /// <param name="logger"></param>
+        /// <param name="stringLocalizer"></param>
         public AzureStorage(IConfiguration configuration, ILogger<AzureStorage> logger, IStringLocalizer<SharedResource> stringLocalizer)
         {
             _storageConnectionString = configuration.GetValue<string>("BlobConnectionString");

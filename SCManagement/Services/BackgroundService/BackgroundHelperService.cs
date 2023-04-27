@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity.UI.Services;
-using SCManagement.Services.PaymentService;
 
 namespace SCManagement.Services.BackgroundService
 {
@@ -9,6 +8,12 @@ namespace SCManagement.Services.BackgroundService
         private readonly SharedResourceService _sharedResource;
         private readonly BackgroundWorkerService _backgroundWorker;
 
+        /// <summary>
+        /// Background helper service constructor
+        /// </summary>
+        /// <param name="emailSender"></param>
+        /// <param name="sharedResource"></param>
+        /// <param name="backgroundWorker"></param>
         public BackgroundHelperService(IEmailSender emailSender, SharedResourceService sharedResource, BackgroundWorkerService backgroundWorker)
         {
             _emailSender = emailSender;
@@ -16,6 +21,14 @@ namespace SCManagement.Services.BackgroundService
             _backgroundWorker = backgroundWorker;
         }
 
+
+        /// <summary>
+        /// Enqueues the email to be sent in the background
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="lang"></param>
+        /// <param name="EmailName"></param>
+        /// <param name="values"></param>
         public void SendEmail(string email, string lang, string EmailName, Dictionary<string, string> values)
         {
             _backgroundWorker.Enqueue(async (_) =>

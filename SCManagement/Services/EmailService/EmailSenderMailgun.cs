@@ -10,6 +10,11 @@ namespace SCManagement.Services.EmailService
     {
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Mailgun email sender constructor
+        /// </summary>
+        /// <param name="optionsAccessor"></param>
+        /// <param name="logger"></param>
         public EmailSenderMailgun(IOptions<AuthMessageSenderOptions> optionsAccessor,
                            ILogger<EmailSenderMailgun> logger)
         {

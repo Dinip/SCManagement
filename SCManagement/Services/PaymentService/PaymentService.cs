@@ -13,6 +13,13 @@ namespace SCManagement.Services.PaymentService
         private readonly IConfiguration _configuration;
         private readonly ApplicationDbContext _context;
         private readonly INotificationService _notificationService;
+
+        /// <summary>
+        /// Payment service constructor
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="configuration"></param>
+        /// <param name="notificationService"></param>
         public PaymentService(ApplicationDbContext context, IConfiguration configuration, INotificationService notificationService)
         {
             _context = context;
@@ -1124,6 +1131,11 @@ namespace SCManagement.Services.PaymentService
         }
 
 
+        /// <summary>
+        /// Updates a given product
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         public async Task<Product> UpdateProduct(Product product)
         {
             _context.Product.Update(product);
@@ -1131,6 +1143,12 @@ namespace SCManagement.Services.PaymentService
             return product;
         }
 
+
+        /// <summary>
+        /// Saves a new created product
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
         public async Task<Product> CreateProduct(Product product)
         {
             _context.Product.Add(product);
@@ -1138,11 +1156,23 @@ namespace SCManagement.Services.PaymentService
             return product;
         }
 
+
+        /// <summary>
+        /// Checks if there is any subscription using a given club plan
+        /// </summary>
+        /// <param name="planId"></param>
+        /// <returns></returns>
         public async Task<bool> AnySubscriptionUsingPlan(int planId)
         {
             return await _context.Subscription.Where(s => s.ProductId == planId).AnyAsync();
         }
 
+
+        /// <summary>
+        /// Deletes a product
+        /// </summary>
+        /// <param name="productId"></param>
+        /// <returns></returns>
         public async Task DeleteProduct(int productId)
         {
             var product = await _context.Product.FindAsync(productId);

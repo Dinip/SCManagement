@@ -10,6 +10,10 @@ namespace SCManagement.Services.TranslationService
         private readonly string _subscriptionKey;
         private readonly string _region;
 
+        /// <summary>
+        /// Translation Service Constructor
+        /// </summary>
+        /// <param name="configuration"></param>
         public TranslationService(IConfiguration configuration)
         {
             _subscriptionKey = configuration["TranslatorAPIKey"];

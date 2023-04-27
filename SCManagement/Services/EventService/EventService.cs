@@ -8,6 +8,10 @@ namespace SCManagement.Services.EventService
     {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Event service constructor
+        /// </summary>
+        /// <param name="context"></param>
         public EventService(ApplicationDbContext context)
         {
             _context = context;

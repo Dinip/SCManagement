@@ -11,6 +11,12 @@ namespace SCManagement.Services.CronJobService
         private readonly ILogger<DailySubscriptionSuspender> _logger;
         private readonly IServiceProvider _serviceProvider;
 
+        /// <summary>
+        /// Daily subscription suspender constructor
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="logger"></param>
+        /// <param name="serviceProvider"></param>
         public DailySubscriptionSuspender(
             IScheduleConfig<DailySubscriptionSuspender> config,
             ILogger<DailySubscriptionSuspender> logger,
@@ -21,12 +27,26 @@ namespace SCManagement.Services.CronJobService
             _serviceProvider = serviceProvider;
         }
 
+
+        /// <summary>
+        /// Starts the job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Daily subscription suspender starting...");
             return base.StartAsync(cancellationToken);
         }
 
+        /// <summary>
+        /// Actual job to be executed
+        /// Gets all clubs that had the next payment date 3 days ago and
+        /// suspends them. If subscription was club membership, remove user
+        /// from the club.
+        /// Notifies the user that the subscription was suspended or removed
+        /// from club.
+        /// </summary>
         public override async Task DoWork(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{DateTime.Now:hh:mm:ss} daily subscription suspender working...");
@@ -92,6 +112,11 @@ namespace SCManagement.Services.CronJobService
             return;
         }
 
+        /// <summary>
+        /// Stops the job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Daily subscription suspender is stopping...");

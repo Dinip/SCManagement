@@ -10,6 +10,11 @@ namespace SCManagement.Services.EmailService
     {
         private readonly ILogger _logger;
 
+        /// <summary>
+        /// Mailtrap email sender constructor (dev email)
+        /// </summary>
+        /// <param name="optionsAccessor"></param>
+        /// <param name="logger"></param>
         public EmailSenderMailtrap(IOptions<AuthMessageSenderOptions> optionsAccessor, ILogger<EmailSenderMailtrap> logger)
         {
             Options = optionsAccessor.Value;

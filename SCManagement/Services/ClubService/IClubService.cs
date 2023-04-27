@@ -13,7 +13,6 @@ namespace SCManagement.Services.ClubService
         public Task<Club?> GetClub(int id);
         public Task<Club> CreateClub(Club club, string userId);
         public Task<Club> UpdateClub(Club club);
-        public Task<Club> DeleteClub(int id);
         public Task<CodeClub> GenerateCode(CodeClub codeToCreate);
         public Task<IEnumerable<RoleClub>> GetRoles();
         public Task<IEnumerable<CodeClub>> GetCodes(int clubId);

@@ -11,6 +11,10 @@ namespace SCManagement.Services.PlansService
     {
         private readonly ApplicationDbContext _context;
 
+        /// <summary>
+        /// Plan Service Constructor
+        /// </summary>
+        /// <param name="context"></param>
         public PlanService(ApplicationDbContext context)
         {
             _context = context;

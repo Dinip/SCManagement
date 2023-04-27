@@ -17,6 +17,12 @@ namespace SCManagement.Services.NotificationService
         private readonly SharedResourceService _sharedResource;
         private readonly string _hostUrl;
 
+        /// <summary>
+        /// Notification service constructor
+        /// </summary>
+        /// <param name="backgroundWorker"></param>
+        /// <param name="sharedResource"></param>
+        /// <param name="httpContext"></param>
         public NotificationService(
             BackgroundWorkerService backgroundWorker,
             SharedResourceService sharedResource,

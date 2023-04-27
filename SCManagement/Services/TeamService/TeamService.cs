@@ -12,6 +12,11 @@ namespace SCManagement.Services.TeamService
         private readonly ApplicationDbContext _context;
         private readonly INotificationService _notificationService;
 
+        /// <summary>
+        /// Team service constructor
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="notificationService"></param>
         public TeamService(ApplicationDbContext context,INotificationService notificationService)
         {
             _context = context;

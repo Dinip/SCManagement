@@ -8,17 +8,34 @@ namespace SCManagement.Services.CronJobService
         private readonly CronExpression _expression;
         private readonly TimeZoneInfo _timeZoneInfo;
 
+        /// <summary>
+        /// Cronjob service constructor
+        /// </summary>
+        /// <param name="cronExpression"></param>
+        /// <param name="timeZoneInfo"></param>
         protected CronJobService(string cronExpression, TimeZoneInfo timeZoneInfo)
         {
             _expression = CronExpression.Parse(cronExpression);
             _timeZoneInfo = timeZoneInfo;
         }
 
+
+        /// <summary>
+        /// Starts the scheduled job (background)
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public virtual async Task StartAsync(CancellationToken cancellationToken)
         {
             await ScheduleJob(cancellationToken);
         }
 
+
+        /// <summary>
+        /// Schedules a new job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         protected virtual async Task ScheduleJob(CancellationToken cancellationToken)
         {
             var next = _expression.GetNextOccurrence(DateTimeOffset.Now, _timeZoneInfo);
@@ -50,16 +67,19 @@ namespace SCManagement.Services.CronJobService
             await Task.CompletedTask;
         }
 
+
         public virtual async Task DoWork(CancellationToken cancellationToken)
         {
             await Task.Delay(5000, cancellationToken);  // do the work
         }
+
 
         public virtual async Task StopAsync(CancellationToken cancellationToken)
         {
             _timer?.Stop();
             await Task.CompletedTask;
         }
+
 
         public virtual void Dispose()
         {
@@ -81,6 +101,9 @@ namespace SCManagement.Services.CronJobService
         public TimeZoneInfo TimeZoneInfo { get; set; } = TimeZoneInfo.Local;
     }
 
+    /// <summary>
+    /// Adds the cronjob to the service collection
+    /// </summary>
     public static class ScheduledServiceExtensions
     {
         public static IServiceCollection AddCronJob<T>(this IServiceCollection services, Action<IScheduleConfig<T>> options) where T : CronJobService

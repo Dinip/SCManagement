@@ -11,6 +11,13 @@ namespace SCManagement.Services.CronJobService
         private readonly ILogger<HourlyEventCheckerRemover> _logger;
         private readonly IServiceProvider _serviceProvider;
 
+
+        /// <summary>
+        /// Hourly event checker remover constructor
+        /// </summary>
+        /// <param name="config"></param>
+        /// <param name="logger"></param>
+        /// <param name="serviceProvider"></param>
         public HourlyEventCheckerRemover(
             IScheduleConfig<HourlyEventCheckerRemover> config,
             ILogger<HourlyEventCheckerRemover> logger,
@@ -21,12 +28,27 @@ namespace SCManagement.Services.CronJobService
             _serviceProvider = serviceProvider;
         }
 
+
+        /// <summary>
+        /// Starts the job
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override Task StartAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Hourly event checker remover starting...");
             return base.StartAsync(cancellationToken);
         }
 
+
+        /// <summary>
+        /// Actual job to be executed
+        /// Gets all event payment enrolls that are still pending payment
+        /// 4 hours after the creation and cancels them. Notifies the user
+        /// that he was removed from the event.
+        /// </summary>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
         public override async Task DoWork(CancellationToken cancellationToken)
         {
             _logger.LogInformation($"{DateTime.Now:hh:mm:ss} hourly event checker remover working...");
@@ -67,6 +89,10 @@ namespace SCManagement.Services.CronJobService
             return;
         }
 
+
+        /// <summary>
+        /// Stops the job
+        /// </summary>
         public override Task StopAsync(CancellationToken cancellationToken)
         {
             _logger.LogInformation("Hourly event checker remover is stopping...");
