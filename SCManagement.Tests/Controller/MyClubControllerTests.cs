@@ -1413,14 +1413,14 @@ namespace SCManagement.Tests.Controller {
         }
 
         [Fact]
-        public async Task MyClubController_PaymentsRecieved_ReturnsIsNotClubStaff()
+        public async Task MyClubController_PaymentsReceived_ReturnsIsNotClubStaff()
         {
             // Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
             A.CallTo(() => _clubService.IsClubStaff(A<UsersRoleClub>._)).Returns(false);
 
             // Act
-            var result = await _controller.PaymentsRecieved();
+            var result = await _controller.PaymentsReceived();
 
             // Assert
             result.Should().BeOfType<ViewResult>().Which.ViewName.Should().Be("CustomError");
@@ -1428,7 +1428,7 @@ namespace SCManagement.Tests.Controller {
         }
 
         [Fact]
-        public async Task MyClubController_PaymentsRecieved_ReturnsSuccess()
+        public async Task MyClubController_PaymentsReceived_ReturnsSuccess()
         {
             // Arrange
             _applicationContextService.UserRole = A.Fake<UsersRoleClub>();
@@ -1436,7 +1436,7 @@ namespace SCManagement.Tests.Controller {
             A.CallTo(() => _paymentService.GetClubPayments(A<int>._)).Returns(A.Fake<IEnumerable<Payment>>());
 
             // Act
-            var result = await _controller.PaymentsRecieved();
+            var result = await _controller.PaymentsReceived();
 
             // Assert
             result.Should().BeOfType<ViewResult>();
