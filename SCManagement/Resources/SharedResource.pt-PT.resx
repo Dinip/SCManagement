@@ -454,7 +454,7 @@
     <value>Esqueci-me da palavra passe confirmação</value>
   </data>
   <data name="Register confirmation" xml:space="preserve">
-    <value>Confirmar o Registro</value>
+    <value>Confirmar o Registo</value>
   </data>
   <data name="Reset Password Confirmation" xml:space="preserve">
     <value>Confirmação de redefinição de senha</value>
@@ -2103,7 +2103,7 @@ Tenho experiência na área e sou muito focado nos meus objetivos.</value>
     <comment>25-03-2023_dataTablesFix</comment>
   </data>
   <data name="NoMatching" xml:space="preserve">
-    <value>Nenhum registro correspondente encontrado</value>
+    <value>Nenhum registo correspondente encontrado</value>
     <comment>25-03-2023_dataTablesFix</comment>
   </data>
   <data name="Processing" xml:space="preserve">
