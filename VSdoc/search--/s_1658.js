@@ -1,0 +1,1 @@
+search_result['1658']=["topic_00000000000003D2.html","ClubService.GetClubTrainers Method","Gets all trainers of a given club (users object)"];

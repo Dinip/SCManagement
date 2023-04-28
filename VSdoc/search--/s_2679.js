@@ -1,0 +1,1 @@
+search_result['2679']=["topic_00000000000006A5.html","UserService.UpdateSelectedRole Method","Updates the default tuple (club + role) for the given user"];

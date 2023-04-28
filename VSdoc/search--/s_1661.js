@@ -1,0 +1,1 @@
+search_result['1661']=["topic_00000000000003D5.html","ClubService.GetClubPaymentSettings Method","Gets the current club payment settings for a given club"];

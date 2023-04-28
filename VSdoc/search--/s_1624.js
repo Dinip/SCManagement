@@ -1,0 +1,1 @@
+search_result['1624']=["topic_00000000000003B2.html","ClubService.GetCodes Method","Gets all the generated codes for a given club\r\nwith the respective status"];

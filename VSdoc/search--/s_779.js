@@ -1,0 +1,1 @@
+search_result['779']=["topic_00000000000001BB.html","StatisticsController.Payments Method","Gets statistics about club received payments (revenue)\r\nfor a given year\r\nReturns all months (12) even if there are no payments or\r\nnot already passed that month, so that the chart and table\r\ncan show..."];

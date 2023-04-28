@@ -1,0 +1,1 @@
+search_result['1770']=["topic_000000000000041F.html","DailySubscriptionChecker Constructor","Daily subscription checker constructor"];

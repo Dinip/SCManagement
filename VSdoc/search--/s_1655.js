@@ -1,0 +1,1 @@
+search_result['1655']=["topic_00000000000003CF.html","ClubService.GetClubAthletes Method","Gets all athletes of a given club (users role object with join date)"];

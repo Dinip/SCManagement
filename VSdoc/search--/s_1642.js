@@ -1,0 +1,1 @@
+search_result['1642']=["topic_00000000000003C2.html","ClubService.GetModalitiesToSelectList Method","Allows to get the modalities in the current languague"];

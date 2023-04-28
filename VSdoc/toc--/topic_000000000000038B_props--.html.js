@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['1087',"SCManagement.Services.AzureStorageService.Models Namespace","topic_0000000000000382.html"],['1097',"BlobResponseDto Class","topic_000000000000038B.html"],['1099',"Properties","topic_000000000000038B_props--.html"]];

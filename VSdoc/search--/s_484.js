@@ -1,0 +1,1 @@
+search_result['484']=["topic_000000000000010D.html","MyClubController.Unavailable Method","A fallback route to use when a user from a club tries\r\nto access a resource (page) from that club and the club\r\nisn\u0027t active yet or is suspended due to lack of payment\r\nby the club admin. Shows a diff..."];

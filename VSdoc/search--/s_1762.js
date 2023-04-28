@@ -1,0 +1,1 @@
+search_result['1762']=["topic_000000000000041C.html","DailyStatisticsGenerator.DoWork Method","Actual job to be executed\r\nGets all clubs that are not suspended or deleted already\r\nand creates statistics for them\r\nAlso generates system statistics (club plans and payments)"];

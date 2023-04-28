@@ -1,0 +1,1 @@
+search_result['1660']=["topic_00000000000003D4.html","ClubService.GetClubStatus Method","Gets the status (ative, suspended, deleted) of a given club"];

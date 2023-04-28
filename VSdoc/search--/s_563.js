@@ -1,0 +1,1 @@
+search_result['563']=["topic_0000000000000141_overloads--.html","MyClubController.PaymentSettings Method","Update the club payment settings\r\nTo allow changes, the key provided for easypay must be valid\r\nand all the current ative members are notified if changes\r\nare made to the value or frequency of the mem..."];

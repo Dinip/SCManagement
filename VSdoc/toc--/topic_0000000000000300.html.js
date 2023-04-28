@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['794',"SCManagement.Models Namespace","topic_000000000000028A.html"],['913',"EventEnroll Class","topic_00000000000002FF.html"],['914',"Properties","topic_00000000000002FF_props--.html"],['919',"Id Property","topic_0000000000000300.html"]];

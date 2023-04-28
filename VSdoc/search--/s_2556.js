@@ -1,0 +1,1 @@
+search_result['2556']=["topic_0000000000000656.html","StatisticsService.GetClubModalityStatistics Method","Gets the modality statistics for a specified club. If year is not specified, uses current year."];

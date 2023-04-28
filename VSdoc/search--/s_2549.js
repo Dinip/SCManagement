@@ -1,0 +1,1 @@
+search_result['2549']=["topic_000000000000064F.html","StatisticsService.CreateClubUserStatistics Method","Creates statistics about users (partners and athletes) from a specified club.\r\nOnly creates monthly stats. Updates the existing stats if they exist\r\nwith the new values."];

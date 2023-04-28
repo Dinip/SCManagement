@@ -1,0 +1,1 @@
+search_result['819']=["topic_00000000000001CF.html","UserController.UpdateNotificationsSettings  Method","Gets the current user notifications settings (on or off) grouped\r\nby their category"];

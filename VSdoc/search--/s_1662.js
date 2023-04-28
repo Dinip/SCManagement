@@ -1,0 +1,1 @@
+search_result['1662']=["topic_00000000000003D6.html","ClubService.UpdateClubPaymentSettings Method","Updates the club payment settings for a given club\r\nNotifies users if quota settings where changed (value or frequency)"];

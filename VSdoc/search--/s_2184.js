@@ -1,0 +1,1 @@
+search_result['2184']=["topic_0000000000000561.html","PaymentService.SubscribeClubToPlan Method","Creates a subscription to a plan for a club"];

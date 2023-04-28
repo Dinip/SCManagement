@@ -1,0 +1,1 @@
+search_result['527']=["topic_000000000000012A.html","MyClubController.Codes Method","Gets the list of codes for the club with status"];

@@ -1,0 +1,1 @@
+search_result['780']=["topic_00000000000001BC.html","StatisticsController.PaymentsDetailed Method","Gets detailed statistics about club received payments (revenue)\r\nAgregates by product and month for a given year"];

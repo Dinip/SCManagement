@@ -1,0 +1,1 @@
+search_result['2195']=["topic_000000000000056C.html","PaymentService.CreateMembershipSubscription Method","Creates a club membership subscription for a given user in a given club"];

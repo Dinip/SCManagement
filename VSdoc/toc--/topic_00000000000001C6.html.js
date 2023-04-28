@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['219',"SCManagement.Controllers Namespace","topic_00000000000000A5.html"],['558',"SubscriptionController Class","topic_00000000000001C0.html"],['560',"Methods","topic_00000000000001C0_methods--.html"],['565',"UpgradeClubPlan Method","topic_00000000000001C6.html"]];

@@ -1,0 +1,1 @@
+c['1232']=[['1233',"DailyStatisticsGenerator Constructor","topic_000000000000041A.html",0],['1234',"Methods","topic_0000000000000419_methods--.html",1]];

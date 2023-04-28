@@ -1,0 +1,1 @@
+search_result['1665']=["topic_00000000000003D9.html","ClubService.GetAdminRole Method","Gets the admin of a given club"];

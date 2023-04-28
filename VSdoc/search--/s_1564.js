@@ -1,0 +1,1 @@
+search_result['1564']=["topic_0000000000000394.html","AzureStorage.DeleteAsync Method","Deletes a file from Azure Blob Storage"];

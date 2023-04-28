@@ -1,0 +1,1 @@
+search_result['379']=["topic_00000000000000CD.html","ClubsController.CoordsMarkers Method","this method alow to send to mapbox coordinates of the clubs"];

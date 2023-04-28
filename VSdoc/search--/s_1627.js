@@ -1,0 +1,1 @@
+search_result['1627']=["topic_00000000000003B5.html","ClubService.UseCode Method","Assigns the usage of a code to a user and performs the verifications\r\nneeded to check if the code is valid and assigns the role to the user"];

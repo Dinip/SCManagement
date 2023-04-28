@@ -1,0 +1,1 @@
+search_result['619']=["topic_0000000000000161.html","PaymentController Constructor","Payments controller constructor, injects all the services needed"];

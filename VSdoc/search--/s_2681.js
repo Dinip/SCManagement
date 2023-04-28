@@ -1,0 +1,1 @@
+search_result['2681']=["topic_00000000000006A7.html","UserService.GetSelectedRole Method","Gets the selected role for a given user"];

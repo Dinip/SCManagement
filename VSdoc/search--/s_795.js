@@ -1,0 +1,1 @@
+search_result['795']=["topic_00000000000001C6.html","SubscriptionController.UpgradeClubPlan Method","Upgrade the plan of a club plan subscription\r\nValidates that the plan can\u0027t be downgraded to\r\nanother with less slots than the total athletes now"];

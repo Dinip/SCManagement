@@ -1,0 +1,1 @@
+search_result['1643']=["topic_00000000000003C3.html","ClubService.UserHasRoleInClub Method","Allow to know if a user have a role in the club"];

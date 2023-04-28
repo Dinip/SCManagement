@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['9',"SCManagement.Areas.Identity.Pages.Account Namespace","topic_000000000000004F.html"],['107',"ResetPasswordConfirmationModel Class","topic_00000000000000A3.html"],['108',"Methods","topic_00000000000000A3_methods--.html"],['109',"OnGet Method","topic_00000000000000A4.html"]];

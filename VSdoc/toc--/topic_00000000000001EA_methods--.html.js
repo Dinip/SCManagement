@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['616',"SCManagement.Data.Migrations Namespace","topic_00000000000001D1.html"],['707',"SelectedUserRole Class","topic_00000000000001EA.html"],['708',"Methods","topic_00000000000001EA_methods--.html"]];

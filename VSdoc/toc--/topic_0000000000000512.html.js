@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['1445',"SCManagement.Services.PaymentService.Models Namespace","topic_00000000000004AD.html"],['1537',"Subscription Class","topic_000000000000050C.html"],['1538',"Properties","topic_000000000000050C_props--.html"],['1550',"ProductId Property","topic_0000000000000512.html"]];

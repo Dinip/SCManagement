@@ -1,0 +1,1 @@
+search_result['2598']=["topic_0000000000000674.html","TeamService.CreateTeam Method","Persists the created team to the database"];

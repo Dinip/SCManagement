@@ -1,0 +1,1 @@
+search_result['1635']=["topic_00000000000003BB.html","ClubService.IsClubStaff Method","Given a role in a club, check if is admin or secretary or trainer"];

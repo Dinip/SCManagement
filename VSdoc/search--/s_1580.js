@@ -1,0 +1,1 @@
+search_result['1580']=["topic_000000000000039A.html","BackgroundHelperService Constructor","Background helper service constructor"];

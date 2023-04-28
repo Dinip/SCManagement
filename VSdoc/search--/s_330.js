@@ -1,0 +1,1 @@
+search_result['330']=["topic_00000000000000AD.html","BackofficeController.IncomeData Method","Gets the income (revenue) data for system payments for a given year\r\nor by default, to the current year\r\nUsed in charts and tables"];

@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['777',"SCManagement.Middlewares Namespace","topic_0000000000000274.html"],['785',"RequestLocalizationCookiesMiddleware Class","topic_000000000000027C.html"],['787',"Properties","topic_000000000000027C_props--.html"]];

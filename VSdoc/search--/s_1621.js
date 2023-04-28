@@ -1,0 +1,1 @@
+search_result['1621']=["topic_00000000000003AF.html","ClubService.GenerateCode Method","Generates a code to access a club and saves it\r\nIf the code is created by a secretary user for another\r\nsecretary user, an email is sent to the club admin\r\nto ask for approve"];

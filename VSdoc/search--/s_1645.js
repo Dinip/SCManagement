@@ -1,0 +1,1 @@
+search_result['1645']=["topic_00000000000003C5.html","ClubService.RemoveClubUser Method","Removes a user by a given role from the club assigned to that role"];

@@ -1,0 +1,1 @@
+search_result['339']=["topic_00000000000000B6.html","BackofficeController.Clubs Method","Gets a list of all clubs in the system and their respetive\r\nstate and number of users in the club\r\nUsed in charts and tables"];

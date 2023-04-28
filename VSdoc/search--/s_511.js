@@ -1,0 +1,1 @@
+search_result['511']=["topic_0000000000000121.html","MyClubController.PartnersList Method","Return a view which corresponds to the page that has the list of club members"];

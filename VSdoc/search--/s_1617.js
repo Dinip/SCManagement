@@ -1,0 +1,1 @@
+search_result['1617']=["topic_00000000000003AB.html","ClubService.CreateClub Method","Saves the created club and assign the user to the club\r\nwith the club admin role"];

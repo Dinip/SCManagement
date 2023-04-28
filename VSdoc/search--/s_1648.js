@@ -1,0 +1,1 @@
+search_result['1648']=["topic_00000000000003C8.html","ClubService.GetUserRoleClubFromId Method","Gets a user role + club by a userRoleClub id"];

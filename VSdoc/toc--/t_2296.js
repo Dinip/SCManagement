@@ -1,0 +1,1 @@
+c['2296']=[['2297',"AzureStorageTests Constructor","topic_0000000000000831.html",0],['2298',"Methods","topic_0000000000000830_methods--.html",1]];

@@ -1,0 +1,1 @@
+search_result['2776']=["topic_00000000000006D4.html","ClubsControllerTests.ClubsController_Index_Details_ReturnsIsPartnerSuccess Method",""];

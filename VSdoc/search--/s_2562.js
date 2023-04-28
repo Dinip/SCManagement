@@ -1,0 +1,1 @@
+search_result['2562']=["topic_000000000000065C.html","StatisticsService.BestSellerPlan Method","Gets the best seller plan (by subscriptions sum)"];

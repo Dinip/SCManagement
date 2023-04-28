@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['2473',"SCManagement.ViewComponents Namespace","topic_00000000000006BD.html"],['2484',"UserClubContext Class","topic_00000000000006C5.html"],['2486',"Methods","topic_00000000000006C5_methods--.html"],['2487',"InvokeAsync Method","topic_00000000000006C7.html"]];

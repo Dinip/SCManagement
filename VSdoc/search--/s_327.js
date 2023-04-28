@@ -1,0 +1,1 @@
+search_result['327']=["topic_00000000000000AA_overloads--.html","BackofficeController.UserAccess Method","User access management post method (to add or remove admin rights)\r\nIt receives the userId and newRole and checks if the change\r\ncan be made (trying to admin an already admin user results in error\r\nan..."];

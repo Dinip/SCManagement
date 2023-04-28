@@ -1,0 +1,1 @@
+search_result['1619']=["topic_00000000000003AD.html","ClubService.GetClubs Method","Gets all clubs available"];

@@ -1,0 +1,1 @@
+search_result['810']=["topic_00000000000001CB.html","UserController Constructor","User controller constructor, injects all the services needed"];

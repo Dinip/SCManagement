@@ -1,0 +1,1 @@
+search_result['562']=["topic_0000000000000141.html","MyClubController.PaymentSettings (ClubPaymentSettings) Method","Update the club payment settings\r\nTo allow changes, the key provided for easypay must be valid\r\nand all the current ative members are notified if changes\r\nare made to the value or frequency of the mem..."];

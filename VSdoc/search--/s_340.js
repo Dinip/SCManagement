@@ -1,0 +1,1 @@
+search_result['340']=["topic_00000000000000B7.html","BackofficeController.Modalities Method","Gets the list of all existing modalities"];

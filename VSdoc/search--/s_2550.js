@@ -1,0 +1,1 @@
+search_result['2550']=["topic_0000000000000650.html","StatisticsService.CreateClubPaymentStatistics Method","Creates statistics about payments (events and memberships) from a specified club.\r\nGets the payments received from the month of previous day and updates\r\nthe existing stats if they exist or creates an..."];

@@ -1,0 +1,1 @@
+search_result['2566']=["topic_0000000000000660.html","StatisticsService.GetUsedAndCreatedCodes Method","Gets the count of used and the total of created codes\r\nMin = Used\r\nMax = Total Count"];

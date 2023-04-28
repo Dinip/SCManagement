@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['1223',"SCManagement.Services.CronJobService Namespace","topic_0000000000000409.html"],['1250',"HourlyEventCheckerRemover Class","topic_0000000000000428.html"],['1252',"Methods","topic_0000000000000428_methods--.html"]];

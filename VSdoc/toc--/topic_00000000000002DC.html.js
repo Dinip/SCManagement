@@ -1,0 +1,1 @@
+var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['794',"SCManagement.Models Namespace","topic_000000000000028A.html"],['873',"County Class","topic_00000000000002D7.html"],['874',"Properties","topic_00000000000002D7_props--.html"],['875',"District Property","topic_00000000000002DC.html"]];

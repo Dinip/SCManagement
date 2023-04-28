@@ -1,0 +1,1 @@
+search_result['2561']=["topic_000000000000065B.html","StatisticsService.GetSystemPlansShortStatistics Method","Gets the system plans global statistics by product (active vs canceled)"];

@@ -1,0 +1,1 @@
+search_result['2689']=["topic_00000000000006AF.html","UserService.IsTrainerInAnyClub Method","Checks if the given user is a trainer in any club"];

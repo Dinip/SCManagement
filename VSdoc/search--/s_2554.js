@@ -1,0 +1,1 @@
+search_result['2554']=["topic_0000000000000654.html","StatisticsService.GetClubPaymentDetailsStatistics Method","Gets the payment details statistics for a specified club. If year is not specified, uses current year.\r\nReturns X entries for each month corresponding to each product that was \"sold\" that month."];
