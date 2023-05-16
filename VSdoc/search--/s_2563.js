@@ -1,1 +1,0 @@
-search_result['2563']=["topic_000000000000065D.html","StatisticsService.GetActiveAndOtherClubsCount Method","Gets the count of clubs that are active and the total count of clubs\r\nMin = Active\r\nMax = Total Count"];

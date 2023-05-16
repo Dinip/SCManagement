@@ -1,1 +1,0 @@
-search_result['397']=["topic_00000000000000D7.html","ClubsController.Associate Method","This method allows adding a partner to the club if he has no role in the club, or allows removing a partner from the club if he is.\r\nBe careful with this method, since it does not have the\r\n[Authorize..."];

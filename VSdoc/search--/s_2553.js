@@ -1,1 +1,0 @@
-search_result['2553']=["topic_0000000000000653.html","StatisticsService.GetClubPaymentStatistics Method","Gets the payment statistics for a specified club. If year is not specified, uses current year.\r\nReturns 12 entries (1 for each month) with the respective data."];

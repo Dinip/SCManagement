@@ -1,1 +1,0 @@
-search_result['2188']=["topic_0000000000000565.html","PaymentService.UpgradeClubPlan Method","Upgrades a subscription from a plan to a new one"];

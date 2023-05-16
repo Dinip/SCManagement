@@ -1,1 +1,0 @@
-search_result['559']=["topic_000000000000013F.html","MyClubController.UserDetails Method","Gets the user details in a partial view to be used\r\nin a modal"];

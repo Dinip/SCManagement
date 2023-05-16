@@ -1,1 +1,0 @@
-search_result['355']=["topic_00000000000000C0.html","BackofficeController.DeletePlan Method","Delete an existing plan (only if not in use by any club)"];

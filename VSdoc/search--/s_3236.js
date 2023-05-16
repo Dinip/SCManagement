@@ -1,1 +1,0 @@
-search_result['3236']=["topic_0000000000000869.html","ClubServiceTests.ClubService_UpdateClubPhoto_ReturnsFileNull Method",""];

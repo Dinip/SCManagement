@@ -1,1 +1,0 @@
-search_result['382']=["topic_00000000000000D0.html","ClubsController.Index (Int32) Method","This method returns the Details View"];

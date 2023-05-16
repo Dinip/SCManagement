@@ -1,1 +1,0 @@
-search_result['2606']=["topic_000000000000067A_overloads--.html","TeamService.GetTeamsByAthlete Method","Get all the teams that a user belongs to in a club"];

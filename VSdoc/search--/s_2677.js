@@ -1,1 +1,0 @@
-search_result['2677']=["topic_00000000000006A3.html","UserService.GetUserWithRoles Method","Gets the user with the given id and includes the roles\r\nthat the user has in the clubs"];

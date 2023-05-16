@@ -1,1 +1,0 @@
-var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['1929',"SCManagement.Tests.Controller Namespace","topic_00000000000006CC.html"],['1930',"ClubFakeOptionsBuilder Class","topic_000000000000072D.html"],['1931',"Methods","topic_000000000000072D_methods--.html"]];

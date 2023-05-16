@@ -1,1 +1,0 @@
-search_result['1638']=["topic_00000000000003BE.html","ClubService.IsClubPartner Method","Given a user and a club, check if the user is partner"];

@@ -1,1 +1,0 @@
-search_result['2072']=["topic_00000000000004FC.html","Product Class",""];

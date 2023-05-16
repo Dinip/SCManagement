@@ -1,1 +1,0 @@
-search_result['2692']=["topic_00000000000006B2.html","UserService.UserIsAdmin Method","Checks if the given user is a global admin (system admin)"];

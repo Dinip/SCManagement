@@ -1,1 +1,0 @@
-search_result['2918']=["topic_0000000000000749.html","MyClubControllerTests.MyClubController_RemoveUser_ReturnsUserRoleToBeRomovedIsClubAdmin Method",""];

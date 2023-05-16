@@ -1,1 +1,0 @@
-search_result['515']=["topic_0000000000000125.html","MyClubController.CreateCode  Method","Creates a code to access the club (view)"];

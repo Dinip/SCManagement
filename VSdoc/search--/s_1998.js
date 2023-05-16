@@ -1,1 +1,0 @@
-search_result['1998']=["topic_00000000000004BD.html","Method.type Property",""];

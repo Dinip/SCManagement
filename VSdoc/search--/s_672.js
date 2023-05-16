@@ -1,1 +1,0 @@
-search_result['672']=["topic_0000000000000180.html","CreateTrainingPlanModel.IsTemplate Property",""];

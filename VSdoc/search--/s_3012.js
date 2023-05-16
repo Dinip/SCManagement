@@ -1,1 +1,0 @@
-search_result['3012']=["topic_000000000000079D.html","PlansControllerTests.PlansControllerTests_AthleteTrainingPlans_ReturnsIsNotClubStaff Method",""];

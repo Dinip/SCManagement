@@ -1,1 +1,0 @@
-search_result['323']=["topic_00000000000000A8.html","BackofficeController.Index Method","Gets short statistics for the backoffice dashboard\r\nand returns the view (with the circles)"];

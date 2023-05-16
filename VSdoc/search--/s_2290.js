@@ -1,1 +1,0 @@
-search_result['2290']=["topic_00000000000005A6.html","IPlanService.GetTemplateTrainingPlan Method",""];

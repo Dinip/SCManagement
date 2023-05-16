@@ -1,1 +1,0 @@
-search_result['2003']=["topic_00000000000004C2.html","Method.card_type Property",""];

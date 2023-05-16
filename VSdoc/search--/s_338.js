@@ -1,1 +1,0 @@
-search_result['338']=["topic_00000000000000B5.html","BackofficeController.PartnersData Method","Gets statistics about the number of partners in a give club over a given year\r\nUsed in charts and tables"];

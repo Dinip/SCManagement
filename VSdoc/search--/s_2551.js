@@ -1,1 +1,0 @@
-search_result['2551']=["topic_0000000000000651.html","StatisticsService.CreateClubModalityStatistics Method","Creates statistics about modalities from a specified club.\r\nOnly creates monthly stats and can be run once a day. Updates the existing stats if they exist\r\nwith the new values."];

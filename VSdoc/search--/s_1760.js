@@ -1,1 +1,0 @@
-search_result['1760']=["topic_000000000000041A.html","DailyStatisticsGenerator Constructor","Daily statistics generator constructor"];

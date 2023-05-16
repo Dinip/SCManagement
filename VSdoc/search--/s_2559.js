@@ -1,1 +1,0 @@
-search_result['2559']=["topic_0000000000000659.html","StatisticsService.GetSystemPaymentStatistics Method","Get the system payment statistics by product (plan) by month"];

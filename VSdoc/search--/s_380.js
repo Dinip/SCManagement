@@ -1,1 +1,0 @@
-search_result['380']=["topic_00000000000000CE.html","ClubsController.SearchNameClubs Method","this method allow to send the results of a search to a list of cards with clubs"];

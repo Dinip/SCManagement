@@ -1,1 +1,0 @@
-var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['2473',"SCManagement.ViewComponents Namespace","topic_00000000000006BD.html"],['2474',"CulturePicker Class","topic_00000000000006BE.html"],['2475',"CulturePicker Constructor","topic_00000000000006BF.html"]];

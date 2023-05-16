@@ -1,1 +1,0 @@
-search_result['557']=["topic_000000000000013D.html","MyClubController.DeleteTeam Method","Deletes a team"];

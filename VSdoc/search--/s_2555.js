@@ -1,1 +1,0 @@
-search_result['2555']=["topic_0000000000000655.html","StatisticsService.GetClubUserStatistics Method","Gets the user statistics for a specified club. If year is not specified, uses current year.\r\nUser type must be specified (id from database). Mostly used to get the number of athletes\r\nand partners."];

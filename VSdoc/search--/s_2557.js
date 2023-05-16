@@ -1,1 +1,0 @@
-search_result['2557']=["topic_0000000000000657.html","StatisticsService.CreateSystemPaymentStatistics Method","Creates statistics about payments (plan subscriptions).\r\nGets the payments received from the month of the previous day and\r\nupdates the existing stats if they exist or creates an new one."];

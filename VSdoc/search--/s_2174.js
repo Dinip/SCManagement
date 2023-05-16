@@ -1,1 +1,0 @@
-search_result['2174']=["topic_0000000000000557.html","PaymentService.GetPayments Method","Get all payments from a user, ordered by date\r\nfrom the most recent to the oldest"];

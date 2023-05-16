@@ -1,1 +1,0 @@
-search_result['2788']=["topic_00000000000006E0.html","ClubsControllerTests.ClubsController_CoordsMarkers_ReturnsSuccess Method",""];

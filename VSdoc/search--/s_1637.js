@@ -1,1 +1,0 @@
-search_result['1637']=["topic_00000000000003BD.html","ClubService.IsClubMember Method","Given a user and a club, check if the user is a member\r\n(athlete, trainer, secretary or admin)"];

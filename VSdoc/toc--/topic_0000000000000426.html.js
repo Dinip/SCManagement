@@ -1,1 +1,0 @@
-var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['1223',"SCManagement.Services.CronJobService Namespace","topic_0000000000000409.html"],['1244',"DailySubscriptionSuspender Class","topic_0000000000000423.html"],['1246',"Methods","topic_0000000000000423_methods--.html"],['1247',"DoWork Method","topic_0000000000000426.html"]];

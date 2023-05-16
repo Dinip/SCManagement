@@ -1,1 +1,0 @@
-search_result['2596']=["topic_0000000000000672.html","TeamService.GetTeam Method","Gets a team by its id"];

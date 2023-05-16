@@ -1,1 +1,0 @@
-search_result['2177']=["topic_000000000000055A.html","PaymentService.GetSubscriptions Method","Gets all subscriptions from a user, ordered by next time date"];

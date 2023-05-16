@@ -1,1 +1,0 @@
-search_result['346']=["topic_00000000000000BB.html","BackofficeController.TogglePlan Method","Toggles the status of a plan (enabled/disabled)\r\nWhich removes or adds them to the public list of available plans\r\nAlso notifies the subscriber users (which are using the plan\r\nin their club) if the p..."];

@@ -1,1 +1,0 @@
-c['672']=[['673',"Methods","topic_00000000000001FE_methods--.html",1]];

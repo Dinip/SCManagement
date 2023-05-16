@@ -1,1 +1,0 @@
-search_result['2567']=["topic_0000000000000661.html","StatisticsService.GetMonthYearIncomeShort Method","Gets the income for the month and the year (uses previous day as date)\r\nMin = Month\r\nMax = Year"];

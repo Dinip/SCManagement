@@ -1,1 +1,0 @@
-search_result['560']=["topic_0000000000000140.html","MyClubController.PaymentSettings  Method","View the current payment settings"];

@@ -1,1 +1,0 @@
-c['263']=[['264',"CreateClubModel Class","topic_00000000000000D2.html",1],['269',"ClubsController Constructor","topic_00000000000000CB.html",0],['270',"Methods","topic_00000000000000CA_methods--.html",1]];

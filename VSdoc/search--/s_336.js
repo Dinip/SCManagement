@@ -1,1 +1,0 @@
-search_result['336']=["topic_00000000000000B3.html","BackofficeController.PlansAdherenceData Method","Gets statistics about the adherence of club plans\r\nUsed in charts and tables"];

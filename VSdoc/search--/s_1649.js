@@ -1,1 +1,0 @@
-search_result['1649']=["topic_00000000000003C9.html","ClubService.AddPartnerToClub Method","Adds a user to a given club as partner (default pending payment)"];

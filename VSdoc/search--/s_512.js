@@ -1,1 +1,0 @@
-search_result['512']=["topic_0000000000000122.html","MyClubController.StaffList Method","Gets the staff list of the club based on the\r\nselected club infered by the requester user"];

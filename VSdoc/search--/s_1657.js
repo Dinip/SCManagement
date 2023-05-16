@@ -1,1 +1,0 @@
-search_result['1657']=["topic_00000000000003D1.html","ClubService.GetAthletes Method","Gets all athletes of a given club (users object)"];

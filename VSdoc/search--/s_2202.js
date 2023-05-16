@@ -1,1 +1,0 @@
-search_result['2202']=["topic_0000000000000573.html","PaymentService.AnySubscriptionUsingPlan Method","Checks if there is any subscription using a given club plan"];

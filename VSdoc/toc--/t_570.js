@@ -1,1 +1,0 @@
-c['570']=[['571',"EditNotificationsSettings Class","topic_00000000000001CD.html",1],['574',"UserController Constructor","topic_00000000000001CB.html",0],['575',"Methods","topic_00000000000001CA_methods--.html",1]];

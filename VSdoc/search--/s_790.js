@@ -1,1 +1,0 @@
-search_result['790']=["topic_00000000000001C1.html","SubscriptionController Constructor","Subscription controller constructor, injects all the services needed"];

@@ -1,1 +1,0 @@
-c['1860']=[['1861',"GetTeamsByAthlete(string) Method","topic_000000000000066C.html",0],['1862',"GetTeamsByAthlete(string, int) Method","topic_000000000000066D.html",0]];

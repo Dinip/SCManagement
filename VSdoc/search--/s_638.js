@@ -1,1 +1,0 @@
-search_result['638']=["topic_000000000000016A.html","PlansController Constructor","Plans controller constructor, injects all the services needed"];

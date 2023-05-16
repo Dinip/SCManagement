@@ -1,1 +1,0 @@
-search_result['724']=["topic_000000000000019E_methods--.html","ChooseTrainingTemplate Methods",""];

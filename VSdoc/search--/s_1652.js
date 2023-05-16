@@ -1,1 +1,0 @@
-search_result['1652']=["topic_00000000000003CC.html","ClubService.GetAllCoordinates Method","Get coordinates of the clubs and a name"];

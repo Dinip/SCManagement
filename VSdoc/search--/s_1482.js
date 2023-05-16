@@ -1,1 +1,0 @@
-search_result['1482']=["topic_000000000000035C.html","Team.Club Property",""];

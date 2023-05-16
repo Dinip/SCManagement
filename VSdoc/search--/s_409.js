@@ -1,1 +1,0 @@
-search_result['409']=["topic_00000000000000DC.html","EventsController Constructor","Events controller constructor, injects all the services needed"];

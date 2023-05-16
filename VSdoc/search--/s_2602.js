@@ -1,1 +1,0 @@
-search_result['2602']=["topic_0000000000000678.html","TeamService.DeleteTeam Method","Removes a team from the database"];

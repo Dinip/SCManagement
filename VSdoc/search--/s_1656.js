@@ -1,1 +1,0 @@
-search_result['1656']=["topic_00000000000003D0.html","ClubService.GetClubModalities Method","Gets all the modalities of a given club"];

@@ -1,1 +1,0 @@
-search_result['1622']=["topic_00000000000003B0.html","ClubService.GetUserRoleInClub Method","Gets the role of a given user in a given club"];

@@ -1,1 +1,0 @@
-search_result['558']=["topic_000000000000013E.html","MyClubController.MyTeams Method","Gets the teams that an athlete is in"];

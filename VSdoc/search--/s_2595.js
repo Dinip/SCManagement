@@ -1,1 +1,0 @@
-search_result['2595']=["topic_0000000000000671.html","TeamService Constructor","Team service constructor"];

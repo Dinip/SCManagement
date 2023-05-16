@@ -1,1 +1,0 @@
-search_result['384']=["topic_00000000000000D1.html","ClubsController.Create (Nullable\u0026lt;Int32\u0026gt;) Method","This method returns the Create View"];

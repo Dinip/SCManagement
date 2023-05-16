@@ -1,1 +1,0 @@
-search_result['400']=["topic_00000000000000D9.html","ClubsController.Join (CodeClub) Method","Join a club with a code (gives error if the code is invalid,\r\nalready used, user already part of club or expired)"];

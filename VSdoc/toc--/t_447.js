@@ -1,1 +1,0 @@
-c['447']=[['448',"Details Method","topic_0000000000000165.html",0],['449',"Index Method","topic_0000000000000163.html",0],['450',"PaySinglePayment Method","topic_0000000000000164.html",0],['451',"WebhookGeneric Method","topic_0000000000000162.html",0]];

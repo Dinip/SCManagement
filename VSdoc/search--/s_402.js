@@ -1,1 +1,0 @@
-search_result['402']=["topic_00000000000000DA.html","ClubsController.Plans Method","Gets all available plans to subscribe to create a club"];

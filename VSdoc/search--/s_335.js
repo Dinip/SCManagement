@@ -1,1 +1,0 @@
-search_result['335']=["topic_00000000000000B2.html","BackofficeController.PlansData Method","Gets statistics about the amount of active and canceled club plans subscriptions\r\nUsed in charts and tables"];

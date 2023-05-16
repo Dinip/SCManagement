@@ -1,1 +1,0 @@
-search_result['1782']=["topic_0000000000000426.html","DailySubscriptionSuspender.DoWork Method","Actual job to be executed\r\nGets all clubs that had the next payment date 3 days ago and\r\nsuspends them. If subscription was club membership, remove user\r\nfrom the club.\r\nNotifies the user that the sub..."];

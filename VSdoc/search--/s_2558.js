@@ -1,1 +1,0 @@
-search_result['2558']=["topic_0000000000000658.html","StatisticsService.CreateSystemPlansStatistics Method","Creates statistics about system club plans.\r\nGets the plans that exist in the month of the previous day and\r\nand updates the existing stats if they exist or creates an new one."];

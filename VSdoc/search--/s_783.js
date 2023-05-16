@@ -1,1 +1,0 @@
-search_result['783']=["topic_00000000000001BF.html","StatisticsController.Modalities Method","Gets statistics about the number of athletes associated\r\nto each modality (that a club has) by each month of a given year"];

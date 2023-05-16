@@ -1,1 +1,0 @@
-search_result['2179']=["topic_000000000000055C.html","PaymentService.GetMembershipSubscription Method","Returns the current subscription of a user membership to a club or null"];

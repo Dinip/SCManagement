@@ -1,1 +1,0 @@
-search_result['1639']=["topic_00000000000003BF.html","ClubService.ApproveCode Method","Approve the utilization of a code (to be used by club admin)"];

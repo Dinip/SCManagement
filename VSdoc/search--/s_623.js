@@ -1,1 +1,0 @@
-search_result['623']=["topic_0000000000000165.html","PaymentController.Details Method","Shows all detailed information about a payment (partial view)"];

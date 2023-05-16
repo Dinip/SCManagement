@@ -1,1 +1,0 @@
-search_result['1623']=["topic_00000000000003B1.html","ClubService.GetRoles Method","Gets all the roles available to be assigned\r\nto a user in a club"];

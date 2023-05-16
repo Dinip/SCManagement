@@ -1,1 +1,0 @@
-search_result['1647']=["topic_00000000000003C7.html","ClubService.UpdateClubModalities Method","Updates the modalities of a given club (remove from club the ids that\r\nare not present and add the new ones)"];

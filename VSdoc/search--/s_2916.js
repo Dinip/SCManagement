@@ -1,1 +1,0 @@
-search_result['2916']=["topic_0000000000000747.html","MyClubControllerTests.MyClubController_RemoveUser_ReturnsIsNotClubManager Method",""];

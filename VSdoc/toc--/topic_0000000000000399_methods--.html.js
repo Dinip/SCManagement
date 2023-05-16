@@ -1,1 +1,0 @@
-var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['1103',"SCManagement.Services.BackgroundService Namespace","topic_0000000000000398.html"],['1104',"BackgroundHelperService Class","topic_0000000000000399.html"],['1106',"Methods","topic_0000000000000399_methods--.html"]];

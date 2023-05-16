@@ -1,1 +1,0 @@
-search_result['528']=["topic_000000000000012B.html","MyClubController.SendCodeEmail Method","Sends an email with the code to access the club"];

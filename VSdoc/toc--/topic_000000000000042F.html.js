@@ -1,1 +1,0 @@
-var breadcrumbs=[['-1',"",""],['2',"SOLUTION-WIDE PROPERTIES Reference","topic_00000000000008D9.html"],['1267',"SCManagement.Services.EmailService Namespace","topic_000000000000042D.html"],['1268',"AuthMessageSenderOptions Class","topic_000000000000042E.html"],['1269',"Properties","topic_000000000000042E_props--.html"],['1270',"AuthKey Property","topic_000000000000042F.html"]];

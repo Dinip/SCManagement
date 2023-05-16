@@ -1,1 +1,0 @@
-search_result['820']=["topic_00000000000001CF_overloads--.html","UserController.UpdateNotificationsSettings Method","Gets the current user notifications settings (on or off) grouped\r\nby their category"];

@@ -1,1 +1,0 @@
-search_result['1646']=["topic_00000000000003C6.html","ClubService.UpdateClubPhoto Method","Updates the photo for a club, can either upload a new one and\r\nremove the old one or just the remove the photo"];

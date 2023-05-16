@@ -1,1 +1,0 @@
-search_result['2552']=["topic_0000000000000652.html","StatisticsService.GetCurrentClubUsersStatistics Method","Gets the current user stats (number of athletes / total slots, staff, active partners / all partners)\r\nfor a specified club. Returns realtime data."];

@@ -1,1 +1,0 @@
-search_result['2587']=["topic_000000000000066E.html","ITeamService.GetTeamsByTrainer Method",""];

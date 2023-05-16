@@ -1,1 +1,0 @@
-search_result['381']=["topic_00000000000000CF.html","ClubsController.Details Method","Force redirect from /Clubs/Details/id to /Clubs/id"];

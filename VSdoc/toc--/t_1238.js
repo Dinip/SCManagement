@@ -1,1 +1,0 @@
-c['1238']=[['1239',"DailySubscriptionChecker Constructor","topic_000000000000041F.html",0],['1240',"Methods","topic_000000000000041E_methods--.html",1]];

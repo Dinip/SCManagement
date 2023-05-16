@@ -1,1 +1,0 @@
-search_result['2220']=["topic_0000000000000580.html","Goal.isCompleted Property",""];

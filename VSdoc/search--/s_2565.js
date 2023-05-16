@@ -1,1 +1,0 @@
-search_result['2565']=["topic_000000000000065F.html","StatisticsService.GetActiveAndDelayedClubSubscriptionsCount Method","Get the count of subscriptions for club plans which are active and pending"];

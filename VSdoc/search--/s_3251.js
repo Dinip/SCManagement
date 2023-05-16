@@ -1,1 +1,0 @@
-search_result['3251']=["topic_0000000000000878.html","ClubServiceTests.ClubService_SearchNameClubs_ReturnsNameNull Method",""];

@@ -1,1 +1,0 @@
-search_result['2605']=["topic_000000000000067A.html","TeamService.GetTeamsByAthlete (String, Int32) Method","Get all the teams that a user belongs to in a club"];

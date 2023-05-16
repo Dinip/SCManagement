@@ -1,1 +1,0 @@
-c['1078']=[['1079',"AzureStorage Constructor","topic_0000000000000392.html",0],['1080',"Methods","topic_0000000000000391_methods--.html",1]];

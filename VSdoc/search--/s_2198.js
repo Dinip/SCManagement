@@ -1,1 +1,0 @@
-search_result['2198']=["topic_000000000000056F.html","PaymentService.GetClubPayments Method","Gets all payments for a given club"];

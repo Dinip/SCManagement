@@ -1,1 +1,0 @@
-search_result['1640']=["topic_00000000000003C0.html","ClubService.SendCodeEmail Method","Sends a email with the access code to a user to join a club"];

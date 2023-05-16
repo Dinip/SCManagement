@@ -1,1 +1,0 @@
-search_result['1792']=["topic_000000000000042B.html","HourlyEventCheckerRemover.DoWork Method","Actual job to be executed\r\nGets all event payment enrolls that are still pending payment\r\n4 hours after the creation and cancels them. Notifies the user\r\nthat he was removed from the event."];

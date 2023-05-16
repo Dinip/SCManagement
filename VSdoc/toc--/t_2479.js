@@ -1,1 +1,0 @@
-c['2479']=[['2480',"CurrentUICulture Property","topic_00000000000006C2.html",0],['2481',"SupportedCultures Property","topic_00000000000006C3.html",0]];

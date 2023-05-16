@@ -1,1 +1,0 @@
-search_result['2183']=["topic_0000000000000560.html","PaymentService.GetClubSubscriptionPlans Method","Gets all available club subscription plans (enabled)"];

@@ -1,1 +1,0 @@
-c['1447']=[['1448',"ExpirationDate Property","topic_00000000000004B1.html",0],['1449',"LastFourDigits Property","topic_00000000000004AF.html",0],['1450',"Type Property","topic_00000000000004B0.html",0]];

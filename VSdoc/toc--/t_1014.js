@@ -1,1 +1,0 @@
-c['1014']=[['1015',"Atribute Property","topic_000000000000031E.html",0],['1016',"Id Property","topic_000000000000031B.html",0],['1017',"Language Property","topic_000000000000031C.html",0],['1018',"Value Property","topic_000000000000031D.html",0]];

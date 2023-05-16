@@ -1,1 +1,0 @@
-search_result['1937']=["topic_0000000000000494.html","NotificationService Constructor","Notification service constructor"];
