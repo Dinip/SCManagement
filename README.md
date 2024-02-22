@@ -15,6 +15,12 @@ Developed by:
 
 The initial repository for this project was hosted privately on Bitbucket and has been moved to GitHub due to its widespread usage. All branches have been retained by choice, along with the entire commit history. Typically, a branch was created for each feature, followed by 4 development branches (one per sprint), where features were aggregated and, at the end of each sprint, merged into the master branch.
 
+**Also worth to mention, this is not a project that you want to spend you time trying to run 🙃 since it has a lot of moving parts and we've cut some corners to make it work and meet our needs (not the best practice).**
+
+As you can see on [Technologies Used](#technologies-used) it requires some external service to get it working, some are directly from Azure and some are provided by 3rd parties.
+
+In short, this repo was mainly made public so it could be used as reference as part of our CV's.
+
 ## Project Description
 
 The Sports Club Management Project aims to provide a comprehensive platform for the administration of sports clubs. It consolidates various essential functionalities, such as club management, members (coaches, athletes), associates, and events. Additionally, it offers a payment system for club subscriptions, member fees, and event fees.
